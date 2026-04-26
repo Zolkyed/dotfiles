@@ -1,9 +1,0 @@
-bluetooth:
-  enable: true
-
-  packages:
-    - bluez
-    - bluez-utils
-    - blueman
-
-  autostart: true
