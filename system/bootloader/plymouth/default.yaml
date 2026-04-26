@@ -1,0 +1,6 @@
+plymouth:
+  enable: true
+  theme: deus_ex
+  packages:
+    - plymouth
+    - plymouth-theme-adi1090x
