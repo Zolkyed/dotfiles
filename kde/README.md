@@ -23,12 +23,14 @@
 | Window to Desktop 9                     | Meta + Shift + 9             |
 | Window to Desktop 10                    | Meta + Shift + 0             |
 | Close Window                            | Meta + W                     |
+| Close Tab                               | Ctrl + W                     |
 | Make Window Fullscreen                  | Meta + F                     |
 | Lock Screen                             | Meta + L                     |
 | Calculator                              | Meta + c                     |
 | Launch                                  | Meta + R                     |
 | Terminal                                | Meta + T                     |
 | File Manager                            | Meta + E                     |
+| Search File Manager                     | Ctrl + E                     |
 | Display Desktop                         | Meta + D                     |
 | Toggle Overview                         | Meta + Tab                   |
 | Screenshots                             | Meta + Shift + S             |
