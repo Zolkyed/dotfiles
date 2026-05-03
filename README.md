@@ -1,217 +1,147 @@
-# Dotfiles & System Configuration Structure
+# dotfiles
 
-This repository is organized into clear layers separating system provisioning, user configuration, automation, themes, and sensitive data.
+Full machine provisioning and user environment for Debian/Ubuntu + KDE Plasma.
 
----
+## Architecture
 
-## 🧩 High-Level Architecture
+| Layer | Tool | Responsibility |
+|---|---|---|
+| System | Ansible | Packages, services, drivers, users |
+| Dotfiles | Chezmoi | Shell, editor, app config |
+| KDE profiles | konsave / kdot | KDE Plasma snapshots |
+| Secrets | SOPS + age | SSH keys, tokens, credentials |
+| Scripts | kdot, bootstrap | Operational helpers |
 
-- **Ansible** → System setup (machine provisioning, packages, services)
-- **Chezmoi** → User configuration (dotfiles, shell, apps)
-- **Scripts** → Automation and operational actions
-- **Themes** → Shared visual assets and color schemes
-- **Secrets** → Sensitive data (keys, private configs)
-
----
-
-## 📁 Repository Structure
-
-~~~
-.
-├── README.md
-├── ansible
-├── chezmoi
-├── kde
-├── scripts
-└── secrets
-~~~
-
----
-
-## ⚙️ Ansible (System Setup)
-
-Handles full machine provisioning across Debian/Ubuntu machines.
-
-### Responsibilities
-- Install system packages and Flatpak apps
-- Configure services (networking, bluetooth, display manager)
-- Setup KDE Plasma desktop environment
-- Manage bootloader (GRUB) and system-level configs
-- Create and configure the user account
-- Deploy dotfiles via chezmoi
-- Restore KDE profile via konsave
-
-### Usage
+## Quick start
 
 ```bash
-# Bootstrap: installs Ansible + collections, then runs the playbook
-bash scripts/run_once_install-ansible.sh
+# Clone
+git clone https://github.com/Zolkyed/dotfiles ~/projects/dotfiles
+cd ~/projects/dotfiles
 
-# Or run directly (Ansible already installed)
+# Bootstrap: installs Ansible, sops, age, collections, then runs the playbook
+bash scripts/run_once_install-ansible.sh
+```
+
+```bash
+# Run manually (Ansible already installed)
 cd ansible
 ansible-playbook playbooks/setup.yml -l desktop
 ansible-playbook playbooks/setup.yml -l laptop
 
-# Dry-run (no changes applied)
+# Dry-run
 ansible-playbook playbooks/setup.yml --check --diff -l desktop
 ```
 
-### Key Structure
+## Repository structure
 
-~~~
-ansible/
-├── ansible.cfg
-├── requirements.yml
-├── inventory/
-│   ├── hosts.yml
-│   ├── group_vars/
-│   │   ├── all.yml
-│   │   ├── Debian.yml
-│   │   └── Archlinux.yml
-│   └── host_vars/
-│       ├── desktop.yml
-│       └── laptop.yml
-├── playbooks/
-│   └── setup.yml
-└── roles/
-    ├── system/
-    │   ├── packages/        # Base apt packages
-    │   ├── flatpak/         # Flatpak + Flathub apps
-    │   ├── bluetooth/       # bluez service
-    │   ├── bootloader/      # GRUB config
-    │   ├── display_manager/ # SDDM
-    │   ├── networking/      # NetworkManager + systemd-resolved
-    │   ├── docker/          # Docker CE + compose
-    │   ├── nvidia/          # Proprietary driver + extras
-    │   ├── fonts/           # System + Nerd Fonts
-    │   ├── gaming/          # Steam, Lutris, gamemode
-    │   └── vm/              # KVM/QEMU + virt-manager
-    ├── desktop/
-    │   ├── kde/             # KDE Plasma packages
-    │   ├── kde/themes/      # kwriteconfig6 theme settings
-    │   ├── konsave/         # KDE profile restore
-    │   ├── hyprland/
-    │   └── niri/
-~~~
+```
+.
+├── ansible/                  # System provisioning
+│   ├── ansible.cfg
+│   ├── requirements.yml      # community.general, ansible.posix, community.sops, community.docker
+│   ├── inventory/
+│   │   ├── hosts.yml
+│   │   ├── group_vars/
+│   │   │   ├── all.yml       # flatpak_apps, user_groups  ← single source of truth
+│   │   │   └── Debian.yml    # base_packages              ← OS-specific names
+│   │   └── host_vars/
+│   │       ├── desktop.yml   # extra_packages, machine_type, monitor
+│   │       └── laptop.yml
+│   ├── playbooks/
+│   │   └── setup.yml         # Full playbook + post_tasks report
+│   └── roles/
+│       ├── system/
+│       │   ├── packages/     # apt base + extra packages
+│       │   ├── flatpak/      # Flathub remotes + apps
+│       │   ├── fonts/        # Nerd Fonts
+│       │   ├── docker/       # Docker CE + compose plugin
+│       │   ├── nvidia/       # Proprietary driver, nouveau blacklist
+│       │   ├── vm/           # KVM/QEMU + virt-manager
+│       │   ├── gaming/       # Steam, Lutris, gamemode, Heroic
+│       │   ├── networking/   # NetworkManager + systemd-resolved
+│       │   ├── ssh/          # sshd hardening
+│       │   ├── bluetooth/    # bluez
+│       │   ├── bootloader/   # GRUB (BIOS + UEFI)
+│       │   └── display_manager/ # SDDM
+│       ├── desktop/
+│       │   ├── kde/          # KDE Plasma packages
+│       │   ├── kde/themes/   # kwriteconfig6 theme settings
+│       │   └── konsave/      # pipx install + profile import
+│       └── user/
+│           ├── (main)        # User account, shell, groups
+│           ├── dotfiles/     # chezmoi install + apply --force
+│           ├── git/          # Verify git config deployed by chezmoi
+│           ├── ssh_keys/     # Deploy keys from vault
+│           ├── dev/          # Dev tools, nvm, rustup
+│           └── bin/          # Custom scripts → ~/.local/bin
+│               └── files/
+│                   ├── kdot        # KDE profile manager
+│                   └── ha-fan-toggle
+├── chezmoi/                  # User dotfiles (applied by chezmoi)
+│   ├── dot_gitconfig         # → ~/.gitconfig
+│   ├── dot_gitconfig-github  # → ~/.gitconfig-github
+│   ├── dot_gitconfig-gitlab  # → ~/.gitconfig-gitlab
+│   └── dot_config/
+│       ├── fastfetch/        # → ~/.config/fastfetch/
+│       ├── git/              # (legacy, kept for reference)
+│       ├── kitty/            # → ~/.config/kitty/
+│       ├── mpv/              # → ~/.config/mpv/
+│       ├── vscode/           # → ~/.config/vscode/
+│       └── zsh/              # → ~/.config/zsh/.zshrc
+├── kde/
+│   ├── README.md             # KDE keybinds reference
+│   └── konsave/              # Tracked .knsv profile archives
+├── scripts/
+│   └── run_once_install-ansible.sh  # Bootstrap script
+├── secrets/
+│   ├── README.md             # SOPS + age setup guide
+│   └── vault.yml             # Encrypted credentials
+└── .github/
+    └── workflows/
+        └── ci.yml            # lint + syntax-check + dry-run
+```
 
----
+## Sources of truth
 
-## 🏠 Chezmoi (User Configuration)
+| What | File |
+|---|---|
+| Flatpak apps | `ansible/inventory/group_vars/all.yml` → `flatpak_apps` |
+| User groups | `ansible/inventory/group_vars/all.yml` → `user_groups` |
+| Debian packages | `ansible/inventory/group_vars/Debian.yml` → `base_packages` |
+| Host packages | `ansible/inventory/host_vars/<host>.yml` → `extra_packages` |
 
-Manages per-user dotfiles and application configuration.
+## KDE profile management
 
-### Responsibilities
-- Shell setup (zsh, bash)
-- Window manager configs (Hyprland, Niri)
-- UI tools (Waybar, Wofi, Mako)
-- Git, terminal, and CLI configs
+`kdot` is deployed to `~/.local/bin` by Ansible and works from anywhere:
 
-### Key Structure
+```bash
+kdot --export            # Save KDE profile → kde/konsave/default_YYYY-MM-DD.knsv
+kdot --import            # Import latest .knsv for profile
+kdot --list              # List tracked archives + konsave -l
+kdot --push              # git add new .knsv files, commit, push
+```
 
-~~~
-chezmoi/
-├── dot_config/
-│   ├── bash/
-│   ├── git/
-│   ├── hypr/
-│   ├── mako/
-│   ├── niri/
-│   ├── waybar/
-│   ├── wofi/
-│   └── zsh/
-└── themes/
-    ├── assets/
-    │   ├── fonts/
-    │   └── wallpapers/
-    ├── color-schemes/
-    │   ├── catppuccin/
-    │   └── dracula/
-    └── dot_theme.toml
-~~~
+## Secrets
 
----
+Encrypted with SOPS + age. See [secrets/README.md](secrets/README.md) for full setup.
 
-## 🎨 Themes (Design System)
+```bash
+# Edit secrets
+sops secrets/vault.yml
+```
 
-Centralized theme assets shared across tools.
+## CI
 
-### Contains
-- Color schemes (Catppuccin, Dracula)
-- Fonts
-- Wallpapers
-- Theme configuration (`theme.toml`)
+GitHub Actions runs on every push/PR:
+- `lint` — ansible-lint
+- `syntax-check` — `--syntax-check` against localhost
+- `dry-run` — `--check` inside a `debian:bookworm` container
 
-### Purpose
-Ensures consistent visual identity across:
-- Terminal
-- Shell
-- Window manager
-- GUI apps
+## Design philosophy
 
----
-
-## 🧪 Scripts (Automation Layer)
-
-Utility scripts for system operations and workflows.
-
-### Structure
-
-~~~
-scripts/
-├── konsave/
-│   ├── export.sh
-│   ├── import.sh
-│   └── list.sh
-└── run_once_install-ansible.sh
-~~~
-
-### Use Cases
-- One-time bootstrap installs
-- KDE profile backup/restore
-- Automation of repetitive setup tasks
-
----
-
-## 🔐 Secrets (Sensitive Data)
-
-Isolated storage for sensitive configuration.
-
-~~~
-secrets/
-└── README.md
-~~~
-
-### Contents
-- API keys
-- Private credentials
-- Machine-specific secrets
-
----
-
-## 🖥 KDE Profiles
-
-~~~
-kde/
-└── konsave
-~~~
-
-Used for KDE desktop environment snapshots and restoration using `konsave`.
-
----
-
-## 🧠 Design Philosophy
-
-This setup follows a separation-of-concerns model:
-
-- **Ansible** → *How the system is built*
-- **Chezmoi** → *How the user environment looks*
-- **Scripts** → *How actions are automated*
-- **Themes** → *How everything looks visually*
-- **Secrets** → *What must stay private*
-
----
-
-## 🔗 Reference
-
-Based on:
-https://github.com/shalva97/kde-configuration-files
+- **Ansible** → how the system is built
+- **Chezmoi** → how the user environment looks
+- **kdot** → how KDE profiles are versioned
+- **SOPS** → how secrets stay private
+- `all.yml` → one place to add a flatpak or group

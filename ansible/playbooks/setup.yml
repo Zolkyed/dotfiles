@@ -56,3 +56,72 @@
     - role: system/gaming
       when: machine_type == "desktop"
     - role: desktop/konsave
+
+  post_tasks:
+    - name: Gather installed tool versions for report
+      ansible.builtin.command:
+        cmd: "{{ item.cmd }}"
+      loop:
+        - { name: git,     cmd: "git --version" }
+        - { name: zsh,     cmd: "zsh --version" }
+        - { name: docker,  cmd: "docker --version" }
+        - { name: flatpak, cmd: "flatpak --version" }
+        - { name: chezmoi, cmd: "/home/{{ user_name }}/.local/bin/chezmoi --version" }
+      register: tool_versions
+      changed_when: false
+      failed_when: false
+      become: false
+
+    - name: List all installed apt packages from this run
+      ansible.builtin.command:
+        cmd: dpkg-query -W -f='${Package} ${Version}\n'
+        argv: []
+      register: installed_packages
+      changed_when: false
+      failed_when: false
+      when: ansible_facts['os_family'] == "Debian"
+
+    - name: List all installed flatpak apps
+      ansible.builtin.command:
+        cmd: flatpak list --app --columns=application,version
+      register: installed_flatpaks
+      changed_when: false
+      failed_when: false
+      become: false
+
+    - name: Write setup summary report
+      ansible.builtin.copy:
+        dest: "{{ user_home }}/ansible-setup-{{ ansible_date_time.date }}.log"
+        content: |
+          ════════════════════════════════════════
+          Ansible Setup Report
+          Host   : {{ inventory_hostname }}
+          Date   : {{ ansible_date_time.iso8601 }}
+          OS     : {{ ansible_distribution }} {{ ansible_distribution_version }}
+          ════════════════════════════════════════
+
+          Tool versions:
+          {% for item in tool_versions.results %}
+            {{ item.item.name | upper }}: {{ item.stdout | default('not found') }}
+          {% endfor %}
+
+          Flatpak apps installed ({{ installed_flatpaks.stdout_lines | default([]) | length }}):
+          {% for line in installed_flatpaks.stdout_lines | default([]) %}
+            {{ line }}
+          {% endfor %}
+
+          APT packages installed ({{ installed_packages.stdout_lines | default([]) | length }}):
+          {% for line in installed_packages.stdout_lines | default([]) %}
+            {{ line }}
+          {% endfor %}
+
+          Full task log: /tmp/ansible-setup.log
+          ════════════════════════════════════════
+        owner: "{{ user_name }}"
+        mode: "0644"
+      become: false
+
+    - name: Print setup summary
+      ansible.builtin.debug:
+        msg: "{{ lookup('file', user_home + '/ansible-setup-' + ansible_date_time.date + '.log') | split('\n') }}"
+      become: false

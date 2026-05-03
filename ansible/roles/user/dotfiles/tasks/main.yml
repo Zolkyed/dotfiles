@@ -26,7 +26,7 @@
 
 - name: Apply dotfiles with chezmoi
   ansible.builtin.command:
-    cmd: "{{ chezmoi_bin }} apply --no-tty"
+    cmd: "{{ chezmoi_bin }} apply --no-tty --force"
   become: false
   become_user: "{{ user_name }}"
   register: chezmoi_apply

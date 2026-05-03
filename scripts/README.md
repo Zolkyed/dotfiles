@@ -1,14 +1,23 @@
 # Scripts
 
-## konsave helpers
+## Bootstrap
 
-These helper scripts keep KDE profile archives in this repository so they can be
-versioned and tracked by git.
+```bash
+# Install Ansible, age, sops, collections, then run the playbook
+bash scripts/run_once_install-ansible.sh
+```
 
-- Export to tracked file: `scripts/konsave/export.sh [profile_name] [archive_name]`
-- Import from tracked file: `scripts/konsave/import.sh [archive_name]`
-- List tracked and local profiles: `scripts/konsave/list.sh`
+On first run, auto-generates an age key at `~/.config/sops/age/keys.txt` if one does not exist.
 
-Tracked archive location:
+## kdot — KDE profile manager
 
-- `kde/konsave/*.knsv`
+Deployed to `~/.local/bin/kdot` by Ansible. Works from anywhere.
+
+```bash
+kdot --export [profile]   # Save + export → kde/konsave/<profile>_YYYY-MM-DD.knsv
+kdot --import [profile]   # Import latest .knsv archive for that profile
+kdot --list               # List tracked archives + konsave -l
+kdot --push               # git add new .knsv files, commit, push
+```
+
+Override the repo path: `DOTFILES_DIR=/path/to/repo kdot --export`

@@ -1,5 +1,6 @@
 ---
 collections:
-  - name: community.general
-  - name: ansible.posix
-  - name: community.sops
+  - name: community.general   # flatpak, pipx, konsave helpers
+  - name: ansible.posix       # authorized_key, mount, sysctl
+  - name: community.sops      # load_vars from SOPS-encrypted vault
+  - name: community.docker    # manage Docker containers/networks/volumes post-install
