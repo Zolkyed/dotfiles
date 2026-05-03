@@ -91,13 +91,13 @@
 
     - name: Write setup summary report
       ansible.builtin.copy:
-        dest: "{{ user_home }}/ansible-setup-{{ ansible_date_time.date }}.log"
+        dest: "{{ user_home }}/ansible-setup-{{ ansible_facts['date_time']['date'] }}.log"
         content: |
           ════════════════════════════════════════
           Ansible Setup Report
           Host   : {{ inventory_hostname }}
-          Date   : {{ ansible_date_time.iso8601 }}
-          OS     : {{ ansible_distribution }} {{ ansible_distribution_version }}
+          Date   : {{ ansible_facts['date_time']['iso8601'] }}
+          OS     : {{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_version'] }}
           ════════════════════════════════════════
 
           Tool versions:
