@@ -1,0 +1,369 @@
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json",
+  "logo": {
+    "type": "kitty-direct",
+    "source": "~/.config/fastfetch/png/*.png",
+    "width": 40,
+    "height": 33,
+    "padding": {
+      "top": 1,
+      "left": 0,
+      "right": 1
+    },
+    "printRemaining": false,
+    "preserveAspectRatio": false,
+    "recache": false,
+    "position": "left",
+    "chafa": {
+      "fgOnly": false,
+      "symbols": "block+border+space-wide-inverted"
+    }
+  },
+  "display": {
+    "stat": false,
+    "pipe": false,
+    "showErrors": false,
+    "disableLinewrap": true,
+    "hideCursor": false,
+    "separator": ": ",
+    "color": {
+      "keys": "",
+      "title": "",
+      "output": "",
+      "separator": ""
+    },
+    "brightColor": true,
+    "duration": {
+      "abbreviation": false,
+      "spaceBeforeUnit": "default"
+    },
+    "size": {
+      "maxPrefix": "YB",
+      "binaryPrefix": "iec",
+      "ndigits": 2,
+      "spaceBeforeUnit": "default"
+    },
+    "temp": {
+      "unit": "D",
+      "ndigits": 1,
+      "color": {
+        "green": "32",
+        "yellow": "93",
+        "red": "91"
+      },
+      "spaceBeforeUnit": "default"
+    },
+    "percent": {
+      "type": [
+        "num",
+        "num-color"
+      ],
+      "ndigits": 0,
+      "color": {
+        "green": "32",
+        "yellow": "93",
+        "red": "91"
+      },
+      "spaceBeforeUnit": "default",
+      "width": 0
+    },
+    "bar": {
+      "char": {
+        "elapsed": "■",
+        "total": "-"
+      },
+      "border": {
+        "left": "[ ",
+        "right": " ]",
+        "leftElapsed": "",
+        "rightElapsed": ""
+      },
+      "color": {
+        "elapsed": "auto",
+        "total": "97",
+        "border": "97"
+      },
+      "width": 10
+    },
+    "fraction": {
+      "ndigits": 2
+    },
+    "noBuffer": false,
+    "key": {
+      "width": 0,
+      "type": "both",
+      "paddingLeft": 0
+    },
+    "freq": {
+      "ndigits": 2,
+      "spaceBeforeUnit": "default"
+    },
+    "constants": []
+  },
+  "general": {
+    "thread": true,
+    "processingTimeout": 5000,
+    "detectVersion": true,
+    "playerName": "",
+    "dsForceDrm": false
+  },
+  "modules": [
+    {
+      "type": "custom",
+      "format": "🛠️ Specifications"
+    },
+    {
+      "type": "custom",
+      "format": "┌─────────────────────────────────────────────────────────────┐",
+      "outputColor": "white",
+      "times": 0
+    },
+    {
+     "type": "chassis",
+     "key": "Chassis",
+     "keyIcon": " 🖥️",
+     "format": "{1} {2} {3}",
+     "keyColor": "blue"
+    },
+    {
+      "type": "host",
+      "keyIcon": " 💻",
+      "keyColor": "blue"
+    },
+    {
+      "type": "os",
+      "keyIcon": " 🦊",
+      "keyColor": "red"
+    },
+    {
+      "type": "kernel",
+      "keyIcon": " ⚙️",
+      "keyColor": "red"
+    },
+    {
+      "type": "uptime",
+      "keyIcon": " 🕓",
+      "keyColor": "cyan"
+    },
+    {
+      "type": "packages",
+      "keyIcon": " 📦",
+      "disabled": [
+        "winget"
+      ],
+      "combined": false,
+      "keyColor": "green"
+    },
+    {
+      "type": "cpu",
+      "keyIcon": " 🔲",
+      "temp": false,
+      "showPeCoreCount": false,
+      "keyColor": "blue"
+    },
+    {
+      "type": "gpu",
+      "keyIcon": " 🎨",
+      "driverSpecific": false,
+      "detectionMethod": "pci",
+      "temp": false,
+      "hideType": "none",
+      "percent": {
+        "green": 50,
+        "yellow": 80,
+        "type": 0
+      },
+      "keyColor": "blue"
+    },
+    {
+      "type": "gpu",
+      "keyIcon": " 🪪",
+      "format": "{3}",
+      "key": "GPU Driver",
+      "keyColor": "cyan"
+    },
+    {
+      "type": "memory",
+      "keyIcon": " ⛃",
+      "percent": {
+        "green": 50,
+        "yellow": 80,
+        "type": 0,
+      },
+      "keyColor": "blue"
+    },
+    {
+      "type": "swap",
+      "percent": {
+        "green": 50,
+        "yellow": 80,
+        "type": 0
+      },
+      "keyIcon": " ⛃",
+      "separate": false,
+      "keyColor": "blue"
+    },
+    {
+      "type": "disk",
+      "keyIcon": " 🗄️",
+      "showRegular": true,
+      "showExternal": true,
+      "showHidden": false,
+      "showSubvolumes": false,
+      "showReadOnly": true,
+      "showUnknown": false,
+      "folders": "",
+      "hideFolders": "/efi:/boot:/boot/*",
+      "hideFS": "",
+      "useAvailable": false,
+      "percent": {
+        "green": 50,
+        "yellow": 80,
+        "type": 0
+      },
+      "keyColor": "magenta"
+    },
+    {
+      "type": "display",
+      "keyIcon": " 🖥️",
+      "compactType": "none",
+      "preciseRefreshRate": false,
+      "order": null,
+      "keyColor": "green"
+    },
+    {
+      "type": "localip",
+      "keyIcon": " 🌐",
+      "showIpv4": true,
+      "showIpv6": false,
+      "showMac": false,
+      "showLoop": false,
+      "showPrefixLen": true,
+      "showMtu": false,
+      "showSpeed": false,
+      "showFlags": false,
+      "compact": false,
+      "defaultRouteOnly": true,
+      "showAllIps": false,
+      "namePrefix": "",
+      "keyColor": "yellow"
+    },
+    {
+      "type": "battery",
+      "keyIcon": " 🔋",
+      "temp": false,
+      "percent": {
+        "green": 50,
+        "yellow": 20,
+        "type": 0
+      },
+      "keyColor": "yellow"
+    },
+    {
+      "type": "poweradapter",
+      "keyIcon": " 🔌"
+    },
+    {
+      "type": "custom",
+      "format": "└─────────────────────────────────────────────────────────────┘",
+      "outputColor": "white",
+      "times": 0
+    },
+    {
+      "type": "title",
+      "key": " ",
+      "keyIcon": " 🏠",
+      "fqdn": false,
+      "color": {
+        "user": "#BB55CC",
+        "at": "white",
+        "host": "#BB55CC"
+      }
+    },
+    {
+      "type": "custom",
+      "format": "┌─────────────────────────────────────────────────────────────┐",
+      "outputColor": "white",
+      "times": 0
+    },
+    {
+      "type": "shell",
+      "keyIcon": " ",
+      "keyColor": "green"
+    },
+
+    {
+      "type": "de",
+      "keyIcon": " ",
+      "slowVersionDetection": false,
+      "keyColor": "green"
+    },
+    {
+      "type": "wm",
+      "keyIcon": " ",
+      "detectPlugin": false,
+      "keyColor": "green"
+    },
+    {
+      "type": "wmtheme",
+      "keyIcon": " 🖼️",
+      "keyColor": "green"
+    },
+    {
+      "type": "theme",
+      "keyIcon": " 🖌️",
+      "keyColor": "green"
+    },
+    {
+      "type": "icons",
+      "keyIcon": " ",
+      "keyColor": "white"
+    },
+    {
+      "type": "font",
+      "keyIcon": " ",
+      "keyColor": "green"
+    },
+    {
+      "type": "cursor",
+      "keyIcon": " 🖱️",
+      "keyColor": "green"
+    },
+    {
+      "type": "terminal",
+      "keyIcon": " ",
+      "keyColor": "green"
+    },
+    {
+      "type": "terminalfont",
+      "keyIcon": " ",
+      "keyColor": "green"
+    },
+    {
+      "type": "locale",
+      "keyIcon": " ",
+      "keyColor": "white"
+    },
+    {
+      "type": "custom",
+      "format": "└─────────────────────────────────────────────────────────────┘",
+      "outputColor": "white",
+      "times": 0
+    },
+    "break",
+    {
+      "type": "colors",
+      "key": " ",
+      "keyIcon": "",
+      "symbol": "block",
+      "paddingLeft": 0,
+      "block": {
+        "width": 3,
+        "range": [
+          0,
+          15
+        ]
+      }
+    }
+  ]
+}
