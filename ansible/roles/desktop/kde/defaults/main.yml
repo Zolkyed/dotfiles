@@ -1,0 +1,17 @@
+---
+kde_packages:
+  - plasma-desktop
+  - plasma-workspace
+  - konsole
+  - dolphin
+  - kate
+  - kde-spectacle
+  - ark
+  - plasma-nm
+  - plasma-pa
+  - powerdevil
+  - bluedevil
+  - kscreen
+  - sddm
+  - sddm-theme-breeze
+  - kde-standard

@@ -1,0 +1,5 @@
+---
+# Global variables shared across all hosts
+ansible_user: charl
+user_name: charl
+user_home: "/home/{{ user_name }}"

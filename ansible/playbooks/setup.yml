@@ -1,0 +1,16 @@
+---
+- name: Full system setup
+  hosts: all
+  become: true
+
+  roles:
+    - role: system/packages
+    - role: system/flatpak
+    - role: user
+    - role: user/dotfiles
+    - role: system/networking
+    - role: system/bluetooth
+    - role: system/bootloader
+    - role: display_manager
+    - role: desktop/kde
+    - role: konsave

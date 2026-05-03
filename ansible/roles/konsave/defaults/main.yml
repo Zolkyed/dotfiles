@@ -1,0 +1,3 @@
+---
+konsave_profile_name: default
+konsave_profiles_dir: "{{ playbook_dir }}/../kde/konsave"

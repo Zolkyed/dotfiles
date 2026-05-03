@@ -1,0 +1,14 @@
+---
+# Laptop-specific variables
+machine_type: laptop
+desktop_environment: kde
+
+# Display
+primary_monitor: eDP-1
+
+# Bootloader
+grub_timeout: 3
+grub_cmdline_linux_default: "quiet splash"
+
+# Power management
+power_profiles_daemon: true

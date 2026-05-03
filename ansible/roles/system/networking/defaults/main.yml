@@ -1,0 +1,8 @@
+---
+dns_servers:
+  - "1.1.1.1"
+  - "9.9.9.9"
+dns_fallback_servers:
+  - "8.8.8.8"
+dns_dnssec: "allow-downgrade"
+dns_dns_over_tls: "opportunistic"

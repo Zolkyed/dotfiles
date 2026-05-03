@@ -1,0 +1,17 @@
+---
+- name: Install GRUB packages
+  ansible.builtin.package:
+    name:
+      - grub2-common
+      - grub-pc
+    state: present
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Deploy GRUB configuration
+  ansible.builtin.template:
+    src: grub.j2
+    dest: /etc/default/grub
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Update grub

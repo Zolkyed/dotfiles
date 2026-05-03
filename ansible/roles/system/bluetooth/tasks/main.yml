@@ -1,0 +1,23 @@
+---
+- name: Install bluetooth packages (Debian)
+  ansible.builtin.package:
+    name:
+      - bluez
+      - bluetooth
+      - bluez-tools
+    state: present
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Install bluetooth packages (Arch)
+  ansible.builtin.package:
+    name:
+      - bluez
+      - bluez-utils
+    state: present
+  when: ansible_facts['os_family'] == "Archlinux"
+
+- name: Enable and start bluetooth service
+  ansible.builtin.systemd:
+    name: bluetooth
+    enabled: "{{ bluetooth_enabled }}"
+    state: "{{ 'started' if bluetooth_enabled else 'stopped' }}"

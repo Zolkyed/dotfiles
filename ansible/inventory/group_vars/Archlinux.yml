@@ -1,0 +1,16 @@
+---
+# Arch Linux specific variables
+pkg_manager: pacman
+
+base_packages:
+  - git
+  - curl
+  - wget
+  - vim
+  - htop
+  - zsh
+  - base-devel
+  - unzip
+  - rsync
+  - python
+  - python-pip

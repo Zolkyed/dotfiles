@@ -1,0 +1,11 @@
+---
+- name: Install display manager
+  ansible.builtin.package:
+    name: "{{ display_manager }}"
+    state: present
+
+- name: Enable display manager service
+  ansible.builtin.systemd:
+    name: "{{ display_manager }}"
+    enabled: true
+    state: started

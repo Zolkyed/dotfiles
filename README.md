@@ -30,43 +30,65 @@ This repository is organized into clear layers separating system provisioning, u
 
 ## ⚙️ Ansible (System Setup)
 
-Handles full machine provisioning across different distributions and device types.
+Handles full machine provisioning across Debian/Ubuntu machines.
 
 ### Responsibilities
-- Install system packages
+- Install system packages and Flatpak apps
 - Configure services (networking, bluetooth, display manager)
-- Setup desktop environments (KDE, Hyprland, Niri)
-- Manage bootloader and system-level configs
+- Setup KDE Plasma desktop environment
+- Manage bootloader (GRUB) and system-level configs
+- Create and configure the user account
+- Deploy dotfiles via chezmoi
+- Restore KDE profile via konsave
+
+### Usage
+
+```bash
+# Bootstrap: installs Ansible + collections, then runs the playbook
+bash scripts/run_once_install-ansible.sh
+
+# Or run directly (Ansible already installed)
+cd ansible
+ansible-playbook playbooks/setup.yml -l desktop
+ansible-playbook playbooks/setup.yml -l laptop
+
+# Dry-run (no changes applied)
+ansible-playbook playbooks/setup.yml --check --diff -l desktop
+```
 
 ### Key Structure
 
 ~~~
 ansible/
 ├── ansible.cfg
-├── group_vars/
-│   ├── Archlinux.yml
-│   ├── Debian.yml
-│   └── all.yml
-├── host_vars/
-│   ├── desktop.yml
-│   └── laptop.yml
+├── requirements.yml
 ├── inventory/
-│   └── hosts.yml
+│   ├── hosts.yml
+│   ├── group_vars/
+│   │   ├── all.yml
+│   │   ├── Debian.yml
+│   │   └── Archlinux.yml
+│   └── host_vars/
+│       ├── desktop.yml
+│       └── laptop.yml
 ├── playbooks/
 │   └── setup.yml
-├── roles/
-│   ├── desktop/
-│   │   ├── hyprland/
-│   │   ├── kde/
-│   │   └── niri/
-│   ├── display_manager/
-│   ├── system/
-│   │   ├── bluetooth/
-│   │   ├── bootloader/
-│   │   ├── networking/
-│   │   └── packages/
-│   └── user/
-└── vars/
+└── roles/
+    ├── system/
+    │   ├── packages/        # Base apt packages
+    │   ├── flatpak/         # Flatpak + Flathub apps
+    │   ├── bluetooth/       # bluez service
+    │   ├── bootloader/      # GRUB config
+    │   └── networking/      # NetworkManager + systemd-resolved
+    ├── display_manager/     # SDDM
+    ├── desktop/
+    │   ├── kde/             # KDE Plasma packages
+    │   ├── hyprland/
+    │   └── niri/
+    ├── user/
+    │   ├── (main)           # User account + shell
+    │   └── dotfiles/        # chezmoi install + apply
+    └── konsave/             # KDE profile restore
 ~~~
 
 ---

@@ -1,0 +1,11 @@
+---
+# Desktop-specific variables
+machine_type: desktop
+desktop_environment: kde
+
+# Display
+primary_monitor: DP-1
+
+# Bootloader
+grub_timeout: 5
+grub_cmdline_linux_default: "quiet splash"

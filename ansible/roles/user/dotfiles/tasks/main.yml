@@ -1,0 +1,33 @@
+---
+- name: Install chezmoi
+  ansible.builtin.shell:
+    cmd: >
+      sh -c "$(curl -fsLS get.chezmoi.io)" --
+      -b "{{ user_home }}/.local/bin"
+    creates: "{{ chezmoi_bin }}"
+  become: false
+  become_user: "{{ user_name }}"
+
+- name: Ensure chezmoi source directory exists
+  ansible.builtin.file:
+    path: "{{ user_home }}/.local/share/chezmoi"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0700"
+
+- name: Sync chezmoi source from repo
+  ansible.builtin.copy:
+    src: "{{ dotfiles_chezmoi_source }}/"
+    dest: "{{ user_home }}/.local/share/chezmoi/"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: preserve
+
+- name: Apply dotfiles with chezmoi
+  ansible.builtin.command:
+    cmd: "{{ chezmoi_bin }} apply --no-tty"
+  become: false
+  become_user: "{{ user_name }}"
+  register: chezmoi_apply
+  changed_when: chezmoi_apply.stdout != ""

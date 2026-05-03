@@ -1,0 +1,5 @@
+---
+- name: Install KDE Plasma packages
+  ansible.builtin.package:
+    name: "{{ kde_packages }}"
+    state: present
