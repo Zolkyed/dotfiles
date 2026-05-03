@@ -5,365 +5,59 @@
     "source": "~/.config/fastfetch/png/*.png",
     "width": 40,
     "height": 33,
-    "padding": {
-      "top": 1,
-      "left": 0,
-      "right": 1
-    },
-    "printRemaining": false,
-    "preserveAspectRatio": false,
-    "recache": false,
-    "position": "left",
-    "chafa": {
-      "fgOnly": false,
-      "symbols": "block+border+space-wide-inverted"
-    }
+    "padding": { "top": 1, "right": 1 },
+    "position": "left"
   },
   "display": {
-    "stat": false,
-    "pipe": false,
-    "showErrors": false,
-    "disableLinewrap": true,
-    "hideCursor": false,
-    "separator": ": ",
-    "color": {
-      "keys": "",
-      "title": "",
-      "output": "",
-      "separator": ""
-    },
-    "brightColor": true,
-    "duration": {
-      "abbreviation": false,
-      "spaceBeforeUnit": "default"
-    },
-    "size": {
-      "maxPrefix": "YB",
-      "binaryPrefix": "iec",
-      "ndigits": 2,
-      "spaceBeforeUnit": "default"
-    },
-    "temp": {
-      "unit": "D",
-      "ndigits": 1,
-      "color": {
-        "green": "32",
-        "yellow": "93",
-        "red": "91"
-      },
-      "spaceBeforeUnit": "default"
-    },
-    "percent": {
-      "type": [
-        "num",
-        "num-color"
-      ],
-      "ndigits": 0,
-      "color": {
-        "green": "32",
-        "yellow": "93",
-        "red": "91"
-      },
-      "spaceBeforeUnit": "default",
+    "separator": "  ",
+    "key": {
+      "type": "both",
       "width": 0
     },
-    "bar": {
-      "char": {
-        "elapsed": "■",
-        "total": "-"
-      },
-      "border": {
-        "left": "[ ",
-        "right": " ]",
-        "leftElapsed": "",
-        "rightElapsed": ""
-      },
-      "color": {
-        "elapsed": "auto",
-        "total": "97",
-        "border": "97"
-      },
-      "width": 10
+    "color": {
+      "keys": "#b4befe",
+      "title": "#cba6f7",
+      "output": "#cdd6f4",
+      "separator": "#94e2d5"
     },
-    "fraction": {
-      "ndigits": 2
-    },
-    "noBuffer": false,
-    "key": {
-      "width": 0,
-      "type": "both",
-      "paddingLeft": 0
-    },
-    "freq": {
-      "ndigits": 2,
-      "spaceBeforeUnit": "default"
-    },
-    "constants": []
-  },
-  "general": {
-    "thread": true,
-    "processingTimeout": 5000,
-    "detectVersion": true,
-    "playerName": "",
-    "dsForceDrm": false
+    "percent": {
+      "type": 0
+    }
   },
   "modules": [
-    {
-      "type": "custom",
-      "format": "🛠️ Specifications"
-    },
-    {
-      "type": "custom",
-      "format": "┌─────────────────────────────────────────────────────────────┐",
-      "outputColor": "white",
-      "times": 0
-    },
-    {
-     "type": "chassis",
-     "key": "Chassis",
-     "keyIcon": " 🖥️",
-     "format": "{1} {2} {3}",
-     "keyColor": "blue"
-    },
-    {
-      "type": "host",
-      "keyIcon": " 💻",
-      "keyColor": "blue"
-    },
-    {
-      "type": "os",
-      "keyIcon": " 🦊",
-      "keyColor": "red"
-    },
-    {
-      "type": "kernel",
-      "keyIcon": " ⚙️",
-      "keyColor": "red"
-    },
-    {
-      "type": "uptime",
-      "keyIcon": " 🕓",
-      "keyColor": "cyan"
-    },
-    {
-      "type": "packages",
-      "keyIcon": " 📦",
-      "disabled": [
-        "winget"
-      ],
-      "combined": false,
-      "keyColor": "green"
-    },
-    {
-      "type": "cpu",
-      "keyIcon": " 🔲",
-      "temp": false,
-      "showPeCoreCount": false,
-      "keyColor": "blue"
-    },
-    {
-      "type": "gpu",
-      "keyIcon": " 🎨",
-      "driverSpecific": false,
-      "detectionMethod": "pci",
-      "temp": false,
-      "hideType": "none",
-      "percent": {
-        "green": 50,
-        "yellow": 80,
-        "type": 0
-      },
-      "keyColor": "blue"
-    },
-    {
-      "type": "gpu",
-      "keyIcon": " 🪪",
-      "format": "{3}",
-      "key": "GPU Driver",
-      "keyColor": "cyan"
-    },
-    {
-      "type": "memory",
-      "keyIcon": " ⛃",
-      "percent": {
-        "green": 50,
-        "yellow": 80,
-        "type": 0,
-      },
-      "keyColor": "blue"
-    },
-    {
-      "type": "swap",
-      "percent": {
-        "green": 50,
-        "yellow": 80,
-        "type": 0
-      },
-      "keyIcon": " ⛃",
-      "separate": false,
-      "keyColor": "blue"
-    },
-    {
-      "type": "disk",
-      "keyIcon": " 🗄️",
-      "showRegular": true,
-      "showExternal": true,
-      "showHidden": false,
-      "showSubvolumes": false,
-      "showReadOnly": true,
-      "showUnknown": false,
-      "folders": "",
-      "hideFolders": "/efi:/boot:/boot/*",
-      "hideFS": "",
-      "useAvailable": false,
-      "percent": {
-        "green": 50,
-        "yellow": 80,
-        "type": 0
-      },
-      "keyColor": "magenta"
-    },
-    {
-      "type": "display",
-      "keyIcon": " 🖥️",
-      "compactType": "none",
-      "preciseRefreshRate": false,
-      "order": null,
-      "keyColor": "green"
-    },
-    {
-      "type": "localip",
-      "keyIcon": " 🌐",
-      "showIpv4": true,
-      "showIpv6": false,
-      "showMac": false,
-      "showLoop": false,
-      "showPrefixLen": true,
-      "showMtu": false,
-      "showSpeed": false,
-      "showFlags": false,
-      "compact": false,
-      "defaultRouteOnly": true,
-      "showAllIps": false,
-      "namePrefix": "",
-      "keyColor": "yellow"
-    },
-    {
-      "type": "battery",
-      "keyIcon": " 🔋",
-      "temp": false,
-      "percent": {
-        "green": 50,
-        "yellow": 20,
-        "type": 0
-      },
-      "keyColor": "yellow"
-    },
-    {
-      "type": "poweradapter",
-      "keyIcon": " 🔌"
-    },
-    {
-      "type": "custom",
-      "format": "└─────────────────────────────────────────────────────────────┘",
-      "outputColor": "white",
-      "times": 0
-    },
-    {
-      "type": "title",
-      "key": " ",
-      "keyIcon": " 🏠",
-      "fqdn": false,
-      "color": {
-        "user": "#BB55CC",
-        "at": "white",
-        "host": "#BB55CC"
-      }
-    },
-    {
-      "type": "custom",
-      "format": "┌─────────────────────────────────────────────────────────────┐",
-      "outputColor": "white",
-      "times": 0
-    },
-    {
-      "type": "shell",
-      "keyIcon": " ",
-      "keyColor": "green"
-    },
-
-    {
-      "type": "de",
-      "keyIcon": " ",
-      "slowVersionDetection": false,
-      "keyColor": "green"
-    },
-    {
-      "type": "wm",
-      "keyIcon": " ",
-      "detectPlugin": false,
-      "keyColor": "green"
-    },
-    {
-      "type": "wmtheme",
-      "keyIcon": " 🖼️",
-      "keyColor": "green"
-    },
-    {
-      "type": "theme",
-      "keyIcon": " 🖌️",
-      "keyColor": "green"
-    },
-    {
-      "type": "icons",
-      "keyIcon": " ",
-      "keyColor": "white"
-    },
-    {
-      "type": "font",
-      "keyIcon": " ",
-      "keyColor": "green"
-    },
-    {
-      "type": "cursor",
-      "keyIcon": " 🖱️",
-      "keyColor": "green"
-    },
-    {
-      "type": "terminal",
-      "keyIcon": " ",
-      "keyColor": "green"
-    },
-    {
-      "type": "terminalfont",
-      "keyIcon": " ",
-      "keyColor": "green"
-    },
-    {
-      "type": "locale",
-      "keyIcon": " ",
-      "keyColor": "white"
-    },
-    {
-      "type": "custom",
-      "format": "└─────────────────────────────────────────────────────────────┘",
-      "outputColor": "white",
-      "times": 0
-    },
+    {"type": "custom", "format": "󰧧 SYSTEM SPECIFICATIONS", "outputColor": "#cba6f7"},
+    { "type": "custom", "format": "╭──────────────────────────────────────────────╮", "outputColor": "#585b70" },
+    { "type": "host", "key": "Host", "keyColor": "#89b4fa" },
+    { "type": "os", "key": "OS", "keyColor": "#fab387" },
+    { "type": "kernel", "key": "Kernel", "keyColor": "#fab387" },
+    { "type": "uptime", "key": "Uptime", "keyColor": "#94e2d5" },
+    { "type": "packages", "key": "Packages", "keyColor": "#a6e3a1" },
+    { "type": "cpu", "key": "CPU", "temp": true, "keyColor": "#cba6f7" },
+    { "type": "gpu", "key": "GPU", "detectionMethod": "pci", "keyColor": "#89b4fa" },
+    { "type": "gpu", "key": "GPU Driver", "format": "{3}", "keyColor": "#94e2d5" },
+    { "type": "memory", "key": "Memory", "keyColor": "#89b4fa" },
+    { "type": "swap", "key": "Swap", "keyColor": "#89b4fa" },
+    { "type": "disk", "key": "Disk", "keyColor": "#cba6f7" },
+    { "type": "display", "key": "Display", "keyColor": "#a6e3a1" },
+    { "type": "localip", "key": "Local IP", "defaultRouteOnly": true, "keyColor": "#f9e2af" },
+    { "type": "battery", "key": "Battery", "keyColor": "#f9e2af" },
+    { "type": "poweradapter", "key": "Power", "keyColor": "#f9e2af" },
+    { "type": "custom", "format": "╰─────────────────────────────────────────────╯", "outputColor": "#585b70" },
+    { "type": "title", "color": { "user": "#cba6f7", "at": "#cdd6f4", "host": "#cba6f7" } },
+    { "type": "custom", "format": "╭────────────────────────────────────────────╮", "outputColor": "#585b70" },
+    { "type": "shell", "key": "Shell", "keyColor": "#a6e3a1" },
+    { "type": "de", "key": "DE", "keyColor": "#a6e3a1" },
+    { "type": "wm", "key": "WM", "keyColor": "#a6e3a1" },
+    { "type": "wmtheme", "key": "WM Theme", "keyColor": "#a6e3a1" },
+    { "type": "theme", "key": "Theme", "keyColor": "#a6e3a1" },
+    { "type": "icons", "key": "Icons", "keyColor": "#a6e3a1" },
+    { "type": "font", "key": "Font", "keyColor": "#a6e3a1" },
+    { "type": "cursor", "key": "Cursor", "keyColor": "#a6e3a1" },
+    { "type": "terminal", "key": "Terminal", "keyColor": "#a6e3a1" },
+    { "type": "terminalfont", "key": "Font", "keyColor": "#a6e3a1" },
+    { "type": "locale", "key": "Locale", "keyColor": "#a6e3a1" },
+    { "type": "custom", "format": "╰─────────────────────────────────────────────╯", "outputColor": "#585b70" },
     "break",
-    {
-      "type": "colors",
-      "key": " ",
-      "keyIcon": "",
-      "symbol": "block",
-      "paddingLeft": 0,
-      "block": {
-        "width": 3,
-        "range": [
-          0,
-          15
-        ]
-      }
-    }
+    { "type": "colors", "symbol": "circle", "block": { "width": 3 } }
   ]
 }
