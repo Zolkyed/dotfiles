@@ -1,0 +1,21 @@
+---
+- name: Install openssh-server
+  ansible.builtin.package:
+    name: openssh-server
+    state: present
+
+- name: Harden sshd configuration
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+    validate: sshd -t -f %s
+  loop:
+    - { regexp: '^#?PermitRootLogin', line: "PermitRootLogin {{ sshd_permit_root_login }}" }
+    - { regexp: '^#?PasswordAuthentication', line: "PasswordAuthentication {{ sshd_password_authentication }}" }
+    - { regexp: '^#?PubkeyAuthentication', line: "PubkeyAuthentication {{ sshd_pubkey_authentication }}" }
+    - { regexp: '^#?Port ', line: "Port {{ sshd_port }}" }
+    - { regexp: '^#?X11Forwarding', line: "X11Forwarding {{ sshd_x11_forwarding }}" }
+    - { regexp: '^#?AllowTcpForwarding', line: "AllowTcpForwarding {{ sshd_allow_tcp_forwarding }}" }
+  notify: Restart sshd

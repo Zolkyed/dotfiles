@@ -6,3 +6,6 @@ user_groups:
   - video
   - plugdev
   - netdev
+  - docker
+  - libvirt
+  - kvm

@@ -1,0 +1,7 @@
+---
+sshd_permit_root_login: "no"
+sshd_password_authentication: "no"
+sshd_pubkey_authentication: "yes"
+sshd_port: 22
+sshd_x11_forwarding: "no"
+sshd_allow_tcp_forwarding: "no"

@@ -3,8 +3,29 @@
   hosts: all
   become: true
 
+  pre_tasks:
+    - name: Get latest sops release version
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/getsops/sops/releases/latest
+        return_content: true
+      register: sops_release
+      become: false
+
+    - name: Install sops from GitHub releases
+      ansible.builtin.apt:
+        deb: "https://github.com/getsops/sops/releases/download/{{ sops_release.json.tag_name }}/sops_{{ sops_release.json.tag_name | regex_replace('^v', '') }}_amd64.deb"
+        state: present
+
+    - name: Load encrypted secrets
+      community.sops.load_vars:
+        file: "{{ playbook_dir }}/../../secrets/vault.yml"
+        name: vault
+      become: false
+      ignore_errors: true
+
   roles:
     - role: system/packages
+    - role: system/extra_repos
     - role: system/fonts
     - role: system/flatpak
     - role: system/docker
@@ -17,11 +38,12 @@
     - role: user/ssh_keys
     - role: user/dev
     - role: system/networking
+    - role: system/ssh
     - role: system/bluetooth
     - role: system/bootloader
-    - role: display_manager
+    - role: system/display_manager
     - role: desktop/kde
     - role: desktop/kde/themes
     - role: system/gaming
       when: machine_type == "desktop"
-    - role: konsave
+    - role: desktop/konsave

@@ -79,16 +79,19 @@ ansible/
     │   ├── flatpak/         # Flatpak + Flathub apps
     │   ├── bluetooth/       # bluez service
     │   ├── bootloader/      # GRUB config
-    │   └── networking/      # NetworkManager + systemd-resolved
-    ├── display_manager/     # SDDM
+    │   ├── display_manager/ # SDDM
+    │   ├── networking/      # NetworkManager + systemd-resolved
+    │   ├── docker/          # Docker CE + compose
+    │   ├── nvidia/          # Proprietary driver + extras
+    │   ├── fonts/           # System + Nerd Fonts
+    │   ├── gaming/          # Steam, Lutris, gamemode
+    │   └── vm/              # KVM/QEMU + virt-manager
     ├── desktop/
     │   ├── kde/             # KDE Plasma packages
+    │   ├── kde/themes/      # kwriteconfig6 theme settings
+    │   ├── konsave/         # KDE profile restore
     │   ├── hyprland/
     │   └── niri/
-    ├── user/
-    │   ├── (main)           # User account + shell
-    │   └── dotfiles/        # chezmoi install + apply
-    └── konsave/             # KDE profile restore
 ~~~
 
 ---

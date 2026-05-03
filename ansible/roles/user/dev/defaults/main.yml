@@ -23,7 +23,6 @@ install_rust: true
 dev_cli_tools:
   - jq
   - yq
-  - gh            # GitHub CLI
   - httpie
   - shellcheck
   - pre-commit
