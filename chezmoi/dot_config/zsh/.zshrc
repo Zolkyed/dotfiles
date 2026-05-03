@@ -1,0 +1,222 @@
+# ========================
+# Performance
+# ========================
+ZSH_DISABLE_COMPFIX=true
+[[ ~/.zshrc -nt ~/.zshrc.zwc ]] && zcompile ~/.zshrc
+
+# ========================
+# History
+# ========================
+HISTSIZE=10000
+SAVEHIST=10000
+HISTFILE=~/.zsh_history
+setopt hist_ignore_dups hist_ignore_all_dups hist_ignore_space
+setopt hist_reduce_blanks share_history inc_append_history extended_history
+
+# ========================
+# Completion
+# ========================
+autoload -Uz compinit
+compinit -C
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*:descriptions' format '%F{yellow}-- %d --%f'
+zstyle ':completion::complete:*' use-cache on
+
+# ========================
+# Navigation
+# ========================
+setopt auto_cd auto_pushd pushd_ignore_dups pushd_silent correct
+alias -g ...='../..'
+alias -g ....='../../..'
+alias -g .....='../../../..'
+
+# ========================
+# Aliases
+# ========================
+# Core tools
+alias cat='bat --paging=never'
+alias ls='eza --icons'
+alias ll='eza -lah --icons --git'
+alias la='eza -a --icons'
+alias lt='eza --tree --icons'
+alias lt2='eza --tree --level=2 --icons'
+
+# Search
+alias grep='rg'
+alias find='fdfind'
+
+# Editors
+alias vim='nvim'
+alias vi='nvim'
+alias v='nvim'
+
+# Git
+alias g='git'
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gp='git push'
+alias gl='git log --oneline --graph --decorate'
+alias gd='git diff'
+alias gco='git checkout'
+alias gb='git branch'
+
+# System
+alias df='df -h'
+alias du='du -sh'
+alias free='free -h'
+alias top='htop'
+alias ports='ss -tulanp'
+alias myip='curl -s ifconfig.me'
+
+# Safer file operations
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+# Convenience
+alias reload='source ~/.zshrc'
+alias zshrc='${EDITOR:-nvim} ~/.zshrc'
+
+# ========================
+# Environment
+# ========================
+export EDITOR='nvim'
+export VISUAL='nvim'
+export PAGER='bat'
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+export PATH="$HOME/.local/bin:$PATH"
+
+# ========================
+# Plugins (auto-install)
+# ========================
+ZSH_PLUGIN_DIR="$HOME/.zsh"
+
+_zsh_plugin_load() {
+  local plugin_dir="$ZSH_PLUGIN_DIR/${1##*/}"
+  [[ ! -d "$plugin_dir" ]] && git clone --depth=1 "https://github.com/$1" "$plugin_dir"
+}
+
+_zsh_plugin_load zsh-users/zsh-autosuggestions
+_zsh_plugin_load zsh-users/zsh-syntax-highlighting
+_zsh_plugin_load zsh-users/zsh-completions
+
+source "$ZSH_PLUGIN_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh"
+
+# ========================
+# Syntax Highlighting (Catppuccin Mocha)
+# ========================
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main cursor)
+typeset -gA ZSH_HIGHLIGHT_STYLES
+
+# Comments
+ZSH_HIGHLIGHT_STYLES[comment]='fg=#585b70'
+
+# Functions / aliases
+for key in alias suffix-alias global-alias function command precommand; do
+  ZSH_HIGHLIGHT_STYLES[$key]='fg=#a6e3a1'
+done
+ZSH_HIGHLIGHT_STYLES[precommand]+=',italic'
+ZSH_HIGHLIGHT_STYLES[autodirectory]='fg=#fab387,italic'
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=#fab387'
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=#fab387'
+ZSH_HIGHLIGHT_STYLES[back-quoted-argument]='fg=#cba6f7'
+
+# Builtins / keywords
+for key in builtin reserved-word hashed-command; do
+  ZSH_HIGHLIGHT_STYLES[$key]='fg=#a6e3a1'
+done
+
+# Punctuation
+for key in commandseparator command-substitution-delimiter command-substitution-delimiter-unquoted \
+           process-substitution-delimiter back-quoted-argument-delimiter back-double-quoted-argument \
+           back-dollar-quoted-argument; do
+  ZSH_HIGHLIGHT_STYLES[$key]='fg=#f38ba8'
+done
+
+# Strings / quoted arguments
+for key in command-substitution-quoted command-substitution-delimiter-quoted single-quoted-argument \
+           double-quoted-argument rc-quote; do
+  ZSH_HIGHLIGHT_STYLES[$key]='fg=#f9e2af'
+done
+ZSH_HIGHLIGHT_STYLES[single-quoted-argument-unclosed]='fg=#eba0ac'
+ZSH_HIGHLIGHT_STYLES[double-quoted-argument-unclosed]='fg=#eba0ac'
+ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument-unclosed]='fg=#eba0ac'
+ZSH_HIGHLIGHT_STYLES[back-quoted-argument-unclosed]='fg=#eba0ac'
+
+# Paths
+for key in path path_prefix; do
+  ZSH_HIGHLIGHT_STYLES[$key]='fg=#cdd6f4,underline'
+done
+
+# Misc
+for key in globbing history-expansion redirection arg0 default cursor; do
+  ZSH_HIGHLIGHT_STYLES[$key]='fg=#cdd6f4'
+done
+ZSH_HIGHLIGHT_STYLES[history-expansion]='fg=#cba6f7'
+
+source "$ZSH_PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+fpath=("$ZSH_PLUGIN_DIR/zsh-completions/src" $fpath)
+
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+ZSH_AUTOSUGGEST_USE_ASYNC=true
+
+# ========================
+# FZF
+# ========================
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
+export FZF_DEFAULT_OPTS=$'
+  --height 40% --layout=reverse --border
+  --preview "bat --style=numbers --color=always {}"
+  --preview-window=right:50%
+'
+
+# ========================
+# Zoxide
+# ========================
+if ! command -v zoxide &>/dev/null; then
+  curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+  export PATH="$HOME/.local/bin:$PATH"
+fi
+eval "$(zoxide init zsh)"
+
+# ========================
+# Key Bindings
+# ========================
+bindkey -e
+bindkey '^[[A' history-search-backward
+bindkey '^[[B' history-search-forward
+bindkey '^[[1;5C' forward-word
+bindkey '^[[1;5D' backward-word
+
+# ========================
+# Functions
+# ========================
+mkcd() { mkdir -p "$1" && cd "$1" }
+
+extract() {
+  case "$1" in
+    *.tar.bz2) tar xjf "$1" ;;
+    *.tar.gz|*.tgz) tar xzf "$1" ;;
+    *.bz2) bunzip2 "$1" ;;
+    *.rar) unrar x "$1" ;;
+    *.gz) gunzip "$1" ;;
+    *.tar) tar xf "$1" ;;
+    *.tbz2) tar xjf "$1" ;;
+    *.zip) unzip "$1" ;;
+    *.Z) uncompress "$1" ;;
+    *.7z) 7z x "$1" ;;
+    *) echo "'$1' cannot be extracted" ;;
+  esac
+}
+
+# ========================
+# Starship (keep last)
+# ========================
+eval "$(starship init zsh)"
