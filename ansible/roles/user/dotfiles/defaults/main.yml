@@ -1,4 +1,4 @@
 ---
 dotfiles_repo: "https://github.com/charl/dotfiles.git"
-dotfiles_chezmoi_source: "{{ playbook_dir }}/../chezmoi"
+dotfiles_chezmoi_source: "{{ playbook_dir }}/../../chezmoi"
 chezmoi_bin: "{{ user_home }}/.local/bin/chezmoi"
