@@ -3,3 +3,4 @@ grub_timeout: 5
 grub_cmdline_linux_default: "quiet splash"
 grub_cmdline_linux: ""
 grub_gfxmode: "auto"
+grub_disk: /dev/sda

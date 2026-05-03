@@ -1,3 +1,5 @@
 ---
 konsave_profile_name: default
-konsave_profiles_dir: "{{ playbook_dir }}/../kde/konsave"
+konsave_profiles_dir: "{{ playbook_dir }}/../../kde/konsave"
+konsave_user_bin: "{{ user_home }}/.local/bin/konsave"
+konsave_system_bin: /usr/local/bin/konsave

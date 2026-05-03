@@ -1,2 +1,5 @@
 ---
 extra_packages: []
+
+hayase_api_url: https://api.hayase.watch/latest
+hayase_appimage_dest: /usr/local/bin/hayase

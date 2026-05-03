@@ -1,11 +1,29 @@
 ---
-- name: Install GRUB packages
+- name: Detect UEFI firmware
+  ansible.builtin.stat:
+    path: /sys/firmware/efi
+  register: efi_dir
+
+- name: Install GRUB packages (BIOS)
   ansible.builtin.package:
     name:
       - grub2-common
       - grub-pc
     state: present
-  when: ansible_facts['os_family'] == "Debian"
+  when:
+    - ansible_facts['os_family'] == "Debian"
+    - not efi_dir.stat.exists
+
+- name: Install GRUB packages (UEFI)
+  ansible.builtin.package:
+    name:
+      - grub2-common
+      - grub-efi-amd64
+      - efibootmgr
+    state: present
+  when:
+    - ansible_facts['os_family'] == "Debian"
+    - efi_dir.stat.exists
 
 - name: Deploy GRUB configuration
   ansible.builtin.template:
@@ -15,3 +33,19 @@
     group: root
     mode: "0644"
   notify: Update grub
+
+- name: Run grub-install (BIOS)
+  ansible.builtin.command:
+    cmd: grub-install {{ grub_disk }}
+  changed_when: false
+  when:
+    - ansible_facts['os_family'] == "Debian"
+    - not efi_dir.stat.exists
+
+- name: Run grub-install (UEFI)
+  ansible.builtin.command:
+    cmd: grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=debian
+    creates: /boot/efi/EFI/debian/grubx64.efi
+  when:
+    - ansible_facts['os_family'] == "Debian"
+    - efi_dir.stat.exists

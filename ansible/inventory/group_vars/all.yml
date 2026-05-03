@@ -3,3 +3,7 @@
 ansible_user: charl
 user_name: charl
 user_home: "/home/{{ user_name }}"
+
+flatpak_apps:
+  - com.discordapp.Discord
+  - com.brave.Browser

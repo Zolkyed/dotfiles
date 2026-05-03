@@ -1,8 +1,6 @@
 ---
-# Git identity configs are managed by chezmoi (dot_config/git/)
-# This role only ensures git is installed and the include files are linked.
-git_identities:
-  - src: "{{ user_home }}/.config/git/.gitconfig-github"
-    dest: "{{ user_home }}/.gitconfig-github"
-  - src: "{{ user_home }}/.config/git/.gitconfig-gitlab"
-    dest: "{{ user_home }}/.gitconfig-gitlab"
+# Git files are managed directly by chezmoi in the user's home.
+git_config_files:
+  - "{{ user_home }}/.gitconfig"
+  - "{{ user_home }}/.gitconfig-github"
+  - "{{ user_home }}/.gitconfig-gitlab"

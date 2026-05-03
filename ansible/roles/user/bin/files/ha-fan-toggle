@@ -1,0 +1,66 @@
+#!/usr/bin/env python3
+"""Toggle a Home Assistant switch entity via the REST API."""
+
+import os
+import sys
+import urllib.request
+import urllib.error
+import json
+
+
+def get_env(name: str) -> str:
+    value = os.environ.get(name)
+    if not value:
+        print(f"Error: {name} environment variable is not set", file=sys.stderr)
+        sys.exit(1)
+    return value
+
+
+def get_state(base_url: str, token: str, entity_id: str) -> str:
+    url = f"{base_url}/api/states/{entity_id}"
+    req = urllib.request.Request(url, headers={"Authorization": f"Bearer {token}"})
+    with urllib.request.urlopen(req) as resp:
+        data = json.loads(resp.read())
+    return data["state"]
+
+
+def call_service(base_url: str, token: str, domain: str, service: str, entity_id: str) -> None:
+    url = f"{base_url}/api/services/{domain}/{service}"
+    payload = json.dumps({"entity_id": entity_id}).encode()
+    req = urllib.request.Request(
+        url,
+        data=payload,
+        headers={
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
+    with urllib.request.urlopen(req):
+        pass
+
+
+def main() -> None:
+    ha_url = get_env("HA_URL").rstrip("/")
+    ha_token = get_env("HA_TOKEN")
+
+    entity_id = sys.argv[1] if len(sys.argv) > 1 else "switch.charles_fan"
+
+    try:
+        state = get_state(ha_url, ha_token, entity_id)
+    except urllib.error.URLError as e:
+        print(f"Error getting state: {e}", file=sys.stderr)
+        sys.exit(1)
+
+    service = "turn_off" if state == "on" else "turn_on"
+
+    try:
+        call_service(ha_url, ha_token, "switch", service, entity_id)
+        print(f"Toggled {entity_id}: {state} → {'off' if state == 'on' else 'on'}")
+    except urllib.error.URLError as e:
+        print(f"Error calling service: {e}", file=sys.stderr)
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

@@ -15,6 +15,3 @@ kvm_packages:
 virtualbox_packages:
   - virtualbox
   - virtualbox-ext-pack
-
-vm_users:
-  - "{{ user_name }}"

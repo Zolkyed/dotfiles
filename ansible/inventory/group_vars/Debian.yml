@@ -9,6 +9,7 @@ base_packages:
   - vim
   - htop
   - zsh
+  - wine
   - build-essential
   - software-properties-common
   - apt-transport-https

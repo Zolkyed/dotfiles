@@ -11,12 +11,37 @@
   become: false
   become_user: "{{ user_name }}"
 
+- name: Ensure pipx binaries are on user PATH
+  ansible.builtin.command:
+    cmd: pipx ensurepath
+  become: false
+  become_user: "{{ user_name }}"
+  changed_when: false
+
+- name: Check konsave binary exists in user bin
+  ansible.builtin.stat:
+    path: "{{ konsave_user_bin }}"
+  register: konsave_user_bin_stat
+
+- name: Fail if konsave binary was not installed
+  ansible.builtin.assert:
+    that:
+      - konsave_user_bin_stat.stat.exists
+    fail_msg: >-
+      konsave was not found at {{ konsave_user_bin }} after pipx installation.
+
+- name: Link konsave into system PATH
+  ansible.builtin.file:
+    src: "{{ konsave_user_bin }}"
+    dest: "{{ konsave_system_bin }}"
+    state: link
+    force: true
+
 - name: Import konsave profile
   ansible.builtin.command:
-    cmd: "konsave -i {{ konsave_profiles_dir }}/{{ konsave_profile_name }}.knsv"
+    cmd: "{{ konsave_system_bin }} -i {{ konsave_profiles_dir }}/{{ konsave_profile_name }}.knsv"
   become: false
   become_user: "{{ user_name }}"
   register: konsave_import
   failed_when: konsave_import.rc != 0
   changed_when: konsave_import.rc == 0
-  ignore_errors: true

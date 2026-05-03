@@ -1,21 +1,16 @@
 ---
-- name: Ensure user exists
+- name: Ensure zsh is installed
+  ansible.builtin.package:
+    name: zsh
+    state: present
+
+- name: Ensure user exists with correct shell and groups
   ansible.builtin.user:
     name: "{{ user_name }}"
     shell: "{{ user_shell }}"
     groups: "{{ user_groups }}"
     append: true
     state: present
-
-- name: Ensure zsh is installed
-  ansible.builtin.package:
-    name: zsh
-    state: present
-
-- name: Set zsh as default shell for user
-  ansible.builtin.user:
-    name: "{{ user_name }}"
-    shell: "{{ user_shell }}"
 
 - name: Ensure user home directory exists
   ansible.builtin.file:

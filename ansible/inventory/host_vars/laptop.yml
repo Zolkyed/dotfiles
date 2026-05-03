@@ -10,9 +10,6 @@ primary_monitor: eDP-1
 grub_timeout: 3
 grub_cmdline_linux_default: "quiet splash"
 
-# Power management
-power_profiles_daemon: true
-
 # Extra packages (merged with base_packages in system/packages)
 extra_packages:
   - mpv

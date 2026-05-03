@@ -18,20 +18,4 @@
     state: started
   when: vm_backend == "kvm"
 
-- name: Add users to libvirt and kvm groups
-  ansible.builtin.user:
-    name: "{{ item }}"
-    groups:
-      - libvirt
-      - kvm
-    append: true
-  loop: "{{ vm_users }}"
-  when: vm_backend == "kvm"
-
-- name: Add users to vboxusers group
-  ansible.builtin.user:
-    name: "{{ item }}"
-    groups: vboxusers
-    append: true
-  loop: "{{ vm_users }}"
-  when: vm_backend == "virtualbox"
+# group membership (libvirt, kvm, vboxusers) is handled by the user role

@@ -12,14 +12,21 @@
     group: root
     mode: "0755"
 
-- name: Download and install Nerd Fonts
-  ansible.builtin.shell:
-    cmd: >
-      curl -fsSL
-      "https://github.com/ryanoasis/nerd-fonts/releases/download/v{{ nerd_fonts_version }}/{{ item }}.tar.xz"
-      | tar -xJ -C "{{ nerd_fonts_install_dir }}"
-    creates: "{{ nerd_fonts_install_dir }}/{{ item }}"
+- name: Download Nerd Fonts archives
+  ansible.builtin.get_url:
+    url: "https://github.com/ryanoasis/nerd-fonts/releases/download/v{{ nerd_fonts_version }}/{{ item }}.tar.xz"
+    dest: "/tmp/{{ item }}.tar.xz"
+    mode: "0644"
   loop: "{{ nerd_fonts_install }}"
+  register: nerd_fonts_download
+
+- name: Extract Nerd Fonts
+  ansible.builtin.unarchive:
+    src: "/tmp/{{ item.item }}.tar.xz"
+    dest: "{{ nerd_fonts_install_dir }}"
+    remote_src: true
+  loop: "{{ nerd_fonts_download.results }}"
+  when: item.changed
 
 - name: Update font cache
   ansible.builtin.command:

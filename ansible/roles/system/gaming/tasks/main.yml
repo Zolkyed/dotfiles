@@ -23,9 +23,3 @@
   loop: "{{ gaming_flatpak_apps }}"
   when: gaming_flatpak_apps | length > 0
 
-- name: Add user to gamemode group
-  ansible.builtin.user:
-    name: "{{ user_name }}"
-    groups: gamemode
-    append: true
-  ignore_errors: true

@@ -4,39 +4,48 @@
   become: true
 
   pre_tasks:
+    - name: Check if sops is installed
+      ansible.builtin.command:
+        cmd: which sops
+      register: sops_check
+      changed_when: false
+      failed_when: false
+      become: false
+
     - name: Get latest sops release version
       ansible.builtin.uri:
         url: https://api.github.com/repos/getsops/sops/releases/latest
         return_content: true
       register: sops_release
       become: false
+      when: sops_check.rc != 0
 
     - name: Install sops from GitHub releases
       ansible.builtin.apt:
         deb: "https://github.com/getsops/sops/releases/download/{{ sops_release.json.tag_name }}/sops_{{ sops_release.json.tag_name | regex_replace('^v', '') }}_amd64.deb"
         state: present
+      when: sops_check.rc != 0
 
     - name: Load encrypted secrets
       community.sops.load_vars:
         file: "{{ playbook_dir }}/../../secrets/vault.yml"
-        name: vault
       become: false
       ignore_errors: true
 
   roles:
     - role: system/packages
-    - role: system/extra_repos
+    - role: user
     - role: system/fonts
     - role: system/flatpak
     - role: system/docker
     - role: system/nvidia
       when: machine_type == "desktop"
     - role: system/vm
-    - role: user
     - role: user/dotfiles
     - role: user/git
     - role: user/ssh_keys
     - role: user/dev
+    - role: user/bin
     - role: system/networking
     - role: system/ssh
     - role: system/bluetooth

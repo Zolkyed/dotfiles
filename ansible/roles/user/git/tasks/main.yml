@@ -4,14 +4,19 @@
     name: git
     state: present
 
-- name: Symlink identity include files to home
-  ansible.builtin.file:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    state: link
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
-    force: true
-  loop: "{{ git_identities }}"
+- name: Check git config source files exist
+  ansible.builtin.stat:
+    path: "{{ item }}"
+  loop: "{{ git_config_files }}"
+  register: git_config_stats
   become: false
   become_user: "{{ user_name }}"
+
+- name: Fail if git config source files are missing
+  ansible.builtin.assert:
+    that:
+      - item.stat.exists
+    fail_msg: >-
+      Missing git config file: {{ item.item }}.
+      Ensure user/dotfiles has applied chezmoi successfully before user/git runs.
+  loop: "{{ git_config_stats.results }}"
