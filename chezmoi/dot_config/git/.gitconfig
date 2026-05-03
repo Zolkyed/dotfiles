@@ -1,0 +1,137 @@
+[includeIf "hasconfig:remote.*.url:https://github.com/**"]
+    path = ~/.gitconfig-github
+[includeIf "hasconfig:remote.*.url:https://gitlab.info.uqam.ca/**"]
+    path = ~/.gitconfig-gitlab
+
+# ─── Core ────────────────────────────────────────────────────────────────────
+[core]
+    editor        = code --wait
+    autocrlf      = input
+    whitespace    = fix,space-before-tab,tab-in-indent,trailing-space
+    excludesfile  = ~/.gitignore_global
+
+# ─── User Experience ─────────────────────────────────────────────────────────
+[rerere]
+    enabled    = true
+    autoupdate = true
+
+[fetch]
+    autoUpdate = true
+    prune      = true
+
+[pull]
+    rebase = true
+
+[push]
+    default         = current
+    autoSetupRemote = true
+
+[branch]
+    sort = -committerdate
+
+[diff]
+    colorMoved = zebra
+    tool = delta
+    renames = copies
+
+[merge]
+    conflictstyle = zdiff3
+
+# ─── Colors (Mocha) ─────────────────────────────────────────────────────────
+[color]
+    ui     = auto
+    branch = auto
+    diff   = auto
+    status = auto
+
+[color "branch"]
+    current  = #cdd6f4 reverse       # active branch
+    local    = #89b4fa               # local branches
+    remote   = #f38ba8               # remote branches
+
+[color "diff"]
+    meta       = #cdd6f4 bold        # file header
+    frag       = #bac2de             # hunk header (@@ ... @@)
+    old        = #f38ba8             # removed lines
+    new        = #a6e3a1             # added lines
+    whitespace = #f38ba8 reverse     # bad whitespace
+
+[color "status"]
+    added     = #a6e3a1              # staged
+    changed   = #cdd6f4              # modified, unstaged
+    untracked = #f38ba8              # untracked
+    renamed   = #89b4fa              # renamed
+    deleted   = #f38ba8              # deleted
+
+[color "decorate"]
+    branch       = #89b4fa           # local branch
+    remoteBranch = #f38ba8           # remote branch
+    tag          = #cba6f7           # tag
+    stash        = #cdd6f4           # stash
+    HEAD         = #cdd6f4 bold      # current HEAD
+
+# ─── Git Delta (Catppuccin Mocha) ───────────────────────────────────────────
+[delta]
+    syntax-theme = Catppuccin Mocha
+    light = false
+    navigate = true
+    side-by-side = false
+
+# ─── Aliases ─────────────────────────────────────────────────────────────────
+[alias]
+    # ── Shortcuts ──────────────────────────────────────────────────────────
+    s    = status -sb
+    st   = status
+    a    = add
+    aa   = add -A
+    ap   = add -p
+    co   = checkout
+    cob  = checkout -b
+    sw   = switch
+    swc  = switch -c
+    br   = branch -vv
+    d    = diff
+    dc   = diff --cached
+    ds   = diff --stat
+
+    # ── Committing ─────────────────────────────────────────────────────────
+    cm     = commit -m
+    ca     = commit -a -m
+    amend  = commit --amend --no-edit
+    amendf = commit --amend
+    fixup  = commit --fixup
+
+    # ── Saving / Undoing ───────────────────────────────────────────────────
+    save    = !git add -A && git commit -m "chore: savepoint [wip]"
+    undo    = reset HEAD~1 --mixed
+    unstage = reset HEAD --
+    res     = !git reset --hard
+    wip     = !git add -A && git commit -m "WIP"
+    unwip   = !git log -1 --format='%s' | grep -q 'WIP' && git reset HEAD~1
+
+    # ── Pushing / Pulling ──────────────────────────────────────────────────
+    done    = !git push origin HEAD
+    pushnew = !git push --set-upstream origin $(git symbolic-ref --short HEAD)
+    pushf   = push --force-with-lease
+    pl      = pull --rebase --autostash
+
+    # ── Stashing ───────────────────────────────────────────────────────────
+    stash-all = stash save --include-untracked
+    pop       = stash pop
+    staa      = !git stash apply && git stash drop
+
+    # ── Logging ────────────────────────────────────────────────────────────
+    lg  = log --graph --pretty=format:'%C#f38ba8%h%Creset - %s %C#a6e3a1(%cr) %C#cdd6f4<%an>%Creset%C#cba6f7%d%Creset' --abbrev-commit
+    lga = log --graph --pretty=format:'%C#f38ba8%h%Creset - %s %C#a6e3a1(%cr) %C#cdd6f4<%an>%Creset%C#cba6f7%d%Creset' --abbrev-commit --all
+    ll  = log --pretty=format:'%C#f38ba8%h%Creset %s %C#a6e3a1(%cr)%Creset [%C#cdd6f4%an%Creset]' --abbrev-commit -20
+    last   = log -1 HEAD --stat
+    who    = shortlog -e -s -n
+
+    # ── Branches ───────────────────────────────────────────────────────────
+    recent  = branch --sort=-committerdate --format='%(HEAD) %(color:#89b4fa)%(refname:short)%(color:reset) - %(contents:subject) %(color:#f38ba8)(%(committerdate:relative))%(color:reset) [%(authorname)]'
+
+    # ── Misc ───────────────────────────────────────────────────────────────
+    aliases = !git config -l | grep alias | cut -c 7-
+    root    = rev-parse --show-toplevel
+    tags    = tag -l --sort=-version:refname
+    remotes = remote -v
