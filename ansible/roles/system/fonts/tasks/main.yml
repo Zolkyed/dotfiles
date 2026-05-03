@@ -1,0 +1,27 @@
+---
+- name: Install system font packages
+  ansible.builtin.package:
+    name: "{{ system_font_packages }}"
+    state: present
+
+- name: Create Nerd Fonts install directory
+  ansible.builtin.file:
+    path: "{{ nerd_fonts_install_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Download and install Nerd Fonts
+  ansible.builtin.shell:
+    cmd: >
+      curl -fsSL
+      "https://github.com/ryanoasis/nerd-fonts/releases/download/v{{ nerd_fonts_version }}/{{ item }}.tar.xz"
+      | tar -xJ -C "{{ nerd_fonts_install_dir }}"
+    creates: "{{ nerd_fonts_install_dir }}/{{ item }}"
+  loop: "{{ nerd_fonts_install }}"
+
+- name: Update font cache
+  ansible.builtin.command:
+    cmd: fc-cache -fv
+  changed_when: true

@@ -1,0 +1,9 @@
+---
+- name: Reboot required
+  ansible.builtin.debug:
+    msg: "NVIDIA driver installed — a reboot is required to activate it."
+
+- name: Update initramfs
+  ansible.builtin.command:
+    cmd: update-initramfs -u
+  changed_when: true

@@ -12,3 +12,9 @@ grub_cmdline_linux_default: "quiet splash"
 
 # Power management
 power_profiles_daemon: true
+
+# Extra packages (merged with base_packages in system/packages)
+extra_packages:
+  - mpv
+  - kitty
+  - fastfetch

@@ -1,0 +1,59 @@
+---
+# Install theme packages first so konsave can apply them
+- name: Install KDE theme packages
+  ansible.builtin.package:
+    name: "{{ kde_theme_packages }}"
+    state: present
+  when: kde_theme_packages | length > 0
+
+- name: Install kde-cli-tools
+  ansible.builtin.package:
+    name: kde-cli-tools
+    state: present
+
+# Apply settings via kwriteconfig6 (Plasma 6)
+- name: Set color scheme
+  ansible.builtin.command:
+    cmd: kwriteconfig6 --file kdeglobals --group General --key ColorScheme "{{ kde_color_scheme }}"
+  become: false
+  become_user: "{{ user_name }}"
+  changed_when: true
+
+- name: Set icon theme
+  ansible.builtin.command:
+    cmd: kwriteconfig6 --file kdeglobals --group Icons --key Theme "{{ kde_icon_theme }}"
+  become: false
+  become_user: "{{ user_name }}"
+  changed_when: true
+
+- name: Set cursor theme
+  ansible.builtin.command:
+    cmd: kwriteconfig6 --file kcminputrc --group Mouse --key cursorTheme "{{ kde_cursor_theme }}"
+  become: false
+  become_user: "{{ user_name }}"
+  changed_when: true
+
+- name: Set cursor size
+  ansible.builtin.command:
+    cmd: kwriteconfig6 --file kcminputrc --group Mouse --key cursorSize "{{ kde_cursor_size }}"
+  become: false
+  become_user: "{{ user_name }}"
+  changed_when: true
+
+- name: Set general font
+  ansible.builtin.command:
+    cmd: >
+      kwriteconfig6 --file kdeglobals --group General --key font
+      "{{ kde_font_family }},{{ kde_font_size }},-1,5,50,0,0,0,0,0"
+  become: false
+  become_user: "{{ user_name }}"
+  changed_when: true
+
+- name: Set fixed-width font
+  ansible.builtin.command:
+    cmd: >
+      kwriteconfig6 --file kdeglobals --group General --key fixed
+      "{{ kde_fixed_font_family }},{{ kde_fixed_font_size }},-1,5,50,0,0,0,0,0"
+  become: false
+  become_user: "{{ user_name }}"
+  changed_when: true

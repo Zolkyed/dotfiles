@@ -1,0 +1,15 @@
+---
+gaming_enabled: true
+
+gaming_packages:
+  - steam
+  - lutris
+  - gamemode
+  - mangohud
+  - libgamemode0
+  - libgamemodeauto0
+  - goverlay
+
+gaming_flatpak_apps:
+  - com.heroicgameslauncher.hgl
+  - net.davidotek.pupgui2

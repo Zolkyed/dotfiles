@@ -1,0 +1,49 @@
+---
+- name: Install ubuntu-drivers-common
+  ansible.builtin.package:
+    name: ubuntu-drivers-common
+    state: present
+
+- name: Auto-install recommended NVIDIA driver
+  ansible.builtin.command:
+    cmd: ubuntu-drivers install
+  changed_when: true
+  notify: Reboot required
+  when: nvidia_driver_package == "auto"
+
+- name: Install specific NVIDIA driver package
+  ansible.builtin.package:
+    name: "{{ nvidia_driver_package }}"
+    state: present
+  notify: Reboot required
+  when: nvidia_driver_package != "auto"
+
+- name: Install NVIDIA extra packages
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ nvidia_extra_packages }}"
+  ignore_errors: true
+
+- name: Blacklist nouveau driver
+  ansible.builtin.copy:
+    dest: /etc/modprobe.d/blacklist-nouveau.conf
+    content: |
+      blacklist nouveau
+      options nouveau modeset=0
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Update initramfs
+
+- name: Set NVIDIA performance mode via udev rule
+  ansible.builtin.copy:
+    dest: /etc/udev/rules.d/60-nvidia-power.rules
+    content: |
+      # Set NVIDIA PowerMizer to performance mode
+      ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x03[0-9]*", \
+        RUN+="/usr/bin/nvidia-smi --persistence-mode=1"
+    owner: root
+    group: root
+    mode: "0644"
+  when: nvidia_performance_level == 1

@@ -1,0 +1,19 @@
+---
+# System fonts
+system_font_packages:
+  - fonts-noto
+  - fonts-noto-cjk
+  - fonts-noto-color-emoji
+  - fonts-dejavu
+  - fonts-liberation
+  - fonts-freefont-ttf
+
+# Nerd Fonts (installed manually from GitHub releases)
+nerd_fonts_version: "3.4.0"
+nerd_fonts_install:
+  - JetBrainsMono
+  - Hack
+  - FiraCode
+  - NerdFontsSymbolsOnly
+
+nerd_fonts_install_dir: "/usr/local/share/fonts/nerd-fonts"

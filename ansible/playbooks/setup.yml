@@ -5,12 +5,23 @@
 
   roles:
     - role: system/packages
+    - role: system/fonts
     - role: system/flatpak
+    - role: system/docker
+    - role: system/nvidia
+      when: machine_type == "desktop"
+    - role: system/vm
     - role: user
     - role: user/dotfiles
+    - role: user/git
+    - role: user/ssh_keys
+    - role: user/dev
     - role: system/networking
     - role: system/bluetooth
     - role: system/bootloader
     - role: display_manager
     - role: desktop/kde
+    - role: desktop/kde/themes
+    - role: system/gaming
+      when: machine_type == "desktop"
     - role: konsave

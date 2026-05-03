@@ -1,0 +1,20 @@
+---
+# Actual KDE theme settings (from fastfetch)
+kde_color_scheme: DreamVioletDarkColor
+kde_icon_theme: Tela-black
+kde_cursor_theme: breeze
+kde_cursor_size: 24
+kde_font_family: "Noto Sans"
+kde_font_size: 10
+kde_fixed_font_family: "DejaVu Sans Mono"
+kde_fixed_font_size: 11
+
+# Packages available via apt
+kde_theme_packages:
+  - tela-icon-theme       # Tela-black icons
+  - breeze-cursor-theme
+
+# Themes installed via KDE package tool (from .themerc files or store)
+# Dream-Color-Dark-Aurorae-6 and DreamVioletDarkColor are from KDE store
+# — these are restored by konsave automatically from the saved profile
+kde_store_themes: []

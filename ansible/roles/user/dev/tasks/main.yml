@@ -1,0 +1,28 @@
+---
+- name: Install dev packages
+  ansible.builtin.package:
+    name: "{{ dev_packages }}"
+    state: present
+
+- name: Install dev CLI tools
+  ansible.builtin.package:
+    name: "{{ dev_cli_tools }}"
+    state: present
+  ignore_errors: true
+
+- name: Install rustup (Rust toolchain manager)
+  ansible.builtin.shell:
+    cmd: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+    creates: "{{ user_home }}/.cargo/bin/rustup"
+  become: false
+  become_user: "{{ user_name }}"
+  when: install_rust
+
+- name: Install nvm (Node version manager)
+  ansible.builtin.shell:
+    cmd: >
+      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v{{ nvm_version }}/install.sh | bash
+    creates: "{{ user_home }}/.nvm/nvm.sh"
+  become: false
+  become_user: "{{ user_name }}"
+  when: install_nvm

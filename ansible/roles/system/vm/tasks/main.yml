@@ -1,0 +1,37 @@
+---
+- name: Install KVM packages
+  ansible.builtin.package:
+    name: "{{ kvm_packages }}"
+    state: present
+  when: vm_backend == "kvm"
+
+- name: Install VirtualBox packages
+  ansible.builtin.package:
+    name: "{{ virtualbox_packages }}"
+    state: present
+  when: vm_backend == "virtualbox"
+
+- name: Enable and start libvirtd
+  ansible.builtin.systemd:
+    name: libvirtd
+    enabled: true
+    state: started
+  when: vm_backend == "kvm"
+
+- name: Add users to libvirt and kvm groups
+  ansible.builtin.user:
+    name: "{{ item }}"
+    groups:
+      - libvirt
+      - kvm
+    append: true
+  loop: "{{ vm_users }}"
+  when: vm_backend == "kvm"
+
+- name: Add users to vboxusers group
+  ansible.builtin.user:
+    name: "{{ item }}"
+    groups: vboxusers
+    append: true
+  loop: "{{ vm_users }}"
+  when: vm_backend == "virtualbox"

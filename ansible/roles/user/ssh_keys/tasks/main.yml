@@ -1,0 +1,37 @@
+---
+- name: Ensure .ssh directory exists
+  ansible.builtin.file:
+    path: "{{ user_home }}/.ssh"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0700"
+
+- name: Deploy SSH private keys
+  ansible.builtin.copy:
+    content: "{{ item.private_key }}"
+    dest: "{{ user_home }}/.ssh/{{ item.name }}"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0600"
+  loop: "{{ ssh_keys }}"
+  when: ssh_keys | length > 0
+  no_log: true
+
+- name: Deploy SSH public keys
+  ansible.builtin.copy:
+    content: "{{ item.public_key }}"
+    dest: "{{ user_home }}/.ssh/{{ item.name }}.pub"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0644"
+  loop: "{{ ssh_keys }}"
+  when: ssh_keys | length > 0
+
+- name: Set authorized keys
+  ansible.posix.authorized_key:
+    user: "{{ user_name }}"
+    key: "{{ item }}"
+    state: present
+  loop: "{{ ssh_authorized_keys }}"
+  when: ssh_authorized_keys | length > 0

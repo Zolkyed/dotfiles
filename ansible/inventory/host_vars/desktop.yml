@@ -9,3 +9,9 @@ primary_monitor: DP-1
 # Bootloader
 grub_timeout: 5
 grub_cmdline_linux_default: "quiet splash"
+
+# Extra packages (merged with base_packages in system/packages)
+extra_packages:
+  - mpv
+  - kitty
+  - fastfetch
