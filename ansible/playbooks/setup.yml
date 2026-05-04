@@ -21,7 +21,6 @@
       when: machine_type == "desktop"
     - role: system/vm
     - role: home/dotfiles
-    - role: home/git
     - role: home/ssh_keys
     - role: home/dev
     - role: home/bin

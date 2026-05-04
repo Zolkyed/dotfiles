@@ -1,6 +1,0 @@
----
-# Git files are managed directly by chezmoi in the user's home.
-git_config_files:
-  - "{{ user_home }}/.gitconfig"
-  - "{{ user_home }}/.gitconfig-github"
-  - "{{ user_home }}/.gitconfig-gitlab"

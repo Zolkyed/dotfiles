@@ -56,7 +56,6 @@ ansible-playbook playbooks/setup.yml --check --diff -l desktop
 |---|---|
 | (main) | User account, shell, groups |
 | dotfiles | chezmoi install + `apply --force` |
-| git | Verify git config deployed by chezmoi |
 | ssh_keys | Deploy keys from SOPS vault |
 | dev | Dev tools, nvm, rustup |
 | bin | Custom scripts → `~/.local/bin` |
