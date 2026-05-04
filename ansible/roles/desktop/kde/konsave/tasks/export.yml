@@ -1,0 +1,55 @@
+# tasks/export.yml
+---
+- name: Export KDE profile to Google Drive
+  tags: [konsave-export, never]
+  become: true
+  become_user: "{{ user_name }}"
+  block:
+    - name: Confirm export will overwrite remote profile
+      ansible.builtin.pause:
+        prompt: >-
+          WARNING: This will overwrite
+          {{ konsave_rclone_remote }}:{{ konsave_gdrive_path }}/{{ konsave_profile_file }}
+          with the current KDE state on {{ inventory_hostname }}.
+          Only proceed from a fully configured machine.
+          Type 'yes' to continue
+      register: export_confirm
+      failed_when: export_confirm.user_input | lower != 'yes'
+
+    - name: Ensure export directory exists
+      ansible.builtin.file:
+        path: "{{ konsave_export_dir }}"
+        state: directory
+        mode: "0700"
+
+    - name: Save current KDE state into konsave profile
+      ansible.builtin.command:
+        argv: [konsave, -s, "{{ konsave_profile_name }}"]
+      changed_when: true
+
+    - name: Export konsave profile to archive
+      ansible.builtin.command:
+        argv:
+          - konsave
+          - -e
+          - "{{ konsave_profile_name }}"
+          - -d
+          - "{{ konsave_export_dir }}"
+      changed_when: true
+
+    - name: Upload konsave profile to Google Drive
+      ansible.builtin.command:
+        argv:
+          - rclone
+          - copy
+          - -vv
+          - --progress
+          - "{{ konsave_export_dir }}/{{ konsave_profile_file }}"
+          - "{{ konsave_rclone_remote }}:{{ konsave_gdrive_path }}/"
+      changed_when: true
+
+  always:
+    - name: Remove konsave export directory
+      ansible.builtin.file:
+        path: "{{ konsave_export_dir }}"
+        state: absent

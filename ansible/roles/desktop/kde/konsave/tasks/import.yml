@@ -1,0 +1,82 @@
+# tasks/import.yml
+---
+- name: Check if konsave profile has already been applied
+  tags: [konsave-import]
+  ansible.builtin.stat:
+    path: "{{ konsave_stamp_file }}"
+  register: konsave_stamp
+  become: true
+  become_user: "{{ user_name }}"
+
+- name: Restore KDE profile from Google Drive
+  tags: [konsave-import, never]
+  when: not konsave_stamp.stat.exists
+  become: true
+  become_user: "{{ user_name }}"
+  block:
+    - name: Ensure konsave download directory exists
+      ansible.builtin.file:
+        path: "{{ konsave_download_dir }}"
+        state: directory
+        mode: "0700"
+
+    - name: Ensure stamp file parent directory exists
+      ansible.builtin.file:
+        path: "{{ konsave_stamp_file | dirname }}"
+        state: directory
+        mode: "0755"
+
+    - name: Download konsave profile from Google Drive
+      ansible.builtin.command:
+        argv:
+          - rclone
+          - copy
+          - --checksum          # only transfers if checksum differs
+          - --progress
+          - "{{ konsave_rclone_remote }}:{{ konsave_gdrive_path }}/{{ konsave_profile_file }}"
+          - "{{ konsave_download_dir }}/"
+      register: rclone_copy
+      changed_when: rclone_copy.rc == 0
+
+    - name: Check if profile name already imported into konsave
+      ansible.builtin.command:
+        argv: [konsave, -l]
+      register: konsave_profiles
+      changed_when: false
+      failed_when: false
+
+    - name: Import konsave profile
+      ansible.builtin.command:
+        argv:
+          - konsave
+          - -i
+          - "{{ konsave_download_dir }}/{{ konsave_profile_file }}"
+          - -f
+      changed_when: true
+      when: konsave_profile_name not in konsave_profiles.stdout
+
+    - name: Apply konsave profile
+      ansible.builtin.command:
+        argv:
+          - konsave
+          - -a
+          - "{{ konsave_profile_name }}"
+      changed_when: true
+
+    - name: Notify user to log out and back in
+      ansible.builtin.debug:
+        msg: "Konsave profile applied. Log out and back in to see all changes."
+
+    - name: Mark konsave profile as applied
+      ansible.builtin.file:
+        path: "{{ konsave_stamp_file }}"
+        state: touch
+        mode: "0600"
+
+  always:
+    - name: Remove konsave download directory
+      ansible.builtin.file:
+        path: "{{ konsave_download_dir }}"
+        state: absent
+      become: true
+      become_user: "{{ user_name }}"

@@ -61,7 +61,7 @@
     - role: desktop/kde/rclone
       tags: rclone
     - role: desktop/kde/konsave
-      tags: konsave
+      tags: [konsave-import, konsave-export]
     - role: desktop/kde/keybinds
       tags: keybinds
     - role: home/gaming
