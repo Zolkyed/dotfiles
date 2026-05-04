@@ -1,7 +1,7 @@
 ---
 - name: Install font packages
   ansible.builtin.package:
-    name: "{{ fonts.packages }}"
+    name: "{{ fonts_packages }}"
     state: present
 
 - name: Create Nerd Fonts install directory
@@ -14,10 +14,10 @@
 
 - name: Download Nerd Fonts archives
   ansible.builtin.get_url:
-    url: "https://github.com/ryanoasis/nerd-fonts/releases/download/v{{ fonts.nerd.version }}/{{ item }}.tar.xz"
+    url: "https://github.com/ryanoasis/nerd-fonts/releases/download/v{{ fonts_nerd.version }}/{{ item }}.tar.xz"
     dest: "/tmp/{{ item }}.tar.xz"
     mode: "0644"
-  loop: "{{ fonts.nerd.families }}"
+  loop: "{{ fonts_nerd.families }}"
   register: nerd_fonts_download
 
 - name: Extract Nerd Fonts

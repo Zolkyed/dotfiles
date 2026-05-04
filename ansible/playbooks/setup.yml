@@ -30,7 +30,7 @@
     - role: system/flatpak
     - role: system/docker
     - role: system/nvidia
-      when: machine_type == "desktop"
+      when: inventory_hostname == "desktop"
     - role: system/vm
     - role: home/dotfiles
     - role: home/ssh_keys
@@ -45,4 +45,4 @@
     - role: desktop/kde/konsave
     - role: desktop/kde/keybinds
     - role: home/gaming
-      when: machine_type == "desktop"
+      when: inventory_hostname == "desktop"

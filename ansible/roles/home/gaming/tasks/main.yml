@@ -12,7 +12,7 @@
 
 - name: Install gaming packages
   ansible.builtin.package:
-    name: "{{ gaming.packages }}"
+    name: "{{ gaming_packages }}"
     state: present
 
 - name: Install gaming Flatpak apps
@@ -20,6 +20,6 @@
     name: "{{ item }}"
     state: present
     remote: flathub
-  loop: "{{ gaming.flatpaks }}"
-  when: gaming.flatpaks | length > 0
+  loop: "{{ gaming_flatpaks }}"
+  when: gaming_flatpaks | length > 0
 

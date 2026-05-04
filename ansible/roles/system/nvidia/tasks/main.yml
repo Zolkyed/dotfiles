@@ -36,7 +36,7 @@
   ansible.builtin.package:
     name: "{{ item }}"
     state: present
-  loop: "{{ nvidia.packages }}"
+  loop: "{{ nvidia_packages }}"
   ignore_errors: true
 
 - name: Blacklist nouveau driver

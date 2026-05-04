@@ -1,7 +1,7 @@
 ---
 - name: Install networking packages
   ansible.builtin.package:
-    name: "{{ networking.packages }}"
+    name: "{{ networking_packages }}"
     state: present
 
 - name: Deploy systemd-resolved configuration

@@ -6,13 +6,13 @@
 
 - name: Install GRUB packages (BIOS)
   ansible.builtin.package:
-    name: "{{ bootloader.grub.packages_bios }}"
+    name: "{{ grub_packages_bios }}"
     state: present
   when: not efi_dir.stat.exists
 
 - name: Install GRUB packages (UEFI)
   ansible.builtin.package:
-    name: "{{ bootloader.grub.packages_uefi }}"
+    name: "{{ grub_packages_uefi }}"
     state: present
   when: efi_dir.stat.exists
 
@@ -33,6 +33,6 @@
 
 - name: Run grub-install (UEFI)
   ansible.builtin.command:
-    cmd: grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id={{ bootloader.grub.bootloader_id }}
-    creates: /boot/efi/EFI/{{ bootloader.grub.bootloader_id }}/grubx64.efi
+    cmd: grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id={{ grub_bootloader_id }}
+    creates: /boot/efi/EFI/{{ grub_bootloader_id }}/grubx64.efi
   when: efi_dir.stat.exists

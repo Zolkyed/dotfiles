@@ -1,13 +1,13 @@
 ---
 - name: Install KVM packages
   ansible.builtin.package:
-    name: "{{ virtualization.kvm.packages }}"
+    name: "{{ virtualization_kvm_packages }}"
     state: present
   when: vm_backend == "kvm"
 
 - name: Install VirtualBox packages
   ansible.builtin.package:
-    name: "{{ virtualization.virtualbox.packages }}"
+    name: "{{ virtualization_virtualbox_packages }}"
     state: present
   when: vm_backend == "virtualbox"
 
@@ -18,4 +18,3 @@
     state: started
   when: vm_backend == "kvm"
 
-# group membership (libvirt, kvm, vboxusers) is handled by the user role

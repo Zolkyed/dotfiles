@@ -14,17 +14,17 @@
       ansible.builtin.deb822_repository:
         name: docker
         types: deb
-        uris: "https://download.docker.com/linux/{{ ansible_distribution | lower }}"
-        suites: "{{ ansible_distribution_release }}"
+        uris: "https://download.docker.com/linux/{{ ansible_facts['distribution'] | lower }}"
+        suites: "{{ ansible_facts['distribution_release'] }}"
         components: stable
-        architectures: "{{ ansible_architecture | replace('x86_64', 'amd64') }}"
-        signed_by: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
+        architectures: "{{ ansible_facts['architecture'] | replace('x86_64', 'amd64') }}"
+        signed_by: "https://download.docker.com/linux/{{ ansible_facts['distribution'] | lower }}/gpg"
         state: present
       notify: Restart docker
 
 - name: Install Docker packages
   ansible.builtin.package:
-    name: "{{ docker.packages }}"
+    name: "{{ docker_packages }}"
     state: present
   notify: Restart docker
 

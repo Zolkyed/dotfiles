@@ -1,9 +1,4 @@
 ---
-# Laptop-specific variables
-machine_type: laptop
-
-# Display
-primary_monitor: eDP-1
 
 # Bootloader
 grub_timeout: 3

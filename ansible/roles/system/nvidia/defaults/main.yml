@@ -1,6 +1,5 @@
 ---
-nvidia:
-  packages: []
+nvidia_packages: []
 
 # Use 'auto' to let ubuntu-drivers pick the recommended driver
 # Or pin to a specific version e.g. 'nvidia-driver-580'

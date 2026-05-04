@@ -1,8 +1,8 @@
 ---
-fonts:
-  packages: []
-  nerd:
-    version: "3.4.0"
-    families: []
+fonts_packages: []
+
+fonts_nerd:
+  version: "3.4.0"
+  families: []
 
 nerd_fonts_install_dir: "/usr/local/share/fonts/nerd-fonts"

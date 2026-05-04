@@ -4,22 +4,19 @@ user_name: charl
 user_home: "/home/{{ user_name }}"
 
 # Flatpaks are distro-agnostic
-base:
-  flatpaks:
-    - com.discordapp.Discord
-    - com.brave.Browser
+base_flatpaks:
+  - com.discordapp.Discord
+  - com.brave.Browser
 
-gaming:
-  flatpaks:
-    - com.heroicgameslauncher.hgl
-    - net.davidotek.pupgui2
+gaming_flatpaks:
+  - com.heroicgameslauncher.hgl
+  - net.davidotek.pupgui2
 
 # Nerd fonts config is distro-agnostic (downloaded from GitHub)
-fonts:
-  nerd:
-    version: "3.4.0"
-    families:
-      - JetBrainsMono
-      - Hack
-      - FiraCode
-      - NerdFontsSymbolsOnly
+fonts_nerd:
+  version: "3.4.0"
+  families:
+    - JetBrainsMono
+    - Hack
+    - FiraCode
+    - NerdFontsSymbolsOnly

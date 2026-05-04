@@ -3,5 +3,4 @@ flatpak_remotes:
   - name: flathub
     url: https://dl.flathub.org/repo/flathub.flatpakrepo
 
-base:
-  flatpaks: []
+base_flatpaks: []
