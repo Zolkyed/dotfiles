@@ -37,11 +37,20 @@
     state: link
     force: true
 
+- name: Find latest konsave archive for profile
+  ansible.builtin.shell:
+    cmd: "ls -t {{ konsave_profiles_dir }}/{{ konsave_profile_name }}*.knsv 2>/dev/null | head -1"
+  register: konsave_archive
+  changed_when: false
+  failed_when: false
+  become: false
+
 - name: Import konsave profile
   ansible.builtin.command:
-    cmd: "{{ konsave_system_bin }} -i {{ konsave_profiles_dir }}/{{ konsave_profile_name }}.knsv"
+    cmd: "{{ konsave_system_bin }} -i {{ konsave_archive.stdout }}"
   become: false
   become_user: "{{ user_name }}"
   register: konsave_import
   failed_when: konsave_import.rc != 0
-  changed_when: konsave_import.rc == 0
+  changed_when: true
+  when: konsave_archive.stdout | length > 0
