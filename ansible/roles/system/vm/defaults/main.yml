@@ -1,8 +1,8 @@
 ---
 vm_backend: kvm   # kvm or virtualbox
 
-# KVM packages
-kvm_packages: []
-
-# VirtualBox packages
-virtualbox_packages: []
+virtualization:
+  kvm:
+    packages: []
+  virtualbox:
+    packages: []

@@ -1,15 +1,29 @@
 ---
-- name: Install ubuntu-drivers-common
+- name: Install ubuntu-drivers-common (Debian)
   ansible.builtin.package:
     name: ubuntu-drivers-common
     state: present
+  when:
+    - ansible_facts['os_family'] == "Debian"
+    - nvidia_driver_package == "auto"
 
-- name: Auto-install recommended NVIDIA driver
+- name: Auto-install recommended NVIDIA driver (Debian)
   ansible.builtin.command:
     cmd: ubuntu-drivers install
   changed_when: true
   notify: Reboot required
-  when: nvidia_driver_package == "auto"
+  when:
+    - ansible_facts['os_family'] == "Debian"
+    - nvidia_driver_package == "auto"
+
+- name: Auto-install NVIDIA driver (Arch)
+  ansible.builtin.package:
+    name: nvidia
+    state: present
+  notify: Reboot required
+  when:
+    - ansible_facts['os_family'] == "Archlinux"
+    - nvidia_driver_package == "auto"
 
 - name: Install specific NVIDIA driver package
   ansible.builtin.package:
@@ -22,7 +36,7 @@
   ansible.builtin.package:
     name: "{{ item }}"
     state: present
-  loop: "{{ nvidia_packages }}"
+  loop: "{{ nvidia.packages }}"
   ignore_errors: true
 
 - name: Blacklist nouveau driver

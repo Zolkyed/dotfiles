@@ -1,13 +1,13 @@
 ---
 - name: Install KVM packages
   ansible.builtin.package:
-    name: "{{ kvm_packages }}"
+    name: "{{ virtualization.kvm.packages }}"
     state: present
   when: vm_backend == "kvm"
 
 - name: Install VirtualBox packages
   ansible.builtin.package:
-    name: "{{ virtualbox_packages }}"
+    name: "{{ virtualization.virtualbox.packages }}"
     state: present
   when: vm_backend == "virtualbox"
 

@@ -5,6 +5,9 @@
   gather_facts: true
 
   pre_tasks:
+    - name: Load OS-specific variables
+      ansible.builtin.include_vars: "{{ playbook_dir }}/../vars/{{ distro | default(ansible_os_family) }}.yml"
+
     - name: Load encrypted secrets
       community.sops.load_vars:
         file: "{{ playbook_dir }}/../../secrets/vault.yml"
@@ -12,7 +15,8 @@
       ignore_errors: true
 
   roles:
-    - role: system/packages
+    - role: home/packages
+    - role: home/hayase
     - role: home/user
     - role: system/fonts
     - role: system/flatpak
@@ -31,5 +35,5 @@
     - role: system/display_manager
     - role: desktop/kde
     - role: desktop/konsave
-    - role: system/gaming
+    - role: home/gaming
       when: machine_type == "desktop"

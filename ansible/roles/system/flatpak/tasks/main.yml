@@ -16,5 +16,5 @@
     name: "{{ item }}"
     state: present
     remote: flathub
-  loop: "{{ base_flatpaks }}"
-  when: base_flatpaks | length > 0
+  loop: "{{ base.flatpaks }}"
+  when: base.flatpaks | length > 0

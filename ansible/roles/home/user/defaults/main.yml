@@ -1,11 +1,3 @@
 ---
 user_shell: /usr/bin/zsh
-user_groups:
-  - sudo
-  - audio
-  - video
-  - plugdev
-  - netdev
-  - docker
-  - libvirt
-  - kvm
+user_groups: []

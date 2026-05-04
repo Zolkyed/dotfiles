@@ -1,0 +1,99 @@
+---
+base:
+  packages:
+    - curl
+    - wget
+    - vim
+    - htop
+    - zsh
+    - unzip
+    - rsync
+    - mpv
+    - kitty
+    - fastfetch
+
+gaming:
+  packages:
+    - steam
+    - lutris
+    - gamemode
+    - mangohud
+    - goverlay
+    - wine
+
+dev:
+  packages:
+    - git
+    - base-devel
+    - python
+    - python-pip
+    - pipx
+    - jq
+    - yq
+    - httpie
+    - shellcheck
+    - python-pre-commit
+
+fonts:
+  packages:
+    - noto-fonts
+    - noto-fonts-cjk
+    - noto-fonts-emoji
+    - ttf-dejavu
+    - ttf-liberation
+    - gnu-free-fonts
+
+nvidia:
+  packages:
+    - nvidia-settings
+    - vulkan-icd-loader
+    - vulkan-tools
+
+virtualization:
+  kvm:
+    packages:
+      - qemu-full
+      - libvirt
+      - virt-install
+      - virt-manager
+      - bridge-utils
+      - edk2-ovmf
+  virtualbox:
+    packages:
+      - virtualbox
+      - virtualbox-host-modules-arch
+
+bluetooth:
+  packages:
+    - bluez
+    - bluez-utils
+
+docker:
+  packages:
+    - docker
+    - docker-compose
+
+networking:
+  packages:
+    - networkmanager
+
+ssh:
+  package: openssh
+  service: sshd
+
+bootloader:
+  grub:
+    packages_bios:
+      - grub
+    packages_uefi:
+      - grub
+      - efibootmgr
+    bootloader_id: GRUB
+
+user_groups:
+  - wheel
+  - audio
+  - video
+  - docker
+  - libvirt
+  - kvm

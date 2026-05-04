@@ -1,10 +1,10 @@
 ---
-# Desktop-specific variables
-machine_type: desktop
+# Laptop-specific variables
+machine_type: laptop
 
 # Display
-primary_monitor: DP-1
+primary_monitor: eDP-1
 
 # Bootloader
-grub_timeout: 5
+grub_timeout: 3
 grub_cmdline_linux_default: "quiet splash"

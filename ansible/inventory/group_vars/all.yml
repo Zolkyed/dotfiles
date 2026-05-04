@@ -1,60 +1,21 @@
 ---
-# Global variables shared across all hosts
-ansible_user: charl
+# Target user — ansible_user should be set in inventory if it differs from user_name
 user_name: charl
 user_home: "/home/{{ user_name }}"
-desktop_environment: kde
 
-# Base system packages
-base_packages:
-  - mpv
-  - kitty
-  - fastfetch
+# Flatpaks are distro-agnostic
+base:
+  flatpaks:
+    - com.discordapp.Discord
+    - com.brave.Browser
 
-# Flatpak apps
-base_flatpaks:
-  - com.discordapp.Discord
-  - com.brave.Browser
+gaming:
+  flatpaks:
+    - com.heroicgameslauncher.hgl
+    - net.davidotek.pupgui2
 
-# Gaming packages
-gaming_packages:
-  - steam
-  - lutris
-  - gamemode
-  - mangohud
-  - libgamemode0
-  - libgamemodeauto0
-  - goverlay
-
-gaming_flatpaks:
-  - com.heroicgameslauncher.hgl
-  - net.davidotek.pupgui2
-
-# Development packages
-dev_packages:
-  - git
-  - make
-  - gcc
-  - pkg-config
-  - python3
-  - python3-pip
-  - python3-venv
-  - pipx
-  - jq
-  - yq
-  - httpie
-  - shellcheck
-  - pre-commit
-
-# Fonts
+# Nerd fonts config is distro-agnostic (downloaded from GitHub)
 fonts:
-  packages:
-    - fonts-noto
-    - fonts-noto-cjk
-    - fonts-noto-color-emoji
-    - fonts-dejavu
-    - fonts-liberation
-    - fonts-freefont-ttf
   nerd:
     version: "3.4.0"
     families:
@@ -62,25 +23,3 @@ fonts:
       - Hack
       - FiraCode
       - NerdFontsSymbolsOnly
-
-# Nvidia packages
-nvidia_packages:
-  - nvidia-settings
-  - libvulkan1
-  - vulkan-tools
-  - mesa-vdpau-drivers
-
-# Virtualisation packages
-kvm_packages:
-  - qemu-system-x86
-  - libvirt-daemon-system
-  - libvirt-clients
-  - virtinst
-  - virt-manager
-  - bridge-utils
-  - ovmf
-
-virtualbox_packages:
-  - virtualbox
-  - virtualbox-ext-pack
-

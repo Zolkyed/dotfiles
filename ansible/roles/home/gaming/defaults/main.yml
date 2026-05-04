@@ -1,0 +1,6 @@
+---
+gaming_enabled: true
+
+gaming:
+  packages: []
+  flatpaks: []

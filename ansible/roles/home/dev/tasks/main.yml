@@ -1,7 +1,7 @@
 ---
 - name: Install dev packages
   ansible.builtin.package:
-    name: "{{ dev_packages }}"
+    name: "{{ dev.packages }}"
     state: present
 
 - name: Install rustup (Rust toolchain manager)

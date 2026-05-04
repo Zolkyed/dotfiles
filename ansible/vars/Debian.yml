@@ -1,0 +1,118 @@
+---
+base:
+  packages:
+    - curl
+    - wget
+    - vim
+    - htop
+    - zsh
+    - unzip
+    - rsync
+    - mpv
+    - kitty
+    - fastfetch
+    - software-properties-common
+    - apt-transport-https
+    - ca-certificates
+    - gnupg
+
+gaming:
+  packages:
+    - steam
+    - lutris
+    - gamemode
+    - mangohud
+    - libgamemode0
+    - libgamemodeauto0
+    - goverlay
+    - wine
+
+dev:
+  packages:
+    - git
+    - build-essential
+    - pkg-config
+    - python3
+    - python3-pip
+    - python3-venv
+    - pipx
+    - jq
+    - yq
+    - httpie
+    - shellcheck
+    - pre-commit
+
+fonts:
+  packages:
+    - fonts-noto
+    - fonts-noto-cjk
+    - fonts-noto-color-emoji
+    - fonts-dejavu
+    - fonts-liberation
+    - fonts-freefont-ttf
+
+nvidia:
+  packages:
+    - nvidia-settings
+    - libvulkan1
+    - vulkan-tools
+    - mesa-vdpau-drivers
+
+virtualization:
+  kvm:
+    packages:
+      - qemu-system-x86
+      - libvirt-daemon-system
+      - libvirt-clients
+      - virtinst
+      - virt-manager
+      - bridge-utils
+      - ovmf
+  virtualbox:
+    packages:
+      - virtualbox
+      - virtualbox-ext-pack
+
+bluetooth:
+  packages:
+    - bluez
+    - bluetooth
+    - bluez-tools
+
+docker:
+  packages:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+    - docker-buildx-plugin
+    - docker-compose-plugin
+
+networking:
+  packages:
+    - network-manager
+    - systemd-resolved
+
+ssh:
+  package: openssh-server
+  service: ssh
+
+bootloader:
+  grub:
+    packages_bios:
+      - grub2-common
+      - grub-pc
+    packages_uefi:
+      - grub2-common
+      - grub-efi-amd64
+      - efibootmgr
+    bootloader_id: debian
+
+user_groups:
+  - sudo
+  - audio
+  - video
+  - plugdev
+  - netdev
+  - docker
+  - libvirt
+  - kvm

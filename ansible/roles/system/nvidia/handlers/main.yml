@@ -5,5 +5,5 @@
 
 - name: Update initramfs
   ansible.builtin.command:
-    cmd: update-initramfs -u
+    cmd: "{{ 'update-initramfs -u' if ansible_os_family == 'Debian' else 'mkinitcpio -P' }}"
   changed_when: true

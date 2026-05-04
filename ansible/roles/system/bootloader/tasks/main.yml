@@ -6,24 +6,15 @@
 
 - name: Install GRUB packages (BIOS)
   ansible.builtin.package:
-    name:
-      - grub2-common
-      - grub-pc
+    name: "{{ bootloader.grub.packages_bios }}"
     state: present
-  when:
-    - ansible_facts['os_family'] == "Debian"
-    - not efi_dir.stat.exists
+  when: not efi_dir.stat.exists
 
 - name: Install GRUB packages (UEFI)
   ansible.builtin.package:
-    name:
-      - grub2-common
-      - grub-efi-amd64
-      - efibootmgr
+    name: "{{ bootloader.grub.packages_uefi }}"
     state: present
-  when:
-    - ansible_facts['os_family'] == "Debian"
-    - efi_dir.stat.exists
+  when: efi_dir.stat.exists
 
 - name: Deploy GRUB configuration
   ansible.builtin.template:
@@ -38,14 +29,10 @@
   ansible.builtin.command:
     cmd: grub-install {{ grub_disk }}
   changed_when: false
-  when:
-    - ansible_facts['os_family'] == "Debian"
-    - not efi_dir.stat.exists
+  when: not efi_dir.stat.exists
 
 - name: Run grub-install (UEFI)
   ansible.builtin.command:
-    cmd: grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=debian
-    creates: /boot/efi/EFI/debian/grubx64.efi
-  when:
-    - ansible_facts['os_family'] == "Debian"
-    - efi_dir.stat.exists
+    cmd: grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id={{ bootloader.grub.bootloader_id }}
+    creates: /boot/efi/EFI/{{ bootloader.grub.bootloader_id }}/grubx64.efi
+  when: efi_dir.stat.exists

@@ -1,7 +1,7 @@
 ---
-- name: Install openssh-server
+- name: Install openssh
   ansible.builtin.package:
-    name: openssh-server
+    name: "{{ ssh.package }}"
     state: present
 
 - name: Harden sshd configuration

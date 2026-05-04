@@ -1,6 +1,6 @@
 ---
-# Languages / runtimes
-dev_packages: []
+dev:
+  packages: []
 
 # Node version manager
 install_nvm: true
