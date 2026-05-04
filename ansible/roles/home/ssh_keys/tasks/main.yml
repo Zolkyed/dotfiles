@@ -27,6 +27,7 @@
     mode: "0644"
   loop: "{{ ssh_keys }}"
   when: item.public_key != ''
+  no_log: true
 
 - name: Set authorized keys
   ansible.posix.authorized_key:
