@@ -4,28 +4,6 @@
   become: true
 
   pre_tasks:
-    - name: Check if sops is installed
-      ansible.builtin.command:
-        cmd: which sops
-      register: sops_check
-      changed_when: false
-      failed_when: false
-      become: false
-
-    - name: Get latest sops release version
-      ansible.builtin.uri:
-        url: https://api.github.com/repos/getsops/sops/releases/latest
-        return_content: true
-      register: sops_release
-      become: false
-      when: sops_check.rc != 0
-
-    - name: Install sops from GitHub releases
-      ansible.builtin.apt:
-        deb: "https://github.com/getsops/sops/releases/download/{{ sops_release.json.tag_name }}/sops_{{ sops_release.json.tag_name | regex_replace('^v', '') }}_amd64.deb"
-        state: present
-      when: sops_check.rc != 0
-
     - name: Load encrypted secrets
       community.sops.load_vars:
         file: "{{ playbook_dir }}/../../secrets/vault.yml"
@@ -34,94 +12,23 @@
 
   roles:
     - role: system/packages
-    - role: user
+    - role: home/user
     - role: system/fonts
     - role: system/flatpak
     - role: system/docker
     - role: system/nvidia
       when: machine_type == "desktop"
     - role: system/vm
-    - role: user/dotfiles
-    - role: user/git
-    - role: user/ssh_keys
-    - role: user/dev
-    - role: user/bin
+    - role: home/dotfiles
+    - role: home/git
+    - role: home/ssh_keys
+    - role: home/dev
+    - role: home/bin
     - role: system/networking
     - role: system/ssh
     - role: system/bluetooth
     - role: system/bootloader
     - role: system/display_manager
     - role: desktop/kde
-    - role: desktop/kde/themes
     - role: system/gaming
       when: machine_type == "desktop"
-    - role: desktop/konsave
-
-  post_tasks:
-    - name: Gather installed tool versions for report
-      ansible.builtin.command:
-        cmd: "{{ item.cmd }}"
-      loop:
-        - { name: git,     cmd: "git --version" }
-        - { name: zsh,     cmd: "zsh --version" }
-        - { name: docker,  cmd: "docker --version" }
-        - { name: flatpak, cmd: "flatpak --version" }
-        - { name: chezmoi, cmd: "/home/{{ user_name }}/.local/bin/chezmoi --version" }
-      register: tool_versions
-      changed_when: false
-      failed_when: false
-      become: false
-
-    - name: List all installed apt packages from this run
-      ansible.builtin.command:
-        cmd: dpkg-query -W -f='${Package} ${Version}\n'
-        argv: []
-      register: installed_packages
-      changed_when: false
-      failed_when: false
-      when: ansible_facts['os_family'] == "Debian"
-
-    - name: List all installed flatpak apps
-      ansible.builtin.command:
-        cmd: flatpak list --app --columns=application,version
-      register: installed_flatpaks
-      changed_when: false
-      failed_when: false
-      become: false
-
-    - name: Write setup summary report
-      ansible.builtin.copy:
-        dest: "{{ user_home }}/ansible-setup-{{ ansible_facts['date_time']['date'] }}.log"
-        content: |
-          ════════════════════════════════════════
-          Ansible Setup Report
-          Host   : {{ inventory_hostname }}
-          Date   : {{ ansible_facts['date_time']['iso8601'] }}
-          OS     : {{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_version'] }}
-          ════════════════════════════════════════
-
-          Tool versions:
-          {% for item in tool_versions.results %}
-            {{ item.item.name | upper }}: {{ item.stdout | default('not found') }}
-          {% endfor %}
-
-          Flatpak apps installed ({{ installed_flatpaks.stdout_lines | default([]) | length }}):
-          {% for line in installed_flatpaks.stdout_lines | default([]) %}
-            {{ line }}
-          {% endfor %}
-
-          APT packages installed ({{ installed_packages.stdout_lines | default([]) | length }}):
-          {% for line in installed_packages.stdout_lines | default([]) %}
-            {{ line }}
-          {% endfor %}
-
-          Full task log: /tmp/ansible-setup.log
-          ════════════════════════════════════════
-        owner: "{{ user_name }}"
-        mode: "0644"
-      become: false
-
-    - name: Print setup summary
-      ansible.builtin.debug:
-        msg: "{{ lookup('file', user_home + '/ansible-setup-' + ansible_date_time.date + '.log') | split('\n') }}"
-      become: false

@@ -1,7 +1,6 @@
 ---
 # Laptop-specific variables
 machine_type: laptop
-desktop_environment: kde
 
 # Display
 primary_monitor: eDP-1
@@ -9,9 +8,3 @@ primary_monitor: eDP-1
 # Bootloader
 grub_timeout: 3
 grub_cmdline_linux_default: "quiet splash"
-
-# Extra packages (merged with base_packages in system/packages)
-extra_packages:
-  - mpv
-  - kitty
-  - fastfetch

@@ -3,6 +3,12 @@
 ansible_user: charl
 user_name: charl
 user_home: "/home/{{ user_name }}"
+desktop_environment: kde
+
+extra_packages:
+  - mpv
+  - kitty
+  - fastfetch
 
 flatpak_apps:
   - com.discordapp.Discord

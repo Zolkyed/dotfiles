@@ -1,4 +1,4 @@
 ---
 # Custom scripts deployed to ~/.local/bin
-# Add scripts to roles/user/bin/files/ and they will be installed automatically
+# Add scripts to roles/home/user/bin/files/ and they will be installed automatically
 bin_dest: "{{ user_home }}/.local/bin"

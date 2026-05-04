@@ -21,10 +21,12 @@ ansible-playbook playbooks/setup.yml --check --diff -l desktop
 
 | Variable | File | Notes |
 |---|---|---|
+| `desktop_environment` | `group_vars/all.yml` | Single source of truth |
+| `extra_packages` | `group_vars/all.yml` | Single source of truth |
 | `flatpak_apps` | `group_vars/all.yml` | Single source of truth |
 | `user_groups` | `group_vars/all.yml` | Single source of truth |
 | `base_packages` | `group_vars/Debian.yml` | OS-specific names |
-| `extra_packages` | `host_vars/<host>.yml` | Per-machine additions |
+| `machine_type`, `primary_monitor`, GRUB vars | `host_vars/<host>.yml` | Per-machine overrides |
 
 ## Roles
 
@@ -47,11 +49,9 @@ ansible-playbook playbooks/setup.yml --check --diff -l desktop
 ### desktop/
 | Role | Purpose |
 |---|---|
-| kde | KDE Plasma packages |
-| kde/themes | kwriteconfig6 settings |
-| konsave | pipx install konsave + profile import |
+| kde | KDE Plasma packages, managed assets, and `community.general.kdeconfig` settings |
 
-### user/
+### home/user/
 | Role | Purpose |
 |---|---|
 | (main) | User account, shell, groups |

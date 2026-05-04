@@ -18,5 +18,5 @@
       - item.stat.exists
     fail_msg: >-
       Missing git config file: {{ item.item }}.
-      Ensure user/dotfiles has applied chezmoi successfully before user/git runs.
+      Ensure home/dotfiles has applied chezmoi successfully before home/git runs.
   loop: "{{ git_config_stats.results }}"
