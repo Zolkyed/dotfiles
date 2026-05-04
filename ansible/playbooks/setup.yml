@@ -3,13 +3,17 @@
   hosts: all
   become: true
   gather_facts: true
-
+  
   pre_tasks:
     - name: Load encrypted secrets
       community.sops.load_vars:
         file: "{{ playbook_dir }}/../../secrets/vault.yml"
       become: false
       ignore_errors: true
+
+    - name: Load distro-specific vars
+      ansible.builtin.include_vars:
+        file: "{{ playbook_dir }}/../vars/{{ ansible_facts['os_family'] }}.yml"
 
   roles:
     - role: home/packages
