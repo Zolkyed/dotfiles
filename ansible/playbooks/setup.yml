@@ -3,7 +3,7 @@
   hosts: all
   become: true
   gather_facts: true
-  
+
   pre_tasks:
     - name: Load shared secrets
       tags: always
@@ -24,25 +24,46 @@
 
   roles:
     - role: home/packages
+      tags: packages
     - role: home/hayase
+      tags: hayase
     - role: home/user
+      tags: user
     - role: system/fonts
+      tags: fonts
     - role: system/flatpak
+      tags: flatpak
     - role: system/docker
+      tags: docker
     - role: system/nvidia
+      tags: nvidia
       when: inventory_hostname == "desktop"
     - role: system/vm
+      tags: vm
     - role: home/dotfiles
+      tags: dotfiles
     - role: home/ssh_keys
+      tags: ssh_keys
     - role: home/dev
+      tags: dev
     - role: home/bin
+      tags: bin
     - role: system/networking
+      tags: networking
     - role: system/ssh
+      tags: ssh
     - role: system/bluetooth
+      tags: bluetooth
     - role: system/bootloader
+      tags: bootloader
     - role: system/display_manager
+      tags: display_manager
     - role: desktop/kde/rclone
+      tags: rclone
     - role: desktop/kde/konsave
+      tags: konsave
     - role: desktop/kde/keybinds
+      tags: keybinds
     - role: home/gaming
+      tags: gaming
       when: inventory_hostname == "desktop"
