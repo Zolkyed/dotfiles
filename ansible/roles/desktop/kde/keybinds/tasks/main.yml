@@ -1,0 +1,11 @@
+# tasks/main.yml
+---
+- name: Apply per-host keybind overrides
+  ansible.builtin.copy:
+    src: "{{ kde_keybinds_file }}"
+    dest: "{{ kde_keybinds_dest }}"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0600"
+  become: true
+  become_user: "{{ user_name }}"

@@ -1,0 +1,26 @@
+# tasks/main.yml
+---
+- name: Install rclone
+  tags: [konsave-import, konsave-export]
+  ansible.builtin.package:
+    name: rclone
+    state: present
+
+- name: Ensure rclone config directory exists
+  tags: [konsave-import, konsave-export]
+  ansible.builtin.file:
+    path: "{{ user_home }}/.config/rclone"
+    state: directory
+    owner: "{{ user_name }}"
+    mode: "0700"
+  become: true
+
+- name: Deploy rclone config
+  tags: [konsave-import, konsave-export]
+  ansible.builtin.template:
+    src: rclone.conf.j2
+    dest: "{{ rclone_conf_dest }}"
+    owner: "{{ user_name }}"
+    mode: "0600"
+  become: true
+

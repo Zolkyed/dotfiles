@@ -5,13 +5,20 @@
   gather_facts: true
   
   pre_tasks:
-    - name: Load encrypted secrets
+    - name: Load shared secrets
+      tags: always
       community.sops.load_vars:
-        file: "{{ playbook_dir }}/../../secrets/vault.yml"
+        file: "{{ playbook_dir }}/../inventory/group_vars/vault.yml"
       become: false
-      ignore_errors: true
+
+    - name: Load host secrets
+      tags: always
+      community.sops.load_vars:
+        file: "{{ playbook_dir }}/../inventory/host_vars/{{ inventory_hostname }}/vault.yml"
+      become: false
 
     - name: Load distro-specific vars
+      tags: always
       ansible.builtin.include_vars:
         file: "{{ playbook_dir }}/../vars/{{ ansible_facts['os_family'] }}.yml"
 
@@ -34,7 +41,8 @@
     - role: system/bluetooth
     - role: system/bootloader
     - role: system/display_manager
-    - role: desktop/kde
-    - role: desktop/konsave
+    - role: desktop/kde/rclone
+    - role: desktop/kde/konsave
+    - role: desktop/kde/keybinds
     - role: home/gaming
       when: machine_type == "desktop"

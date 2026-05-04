@@ -1,11 +1,7 @@
 # tasks/main.yml
 ---
-- name: Install rclone
-  ansible.builtin.package:
-    name: rclone
-    state: present
-
 - name: Check if konsave is already installed via pipx
+  tags: [konsave-import, konsave-export]
   ansible.builtin.stat:
     path: "{{ user_home }}/.local/bin/konsave"
   register: konsave_bin
@@ -13,6 +9,7 @@
   become_user: "{{ user_name }}"
 
 - name: Install konsave via pipx
+  tags: [konsave-import, konsave-export]
   ansible.builtin.command:
     argv: [pipx, install, konsave]
   become: true
@@ -21,6 +18,7 @@
   changed_when: true
 
 - name: Check if konsave profile has already been applied
+  tags: [konsave-import]
   ansible.builtin.stat:
     path: "{{ konsave_stamp_file }}"
   register: konsave_stamp
@@ -28,6 +26,7 @@
   become_user: "{{ user_name }}"
 
 - name: Restore KDE profile from Google Drive
+  tags: [konsave-import, never]
   when: not konsave_stamp.stat.exists
   become: true
   become_user: "{{ user_name }}"
@@ -44,13 +43,6 @@
         state: directory
         mode: "0755"
 
-    - name: Verify rclone remote is configured
-      ansible.builtin.command:
-        argv: [rclone, listremotes]
-      register: rclone_remotes
-      changed_when: false
-      failed_when: (konsave_rclone_remote + ':') not in rclone_remotes.stdout
-
     - name: Download konsave profile from Google Drive
       ansible.builtin.command:
         argv:
@@ -65,7 +57,7 @@
 
     - name: Check if profile name already imported into konsave
       ansible.builtin.command:
-        argv: [konsave, --list-profiles]
+        argv: [konsave, -l]
       register: konsave_profiles
       changed_when: false
       failed_when: false
@@ -74,9 +66,9 @@
       ansible.builtin.command:
         argv:
           - konsave
-          - --import-profile
+          - -i
           - "{{ konsave_download_dir }}/{{ konsave_profile_file }}"
-          - --force             # overwrites if already imported, making it idempotent
+          - -f
       changed_when: true
       when: konsave_profile_name not in konsave_profiles.stdout
 
@@ -84,9 +76,13 @@
       ansible.builtin.command:
         argv:
           - konsave
-          - --apply
+          - -a
           - "{{ konsave_profile_name }}"
       changed_when: true
+
+    - name: Notify user to log out and back in
+      ansible.builtin.debug:
+        msg: "Konsave profile applied. Log out and back in to see all changes."
 
     - name: Mark konsave profile as applied
       ansible.builtin.file:
@@ -101,3 +97,58 @@
         state: absent
       become: true
       become_user: "{{ user_name }}"
+
+# ── Export (opt-in only) ────────────────────────────────────────────────────
+- name: Export KDE profile to Google Drive
+  tags: [konsave-export, never]
+  become: true
+  become_user: "{{ user_name }}"
+  block:
+    - name: Confirm export will overwrite remote profile
+      ansible.builtin.pause:
+        prompt: >-
+          WARNING: This will overwrite
+          {{ konsave_rclone_remote }}:{{ konsave_gdrive_path }}/{{ konsave_profile_file }}
+          with the current KDE state on {{ inventory_hostname }}.
+          Only proceed from a fully configured machine.
+          Type 'yes' to continue
+      register: export_confirm
+      failed_when: export_confirm.user_input | lower != 'yes'
+
+    - name: Ensure export directory exists
+      ansible.builtin.file:
+        path: "{{ konsave_export_dir }}"
+        state: directory
+        mode: "0700"
+
+    - name: Save current KDE state into konsave profile
+      ansible.builtin.command:
+        argv: [konsave, -s, "{{ konsave_profile_name }}"]
+      changed_when: true
+
+    - name: Export konsave profile to archive
+      ansible.builtin.command:
+        argv:
+          - konsave
+          - -e
+          - "{{ konsave_profile_name }}"
+          - -d
+          - "{{ konsave_export_dir }}"
+      changed_when: true
+
+    - name: Upload konsave profile to Google Drive
+      ansible.builtin.command:
+        argv:
+          - rclone
+          - copy
+          - -vv
+          - --progress
+          - "{{ konsave_export_dir }}/{{ konsave_profile_file }}"
+          - "{{ konsave_rclone_remote }}:{{ konsave_gdrive_path }}/"
+      changed_when: true
+
+  always:
+    - name: Remove konsave export directory
+      ansible.builtin.file:
+        path: "{{ konsave_export_dir }}"
+        state: absent

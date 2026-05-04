@@ -1,4 +1,0 @@
-# defaults/main.yml
----
-kde_config_version: 6  # 5 is EOL; default to 6
-kde_settings: []

@@ -1,13 +1,7 @@
 ---
-# SSH keys sourced from secrets/vault.yml (SOPS + age encrypted)
-# vault_ssh_private_key_github and vault_ssh_private_key_gitlab
-# must be defined in the vault file.
 ssh_keys:
-  - name: id_ed25519_github
-    private_key: "{{ vault_ssh_private_key_github | default('') }}"
-    public_key: "{{ vault_ssh_public_key_github | default('') }}"
-  - name: id_ed25519_gitlab
-    private_key: "{{ vault_ssh_private_key_gitlab | default('') }}"
-    public_key: "{{ vault_ssh_public_key_gitlab | default('') }}"
+  - name: "{{ inventory_hostname }}"
+    private_key: "{{ vault_ssh_private_key | default('') }}"
+    public_key: "{{ vault_ssh_public_key | default('') }}"
 
 ssh_authorized_keys: []

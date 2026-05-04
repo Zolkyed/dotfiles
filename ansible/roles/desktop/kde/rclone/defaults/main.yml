@@ -1,0 +1,4 @@
+# defaults/main.yml
+---
+rclone_remote: gdrive
+rclone_conf_dest: "{{ user_home }}/.config/rclone/rclone.conf"

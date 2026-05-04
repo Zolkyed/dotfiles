@@ -1,0 +1,7 @@
+# defaults/main.yml
+---
+# Host-specific ini file copied to ~/.config/kglobalshortcutsrc after KDE setup.
+# Populate files/keybinds/<inventory_hostname>.ini with sections from:
+#   cat ~/.config/kglobalshortcutsrc
+kde_keybinds_file: "{{ inventory_hostname }}.ini"
+kde_keybinds_dest: "{{ user_home }}/.config/kglobalshortcutsrc"

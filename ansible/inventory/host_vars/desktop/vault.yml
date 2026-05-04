@@ -1,0 +1,17 @@
+vault_ssh_private_key: ""
+vault_ssh_public_key: ""
+sops:
+    age:
+        - recipient: age19qvn8ud9na2k04vnf9h0we8zekvqwu8x8q33zte8fhee450xnpwqp8mhvp
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSByanltenhXblBJZXlUSTRL
+            ZSs2YzU1cTl2dUkrbkx0QWphRnFzblUrVm5NCjJNOGFLUldlOHM1SFhGcFRXNXE0
+            VDdhN09mNnF3a054ZHlQdHV1b3o3Mk0KLS0tIGR3a1QzblR3UDJIcStyYmZFNm9k
+            Rk5GS0wvRkhGMFNlRkJLRWtlZ1djRE0K4eH4yCwQLbVbvl+BmPVLc0tO+RJgqQTL
+            hggcwb9/Cpni70pZEjGZls0dgNiZGDs45m23jyn75Uy+v/JPHyqbIA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-05-04T21:29:24Z"
+    mac: ENC[AES256_GCM,data:1CqvPJ05UXHVZQ1I2lbT6PVLC1VdsMvfpQUWBlepyYzSbUjgLNgaOmH0oUkewRBPfzoi/AB9hgvnapIVTfWmysPGc1ncBNg7RE5yUmTLsfi44ramQyu6YMTrO7bHypg8uJ3XxFrUdQOgckNtkpBXBKu0D7t2GPZO+XIKApiZZvc=,iv:DZaSWjOpPnjx8Mk+5WlzHvIwfHnj9OTyGaP0JetGW+g=,tag:FfXi9PJgxarBJ4XzD0AFWQ==,type:str]
+    unencrypted_suffix: _unencrypted
+    version: 3.12.2

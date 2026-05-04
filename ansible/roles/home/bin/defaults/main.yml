@@ -2,3 +2,8 @@
 # Custom scripts deployed to ~/.local/bin
 # Add scripts to roles/home/user/bin/files/ and they will be installed automatically
 bin_dest: "{{ user_home }}/.local/bin"
+
+
+baseUrl: "https://home.mihon.org"
+entityIDFan: "switch.charles_fan"
+entityIDLight: "light.charles_light"

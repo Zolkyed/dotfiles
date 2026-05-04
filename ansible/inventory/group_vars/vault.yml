@@ -1,6 +1,17 @@
-vault_ssh_private_key_github: ""
-vault_ssh_public_key_github: ""
-vault_ssh_private_key_gitlab: ""
-vault_ssh_public_key_gitlab: ""
-vault_ha_token: ""
-vault_ha_url: ""
+vault_ha_token: ENC[AES256_GCM,data:SKWQPEMDhMiOZol/CindUfnIkJkC16yx1jiFJ7u4Udt7FRmKaFyKcm1EzpR8GSBOch3ViM879pQVaatlQz7DjOZ6tEQYjORcp0ehnwXQdr+G6yBKDcprvpRUOAAv+Ovnh2PrkeNZKVY3c2D6ghpO0/qtApqaDLqlUgYEhs4ym7dJX/mDOHJE2Yp1i5fs/h+8DFvNWod4zN4T7O0VXoZn3Ueu/y17T0fJJx4VTsRncwxS6jqkEj/2,iv:lFRMMq9XL1mTTcumHLnZV/Q47QNsROr2OgdZlN8FnEw=,tag:iVwq9XAm+6iMC4nxUmIo7g==,type:str]
+vault_rclone_token: ENC[AES256_GCM,data:l9kOgcIIGpXozN0nHB5SPIM2TeAFwkICP8tlFmCZ6W+MLY+AABD9uOD7Pkf4voFNNokNkB8Mr7T7rVXO/2nkxVYttFdrK/amF8BV1or8m4/w0GuREzp+hTaxTc3KtYHpKjnDSnb2lzAI2fJKY1UFpYrYacQq7CEmSeRkkSgHp7wjg/KFqSKD+/YNk11x2+NUuLKBBh01sUQbHBECu2snvwjW4GX6UgMfAcqcMcaS9B5pGnVYHeRPUmYxUjuD2hCYlBuKvFkcjcbEhd2z2xh0GAGXotnsXHzpR8wYIu2gD5RiRSaT5mh3luKezxRbceda6zVaf0wLzY08GyijOmKV48rqoAIbWj5db2RrMvatSd1UFIzXq0HubhzxhqBKIN+oogFtAPHJ/2298tvP8ZneVhJkv09Ta7RZjg+JMi7P/sxijbAH258hN9EyIoDg3u4UZNXU9oM9Loe4s35yOhQpO6gdwZPCktmhFMftx3omTNEJOYqc5nD+bSHK3XcXDvhfJH4GXrVZte74zhHGKs4TFpYx+Vs6QqQAin0XxYcjr0PUo2wT7Rj5jFyCPILkWLo+SGr84TwsVs81Vp6u5x3Ld/wydefUn+QsMlpNLIVmHQ==,iv:hnws5sdoBuwlMk4+Pf/yVo2qaTaEdZiD0tJlEYHfXGo=,tag:ueVIog4Atw2CtWmTIwzVlw==,type:str]
+sops:
+    age:
+        - recipient: age19qvn8ud9na2k04vnf9h0we8zekvqwu8x8q33zte8fhee450xnpwqp8mhvp
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB5RlZBWUxUZTVqYS9SLy9S
+            akNHNGZNa2tJcFc5OExaZ3FVUlowTHZjalFvCk9odGgwS3N1eExhVGo2UVgvVG01
+            SmQwSytkb2ZqMC9aZ0pvQzZIcDZCNmcKLS0tIGR2U0JTemUycFE2Sk1QVlMrdnhF
+            NFhWeXdrdkdRUzdSRitsRjcxRXRtMEEK0FVn97gN6gfbDAumqbyIhQ0Bbg50nt0A
+            Eavkvbenfz3diTiUHsbNVazSbMb3r027rAzO0hXwIFAEn4Vil/u2aA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-05-04T21:29:24Z"
+    mac: ENC[AES256_GCM,data:L23OO/w+MsUlcH0A4wXzvVlWVXA3rnJEPZ9XTCoC5xFD6CkbL90F38iNKnxIacfJ0GXmYhQapwWOvqXUQ/TG5GC/gc9tyIe0i/rDX2so+pmwSnMdd4OuhsO+TcPleSJW1msAGsXvvBXWDatGoR2YWKM2yTuJurNl+BQUX6tEaXc=,iv:Rt0XYrBxs3qqfSdZLBqTFneELZ260KVLhUHI07nhZ/Q=,tag:d4sCyaacb8dINxsZETXMKw==,type:str]
+    unencrypted_suffix: _unencrypted
+    version: 3.12.2
