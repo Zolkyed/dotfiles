@@ -1,6 +1,6 @@
 ---
-# Laptop-specific variables
-machine_type: laptop
+# Desktop-specific variables
+machine_type: desktop
 
 # Display
 primary_monitor: eDP-1

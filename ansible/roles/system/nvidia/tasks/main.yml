@@ -4,7 +4,7 @@
     name: ubuntu-drivers-common
     state: present
   when:
-    - ansible_facts['os_family'] == "Debian"
+    - ansible_os_family == "Debian"
     - nvidia_driver_package == "auto"
 
 - name: Auto-install recommended NVIDIA driver (Debian)
@@ -13,7 +13,7 @@
   changed_when: true
   notify: Reboot required
   when:
-    - ansible_facts['os_family'] == "Debian"
+    - ansible_os_family == "Debian"
     - nvidia_driver_package == "auto"
 
 - name: Auto-install NVIDIA driver (Arch)
@@ -22,7 +22,7 @@
     state: present
   notify: Reboot required
   when:
-    - ansible_facts['os_family'] == "Archlinux"
+    - ansible_os_family == "Archlinux"
     - nvidia_driver_package == "auto"
 
 - name: Install specific NVIDIA driver package

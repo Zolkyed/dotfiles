@@ -2,16 +2,9 @@
 - name: Full system setup
   hosts: all
   become: true
-  gather_facts: false
+  gather_facts: true
 
   pre_tasks:
-    - name: Gather facts
-      ansible.builtin.setup:
-
-    - name: Load OS-specific variables
-      ansible.builtin.include_vars:
-        file: "{{ playbook_dir }}/../vars/{{ distro | default(ansible_os_family) }}.yml"
-
     - name: Load encrypted secrets
       community.sops.load_vars:
         file: "{{ playbook_dir }}/../../secrets/vault.yml"

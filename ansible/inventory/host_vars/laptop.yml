@@ -2,9 +2,6 @@
 # Laptop-specific variables
 machine_type: laptop
 
-# Uncomment to override OS auto-detection (default: ansible_os_family)
-# distro: Debian
-
 # Display
 primary_monitor: eDP-1
 
