@@ -29,6 +29,8 @@
       tags: hayase
     - role: home/user
       tags: user
+    - role: system/locale
+      tags: locale
     - role: system/fonts
       tags: fonts
     - role: system/flatpak
@@ -54,6 +56,8 @@
       tags: ssh
     - role: system/bluetooth
       tags: bluetooth
+    - role: system/pipewire
+      tags: pipewire
     - role: system/bootloader
       tags: bootloader
     - role: system/display_manager

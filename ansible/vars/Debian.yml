@@ -66,6 +66,14 @@ virtualization_virtualbox_packages:
   - virtualbox
   - virtualbox-ext-pack
 
+pipewire_packages:
+  - pipewire
+  - pipewire-pulse
+  - pipewire-alsa
+  - pipewire-jack
+  - wireplumber
+  - gstreamer1.0-pipewire
+
 bluetooth_packages:
   - bluez
   - bluetooth

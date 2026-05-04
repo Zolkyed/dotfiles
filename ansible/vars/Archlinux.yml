@@ -56,6 +56,14 @@ virtualization_virtualbox_packages:
   - virtualbox
   - virtualbox-host-modules-arch
 
+pipewire_packages:
+  - pipewire
+  - pipewire-pulse
+  - pipewire-alsa
+  - pipewire-jack
+  - wireplumber
+  - gst-plugin-pipewire
+
 bluetooth_packages:
   - bluez
   - bluez-utils

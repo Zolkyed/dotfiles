@@ -1,0 +1,14 @@
+---
+- name: Set system locale
+  ansible.builtin.command:
+    argv: [localectl, set-locale, "LANG={{ locale }}"]
+  changed_when: true
+
+- name: Set system timezone
+  community.general.timezone:
+    name: "{{ timezone }}"
+
+- name: Set console keymap
+  ansible.builtin.command:
+    argv: [localectl, set-keymap, "{{ keymap }}"]
+  changed_when: true
