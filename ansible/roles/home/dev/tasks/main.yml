@@ -5,6 +5,9 @@
     state: present
 
 - name: Install rustup (Rust toolchain manager)
+  # Trust: official installer from https://rustup.rs — uses HTTPS + TLS 1.2 minimum.
+  # Verified via: https://rust-lang.github.io/rustup/installation/other.html
+  # Idempotent: 'creates' skips if ~/.cargo/bin/rustup already exists.
   ansible.builtin.shell:
     cmd: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
     creates: "{{ user_home }}/.cargo/bin/rustup"
@@ -13,6 +16,8 @@
   when: install_rust
 
 - name: Install nvm (Node version manager)
+  # Trust: pinned to a specific version tag from the official nvm repo.
+  # Idempotent: 'creates' skips if ~/.nvm/nvm.sh already exists.
   ansible.builtin.shell:
     cmd: >
       curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v{{ nvm_version }}/install.sh | bash

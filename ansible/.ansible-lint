@@ -1,0 +1,12 @@
+---
+profile: production
+
+warn_list:
+  - yaml[line-length]
+  - experimental
+
+skip_list:
+  - role-name          # roles/home/user etc. don't follow galaxy naming
+  - no-changed-when    # some command tasks intentionally always report changed
+
+use_default_rules: true

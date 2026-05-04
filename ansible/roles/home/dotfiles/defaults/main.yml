@@ -1,4 +1,6 @@
 ---
 dotfiles_repo: "https://github.com/charl/dotfiles.git"
+dotfiles_repo_branch: "main"
+dotfiles_use_repo: false          # true = git clone from dotfiles_repo; false = copy from local dotfiles_chezmoi_source
 dotfiles_chezmoi_source: "{{ playbook_dir }}/../../chezmoi"
 chezmoi_bin: "{{ user_home }}/.local/bin/chezmoi"

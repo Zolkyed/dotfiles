@@ -1,5 +1,5 @@
 ---
-# Boolean variables
+# Feature flag overrides
 install_nvidia: true
 install_gaming: true
 

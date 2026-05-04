@@ -2,6 +2,17 @@
 # Target user — ansible_user should be set in inventory if it differs from user_name
 user_name: charl
 user_home: "/home/{{ user_name }}"
+user_shell: /bin/zsh
+
+# Feature flags — defaults off/on globally; override per host in host_vars
+install_nvidia: false
+install_gaming: false
+install_bluetooth: true
+install_pipewire: true
+install_docker: true
+install_vm: false
+install_display_manager: true
+desktop_environment: kde
 
 # Flatpaks are distro-agnostic
 base_flatpaks:

@@ -1,14 +1,23 @@
 ---
 - name: Set system locale
-  ansible.builtin.command:
-    argv: [localectl, set-locale, "LANG={{ locale }}"]
-  changed_when: true
+  ansible.builtin.copy:
+    dest: /etc/locale.conf
+    content: "LANG={{ locale }}\n"
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
 
 - name: Set system timezone
   community.general.timezone:
     name: "{{ timezone }}"
+  become: true
 
 - name: Set console keymap
-  ansible.builtin.command:
-    argv: [localectl, set-keymap, "{{ keymap }}"]
-  changed_when: true
+  ansible.builtin.copy:
+    dest: /etc/vconsole.conf
+    content: "KEYMAP={{ keymap }}\n"
+    owner: root
+    group: root
+    mode: "0644"
+  become: true

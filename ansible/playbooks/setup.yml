@@ -20,7 +20,7 @@
     - name: Load distro-specific vars
       tags: always
       ansible.builtin.include_vars:
-        file: "{{ playbook_dir }}/../vars/{{ ansible_facts['os_family'] }}.yml"
+        file: "{{ playbook_dir }}/../inventory/group_vars/{{ ansible_facts['os_family'] }}.yml"
 
   roles:
     - role: home/packages
@@ -37,11 +37,13 @@
       tags: flatpak
     - role: system/docker
       tags: docker
+      when: install_docker
     - role: system/nvidia
       tags: nvidia
-      when: install_nvidia | default(false)
+      when: install_nvidia
     - role: system/vm
       tags: vm
+      when: install_vm
     - role: home/dotfiles
       tags: dotfiles
     - role: home/ssh_keys
@@ -56,18 +58,24 @@
       tags: ssh
     - role: system/bluetooth
       tags: bluetooth
+      when: install_bluetooth
     - role: system/pipewire
       tags: pipewire
+      when: install_pipewire
     - role: system/bootloader
       tags: bootloader
     - role: system/display_manager
       tags: display_manager
+      when: install_display_manager
     - role: desktop/kde/rclone
       tags: rclone
+      when: desktop_environment == 'kde'
     - role: desktop/kde/konsave
       tags: [konsave-import, konsave-export]
+      when: desktop_environment == 'kde'
     - role: desktop/kde/keybinds
       tags: keybinds
+      when: desktop_environment == 'kde'
     - role: home/gaming
       tags: gaming
-      when: install_gaming | default(false)
+      when: install_gaming

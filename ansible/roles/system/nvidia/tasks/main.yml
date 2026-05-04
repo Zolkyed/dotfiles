@@ -37,7 +37,14 @@
     name: "{{ item }}"
     state: present
   loop: "{{ nvidia_packages }}"
-  ignore_errors: true
+  register: nvidia_pkg_result
+  failed_when: false
+
+- name: Warn about failed NVIDIA package installs
+  ansible.builtin.debug:
+    msg: "WARNING: Failed to install NVIDIA package '{{ item.item }}' — it may not exist for this distro/kernel."
+  loop: "{{ nvidia_pkg_result.results }}"
+  when: item.failed | default(false)
 
 - name: Blacklist nouveau driver
   ansible.builtin.copy:

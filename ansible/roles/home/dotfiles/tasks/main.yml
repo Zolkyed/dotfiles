@@ -1,5 +1,8 @@
 ---
 - name: Install chezmoi
+  # Trust: official installer from https://chezmoi.io — HTTPS only, uses -fsLS (fail on error).
+  # Verified via: https://www.chezmoi.io/install/#one-line-package-install
+  # Idempotent: 'creates' skips if chezmoi binary already exists.
   ansible.builtin.shell:
     cmd: >
       sh -c "$(curl -fsLS get.chezmoi.io)" --
@@ -16,13 +19,24 @@
     group: "{{ user_name }}"
     mode: "0700"
 
-- name: Sync chezmoi source from repo
+- name: Clone dotfiles repo (remote / fresh machine)
+  ansible.builtin.git:
+    repo: "{{ dotfiles_repo }}"
+    dest: "{{ user_home }}/.local/share/chezmoi"
+    version: "{{ dotfiles_repo_branch }}"
+    update: false
+  become: false
+  become_user: "{{ user_name }}"
+  when: dotfiles_use_repo
+
+- name: Sync chezmoi source from local path
   ansible.builtin.copy:
     src: "{{ dotfiles_chezmoi_source }}/"
     dest: "{{ user_home }}/.local/share/chezmoi/"
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
     mode: preserve
+  when: not dotfiles_use_repo
 
 - name: Apply dotfiles with chezmoi
   ansible.builtin.command:

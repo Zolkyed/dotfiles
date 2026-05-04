@@ -5,6 +5,11 @@
     cache_valid_time: 3600
   when: ansible_facts["os_family"] == "Debian"
 
+- name: Update pacman cache
+  community.general.pacman:
+    update_cache: true
+  when: ansible_facts["os_family"] == "Archlinux"
+
 - name: Install base packages
   ansible.builtin.package:
     name: "{{ base_packages | default([]) }}"
