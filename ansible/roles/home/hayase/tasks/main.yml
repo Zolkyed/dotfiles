@@ -5,13 +5,13 @@
   register: hayase_pkg_check
   changed_when: false
   failed_when: false
-  when: ansible_os_family == "Debian"
+  when: ansible_facts["os_family"] == "Debian"
 
 - name: Check if Hayase AppImage exists
   ansible.builtin.stat:
     path: "{{ hayase_appimage_dest }}"
   register: hayase_appimage_stat
-  when: ansible_os_family == "Archlinux"
+  when: ansible_facts["os_family"] == "Archlinux"
 
 - name: Get Hayase latest release info
   ansible.builtin.uri:
@@ -19,10 +19,10 @@
     return_content: true
   register: hayase_release
   when: >
-    (ansible_os_family == "Debian" and
+    (ansible_facts["os_family"] == "Debian" and
      hayase_pkg_check.stdout | default('') != 'install ok installed')
     or
-    (ansible_os_family == "Archlinux" and
+    (ansible_facts["os_family"] == "Archlinux" and
      not (hayase_appimage_stat.stat.exists | default(false)))
 
 - name: Install Hayase from .deb (Debian/Ubuntu)
@@ -30,7 +30,7 @@
     deb: "{{ hayase_release.json | dict2items | selectattr('key', 'match', 'linux-hayase-.*[.]deb') | map(attribute='value') | first }}"
     state: present
   when:
-    - ansible_os_family == "Debian"
+    - ansible_facts["os_family"] == "Debian"
     - hayase_pkg_check.stdout | default('') != 'install ok installed'
 
 - name: Install Hayase AppImage (Arch)
@@ -39,5 +39,5 @@
     dest: "{{ hayase_appimage_dest }}"
     mode: "0755"
   when:
-    - ansible_os_family == "Archlinux"
+    - ansible_facts["os_family"] == "Archlinux"
     - not (hayase_appimage_stat.stat.exists | default(false))

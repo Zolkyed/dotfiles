@@ -17,7 +17,7 @@ echo "==> Verifying Ansible installation..."
 ansible --version
 
 echo "==> Installing age..."
-sudo apt install -y age
+sudo apt-get install -y age
 
 echo "==> Installing Ansible collections..."
 ansible-galaxy collection install -r "${SCRIPT_DIR}/../ansible/requirements.yml"
