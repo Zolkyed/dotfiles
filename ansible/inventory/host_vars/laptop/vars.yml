@@ -1,4 +1,7 @@
 ---
+# Boolean variables
+install_nvidia: false
+install_gaming: false
 
 # Bootloader
 grub_timeout: 3

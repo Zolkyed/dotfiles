@@ -37,7 +37,7 @@
       tags: docker
     - role: system/nvidia
       tags: nvidia
-      when: inventory_hostname == "desktop"
+      when: install_nvidia | default(false)
     - role: system/vm
       tags: vm
     - role: home/dotfiles
@@ -66,4 +66,4 @@
       tags: keybinds
     - role: home/gaming
       tags: gaming
-      when: inventory_hostname == "desktop"
+      when: install_gaming | default(false)

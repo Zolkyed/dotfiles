@@ -1,4 +1,8 @@
 ---
+# Boolean variables
+install_nvidia: true
+install_gaming: true
+
 # Bootloader
 grub_timeout: 3
 grub_cmdline_linux_default: "quiet splash"
