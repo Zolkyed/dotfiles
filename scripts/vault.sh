@@ -3,7 +3,7 @@
 # Usage: ./scripts/vault.sh encrypt
 #        ./scripts/vault.sh decrypt
 set -euo pipefail
-SOPS_AGE_KEY_FILE="${SOPS_AGE_KEY_FILE:-$HOME/.config/age/keys.txt}"
+SOPS_AGE_KEY_FILE="${SOPS_AGE_KEY_FILE:-$HOME/.config/sops/age/key}"
 export SOPS_AGE_KEY_FILE
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

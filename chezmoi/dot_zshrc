@@ -88,6 +88,7 @@ export VISUAL='nvim'
 export PAGER='bat'
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export PATH="$HOME/.local/bin:$PATH"
+export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt"
 
 # ========================
 # Plugins (auto-install)
