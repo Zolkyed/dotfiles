@@ -3,9 +3,4 @@ flatpak_remotes:
   - name: flathub
     url: https://dl.flathub.org/repo/flathub.flatpakrepo
 
-flatpak_apps: []
-# Example:
-# flatpak_apps:
-#   - com.spotify.Client
-#   - com.discordapp.Discord
-#   - org.videolan.VLC
+base_flatpaks: []

@@ -1,36 +1,18 @@
+# tasks/main.yml
 ---
-- name: Install KDE Plasma packages
-  ansible.builtin.package:
-    name: "{{ kde_packages }}"
-    state: present
-
-- name: Ensure KDE asset parent directories exist
-  ansible.builtin.file:
-    path: "{{ item.dest | dirname }}"
-    state: directory
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
-    mode: "0755"
-  loop: "{{ kde_managed_assets }}"
-  when: kde_managed_assets | length > 0
-
-- name: Install repo-managed KDE assets
-  ansible.builtin.copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
-    directory_mode: "0755"
-  become: false
-  become_user: "{{ user_name }}"
-  loop: "{{ kde_managed_assets }}"
-  when: kde_managed_assets | length > 0
-
-- name: Apply KDE config files
+- name: Apply KDE config settings
   community.general.kdeconfig:
-    path: "{{ item.path }}"
-    backup: true
-    values: "{{ item.values }}"
-  become: false
+    path: "{{ item.file if item.file | is_abs
+              else (user_home + '/.config/' + item.file) }}"
+    kwriteconfig_path: "/usr/bin/kwriteconfig{{ kde_config_version }}"
+    values:
+      - group: "{{ item.group }}"
+        key: "{{ item.key }}"
+        value: "{{ item.value | default(omit) }}"
+        bool_value: "{{ item.bool_value | default(omit) }}"
+  loop: "{{ kde_settings }}"
+  loop_control:
+    label: "{{ item.file }}::{{ item.group }}/{{ item.key }}"
+  become: true
   become_user: "{{ user_name }}"
-  loop: "{{ kde_config_files }}"
+  when: kde_settings | length > 0

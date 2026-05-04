@@ -49,7 +49,7 @@ ansible-playbook playbooks/setup.yml --check --diff -l desktop
 ### desktop/
 | Role | Purpose |
 |---|---|
-| kde | KDE Plasma packages, managed assets, and `community.general.kdeconfig` settings |
+| kde | KDE Plasma packages, optional konsave restore, and keybind settings |
 
 ### home/user/
 | Role | Purpose |

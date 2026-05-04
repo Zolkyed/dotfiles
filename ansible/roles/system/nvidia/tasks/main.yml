@@ -18,11 +18,11 @@
   notify: Reboot required
   when: nvidia_driver_package != "auto"
 
-- name: Install NVIDIA extra packages
+- name: Install NVIDIA packages
   ansible.builtin.package:
     name: "{{ item }}"
     state: present
-  loop: "{{ nvidia_extra_packages }}"
+  loop: "{{ nvidia_packages }}"
   ignore_errors: true
 
 - name: Blacklist nouveau driver

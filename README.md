@@ -8,7 +8,7 @@ Full machine provisioning and user environment for Debian/Ubuntu + KDE Plasma.
 |---|---|---|
 | System | Ansible | Packages, services, drivers, users |
 | Dotfiles | Chezmoi | Shell, editor, app config |
-| KDE theming | Ansible + kdeconfig | Packages, managed assets, config files |
+| KDE | Ansible | Packages, konsave baseline restore, and selected keybinds |
 | Secrets | SOPS + age | SSH keys, tokens, credentials |
 | Scripts | bootstrap | Operational helpers |
 
@@ -65,7 +65,7 @@ ansible-playbook playbooks/setup.yml --check --diff -l desktop
 │       │   ├── bootloader/   # GRUB (BIOS + UEFI)
 │       │   └── display_manager/ # SDDM
 │       ├── desktop/
-│       │   ├── kde/          # KDE packages, assets, and kdeconfig settings
+│       │   ├── kde/          # KDE packages, konsave restore, + keybind settings
 │       └── home/
 │           └── user/
 │               ├── (main)        # User account, shell, groups
@@ -85,8 +85,6 @@ ansible-playbook playbooks/setup.yml --check --diff -l desktop
 │       ├── kitty/            # → ~/.config/kitty/
 │       ├── mpv/              # → ~/.config/mpv/
 │       └── vscode/           # → ~/.config/vscode/
-├── kde/
-│   └── README.md             # KDE keybinds reference
 ├── scripts/
 │   └── run_once_install-ansible.sh  # Bootstrap script
 ├── secrets/
@@ -104,12 +102,16 @@ ansible-playbook playbooks/setup.yml --check --diff -l desktop
 | Flatpak apps | `ansible/inventory/group_vars/all.yml` → `flatpak_apps` |
 | User groups | `ansible/inventory/group_vars/all.yml` → `user_groups` |
 | Debian packages | `ansible/inventory/group_vars/Debian.yml` → `base_packages` |
-| KDE look-and-feel | `ansible/roles/desktop/kde/defaults/main.yml` → `kde_config_files` |
+| KDE baseline snapshot | `ansible/roles/desktop/kde/defaults/main.yml` → `kde_konsave_profile_src`, `kde_konsave_profile_name` |
+| KDE keybinds | `ansible/roles/desktop/kde/defaults/main.yml` → `kde_keybind_files` |
 
-## KDE theme management
+## KDE management
 
-KDE settings are applied directly in `ansible/roles/desktop/kde/`.
-Keep package names in `kde_packages`, custom copied assets in `kde_managed_assets`, and actual KDE file writes in `kde_config_files`.
+`ansible/roles/desktop/kde/` uses two layers:
+- `kde_konsave_profile_src` / `kde_konsave_profile_name` restore a one-shot visual baseline from a `.knsv` package
+- `kde_keybind_files` enforces keybinds idempotently with `community.general.kdeconfig`
+
+If your `.knsv` file lives in a synced Google Drive folder, point `kde_konsave_profile_src` at that local synced path.
 
 ## Secrets
 
@@ -124,6 +126,6 @@ sops secrets/vault.yml
 
 - **Ansible** → how the system is built
 - **Chezmoi** → how the user environment looks
-- **KDE theme role** → how KDE look-and-feel is installed and applied
+- **KDE role** → installs KDE packages, restores a konsave baseline, and writes selected keybinds
 - **SOPS** → how secrets stay private
 - `all.yml` → one place to add a flatpak or group

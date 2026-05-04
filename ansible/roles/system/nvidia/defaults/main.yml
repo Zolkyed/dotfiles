@@ -3,11 +3,7 @@
 # Or pin to a specific version e.g. 'nvidia-driver-580'
 nvidia_driver_package: auto
 
-nvidia_extra_packages:
-  - nvidia-settings
-  - libvulkan1
-  - vulkan-tools
-  - mesa-vdpau-drivers
+nvidia_packages: []
 
 # Performance mode: 1=max perf, 0=auto
 nvidia_performance_level: 1

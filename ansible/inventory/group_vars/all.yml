@@ -5,11 +5,82 @@ user_name: charl
 user_home: "/home/{{ user_name }}"
 desktop_environment: kde
 
-extra_packages:
+# Base system packages
+base_packages:
   - mpv
   - kitty
   - fastfetch
 
-flatpak_apps:
+# Flatpak apps
+base_flatpaks:
   - com.discordapp.Discord
   - com.brave.Browser
+
+# Gaming packages
+gaming_packages:
+  - steam
+  - lutris
+  - gamemode
+  - mangohud
+  - libgamemode0
+  - libgamemodeauto0
+  - goverlay
+
+gaming_flatpaks:
+  - com.heroicgameslauncher.hgl
+  - net.davidotek.pupgui2
+
+# Development packages
+dev_packages:
+  - git
+  - make
+  - gcc
+  - pkg-config
+  - python3
+  - python3-pip
+  - python3-venv
+  - pipx
+  - jq
+  - yq
+  - httpie
+  - shellcheck
+  - pre-commit
+
+# Fonts
+fonts:
+  packages:
+    - fonts-noto
+    - fonts-noto-cjk
+    - fonts-noto-color-emoji
+    - fonts-dejavu
+    - fonts-liberation
+    - fonts-freefont-ttf
+  nerd:
+    version: "3.4.0"
+    families:
+      - JetBrainsMono
+      - Hack
+      - FiraCode
+      - NerdFontsSymbolsOnly
+
+# Nvidia packages
+nvidia_packages:
+  - nvidia-settings
+  - libvulkan1
+  - vulkan-tools
+  - mesa-vdpau-drivers
+
+# Virtualisation packages
+kvm_packages:
+  - qemu-system-x86
+  - libvirt-daemon-system
+  - libvirt-clients
+  - virtinst
+  - virt-manager
+  - bridge-utils
+  - ovmf
+
+virtualbox_packages:
+  - virtualbox
+  - virtualbox-ext-pack
+

@@ -20,6 +20,6 @@
     name: "{{ item }}"
     state: present
     remote: flathub
-  loop: "{{ gaming_flatpak_apps }}"
-  when: gaming_flatpak_apps | length > 0
+  loop: "{{ gaming_flatpaks }}"
+  when: gaming_flatpaks | length > 0
 

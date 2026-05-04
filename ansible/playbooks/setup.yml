@@ -30,5 +30,6 @@
     - role: system/bootloader
     - role: system/display_manager
     - role: desktop/kde
+    - role: desktop/konsave
     - role: system/gaming
       when: machine_type == "desktop"

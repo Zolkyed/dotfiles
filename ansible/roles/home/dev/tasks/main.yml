@@ -4,12 +4,6 @@
     name: "{{ dev_packages }}"
     state: present
 
-- name: Install dev CLI tools
-  ansible.builtin.package:
-    name: "{{ dev_cli_tools }}"
-    state: present
-  ignore_errors: true
-
 - name: Install rustup (Rust toolchain manager)
   ansible.builtin.shell:
     cmd: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path

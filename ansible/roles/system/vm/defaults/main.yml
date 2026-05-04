@@ -2,16 +2,7 @@
 vm_backend: kvm   # kvm or virtualbox
 
 # KVM packages
-kvm_packages:
-  - qemu-system-x86
-  - libvirt-daemon-system
-  - libvirt-clients
-  - virtinst
-  - virt-manager
-  - bridge-utils
-  - ovmf
+kvm_packages: []
 
 # VirtualBox packages
-virtualbox_packages:
-  - virtualbox
-  - virtualbox-ext-pack
+virtualbox_packages: []
