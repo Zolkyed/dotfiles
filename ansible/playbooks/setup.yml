@@ -41,9 +41,9 @@
     - role: system/nvidia
       tags: nvidia
       when: nvidia_enabled
-    - role: system/vm
-      tags: vm
-      when: vm_enabled
+    - role: system/virtualization
+      tags: virtualization
+      when: virtualization_enabled
     - role: home/dotfiles
       tags: dotfiles
     - role: home/ssh_keys

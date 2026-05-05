@@ -3,18 +3,18 @@
   ansible.builtin.package:
     name: "{{ virtualization_kvm_packages }}"
     state: present
-  when: vm_backend == "kvm"
+  when: virtualization_backend == "kvm"
 
 - name: Install VirtualBox packages
   ansible.builtin.package:
     name: "{{ virtualization_virtualbox_packages }}"
     state: present
-  when: vm_backend == "virtualbox"
+  when: virtualization_backend == "virtualbox"
 
 - name: Enable and start libvirtd
   ansible.builtin.systemd:
     name: libvirtd
     enabled: true
     state: started
-  when: vm_backend == "kvm"
+  when: virtualization_backend == "kvm"
 

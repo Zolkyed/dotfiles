@@ -12,7 +12,7 @@ pipewire_enabled: true
 display_manager_enabled: true
 
 docker_enabled: true
-vm_enabled: false
+virtualization_enabled: false
 
 kde_enabled: true
 hyprland_enabled: false

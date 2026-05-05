@@ -1,5 +1,5 @@
 ---
-vm_backend: kvm   # kvm or virtualbox
+virtualization_backend: kvm   # kvm or virtualbox
 
 virtualization_kvm_packages: []
 virtualization_virtualbox_packages: []

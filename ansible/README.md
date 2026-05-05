@@ -38,7 +38,7 @@ ansible-playbook playbooks/setup.yml --check --diff -l desktop
 | fonts | Nerd Fonts |
 | docker | Docker CE + compose plugin |
 | nvidia | Proprietary driver, nouveau blacklist |
-| vm | KVM/QEMU + virt-manager |
+| virtualization | KVM/QEMU + virt-manager |
 | gaming | Steam, Lutris, gamemode, Heroic |
 | networking | NetworkManager + systemd-resolved |
 | ssh | sshd hardening |
