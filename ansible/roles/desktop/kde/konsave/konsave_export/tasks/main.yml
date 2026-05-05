@@ -1,7 +1,6 @@
-# tasks/export.yml
+# tasks/main.yml
 ---
 - name: Export KDE profile to Google Drive
-  tags: [konsave-export, never]
   become: true
   become_user: "{{ user_name }}"
   block:

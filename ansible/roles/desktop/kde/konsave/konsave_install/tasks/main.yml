@@ -1,26 +1,15 @@
 # tasks/main.yml
 ---
 - name: Check if konsave is already installed via pipx
-  tags: [konsave-import, konsave-export]
   ansible.builtin.stat:
     path: "{{ user_home }}/.local/bin/konsave"
   register: konsave_bin
-  become: true
-  become_user: "{{ user_name }}"
 
 - name: Install konsave via pipx
-  tags: [konsave-import, konsave-export]
   ansible.builtin.command:
     argv: [pipx, install, konsave]
   become: true
   become_user: "{{ user_name }}"
   when: not konsave_bin.stat.exists
-  changed_when: true
-
-- name: Import tasks
-  tags: [konsave-import]
-  ansible.builtin.import_tasks: import.yml
-
-- name: Export tasks
-  tags: [konsave-export]
-  ansible.builtin.import_tasks: export.yml
+  register: konsave_install
+  changed_when: "'installed' in konsave_install.stdout"

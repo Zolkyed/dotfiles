@@ -70,8 +70,14 @@
     - role: desktop/kde/rclone
       tags: rclone
       when: kde_enabled
-    - role: desktop/kde/konsave
-      tags: [konsave-import, konsave-export]
+    - role: desktop/kde/konsave/konsave_install
+      tags: konsave
+      when: kde_enabled
+    - role: desktop/kde/konsave/konsave_import
+      tags: [konsave-import, never]
+      when: kde_enabled
+    - role: desktop/kde/konsave/konsave_export
+      tags: [konsave-export, never]
       when: kde_enabled
     - role: desktop/kde/keybinds
       tags: keybinds

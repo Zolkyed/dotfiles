@@ -1,0 +1,7 @@
+# defaults/main.yml
+---
+konsave_rclone_remote: gdrive
+konsave_gdrive_path: "konsave"
+konsave_profile_file: "plasma.knsv"
+konsave_profile_name: "plasma"
+konsave_export_dir: "/tmp/konsave_export"
