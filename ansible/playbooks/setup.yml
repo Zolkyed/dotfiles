@@ -64,6 +64,7 @@
       when: pipewire_enabled
     - role: system/bootloader
       tags: bootloader
+      when: grub_enabled
     - role: system/display_manager
       tags: display_manager
       when: display_manager_enabled

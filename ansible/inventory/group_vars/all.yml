@@ -1,24 +1,40 @@
 ---
+# ---------------------------------------------------------------------------
+# User
+# ---------------------------------------------------------------------------
 # Target user — ansible_user should be set in inventory if it differs from user_name
 user_name: charl
 user_home: "/home/{{ user_name }}"
 user_shell: /bin/zsh
 
+# ---------------------------------------------------------------------------
 # Feature flags — defaults off/on globally; override per host in host_vars
+# ---------------------------------------------------------------------------
+
+# Boot
+grub_enabled: true
+
+# Hardware
 nvidia_enabled: false
-gaming_enabled: false
 bluetooth_enabled: true
+
+# Audio
 pipewire_enabled: true
-display_manager_enabled: true
 
-docker_enabled: true
-virtualization_enabled: false
-
+# Desktop Environments
 kde_enabled: true
 hyprland_enabled: false
 niri_enabled: false
 
-# Flatpaks are distro-agnostic
+# Services
+display_manager_enabled: true
+docker_enabled: true
+virtualization_enabled: false
+gaming_enabled: false
+
+# ---------------------------------------------------------------------------
+# Flatpaks (distro-agnostic)
+# ---------------------------------------------------------------------------
 base_flatpaks:
   - com.discordapp.Discord
   - com.brave.Browser
@@ -27,7 +43,9 @@ gaming_flatpaks:
   - com.heroicgameslauncher.hgl
   - net.davidotek.pupgui2
 
-# Nerd fonts config is distro-agnostic (downloaded from GitHub)
+# ---------------------------------------------------------------------------
+# Nerd Fonts (downloaded from GitHub)
+# ---------------------------------------------------------------------------
 fonts_nerd:
   version: "3.4.0"
   families:
