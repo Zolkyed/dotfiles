@@ -181,10 +181,6 @@ export FZF_DEFAULT_OPTS=$'
 # ========================
 # Zoxide
 # ========================
-if ! command -v zoxide &>/dev/null; then
-  curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
-  export PATH="$HOME/.local/bin:$PATH"
-fi
 eval "$(zoxide init zsh)"
 
 # ========================
