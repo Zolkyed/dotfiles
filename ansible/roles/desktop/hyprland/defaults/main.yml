@@ -1,4 +1,8 @@
 ---
+hyprland_config_dir: "{{ user_home }}/.config/hypr"
+hyprland_kb_layout: us
+monitors: []
+
 hyprland_packages:
   # Core compositor
   - hyprland
@@ -27,3 +31,6 @@ hyprland_packages:
   # Lock + idle
   - swaylock
   - swayidle
+
+  # Wallpaper
+  - hyprpaper

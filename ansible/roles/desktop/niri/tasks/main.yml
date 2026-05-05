@@ -5,4 +5,20 @@
     state: present
   become: true
 
-# Add more Niri-specific configuration tasks here as needed
+- name: Ensure niri config directory exists
+  ansible.builtin.file:
+    path: "{{ niri_config_dir }}"
+    state: directory
+    owner: "{{ user_name }}"
+    mode: "0700"
+  become: true
+  become_user: "{{ user_name }}"
+
+- name: Deploy config.kdl
+  ansible.builtin.template:
+    src: config.kdl.j2
+    dest: "{{ niri_config_dir }}/config.kdl"
+    owner: "{{ user_name }}"
+    mode: "0600"
+  become: true
+  become_user: "{{ user_name }}"

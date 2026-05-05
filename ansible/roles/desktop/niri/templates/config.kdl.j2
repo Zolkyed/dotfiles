@@ -1,0 +1,94 @@
+input {
+    keyboard {
+        xkb.layout "{{ niri_kb_layout }}"
+        xkb.options "ctrl:nocaps"
+    }
+}
+
+layout {
+    gaps 12
+    border {
+        active 4
+        inactive 2
+    }
+    focus-ring {
+        active 4
+    }
+}
+
+cursor {
+    xwayland {
+        enable true
+    }
+}
+
+# Outputs — auto-detected; override via monitors in host_vars
+{% for m in monitors %}
+output "{{ m.connector }}" {
+    mode {{ m.mode }}
+    scale {{ m.scale }}
+}
+{% endfor %}
+
+window-rule {
+    geometry {
+        width 1280
+        height 720
+    }
+    title "Firefox — Picture-in-Picture"
+    draw-border-with-background false
+}
+
+binds {
+    Mod key "Super"
+
+    "Super+Q" { spawn "kitty"; }
+    "Super+R" { spawn "rofi -show drun"; }
+    "Super+W" { close-window; }
+    "Super+F" { toggle-fullscreen; }
+    "Super+Space" { toggle-floating; }
+    "Super+Shift+F" { toggle-focused-tabbed; }
+
+    "Super+Left"  { focus-column-left; }
+    "Super+Right" { focus-column-right; }
+    "Super+Up"    { focus-workspace-up; }
+    "Super+Down"  { focus-workspace-down; }
+
+    "Super+Shift+Left"  { move-column-left; }
+    "Super+Shift+Right" { move-column-right; }
+    "Super+Shift+Up"    { move-column-to-workspace-up; }
+    "Super+Shift+Down"  { move-column-to-workspace-down; }
+
+    "Super+1" { focus-workspace 1; }
+    "Super+2" { focus-workspace 2; }
+    "Super+3" { focus-workspace 3; }
+    "Super+4" { focus-workspace 4; }
+    "Super+5" { focus-workspace 5; }
+    "Super+6" { focus-workspace 6; }
+    "Super+7" { focus-workspace 7; }
+    "Super+8" { focus-workspace 8; }
+    "Super+9" { focus-workspace 9; }
+
+    "Super+Shift+1" { move-column-to-workspace 1; }
+    "Super+Shift+2" { move-column-to-workspace 2; }
+    "Super+Shift+3" { move-column-to-workspace 3; }
+    "Super+Shift+4" { move-column-to-workspace 4; }
+    "Super+Shift+5" { move-column-to-workspace 5; }
+    "Super+Shift+6" { move-column-to-workspace 6; }
+    "Super+Shift+7" { move-column-to-workspace 7; }
+    "Super+Shift+8" { move-column-to-workspace 8; }
+    "Super+Shift+9" { move-column-to-workspace 9; }
+
+    "Super+XF86AudioRaiseVolume"  { spawn "wpctl set-volume @DEFAULT_SINK@ 5%+"; }
+    "Super+XF86AudioLowerVolume"  { spawn "wpctl set-volume @DEFAULT_SINK@ 5%-"; }
+    "XF86AudioRaiseVolume" { spawn "wpctl set-volume @DEFAULT_SINK@ 5%+"; }
+    "XF86AudioLowerVolume" { spawn "wpctl set-volume @DEFAULT_SINK@ 5%-"; }
+    "XF86AudioMute"        { spawn "wpctl set-mute @DEFAULT_SINK@ toggle"; }
+    "XF86AudioPlay"        { spawn "playerctl play-pause"; }
+    "XF86AudioNext"        { spawn "playerctl next"; }
+    "XF86AudioPrev"        { spawn "playerctl previous"; }
+}
+
+spawn-at-startup "waybar" &
+spawn-at-startup "nm-applet" &
+spawn-at-startup "swayidle -w timeout 300 'swaylock -f' timeout 600 'niri msg action power-off-monitors' resume 'niri msg action power-on-monitors'" &

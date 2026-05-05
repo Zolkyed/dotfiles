@@ -2,3 +2,9 @@
 # Bootloader
 grub_timeout: 3
 grub_cmdline_linux_default: "quiet splash"
+
+# Shared monitor config — replace connector name (run hyprctl monitors)
+monitors:
+  - connector: "eDP-1"
+    mode: "1920x1080@60"
+    scale: 1
