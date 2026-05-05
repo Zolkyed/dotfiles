@@ -83,6 +83,9 @@
     - role: desktop/kde/keybinds
       tags: keybinds
       when: kde_enabled
+    - role: home/ai
+      tags: ai
+      when: ai_enabled
     - role: home/gaming
       tags: gaming
       when: gaming_enabled

@@ -26,6 +26,9 @@ kde_enabled: true
 hyprland_enabled: false
 niri_enabled: false
 
+# AI Tools
+ai_enabled: true
+
 # Services
 display_manager_enabled: true
 docker_enabled: true

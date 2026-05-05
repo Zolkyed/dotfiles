@@ -1,0 +1,7 @@
+---
+- name: Install opencode
+  ansible.builtin.shell:
+    cmd: curl -fsSL https://opencode.ai/install | bash
+    creates: "{{ user_home }}/.local/bin/opencode"
+  become: false
+  become_user: "{{ user_name }}"
