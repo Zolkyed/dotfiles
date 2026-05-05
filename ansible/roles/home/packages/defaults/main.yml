@@ -1,2 +1,7 @@
 ---
-base_packages: []
+core_packages: []
+utility_packages: []
+media_packages: []
+office_packages: []
+system_packages: []
+fun_packages: []

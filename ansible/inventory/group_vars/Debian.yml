@@ -1,5 +1,5 @@
 ---
-base_packages:
+core_packages:
   - curl
   - wget
   - vim
@@ -15,6 +15,54 @@ base_packages:
   - ca-certificates
   - gnupg
 
+utility_packages:
+  - ncdu
+  - ripgrep
+  - vulkan-tools
+  - fuse3
+  - atuin
+  - openssl
+  - pamixer
+  - xdg-utils
+  - plocate
+  - psmisc
+  - gh
+  - tmux
+  - eza
+  - bat
+  - fd-find
+  - zoxide
+  - fzf
+  - lazygit
+  - git-delta
+  - duf
+  - procs
+  - just
+  - trash-cli
+  - neovim
+
+media_packages:
+  - ffmpeg
+  - yt-dlp
+  - gimp
+  - pavucontrol
+  - obs-studio
+  - flowblade
+
+office_packages:
+  - libreoffice
+  - thunderbird
+
+system_packages:
+  - gparted
+  - dconf-editor
+  - qbittorrent
+  - timeshift
+  - keepassxc
+  - flatpak-builder
+
+fun_packages: []
+
 gaming_packages:
   - steam
   - lutris
@@ -24,6 +72,12 @@ gaming_packages:
   - libgamemodeauto0
   - goverlay
   - wine
+  - pcsx2
+  - duckstation
+  - winetricks
+  - protontricks
+  - piper
+  - retroarch
 
 dev_packages:
   - git
@@ -38,6 +92,10 @@ dev_packages:
   - httpie
   - shellcheck
   - pre-commit
+  - playwright
+  - gcc
+  - gdb
+  - cmake
 
 fonts_packages:
   - fonts-noto

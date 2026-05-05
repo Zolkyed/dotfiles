@@ -23,3 +23,10 @@
   loop: "{{ gaming_flatpaks }}"
   when: gaming_flatpaks | length > 0
 
+- name: Install AUR gaming packages
+  ansible.builtin.command:
+    cmd: paru -S --needed --noconfirm {{ aur_gaming_packages | join(' ') }}
+  when:
+    - ansible_facts["os_family"] == "Archlinux"
+    - aur_gaming_packages | default([]) | length > 0
+

@@ -1,5 +1,5 @@
 ---
-base_packages:
+core_packages:
   - curl
   - wget
   - vim
@@ -11,6 +11,54 @@ base_packages:
   - kitty
   - fastfetch
 
+utility_packages:
+  - ncdu
+  - ripgrep
+  - vulkan-tools
+  - fuse2
+  - atuin
+  - openssl
+  - pamixer
+  - xdg-utils
+  - plocate
+  - psmisc
+  - github-cli
+  - tmux
+  - eza
+  - bat
+  - fd
+  - zoxide
+  - fzf
+  - lazygit
+  - git-delta
+  - duf
+  - procs
+  - just
+  - trash-cli
+  - neovim
+
+media_packages:
+  - ffmpeg
+  - yt-dlp
+  - gimp
+  - pavucontrol
+  - obs-studio
+  - flowblade
+
+office_packages:
+  - libreoffice-fresh
+  - thunderbird
+
+system_packages:
+  - gparted
+  - dconf-editor
+  - qbittorrent
+  - timeshift
+  - keepassxc
+  - flatpak-builder
+
+fun_packages: []
+
 gaming_packages:
   - steam
   - lutris
@@ -18,6 +66,17 @@ gaming_packages:
   - mangohud
   - goverlay
   - wine
+  - pcsx2
+  - duckstation
+  - winetricks
+  - protontricks
+  - protonup-qt
+  - piper
+  - retroarch
+
+aur_gaming_packages:
+  - celeste-classic
+  - celeste-classic-pm
 
 dev_packages:
   - git
@@ -30,6 +89,10 @@ dev_packages:
   - httpie
   - shellcheck
   - python-pre-commit
+  - playwright
+  - gcc
+  - gdb
+  - cmake
 
 fonts_packages:
   - noto-fonts
@@ -71,6 +134,7 @@ bluetooth_packages:
 docker_packages:
   - docker
   - docker-compose
+  - docker-buildx
 
 networking_packages:
   - networkmanager

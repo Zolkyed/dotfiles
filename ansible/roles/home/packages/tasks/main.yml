@@ -10,7 +10,14 @@
     update_cache: true
   when: ansible_facts["os_family"] == "Archlinux"
 
-- name: Install base packages
+- name: Install packages
   ansible.builtin.package:
-    name: "{{ base_packages | default([]) }}"
+    name: "{{
+      core_packages | default([]) +
+      utility_packages | default([]) +
+      media_packages | default([]) +
+      office_packages | default([]) +
+      system_packages | default([]) +
+      fun_packages | default([])
+    }}"
     state: present

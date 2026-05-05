@@ -41,6 +41,8 @@ gaming_enabled: false
 base_flatpaks:
   - com.discordapp.Discord
   - com.brave.Browser
+  - com.visualstudio.code
+  - com.spotify.Client
 
 gaming_flatpaks:
   - com.heroicgameslauncher.hgl
