@@ -37,13 +37,13 @@
       tags: flatpak
     - role: system/docker
       tags: docker
-      when: install_docker
+      when: docker_enabled
     - role: system/nvidia
       tags: nvidia
-      when: install_nvidia
+      when: nvidia_enabled
     - role: system/vm
       tags: vm
-      when: install_vm
+      when: vm_enabled
     - role: home/dotfiles
       tags: dotfiles
     - role: home/ssh_keys
@@ -58,24 +58,30 @@
       tags: ssh
     - role: system/bluetooth
       tags: bluetooth
-      when: install_bluetooth
+      when: bluetooth_enabled
     - role: system/pipewire
       tags: pipewire
-      when: install_pipewire
+      when: pipewire_enabled
     - role: system/bootloader
       tags: bootloader
     - role: system/display_manager
       tags: display_manager
-      when: install_display_manager
+      when: display_manager_enabled
     - role: desktop/kde/rclone
       tags: rclone
-      when: desktop_environment == 'kde'
+      when: kde_enabled
     - role: desktop/kde/konsave
       tags: [konsave-import, konsave-export]
-      when: desktop_environment == 'kde'
+      when: kde_enabled
     - role: desktop/kde/keybinds
       tags: keybinds
-      when: desktop_environment == 'kde'
+      when: kde_enabled
     - role: home/gaming
       tags: gaming
-      when: install_gaming
+      when: gaming_enabled
+    - role: desktop/hyprland
+      tags: hyprland
+      when: hyprland_enabled
+    - role: desktop/niri
+      tags: niri
+      when: niri_enabled

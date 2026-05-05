@@ -1,0 +1,19 @@
+---
+niri_enabled: true
+niri_packages:
+  - niri
+  - xdg-desktop-portal-wlr
+  - waybar
+  - kitty
+  - rofi
+  - dunst
+  - mako
+  - swaylock
+  - swayidle
+  - wl-clipboard
+  - grim
+  - slurp
+  - brightnessctl
+  - playerctl
+  - network-manager-applet
+  - pavucontrol

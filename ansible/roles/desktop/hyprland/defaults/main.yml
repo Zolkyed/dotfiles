@@ -1,0 +1,30 @@
+---
+hyprland_enabled: true
+hyprland_packages:
+  # Core compositor
+  - hyprland
+  - xdg-desktop-portal-hyprland
+
+  # Status bar / launcher
+  - waybar
+  - rofi
+
+  # Terminal
+  - kitty
+
+  # Wayland utilities
+  - wl-clipboard
+  - grim
+  - slurp
+  - brightnessctl
+
+  # Media controls
+  - playerctl
+  - pavucontrol
+
+  # Network / tray
+  - network-manager-applet
+
+  # Lock + idle
+  - swaylock
+  - swayidle

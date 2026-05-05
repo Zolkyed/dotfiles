@@ -1,0 +1,8 @@
+---
+- name: Install Niri and related packages
+  ansible.builtin.package:
+    name: "{{ niri_packages }}"
+    state: present
+  become: true
+
+# Add more Niri-specific configuration tasks here as needed

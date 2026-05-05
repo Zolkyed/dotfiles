@@ -1,0 +1,8 @@
+---
+- name: Install Hyprland and related packages
+  ansible.builtin.package:
+    name: "{{ hyprland_packages }}"
+    state: present
+  become: true
+
+# Add more Hyprland-specific configuration tasks here as needed
