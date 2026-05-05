@@ -82,6 +82,9 @@
     - role: desktop/kde/konsave/konsave_export
       tags: [konsave-export, never]
       when: kde_enabled
+    - role: desktop/kde/konsave/konsave_delete
+      tags: [konsave-delete, never]
+      when: kde_enabled
     - role: desktop/kde/keybinds
       tags: [keybinds, never]
       when: kde_enabled

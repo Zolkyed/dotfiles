@@ -1,0 +1,50 @@
+# tasks/main.yml
+---
+- name: Delete konsave profile from Google Drive
+  become: true
+  become_user: "{{ user_name }}"
+  block:
+    - name: List available profiles on Google Drive
+      ansible.builtin.command:
+        argv:
+          - rclone
+          - lsf
+          - "{{ konsave_rclone_remote }}:{{ konsave_gdrive_path }}/"
+      register: gdrive_profiles
+      changed_when: false
+
+    - name: Show available profiles
+      ansible.builtin.debug:
+        var: gdrive_profiles.stdout_lines
+
+    - name: Prompt for profile to delete
+      ansible.builtin.pause:
+        prompt: "Enter the profile name to delete (from the list above, without .knsv):"
+      register: profile_prompt
+
+    - name: Fail if no name entered
+      ansible.builtin.fail:
+        msg: "Profile name cannot be empty"
+      when: profile_prompt.user_input | length == 0
+
+    - name: Set profile name fact
+      ansible.builtin.set_fact:
+        konsave_profile_name: "{{ profile_prompt.user_input }}"
+
+    - name: Confirm deletion
+      ansible.builtin.pause:
+        prompt: "Are you sure you want to delete '{{ konsave_profile_name }}.knsv' from Google Drive? Type 'yes' to confirm:"
+      register: confirm_prompt
+
+    - name: Fail if not confirmed
+      ansible.builtin.fail:
+        msg: "Deletion cancelled"
+      when: confirm_prompt.user_input != "yes"
+
+    - name: Delete konsave profile from Google Drive
+      ansible.builtin.command:
+        argv:
+          - rclone
+          - delete
+          - "{{ konsave_rclone_remote }}:{{ konsave_gdrive_path }}/{{ konsave_profile_name }}.knsv"
+      changed_when: true

@@ -1,0 +1,4 @@
+# defaults/main.yml
+---
+konsave_rclone_remote: gdrive
+konsave_gdrive_path: "konsave"
