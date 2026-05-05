@@ -1,5 +1,4 @@
 ---
-hyprland_enabled: true
 hyprland_packages:
   # Core compositor
   - hyprland
