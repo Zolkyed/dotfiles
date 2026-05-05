@@ -4,17 +4,17 @@
     path: /sys/firmware/efi
   register: efi_dir
 
-- name: Install GRUB packages (BIOS)
-  ansible.builtin.package:
-    name: "{{ grub_packages_bios }}"
-    state: present
-  when: not efi_dir.stat.exists
+- name: Fail if grub_disk is not defined (BIOS)
+  ansible.builtin.fail:
+    msg: "grub_disk must be set in host_vars for BIOS systems"
+  when:
+    - not efi_dir.stat.exists
+    - grub_disk is not defined
 
-- name: Install GRUB packages (UEFI)
+- name: Install GRUB packages
   ansible.builtin.package:
-    name: "{{ grub_packages_uefi }}"
+    name: "{{ efi_dir.stat.exists | ternary(grub_packages_uefi, grub_packages_bios) }}"
     state: present
-  when: efi_dir.stat.exists
 
 - name: Deploy GRUB configuration
   ansible.builtin.template:
@@ -28,11 +28,15 @@
 - name: Run grub-install (BIOS)
   ansible.builtin.command:
     cmd: grub-install {{ grub_disk }}
-  changed_when: false
+    creates: /boot/grub/grub.cfg
   when: not efi_dir.stat.exists
 
 - name: Run grub-install (UEFI)
   ansible.builtin.command:
-    cmd: grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id={{ grub_bootloader_id }}
-    creates: /boot/efi/EFI/{{ grub_bootloader_id }}/grubx64.efi
+    cmd: >-
+      grub-install
+      --target={{ grub_efi_target }}
+      --efi-directory={{ grub_efi_directory }}
+      --bootloader-id={{ grub_bootloader_id }}
+    creates: "{{ grub_efi_directory }}/EFI/{{ grub_bootloader_id }}/grubx64.efi"
   when: efi_dir.stat.exists

@@ -54,13 +54,10 @@
       tags: bin
     - role: system/networking
       tags: networking
-    - role: system/ssh
-      tags: ssh
+    - role: system/sshd
+      tags: sshd
     - role: system/aur
       tags: aur
-    - role: system/plymouth
-      tags: plymouth
-      when: plymouth_enabled
     - role: system/bluetooth
       tags: bluetooth
       when: bluetooth_enabled
@@ -86,11 +83,14 @@
       tags: [konsave-export, never]
       when: kde_enabled
     - role: desktop/kde/keybinds
-      tags: keybinds
+      tags: [keybinds, never]
       when: kde_enabled
     - role: home/ai
       tags: ai
       when: ai_enabled
+    - role: system/apt-architecture
+      tags: apt-architecture
+      when: gaming_enabled
     - role: home/gaming
       tags: gaming
       when: gaming_enabled

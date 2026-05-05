@@ -6,6 +6,7 @@ gaming_enabled: true
 # Bootloader
 grub_timeout: 3
 grub_cmdline_linux_default: "quiet splash"
+grub_efi_directory: /boot/efi
 
 # Shared monitor config — replace connector name (run hyprctl monitors)
 monitors:

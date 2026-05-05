@@ -1,32 +1,14 @@
 ---
-- name: Add i386 architecture for Steam
-  ansible.builtin.command:
-    cmd: dpkg --add-architecture i386
-  changed_when: false
-  when: ansible_facts["os_family"] == "Debian"
-
-- name: Update apt cache after adding i386
-  ansible.builtin.apt:
-    update_cache: true
-  when: ansible_facts["os_family"] == "Debian"
-
-- name: Install gaming packages
+- name: Gaming | Install packages
   ansible.builtin.package:
     name: "{{ gaming_packages }}"
     state: present
+  when: gaming_packages | default([]) | length > 0
 
-- name: Install gaming Flatpak apps
+- name: Gaming | Install Flatpaks
   community.general.flatpak:
-    name: "{{ item }}"
+    name: "{{ gaming_flatpaks }}"
     state: present
     remote: flathub
-  loop: "{{ gaming_flatpaks }}"
-  when: gaming_flatpaks | length > 0
-
-- name: Install AUR gaming packages
-  ansible.builtin.command:
-    cmd: paru -S --needed --noconfirm {{ aur_gaming_packages | join(' ') }}
-  when:
-    - ansible_facts["os_family"] == "Archlinux"
-    - aur_gaming_packages | default([]) | length > 0
+  when: gaming_flatpaks | default([]) | length > 0
 

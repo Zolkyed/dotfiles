@@ -1,6 +1,35 @@
 ---
-- name: Install paru (AUR helper)
-  community.general.pacman:
-    name: paru
-    state: present
+- name: Check if paru is installed
+  ansible.builtin.command:
+    cmd: which paru
+  register: paru_check
+  changed_when: false
+  failed_when: false
   when: ansible_facts["os_family"] == "Archlinux"
+
+- name: Install paru from AUR
+  when:
+    - ansible_facts["os_family"] == "Archlinux"
+    - paru_check.rc != 0
+  become: false
+  become_user: "{{ user_name }}"
+  block:
+    - name: Clone paru repository
+      ansible.builtin.git:
+        repo: https://aur.archlinux.org/paru.git
+        dest: "{{ user_home }}/paru-build"
+        depth: 1
+        version: master
+
+    - name: Build and install paru
+      ansible.builtin.command:
+        cmd: makepkg -si --noconfirm
+        chdir: "{{ user_home }}/paru-build"
+        creates: /usr/bin/paru
+      environment:
+        HOME: "{{ user_home }}"
+
+    - name: Clean up build directory
+      ansible.builtin.file:
+        path: "{{ user_home }}/paru-build"
+        state: absent

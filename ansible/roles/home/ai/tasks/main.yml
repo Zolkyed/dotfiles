@@ -1,7 +1,15 @@
 ---
+- name: Check if opencode is installed
+  ansible.builtin.command: which opencode
+  register: opencode_check
+  failed_when: false
+  changed_when: false
+  become: false
+  become_user: "{{ user_name }}"
+
 - name: Install opencode
   ansible.builtin.shell:
     cmd: curl -fsSL https://opencode.ai/install | bash
-    creates: "{{ user_home }}/.local/bin/opencode"
+  when: opencode_check.rc != 0
   become: false
   become_user: "{{ user_name }}"

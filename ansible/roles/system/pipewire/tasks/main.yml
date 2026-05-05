@@ -4,6 +4,17 @@
     name: "{{ pipewire_packages }}"
     state: present
 
+- name: Look up user UID
+  ansible.builtin.getent:
+    database: passwd
+    key: "{{ user_name }}"
+
+- name: Enable lingering for user services
+  ansible.builtin.command:
+    cmd: loginctl enable-linger {{ user_name }}
+    creates: "/var/lib/systemd/linger/{{ user_name }}"
+  when: ansible_facts["os_family"] == "Archlinux"
+
 - name: Enable and start PipeWire services
   ansible.builtin.systemd:
     name: "{{ item }}"
@@ -12,6 +23,8 @@
     scope: user
   become: true
   become_user: "{{ user_name }}"
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ getent_passwd[user_name].1 }}"
   loop:
     - pipewire
     - pipewire-pulse

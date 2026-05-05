@@ -1,22 +1,38 @@
 ---
-- name: Install ubuntu-drivers-common (Debian)
-  ansible.builtin.package:
-    name: ubuntu-drivers-common
-    state: present
+- name: NVIDIA | Ubuntu auto-install
   when:
-    - ansible_facts["os_family"] == "Debian"
+    - ansible_facts["distribution"] == "Ubuntu"
+    - nvidia_driver_package == "auto"
+  block:
+    - name: Install ubuntu-drivers-common
+      ansible.builtin.package:
+        name: ubuntu-drivers-common
+        state: present
+
+    - name: Check if NVIDIA driver already installed
+      ansible.builtin.command:
+        cmd: dpkg -l nvidia-driver-*
+      register: nvidia_installed
+      changed_when: false
+      failed_when: false
+
+    - name: Auto-install recommended driver
+      ansible.builtin.command:
+        cmd: ubuntu-drivers install
+      changed_when: true
+      notify: Reboot required
+      when: nvidia_installed.rc != 0
+
+- name: NVIDIA | Fail on Debian with auto
+  ansible.builtin.fail:
+    msg: >
+      Set nvidia_driver_package in host_vars (e.g. nvidia-driver-560).
+      Run: apt install nvidia-detect && nvidia-detect
+  when:
+    - ansible_facts["distribution"] == "Debian"
     - nvidia_driver_package == "auto"
 
-- name: Auto-install recommended NVIDIA driver (Debian)
-  ansible.builtin.command:
-    cmd: ubuntu-drivers install
-  changed_when: true
-  notify: Reboot required
-  when:
-    - ansible_facts["os_family"] == "Debian"
-    - nvidia_driver_package == "auto"
-
-- name: Auto-install NVIDIA driver (Arch)
+- name: NVIDIA | Arch auto-install
   ansible.builtin.package:
     name: nvidia
     state: present
@@ -25,28 +41,20 @@
     - ansible_facts["os_family"] == "Archlinux"
     - nvidia_driver_package == "auto"
 
-- name: Install specific NVIDIA driver package
+- name: NVIDIA | Install specific driver package
   ansible.builtin.package:
     name: "{{ nvidia_driver_package }}"
     state: present
   notify: Reboot required
   when: nvidia_driver_package != "auto"
 
-- name: Install NVIDIA packages
+- name: NVIDIA | Install extra packages
   ansible.builtin.package:
-    name: "{{ item }}"
+    name: "{{ nvidia_packages }}"
     state: present
-  loop: "{{ nvidia_packages }}"
-  register: nvidia_pkg_result
-  failed_when: false
+  when: nvidia_packages | default([]) | length > 0
 
-- name: Warn about failed NVIDIA package installs
-  ansible.builtin.debug:
-    msg: "WARNING: Failed to install NVIDIA package '{{ item.item }}' — it may not exist for this distro/kernel."
-  loop: "{{ nvidia_pkg_result.results }}"
-  when: item.failed | default(false)
-
-- name: Blacklist nouveau driver
+- name: NVIDIA | Blacklist nouveau
   ansible.builtin.copy:
     dest: /etc/modprobe.d/blacklist-nouveau.conf
     content: |
@@ -57,14 +65,9 @@
     mode: "0644"
   notify: Update initramfs
 
-- name: Set NVIDIA performance mode via udev rule
-  ansible.builtin.copy:
-    dest: /etc/udev/rules.d/60-nvidia-power.rules
-    content: |
-      # Set NVIDIA PowerMizer to performance mode
-      ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x03[0-9]*", \
-        RUN+="/usr/bin/nvidia-smi --persistence-mode=1"
-    owner: root
-    group: root
-    mode: "0644"
-  when: nvidia_performance_level == 1
+- name: NVIDIA | Enable persistence daemon
+  ansible.builtin.systemd:
+    name: nvidia-persistenced
+    enabled: true
+    state: started
+  when: nvidia_performance_level | int == 1

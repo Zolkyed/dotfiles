@@ -3,4 +3,8 @@ grub_timeout: 5
 grub_cmdline_linux_default: "quiet splash"
 grub_cmdline_linux: ""
 grub_gfxmode: "auto"
-grub_disk: /dev/sda
+grub_efi_directory: /boot/efi
+grub_bootloader_id: "GRUB"
+grub_efi_target: "x86_64-efi"
+grub_packages_bios: []
+grub_packages_uefi: []

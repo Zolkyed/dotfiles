@@ -1,7 +1,7 @@
 # GRUB configuration managed by Ansible
 GRUB_DEFAULT=0
 GRUB_TIMEOUT={{ grub_timeout }}
-GRUB_DISTRIBUTOR=`lsb_release -i -s 2> /dev/null || echo Debian`
+GRUB_DISTRIBUTOR="{{ ansible_facts['distribution'] }}"
 GRUB_CMDLINE_LINUX_DEFAULT="{{ grub_cmdline_linux_default }}"
 GRUB_CMDLINE_LINUX="{{ grub_cmdline_linux }}"
 GRUB_GFXMODE={{ grub_gfxmode }}

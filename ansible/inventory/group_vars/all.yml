@@ -12,7 +12,7 @@ user_shell: /bin/zsh
 # ---------------------------------------------------------------------------
 
 # Boot
-grub_enabled: true
+grub_enabled: false
 
 # Hardware
 nvidia_enabled: false
@@ -32,9 +32,8 @@ ai_enabled: true
 # Services
 display_manager_enabled: true
 docker_enabled: true
-virtualization_enabled: false
+virtualization_enabled: true
 gaming_enabled: false
-plymouth_enabled: false
 
 # ---------------------------------------------------------------------------
 # Flatpaks (distro-agnostic)
