@@ -4,6 +4,33 @@
   become: true
   become_user: "{{ user_name }}"
   block:
+    - name: List available profiles on Google Drive
+      ansible.builtin.command:
+        argv:
+          - rclone
+          - lsf
+          - "{{ konsave_rclone_remote }}:{{ konsave_gdrive_path }}/"
+      register: gdrive_profiles
+      changed_when: false
+
+    - name: Show available profiles
+      ansible.builtin.debug:
+        var: gdrive_profiles.stdout_lines
+
+    - name: Prompt for profile to restore
+      ansible.builtin.pause:
+        prompt: "Enter the profile name to restore (from the list above, without .knsv):"
+      register: profile_prompt
+
+    - name: Fail if no name entered
+      ansible.builtin.fail:
+        msg: "Profile name cannot be empty"
+      when: profile_prompt.user_input | length == 0
+
+    - name: Set profile name fact
+      ansible.builtin.set_fact:
+        konsave_profile_name: "{{ profile_prompt.user_input }}"
+
     - name: Ensure konsave download directory exists
       ansible.builtin.file:
         path: "{{ konsave_download_dir }}"
@@ -16,8 +43,7 @@
           - rclone
           - copy
           - --checksum
-          - --progress
-          - "{{ konsave_rclone_remote }}:{{ konsave_gdrive_path }}/{{ konsave_profile_file }}"
+          - "{{ konsave_rclone_remote }}:{{ konsave_gdrive_path }}/{{ konsave_profile_name }}.knsv"
           - "{{ konsave_download_dir }}/"
       changed_when: false
 
@@ -33,7 +59,7 @@
         argv:
           - konsave
           - -i
-          - "{{ konsave_download_dir }}/{{ konsave_profile_file }}"
+          - "{{ konsave_download_dir }}/{{ konsave_profile_name }}.knsv"
           - -f
       changed_when: true
       when: konsave_profile_name not in konsave_profiles.stdout

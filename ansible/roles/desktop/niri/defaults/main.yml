@@ -2,21 +2,3 @@
 niri_config_dir: "{{ user_home }}/.config/niri"
 niri_kb_layout: us
 monitors: []
-
-niri_packages:
-  - niri
-  - xdg-desktop-portal-wlr
-  - waybar
-  - kitty
-  - rofi
-  - dunst
-  - mako
-  - swaylock
-  - swayidle
-  - wl-clipboard
-  - grim
-  - slurp
-  - brightnessctl
-  - playerctl
-  - network-manager-applet
-  - pavucontrol

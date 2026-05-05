@@ -87,6 +87,41 @@ grub_packages_uefi:
 
 grub_bootloader_id: GRUB
 
+hyprland_packages:
+  - hyprland
+  - xdg-desktop-portal-hyprland
+  - waybar
+  - rofi
+  - kitty
+  - wl-clipboard
+  - grim
+  - slurp
+  - brightnessctl
+  - playerctl
+  - pavucontrol
+  - network-manager-applet
+  - swaylock
+  - swayidle
+  - hyprpaper
+
+niri_packages:
+  - niri
+  - xdg-desktop-portal-wlr
+  - waybar
+  - kitty
+  - rofi
+  - dunst
+  - mako
+  - swaylock
+  - swayidle
+  - wl-clipboard
+  - grim
+  - slurp
+  - brightnessctl
+  - playerctl
+  - network-manager-applet
+  - pavucontrol
+
 user_groups:
   - wheel
   - audio

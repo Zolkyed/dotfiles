@@ -4,16 +4,19 @@
   become: true
   become_user: "{{ user_name }}"
   block:
-    - name: Confirm export will overwrite remote profile
+    - name: Prompt for profile name
       ansible.builtin.pause:
-        prompt: >-
-          WARNING: This will overwrite
-          {{ konsave_rclone_remote }}:{{ konsave_gdrive_path }}/{{ konsave_profile_file }}
-          with the current KDE state on {{ inventory_hostname }}.
-          Only proceed from a fully configured machine.
-          Type 'yes' to continue
-      register: export_confirm
-      failed_when: export_confirm.user_input | lower != 'yes'
+        prompt: "Enter a name for this profile snapshot (e.g., plasma-may-2026):"
+      register: profile_name_prompt
+
+    - name: Fail if no name entered
+      ansible.builtin.fail:
+        msg: "Profile name cannot be empty"
+      when: profile_name_prompt.user_input | length == 0
+
+    - name: Set profile name fact
+      ansible.builtin.set_fact:
+        konsave_profile_name: "{{ profile_name_prompt.user_input }}"
 
     - name: Ensure export directory exists
       ansible.builtin.file:
@@ -41,9 +44,7 @@
         argv:
           - rclone
           - copy
-          - -vv
-          - --progress
-          - "{{ konsave_export_dir }}/{{ konsave_profile_file }}"
+          - "{{ konsave_export_dir }}/{{ konsave_profile_name }}.knsv"
           - "{{ konsave_rclone_remote }}:{{ konsave_gdrive_path }}/"
       changed_when: true
 
