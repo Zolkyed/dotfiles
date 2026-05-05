@@ -3,6 +3,7 @@
 # Usage: ./scripts/vault.sh encrypt
 #        ./scripts/vault.sh decrypt
 set -euo pipefail
+
 SOPS_AGE_KEY_FILE="${SOPS_AGE_KEY_FILE:-$HOME/.config/sops/age/key}"
 export SOPS_AGE_KEY_FILE
 
@@ -22,6 +23,10 @@ fi
 
 ACTION="$1"
 
+is_encrypted() {
+  sops filestatus "$1" 2>/dev/null | grep -q '"encrypted": true'
+}
+
 for rel_path in "${VAULT_FILES[@]}"; do
   file="${REPO_ROOT}/${rel_path}"
 
@@ -31,14 +36,14 @@ for rel_path in "${VAULT_FILES[@]}"; do
   fi
 
   if [[ "$ACTION" == "encrypt" ]]; then
-    if sops --input-type yaml filestatus "$file" 2>/dev/null | grep -q '"encrypted": true'; then
+    if is_encrypted "$file"; then
       echo "Already encrypted: ${rel_path}"
     else
       sops --encrypt --in-place "$file"
       echo "Encrypted: ${rel_path}"
     fi
   else
-    if sops --input-type yaml filestatus "$file" 2>/dev/null | grep -q '"encrypted": false'; then
+    if ! is_encrypted "$file"; then
       echo "Already decrypted: ${rel_path}"
     else
       sops --decrypt --in-place "$file"
