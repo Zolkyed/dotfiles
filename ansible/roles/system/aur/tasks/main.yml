@@ -1,0 +1,6 @@
+---
+- name: Install paru (AUR helper)
+  community.general.pacman:
+    name: paru
+    state: present
+  when: ansible_facts["os_family"] == "Archlinux"
