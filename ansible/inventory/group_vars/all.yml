@@ -34,6 +34,7 @@ display_manager_enabled: true
 docker_enabled: true
 virtualization_enabled: false
 gaming_enabled: false
+plymouth_enabled: false
 
 # ---------------------------------------------------------------------------
 # Flatpaks (distro-agnostic)

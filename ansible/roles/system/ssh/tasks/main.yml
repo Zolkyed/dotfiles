@@ -19,3 +19,9 @@
     - { regexp: '^#?X11Forwarding', line: "X11Forwarding {{ sshd_x11_forwarding }}" }
     - { regexp: '^#?AllowTcpForwarding', line: "AllowTcpForwarding {{ sshd_allow_tcp_forwarding }}" }
   notify: Restart sshd
+
+- name: Enable and start sshd
+  ansible.builtin.systemd:
+    name: "{{ ssh_service }}"
+    enabled: true
+    state: started

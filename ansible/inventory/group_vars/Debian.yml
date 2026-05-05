@@ -73,7 +73,6 @@ gaming_packages:
   - goverlay
   - wine
   - pcsx2
-  - duckstation
   - winetricks
   - protontricks
   - piper
@@ -150,6 +149,9 @@ networking_packages:
 
 ssh_package: openssh-server
 ssh_service: ssh
+
+plymouth_packages:
+  - plymouth
 
 grub_packages_bios:
   - grub2-common

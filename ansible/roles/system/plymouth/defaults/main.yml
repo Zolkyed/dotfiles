@@ -1,0 +1,4 @@
+---
+plymouth_theme_name: "hex"
+plymouth_theme_repo: "https://github.com/adi1090x/plymouth-themes.git"
+plymouth_theme_dest: "/usr/share/plymouth/themes/adi1090x"

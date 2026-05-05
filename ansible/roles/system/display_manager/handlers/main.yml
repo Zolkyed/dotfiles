@@ -1,5 +1,0 @@
----
-- name: Restart display manager
-  ansible.builtin.systemd:
-    name: "{{ display_manager }}"
-    state: restarted

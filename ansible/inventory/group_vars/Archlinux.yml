@@ -67,7 +67,6 @@ gaming_packages:
   - goverlay
   - wine
   - pcsx2
-  - duckstation
   - winetricks
   - protontricks
   - protonup-qt

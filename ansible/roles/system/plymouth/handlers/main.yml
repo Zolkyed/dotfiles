@@ -1,0 +1,10 @@
+---
+- name: Rebuild initramfs (Arch)
+  ansible.builtin.command:
+    cmd: mkinitcpio -P
+  when: ansible_facts["os_family"] == "Archlinux"
+
+- name: Rebuild initramfs (Debian)
+  ansible.builtin.command:
+    cmd: update-initramfs -u
+  when: ansible_facts["os_family"] == "Debian"

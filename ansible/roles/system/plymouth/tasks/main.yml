@@ -1,0 +1,48 @@
+---
+- name: Install Plymouth (Debian)
+  ansible.builtin.package:
+    name: "{{ plymouth_packages }}"
+    state: present
+  when: ansible_facts["os_family"] == "Debian"
+  notify:
+    - Rebuild initramfs (Debian)
+
+- name: Install Plymouth (Arch)
+  ansible.builtin.command:
+    cmd: paru -S --needed --noconfirm plymouth
+    creates: /usr/bin/plymouth
+  when: ansible_facts["os_family"] == "Archlinux"
+
+- name: Add plymouth hook to mkinitcpio (Arch)
+  ansible.builtin.lineinfile:
+    path: /etc/mkinitcpio.conf
+    regexp: '^HOOKS='
+    line: 'HOOKS=(base udev plymouth autodetect modconf block filesystems keyboard fsck)'
+    backup: true
+  when: ansible_facts["os_family"] == "Archlinux"
+  notify:
+    - Rebuild initramfs (Arch)
+
+- name: Clone Plymouth themes repo
+  ansible.builtin.git:
+    repo: "{{ plymouth_theme_repo }}"
+    dest: /tmp/plymouth-themes
+    depth: 1
+    version: master
+
+- name: Install selected theme
+  ansible.builtin.copy:
+    src: "/tmp/plymouth-themes/themes/{{ plymouth_theme_name }}/"
+    dest: "/usr/share/plymouth/themes/{{ plymouth_theme_name }}/"
+    remote_src: true
+    mode: "0755"
+
+- name: Set default Plymouth theme
+  ansible.builtin.command:
+    cmd: plymouth-set-default-theme {{ plymouth_theme_name }}
+  changed_when: true
+
+- name: Remove theme repo clone
+  ansible.builtin.file:
+    path: /tmp/plymouth-themes
+    state: absent

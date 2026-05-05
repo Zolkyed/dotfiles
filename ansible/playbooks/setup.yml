@@ -58,6 +58,9 @@
       tags: ssh
     - role: system/aur
       tags: aur
+    - role: system/plymouth
+      tags: plymouth
+      when: plymouth_enabled
     - role: system/bluetooth
       tags: bluetooth
       when: bluetooth_enabled
