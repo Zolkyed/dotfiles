@@ -72,6 +72,10 @@
           - "{{ konsave_profile_name }}"
       changed_when: true
 
+    - name: Apply keybind overrides after konsave import
+      ansible.builtin.include_role:
+        name: desktop/kde/keybinds
+
   always:
     - name: Remove konsave download directory
       ansible.builtin.file:
