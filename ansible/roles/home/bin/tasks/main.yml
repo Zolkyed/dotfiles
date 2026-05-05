@@ -16,3 +16,19 @@
     mode: "0755"
   with_fileglob:
     - "{{ role_path }}/files/*"
+
+- name: Ensure ~/.config/homectl exists
+  ansible.builtin.file:
+    path: "{{ user_home }}/.config/homectl"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0755"
+
+- name: Deploy homectl config
+  ansible.builtin.template:
+    src: homectl-config.yml.j2
+    dest: "{{ user_home }}/.config/homectl/config.yml"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0644"

@@ -3,7 +3,9 @@
 # Add scripts to roles/home/user/bin/files/ and they will be installed automatically
 bin_dest: "{{ user_home }}/.local/bin"
 
-webhookUrl: "https://trigger.macrodroid.com/98a1a60c-632c-47ca-b33e-7e40ad3f23ab/findPhone"
-baseUrl: "https://home.mihon.org"
-entityIDFan: "switch.charles_fan"
-entityIDLight: "light.charles_light"
+# Home Assistant connection
+home_assistant_base_url: "https://home.mihon.org"
+home_assistant_entity_id_fan: "switch.charles_fan"
+
+# MacroDroid webhook for "find my phone"
+webhook_url: "https://trigger.macrodroid.com/98a1a60c-632c-47ca-b33e-7e40ad3f23ab/findPhone"

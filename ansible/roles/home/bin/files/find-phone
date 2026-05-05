@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+
+import sys
+import urllib.request
+import urllib.error
+from pathlib import Path
+
+import yaml
+
+CONFIG_PATH = Path.home() / ".config/homectl/config.yml"
+
+
+def load_config():
+    if not CONFIG_PATH.exists():
+        print(f"Config not found: {CONFIG_PATH}", file=sys.stderr)
+        sys.exit(1)
+
+    with open(CONFIG_PATH) as f:
+        return yaml.safe_load(f)
+
+
+def main():
+    config = load_config()
+    url = config["webhook_url"]
+
+    try:
+        urllib.request.urlopen(url)
+    except urllib.error.URLError as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

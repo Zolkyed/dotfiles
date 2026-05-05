@@ -74,7 +74,7 @@ ansible-playbook playbooks/setup.yml --check --diff -l desktop
 │               ├── dev/          # Dev tools, nvm, rustup
 │               └── bin/          # Custom scripts → ~/.local/bin
 │                   └── files/
-│                       └── ha-fan-toggle
+│                       └── fan-toggle
 ├── chezmoi/                  # User dotfiles (applied by chezmoi)
 │   ├── dot_gitconfig         # → ~/.gitconfig
 │   ├── dot_gitconfig-github  # → ~/.gitconfig-github
