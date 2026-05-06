@@ -1,7 +1,7 @@
 ---
 - name: Set system system_locale (Arch)
   ansible.builtin.copy:
-    dest: /etc/system_locale.conf
+    dest: /etc/locale.conf
     content: "LANG={{ system_locale }}\n"
     owner: root
     group: root
@@ -11,7 +11,7 @@
 
 - name: Set system system_locale (Debian)
   ansible.builtin.copy:
-    dest: /etc/default/system_locale
+    dest: /etc/default/locale
     content: "LANG={{ system_locale }}\n"
     owner: root
     group: root
@@ -20,7 +20,7 @@
   when: ansible_facts["os_family"] == "Debian"
 
 - name: Set system system_timezone
-  community.general.system_timezone:
+  community.general.timezone:
     name: "{{ system_timezone }}"
   become: true
 

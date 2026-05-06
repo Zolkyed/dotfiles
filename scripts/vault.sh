@@ -14,6 +14,7 @@ VAULT_FILES=(
   "ansible/inventory/group_vars/vault.yml"
   "ansible/inventory/host_vars/desktop/vault.yml"
   "ansible/inventory/host_vars/laptop/vault.yml"
+  "ansible/inventory/host_vars/server/vault.yml"
 )
 
 if [[ $# -ne 1 || ( "$1" != "encrypt" && "$1" != "decrypt" ) ]]; then
