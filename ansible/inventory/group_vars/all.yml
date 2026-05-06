@@ -8,80 +8,52 @@ user_home: "/home/{{ user_name }}"
 user_shell: /bin/zsh
 
 # ---------------------------------------------------------------------------
-# Feature flags — defaults off/on globally; override per host in host_vars
+# Feature flags — shared defaults; override per host in host_vars
 # ---------------------------------------------------------------------------
 
-# Boot
+# System
 grub_enabled: false
 splashboot_enabled: false
-
-# Hardware
+grub_btrfs_enabled: false
 nvidia_enabled: false
 bluetooth_enabled: true
-
-# Audio
 pipewire_enabled: true
+docker_enabled: true
+virtualization_enabled: true
+vpn_enabled: true
+firewall_enabled: true
+fail2ban_enabled: true
+btrfs_enabled: false
+snapper_enabled: false
 
-# Desktop Environments
+# Desktop
+display_manager_enabled: true
 kde_enabled: true
 hyprland_enabled: false
 niri_enabled: false
 
-# AI Tools
+# Home
 ai_enabled: true
-
-# Services
-display_manager_enabled: true
-docker_enabled: true
-virtualization_enabled: true
 gaming_enabled: false
-vpn_enabled: true
-firewall_enabled: true
-fail2ban_enabled: true
+browser_enabled: false
 
 # ---------------------------------------------------------------------------
-# System defaults
-# ---------------------------------------------------------------------------
-system_display_manager: sddm
-system_virtualization_backend: kvm   # kvm or virtualbox
-
-system_locale: en_US.UTF-8
-system_timezone: America/Toronto
-system_keymap: us
-system_hostname: "{{ inventory_hostname }}"
-system_sysctl_settings: {}
-
-# ---------------------------------------------------------------------------
-# Splash boot
+# Home
 # ---------------------------------------------------------------------------
 
-# ---------------------------------------------------------------------------
-# NVIDIA
-# ---------------------------------------------------------------------------
-# Arch can use 'auto'. Debian must pin a specific package, e.g. nvidia-driver.
-system_nvidia_driver_package: auto
-system_nvidia_persistence_enabled: false
+# Browser
+home_browser_package: ""
+home_browser_policy_dir: /etc/chromium/policies/managed
+home_browser_policy_file: zz-browser-policy.json
+home_browser_extensions: []
+home_browser_extra_policies: {}
 
-# ---------------------------------------------------------------------------
-# SSH
-# ---------------------------------------------------------------------------
-sshd_permit_root_login: "no"
-sshd_password_authentication: "no"
-sshd_pubkey_authentication: "yes"
-sshd_port: 22
-sshd_x11_forwarding: "no"
-sshd_allow_tcp_forwarding: "no"
-
-# ---------------------------------------------------------------------------
-# Dev tool installers
-# ---------------------------------------------------------------------------
+# Dev
 home_dev_install_nvm: true
 home_dev_nvm_version: "0.40.3"
 home_dev_install_rust: true
 
-# ---------------------------------------------------------------------------
 # Dotfiles
-# ---------------------------------------------------------------------------
 home_dotfiles_repo: "https://github.com/Zolkyed/dotfiles.git"
 home_dotfiles_repo_branch: "main"
 home_dotfiles_use_repo: false
@@ -89,18 +61,9 @@ home_dotfiles_use_repo: false
 # false = copy from local home_dotfiles_chezmoi_source
 home_dotfiles_chezmoi_source: "{{ playbook_dir }}/../../chezmoi"
 
-# ---------------------------------------------------------------------------
-# Hayase
-# ---------------------------------------------------------------------------
-home_hayase_api_url: https://api.hayase.watch/latest
-home_hayase_appimage_dest: /usr/local/bin/hayase
-
-# ---------------------------------------------------------------------------
-# Flatpaks (distro-agnostic)
-# ---------------------------------------------------------------------------
+# Flatpak
 home_base_flatpaks:
   - com.discordapp.Discord
-  - com.brave.Browser
   - com.visualstudio.code
   - com.spotify.Client
 
@@ -109,8 +72,12 @@ home_gaming_flatpaks:
   - net.pcsx2.PCSX2
   - net.davidotek.pupgui2
 
+# Hayase
+home_hayase_api_url: https://api.hayase.watch/latest
+home_hayase_appimage_dest: /usr/local/bin/hayase
+
 # ---------------------------------------------------------------------------
-# Wayland desktop packages
+# Desktop
 # ---------------------------------------------------------------------------
 desktop_hyprland_packages:
   - hyprland
@@ -148,8 +115,19 @@ desktop_niri_packages:
   - pavucontrol
 
 # ---------------------------------------------------------------------------
-# Nerd Fonts (downloaded from GitHub)
+# System
 # ---------------------------------------------------------------------------
+
+# Display manager / locale / sysctl / virtualization
+system_display_manager: sddm
+system_virtualization_backend: kvm   # kvm or virtualbox
+system_locale: en_US.UTF-8
+system_timezone: America/Toronto
+system_keymap: us
+system_hostname: "{{ inventory_hostname }}"
+system_sysctl_settings: {}
+
+# Fonts
 system_fonts_nerd:
   version: "3.4.0"
   families:
@@ -157,3 +135,16 @@ system_fonts_nerd:
     - Hack
     - FiraCode
     - NerdFontsSymbolsOnly
+
+# NVIDIA
+# Arch can use 'auto'. Debian must pin a specific package, e.g. nvidia-driver.
+system_nvidia_driver_package: auto
+system_nvidia_persistence_enabled: false
+
+# SSH
+system_sshd_permit_root_login: "no"
+system_sshd_password_authentication: "no"
+system_sshd_pubkey_authentication: "yes"
+system_sshd_port: 22
+system_sshd_x11_forwarding: "no"
+system_sshd_allow_tcp_forwarding: "no"

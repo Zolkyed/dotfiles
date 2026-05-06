@@ -15,11 +15,20 @@ setup-dev:
 run host="desktop" v="-v":
     cd {{ANSIBLE_DIR}} && ansible-playbook {{PLAYBOOK}} -l {{host}} {{v}}
 
+run-local host="desktop" v="-v":
+    cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{PLAYBOOK}} -l {{host}} {{v}}
+
 check host="desktop":
     cd {{ANSIBLE_DIR}} && ansible-playbook {{PLAYBOOK}} --check --diff -l {{host}}
 
+check-local host="desktop":
+    cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{PLAYBOOK}} --check --diff -l {{host}}
+
 tags host="desktop" tags="all":
     cd {{ANSIBLE_DIR}} && ansible-playbook {{PLAYBOOK}} -l {{host}} --tags {{tags}}
+
+tags-local host="desktop" tags="all":
+    cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{PLAYBOOK}} -l {{host}} --tags {{tags}}
 
 bootstrap:
     bash scripts/run_once_install-ansible.sh
@@ -51,8 +60,11 @@ list-tasks:
 inventory:
     cd {{ANSIBLE_DIR}} && ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-inventory -i inventory/hosts.yml --list >/dev/null
 
+inventory-local:
+    cd {{ANSIBLE_DIR}} && ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-inventory -i inventory/local.yml --list >/dev/null
+
 test-tags:
-    cd {{ANSIBLE_DIR}} && for tag in always package_cache sysctl user aur packages hayase locale fonts flatpak docker nvidia virtualization dotfiles ssh_keys dev bin networking vpn sshd firewall fail2ban bluetooth pipewire splashboot bootloader display_manager rclone konsave konsave-import konsave-export konsave-delete keybinds ai gaming hyprland niri; do \
+    cd {{ANSIBLE_DIR}} && for tag in always package_cache sysctl btrfs user aur packages hayase locale fonts flatpak docker nvidia virtualization dotfiles browser ssh_keys dev bin networking vpn sshd firewall fail2ban bluetooth pipewire splashboot bootloader snapper grub_btrfs display_manager rclone konsave konsave-import konsave-export konsave-delete keybinds ai gaming hyprland niri; do \
         output=$(ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-playbook {{PLAYBOOK}} --list-tasks --tags "$tag" 2>&1); \
         status=$?; \
         task_count=$(printf '%s\n' "$output" | rg -c '^      .+TAGS:'); \
@@ -66,6 +78,7 @@ test-tags:
 ci:
     just syntax
     just inventory
+    just inventory-local
     just list-tasks
     just test-tags
     just lint

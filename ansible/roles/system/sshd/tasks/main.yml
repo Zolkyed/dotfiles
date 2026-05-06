@@ -13,17 +13,17 @@
     validate: sshd -t -f %s
   loop:
     - regexp: '^#?PermitRootLogin'
-      line: "PermitRootLogin {{ sshd_permit_root_login }}"
+      line: "PermitRootLogin {{ system_sshd_permit_root_login }}"
     - regexp: '^#?PasswordAuthentication'
-      line: "PasswordAuthentication {{ sshd_password_authentication }}"
+      line: "PasswordAuthentication {{ system_sshd_password_authentication }}"
     - regexp: '^#?PubkeyAuthentication'
-      line: "PubkeyAuthentication {{ sshd_pubkey_authentication }}"
+      line: "PubkeyAuthentication {{ system_sshd_pubkey_authentication }}"
     - regexp: '^#?Port '
-      line: "Port {{ sshd_port }}"
+      line: "Port {{ system_sshd_port }}"
     - regexp: '^#?X11Forwarding'
-      line: "X11Forwarding {{ sshd_x11_forwarding }}"
+      line: "X11Forwarding {{ system_sshd_x11_forwarding }}"
     - regexp: '^#?AllowTcpForwarding'
-      line: "AllowTcpForwarding {{ sshd_allow_tcp_forwarding }}"
+      line: "AllowTcpForwarding {{ system_sshd_allow_tcp_forwarding }}"
   notify: Restart sshd
 
 - name: Enable and start sshd

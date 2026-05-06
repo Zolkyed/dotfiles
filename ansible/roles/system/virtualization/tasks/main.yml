@@ -13,7 +13,7 @@
 
 - name: Enable and start libvirtd
   ansible.builtin.systemd:
-    name: "{{ libvirt_service }}"
+    name: "{{ system_libvirt_service }}"
     enabled: true
     state: started
   when: system_virtualization_backend == "kvm"

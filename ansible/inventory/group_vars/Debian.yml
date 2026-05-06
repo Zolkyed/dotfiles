@@ -1,5 +1,13 @@
 ---
-system_docker_repo_codename: "{{ ansible_facts['distribution_release'] }}"
+# ---------------------------------------------------------------------------
+# Home
+# ---------------------------------------------------------------------------
+home_user_groups:
+  - sudo
+  - audio
+  - video
+  - plugdev
+  - netdev
 
 home_core_packages:
   - curl
@@ -106,6 +114,54 @@ home_dev_packages:
   - gdb
   - cmake
 
+# ---------------------------------------------------------------------------
+# System
+# ---------------------------------------------------------------------------
+
+# Boot / repo metadata
+system_docker_repo_codename: "{{ ansible_facts['distribution_release'] }}"
+
+# Bluetooth
+system_bluetooth_packages:
+  - bluez
+  - bluetooth
+  - bluez-tools
+
+# Btrfs / snapshots
+system_btrfs_packages:
+  - btrfs-progs
+
+system_snapper_packages:
+  - snapper
+
+system_grub_btrfs_packages:
+  - grub-btrfs
+
+# Bootloader
+system_grub_packages_bios:
+  - grub2-common
+  - grub-pc
+
+system_grub_packages_uefi:
+  - grub2-common
+  - grub-efi-amd64
+  - efibootmgr
+
+system_grub_bootloader_id: debian
+
+# Docker
+system_docker_engine_packages:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+
+system_docker_plugin_packages:
+  - docker-buildx-plugin
+  - docker-compose-plugin
+
+system_docker_group: docker
+
+# Fonts
 system_fonts_packages:
   - fonts-noto
   - fonts-noto-cjk
@@ -114,10 +170,43 @@ system_fonts_packages:
   - fonts-liberation
   - fonts-freefont-ttf
 
+# Networking / VPN
+system_networking_packages:
+  - network-manager
+  - systemd-resolved
+
+system_vpn_packages:
+  - wireguard-tools
+  - openvpn
+  - network-manager-openvpn
+  - network-manager-openvpn-gnome
+
+# NVIDIA
 system_nvidia_packages:
   - nvidia-settings
   - libvulkan1
   - mesa-vdpau-drivers
+
+# PipeWire
+system_pipewire_packages:
+  - pipewire
+  - pipewire-pulse
+  - pipewire-alsa
+  - pipewire-jack
+  - wireplumber
+  - gstreamer1.0-pipewire
+
+# Splash boot
+system_splashboot_packages:
+  - plymouth
+  - plymouth-themes
+
+# SSH
+system_sshd_package: openssh-server
+system_sshd_service: ssh
+
+# Virtualization
+system_libvirt_service: libvirtd
 
 system_virtualization_kvm_packages:
   - qemu-system-x86
@@ -132,66 +221,6 @@ system_virtualization_virtualbox_packages:
   - virtualbox
   - virtualbox-ext-pack
 
-libvirt_service: libvirtd
 system_virtualization_user_groups:
   - libvirt
   - kvm
-
-system_pipewire_packages:
-  - pipewire
-  - pipewire-pulse
-  - pipewire-alsa
-  - pipewire-jack
-  - wireplumber
-  - gstreamer1.0-pipewire
-
-system_bluetooth_packages:
-  - bluez
-  - bluetooth
-  - bluez-tools
-
-system_docker_engine_packages:
-  - docker-ce
-  - docker-ce-cli
-  - containerd.io
-
-system_docker_plugin_packages:
-  - docker-buildx-plugin
-  - docker-compose-plugin
-
-system_docker_group: docker
-
-system_networking_packages:
-  - network-manager
-  - systemd-resolved
-
-system_vpn_packages:
-  - wireguard-tools
-  - openvpn
-  - network-manager-openvpn
-  - network-manager-openvpn-gnome
-
-system_splashboot_packages:
-  - plymouth
-  - plymouth-themes
-
-system_sshd_package: openssh-server
-system_sshd_service: ssh
-
-system_grub_packages_bios:
-  - grub2-common
-  - grub-pc
-
-system_grub_packages_uefi:
-  - grub2-common
-  - grub-efi-amd64
-  - efibootmgr
-
-system_grub_bootloader_id: debian
-
-home_user_groups:
-  - sudo
-  - audio
-  - video
-  - plugdev
-  - netdev

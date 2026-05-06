@@ -1,9 +1,13 @@
 ---
+# ---------------------------------------------------------------------------
+# Home
+# ---------------------------------------------------------------------------
+home_user_groups:
+  - wheel
+  - audio
+  - video
 
-system_aur_build_packages:
-  - base-devel
-  - git
-  - rust
+home_browser_package: brave-bin
 
 home_core_packages:
   - curl
@@ -106,6 +110,52 @@ home_dev_packages:
   - gdb
   - cmake
 
+# ---------------------------------------------------------------------------
+# System
+# ---------------------------------------------------------------------------
+
+# AUR
+system_aur_build_packages:
+  - base-devel
+  - git
+  - rust
+
+# Bluetooth
+system_bluetooth_packages:
+  - bluez
+  - bluez-utils
+
+# Btrfs / snapshots
+system_btrfs_packages:
+  - btrfs-progs
+
+system_snapper_packages:
+  - snapper
+
+system_grub_btrfs_packages:
+  - grub-btrfs
+
+# Bootloader
+system_grub_packages_bios:
+  - grub
+
+system_grub_packages_uefi:
+  - grub
+  - efibootmgr
+
+system_grub_bootloader_id: GRUB
+
+# Docker
+system_docker_engine_packages:
+  - docker
+
+system_docker_plugin_packages:
+  - docker-compose
+  - docker-buildx
+
+system_docker_group: docker
+
+# Fonts
 system_fonts_packages:
   - noto-fonts
   - noto-fonts-cjk
@@ -114,9 +164,39 @@ system_fonts_packages:
   - ttf-liberation
   - gnu-free-fonts
 
+# Networking / VPN
+system_networking_packages:
+  - networkmanager
+
+system_vpn_packages:
+  - wireguard-tools
+  - openvpn
+  - networkmanager-openvpn
+
+# NVIDIA
 system_nvidia_packages:
   - nvidia-settings
   - vulkan-icd-loader
+
+# PipeWire
+system_pipewire_packages:
+  - pipewire
+  - pipewire-pulse
+  - pipewire-alsa
+  - pipewire-jack
+  - wireplumber
+  - gst-plugin-pipewire
+
+# Splash boot
+system_splashboot_packages:
+  - plymouth
+
+# SSH
+system_sshd_package: openssh
+system_sshd_service: sshd
+
+# Virtualization
+system_libvirt_service: libvirtd
 
 system_virtualization_kvm_packages:
   - qemu-full
@@ -130,56 +210,6 @@ system_virtualization_virtualbox_packages:
   - virtualbox
   - virtualbox-host-modules-arch
 
-libvirt_service: libvirtd
 system_virtualization_user_groups:
   - libvirt
   - kvm
-
-system_pipewire_packages:
-  - pipewire
-  - pipewire-pulse
-  - pipewire-alsa
-  - pipewire-jack
-  - wireplumber
-  - gst-plugin-pipewire
-
-system_bluetooth_packages:
-  - bluez
-  - bluez-utils
-
-system_docker_engine_packages:
-  - docker
-
-system_docker_plugin_packages:
-  - docker-compose
-  - docker-buildx
-
-system_docker_group: docker
-
-system_networking_packages:
-  - networkmanager
-
-system_vpn_packages:
-  - wireguard-tools
-  - openvpn
-  - networkmanager-openvpn
-
-system_splashboot_packages:
-  - plymouth
-
-system_sshd_package: openssh
-system_sshd_service: sshd
-
-system_grub_packages_bios:
-  - grub
-
-system_grub_packages_uefi:
-  - grub
-  - efibootmgr
-
-system_grub_bootloader_id: GRUB
-
-home_user_groups:
-  - wheel
-  - audio
-  - video

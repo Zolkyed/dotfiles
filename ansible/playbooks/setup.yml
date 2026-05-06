@@ -38,6 +38,9 @@
       tags: package_cache
     - role: system/sysctl
       tags: sysctl
+    - role: system/btrfs
+      tags: btrfs
+      when: btrfs_enabled
     - role: home/user
       tags: user
     - role: system/aur
@@ -64,6 +67,9 @@
       when: virtualization_enabled
     - role: home/dotfiles
       tags: dotfiles
+    - role: home/browser
+      tags: browser
+      when: browser_enabled
     - role: home/ssh_keys
       tags: ssh_keys
     - role: home/dev
@@ -95,6 +101,14 @@
     - role: system/bootloader
       tags: bootloader
       when: grub_enabled
+    - role: system/snapper
+      tags: snapper
+      when: snapper_enabled
+    - role: system/grub-btrfs
+      tags: grub_btrfs
+      when:
+        - grub_btrfs_enabled
+        - grub_enabled
     - role: system/display_manager
       tags: display_manager
       when: display_manager_enabled

@@ -23,7 +23,7 @@
   ansible.builtin.git:
     repo: "{{ home_dotfiles_repo }}"
     dest: "{{ user_home }}/.local/share/chezmoi"
-    version: "{{ home_home_dotfiles_repo_branch }}"
+    version: "{{ home_dotfiles_repo_branch }}"
     update: false
   become: true
   become_user: "{{ user_name }}"

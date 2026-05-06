@@ -5,13 +5,16 @@ Full machine provisioning for Debian and Arch Linux.
 ## Usage
 
 ```bash
-# From repo root — bootstrap everything from scratch
+# From repo root - bootstrap everything from scratch
 bash scripts/run_once_install-ansible.sh
 
-# Already installed
+# Run against a host over SSH
 cd ansible
 ansible-playbook playbooks/setup.yml -l desktop
 ansible-playbook playbooks/setup.yml -l laptop
+
+# Run directly on the current machine
+ansible-playbook -i inventory/local.yml playbooks/setup.yml -l desktop
 
 # Local CI/lint tooling
 just setup-dev
@@ -20,6 +23,14 @@ just ci
 # Dry-run
 ansible-playbook playbooks/setup.yml --check --diff -l desktop
 ```
+
+Inventory hosts default to SSH. `inventory/hosts.yml` maps `desktop`, `laptop`, and
+`server` to same-named SSH hosts and uses `ansible_user: charl`. Override
+`ansible_host` or `ansible_user` there if your SSH target names differ.
+
+`inventory/local.yml` is for running directly on the current machine. It maps the
+same logical hosts to `localhost` with `ansible_connection: local`, so your
+`host_vars/desktop`, `host_vars/laptop`, and `host_vars/server` still apply.
 
 ## Inventory variables
 
@@ -46,6 +57,9 @@ ansible-playbook playbooks/setup.yml --check --diff -l desktop
 | ssh | sshd hardening |
 | bluetooth | bluez |
 | bootloader | GRUB (auto-detects BIOS vs UEFI) |
+| btrfs | Subvolumes, mounts, scrub/balance timers, quotas |
+| snapper | Snapshot configs and timeline/cleanup timers |
+| grub-btrfs | GRUB snapshot boot menu integration |
 | display_manager | SDDM |
 
 ### desktop/
@@ -59,6 +73,7 @@ ansible-playbook playbooks/setup.yml --check --diff -l desktop
 | flatpak | Flathub remote + user apps |
 | (main) | User account, shell, groups |
 | dotfiles | chezmoi install + `apply --force` |
+| browser | Brave install + managed extension policy |
 | home_ssh_keys | Deploy keys from SOPS vault |
 | dev | Dev tools, nvm, rustup |
 | bin | Custom scripts → `~/.local/bin` |

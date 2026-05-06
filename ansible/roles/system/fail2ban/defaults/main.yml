@@ -5,4 +5,4 @@ system_fail2ban_packages:
 system_fail2ban_bantime: 3600
 system_fail2ban_findtime: 600
 system_fail2ban_maxretry: 5
-system_fail2ban_sshd_port: "{{ sshd_port }}"
+system_fail2ban_sshd_port: "{{ system_sshd_port }}"

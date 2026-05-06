@@ -3,7 +3,7 @@ system_firewall_packages:
   - ufw
 
 system_firewall_allow_ports:
-  - "{{ sshd_port }}"
+  - "{{ system_sshd_port }}"
 
 system_firewall_default_incoming: deny
 system_firewall_default_outgoing: allow

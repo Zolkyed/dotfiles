@@ -1,0 +1,6 @@
+---
+system_grub_btrfs_manage_packages: true
+system_grub_btrfs_packages: []
+
+system_grub_btrfs_enable_daemon: true
+system_grub_btrfs_service: grub-btrfsd.service

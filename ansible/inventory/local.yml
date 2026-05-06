@@ -1,0 +1,12 @@
+---
+all:
+  vars:
+    ansible_connection: local
+    ansible_user: charl
+  hosts:
+    desktop:
+      ansible_host: localhost
+    laptop:
+      ansible_host: localhost
+    server:
+      ansible_host: localhost
