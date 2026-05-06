@@ -4,7 +4,7 @@
 #        ./scripts/vault.sh decrypt
 set -euo pipefail
 
-SOPS_AGE_KEY_FILE="${SOPS_AGE_KEY_FILE:-$HOME/.config/sops/age/key}"
+SOPS_AGE_KEY_FILE="${SOPS_AGE_KEY_FILE:-$HOME/.config/sops/age/keys.txt}"
 export SOPS_AGE_KEY_FILE
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -24,7 +24,7 @@ fi
 ACTION="$1"
 
 is_encrypted() {
-  sops filestatus "$1" 2>/dev/null | grep -q '"encrypted": true'
+  sops filestatus "$1" 2>/dev/null | grep -Eq '"encrypted"[[:space:]]*:[[:space:]]*true'
 }
 
 for rel_path in "${VAULT_FILES[@]}"; do
