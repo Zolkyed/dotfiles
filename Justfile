@@ -49,7 +49,7 @@ test-tags:
     cd {{ANSIBLE_DIR}} && for tag in always package_cache user aur packages hayase locale fonts flatpak docker nvidia virtualization dotfiles ssh_keys dev bin networking sshd bluetooth pipewire bootloader display_manager rclone konsave konsave-import konsave-export konsave-delete keybinds ai gaming hyprland niri; do \
         output=$(ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-playbook {{PLAYBOOK}} --list-tasks --tags "$tag" 2>&1); \
         status=$?; \
-        task_count=$(printf '%s\n' "$output" | rg -c '^      .+TAGS:' || true); \
+        task_count=$(printf '%s\n' "$output" | rg -c '^      .+TAGS:'); \
         if [[ "$status" -ne 0 || "$task_count" -eq 0 ]]; then \
             printf 'FAIL %s status=%s tasks=%s\n%s\n' "$tag" "$status" "$task_count" "$output"; \
             exit 1; \
