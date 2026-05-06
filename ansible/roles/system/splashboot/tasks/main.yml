@@ -36,7 +36,7 @@
       {{
         (
           (system_grub_cmdline_linux_default | default('')).split()
-          + system_splashboot_grub_options
+          + (system_splashboot_grub_options | default([]))
         )
         | unique
         | join(' ')
