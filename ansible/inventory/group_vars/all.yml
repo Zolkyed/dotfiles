@@ -13,6 +13,7 @@ user_shell: /bin/zsh
 
 # Boot
 grub_enabled: false
+splashboot_enabled: false
 
 # Hardware
 nvidia_enabled: false
@@ -34,6 +35,7 @@ display_manager_enabled: true
 docker_enabled: true
 virtualization_enabled: true
 gaming_enabled: false
+vpn_enabled: true
 
 # ---------------------------------------------------------------------------
 # System defaults
@@ -44,6 +46,16 @@ virtualization_backend: kvm   # kvm or virtualbox
 locale: en_US.UTF-8
 timezone: America/Toronto
 keymap: us
+system_hostname: "{{ inventory_hostname }}"
+sysctl_settings: {}
+
+# ---------------------------------------------------------------------------
+# Splash boot
+# ---------------------------------------------------------------------------
+splashboot_theme: spinner
+splashboot_grub_options:
+  - quiet
+  - splash
 
 # ---------------------------------------------------------------------------
 # NVIDIA

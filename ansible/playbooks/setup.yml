@@ -36,6 +36,8 @@
   roles:
     - role: system/package_cache
       tags: package_cache
+    - role: system/sysctl
+      tags: sysctl
     - role: home/user
       tags: user
     - role: system/aur
@@ -70,6 +72,9 @@
       tags: bin
     - role: system/networking
       tags: networking
+    - role: system/vpn
+      tags: vpn
+      when: vpn_enabled
     - role: system/sshd
       tags: sshd
     - role: system/bluetooth
@@ -78,6 +83,9 @@
     - role: system/pipewire
       tags: pipewire
       when: pipewire_enabled
+    - role: system/splashboot
+      tags: splashboot
+      when: splashboot_enabled
     - role: system/bootloader
       tags: bootloader
       when: grub_enabled

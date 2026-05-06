@@ -1,0 +1,5 @@
+---
+- name: Splashboot | Update initramfs
+  ansible.builtin.command:
+    cmd: "{{ 'update-initramfs -u' if ansible_facts['os_family'] == 'Debian' else 'mkinitcpio -P' }}"
+  changed_when: true

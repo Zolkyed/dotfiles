@@ -8,35 +8,94 @@ on:
       - main
 
 jobs:
-  lint:
-    name: Ansible and shell checks
+  ansible:
+    name: Ansible checks (${{ matrix.name }})
     runs-on: ubuntu-latest
+    container: ${{ matrix.container }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Debian
+            container: debian:stable
+            install: |
+              apt-get update
+              apt-get install -y --no-install-recommends \
+                ansible \
+                ansible-lint \
+                ca-certificates \
+                git \
+                ripgrep \
+                shellcheck \
+                yamllint
+          - name: Arch Linux
+            container: archlinux:latest
+            install: |
+              pacman -Syu --noconfirm \
+                ansible \
+                ansible-lint \
+                ca-certificates \
+                git \
+                ripgrep \
+                shellcheck \
+                yamllint
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.x"
-          cache: pip
-
-      - name: Set up just
-        uses: extractions/setup-just@v3
-
-      - name: Install system tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ripgrep shellcheck
-
-      - name: Install Python linters
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install ansible ansible-lint yamllint
+      - name: Install CI dependencies
+        run: ${{ matrix.install }}
 
       - name: Install Ansible collections
         run: ansible-galaxy collection install -r ansible/requirements.yml
 
-      - name: Run checks
-        run: just ci
+      - name: Ansible syntax check
+        working-directory: ansible
+        env:
+          ANSIBLE_LOCAL_TEMP: /tmp/ansible-local
+          ANSIBLE_REMOTE_TEMP: /tmp/ansible-remote
+        run: ansible-playbook playbooks/setup.yml --syntax-check
+
+      - name: Ansible inventory check
+        working-directory: ansible
+        env:
+          ANSIBLE_LOCAL_TEMP: /tmp/ansible-local
+          ANSIBLE_REMOTE_TEMP: /tmp/ansible-remote
+        run: ansible-inventory -i inventory/hosts.yml --list >/dev/null
+
+      - name: Ansible task listing
+        working-directory: ansible
+        env:
+          ANSIBLE_LOCAL_TEMP: /tmp/ansible-local
+          ANSIBLE_REMOTE_TEMP: /tmp/ansible-remote
+        run: ansible-playbook playbooks/setup.yml --list-tasks
+
+      - name: Ansible tag coverage
+        working-directory: ansible
+        env:
+          ANSIBLE_LOCAL_TEMP: /tmp/ansible-local
+          ANSIBLE_REMOTE_TEMP: /tmp/ansible-remote
+        run: |
+          for tag in always package_cache sysctl user aur packages hayase locale fonts flatpak docker nvidia virtualization dotfiles ssh_keys dev bin networking vpn sshd bluetooth pipewire splashboot bootloader display_manager rclone konsave konsave-import konsave-export konsave-delete keybinds ai gaming hyprland niri; do
+            output=$(ansible-playbook playbooks/setup.yml --list-tasks --tags "$tag" 2>&1)
+            status=$?
+            task_count=$(printf '%s\n' "$output" | rg -c '^      .+TAGS:')
+
+            if [[ "$status" -ne 0 || "$task_count" -eq 0 ]]; then
+              printf 'FAIL %s status=%s tasks=%s\n%s\n' "$tag" "$status" "$task_count" "$output"
+              exit 1
+            fi
+
+            printf 'PASS %-18s %s tasks\n' "$tag" "$task_count"
+          done
+
+      - name: Ansible lint
+        working-directory: ansible
+        run: ansible-lint
+
+      - name: YAML lint
+        run: yamllint -c .yamllint ansible .github
+
+      - name: Shell lint
+        run: shellcheck scripts/*.sh

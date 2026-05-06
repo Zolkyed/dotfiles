@@ -21,12 +21,15 @@ core_packages:
   - mpv
   - kitty
   - fastfetch
+  - man-db
+  - man-pages
 
 utility_packages:
   - ncdu
   - ripgrep
   - vulkan-tools
   - fuse2
+  - fuse3
   - atuin
   - openssl
   - pamixer
@@ -88,7 +91,6 @@ aur_gaming_packages:
 
 dev_packages:
   - git
-  - base-devel
   - python
   - python-pip
   - python-pipx
@@ -154,6 +156,14 @@ docker_group: docker
 
 networking_packages:
   - networkmanager
+
+vpn_packages:
+  - wireguard-tools
+  - openvpn
+  - networkmanager-openvpn
+
+splashboot_packages:
+  - plymouth
 
 ssh_package: openssh
 ssh_service: sshd

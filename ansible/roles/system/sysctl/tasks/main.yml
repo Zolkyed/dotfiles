@@ -1,0 +1,16 @@
+---
+- name: Sysctl | Set hostname
+  ansible.builtin.hostname:
+    name: "{{ system_hostname }}"
+
+- name: Sysctl | Apply kernel parameters
+  ansible.posix.sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    state: present
+    sysctl_set: true
+    reload: true
+  loop: "{{ sysctl_settings | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+  when: sysctl_settings | length > 0

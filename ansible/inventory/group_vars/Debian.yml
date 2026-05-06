@@ -157,6 +157,16 @@ networking_packages:
   - network-manager
   - systemd-resolved
 
+vpn_packages:
+  - wireguard-tools
+  - openvpn
+  - network-manager-openvpn
+  - network-manager-openvpn-gnome
+
+splashboot_packages:
+  - plymouth
+  - plymouth-themes
+
 ssh_package: openssh-server
 ssh_service: ssh
 
