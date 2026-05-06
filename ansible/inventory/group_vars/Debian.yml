@@ -1,4 +1,8 @@
 ---
+docker_repo_codename: "{{ ansible_facts['distribution_release'] }}"
+hyprland_supported: false
+niri_supported: false
+
 core_packages:
   - curl
   - wget
@@ -72,9 +76,7 @@ gaming_packages:
   - libgamemodeauto0
   - goverlay
   - wine
-  - pcsx2
   - winetricks
-  - protontricks
   - piper
   - retroarch
 
@@ -89,6 +91,8 @@ dev_packages:
   - jq
   - yq
   - httpie
+  - ansible-lint
+  - yamllint
   - shellcheck
   - pre-commit
   - playwright
@@ -107,7 +111,6 @@ fonts_packages:
 nvidia_packages:
   - nvidia-settings
   - libvulkan1
-  - vulkan-tools
   - mesa-vdpau-drivers
 
 virtualization_kvm_packages:
@@ -122,6 +125,11 @@ virtualization_kvm_packages:
 virtualization_virtualbox_packages:
   - virtualbox
   - virtualbox-ext-pack
+
+libvirt_service: libvirtd
+virtualization_user_groups:
+  - libvirt
+  - kvm
 
 pipewire_packages:
   - pipewire
@@ -143,15 +151,14 @@ docker_packages:
   - docker-buildx-plugin
   - docker-compose-plugin
 
+docker_group: docker
+
 networking_packages:
   - network-manager
   - systemd-resolved
 
 ssh_package: openssh-server
 ssh_service: ssh
-
-plymouth_packages:
-  - plymouth
 
 grub_packages_bios:
   - grub2-common
@@ -164,47 +171,9 @@ grub_packages_uefi:
 
 grub_bootloader_id: debian
 
-hyprland_packages:
-  - hyprland
-  - xdg-desktop-portal-hyprland
-  - waybar
-  - rofi
-  - kitty
-  - wl-clipboard
-  - grim
-  - slurp
-  - brightnessctl
-  - playerctl
-  - pavucontrol
-  - network-manager-applet
-  - swaylock
-  - swayidle
-  - hyprpaper
-
-niri_packages:
-  - niri
-  - xdg-desktop-portal-wlr
-  - waybar
-  - kitty
-  - rofi
-  - dunst
-  - mako
-  - swaylock
-  - swayidle
-  - wl-clipboard
-  - grim
-  - slurp
-  - brightnessctl
-  - playerctl
-  - network-manager-applet
-  - pavucontrol
-
 user_groups:
   - sudo
   - audio
   - video
   - plugdev
   - netdev
-  - docker
-  - libvirt
-  - kvm

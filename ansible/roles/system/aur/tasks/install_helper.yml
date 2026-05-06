@@ -1,0 +1,41 @@
+---
+- name: AUR | Clone paru repository
+  ansible.builtin.git:
+    repo: "{{ paru_repo }}"
+    dest: "{{ paru_build_dir }}"
+    depth: 1
+    version: master
+  become: true
+  become_user: "{{ user_name }}"
+
+- name: AUR | Build paru package
+  ansible.builtin.command:
+    cmd: makepkg --noconfirm
+    chdir: "{{ paru_build_dir }}"
+  become: true
+  become_user: "{{ user_name }}"
+  environment:
+    HOME: "{{ user_home }}"
+
+- name: AUR | Find built paru package
+  ansible.builtin.find:
+    paths: "{{ paru_build_dir }}"
+    patterns: "paru-*.pkg.tar.*"
+    file_type: file
+  register: paru_built_packages
+
+- name: AUR | Assert paru package was built
+  ansible.builtin.assert:
+    that:
+      - paru_built_packages.files | length > 0
+    fail_msg: "No built package found for paru."
+
+- name: AUR | Install paru package
+  ansible.builtin.command:
+    argv: "{{ ['pacman', '-U', '--noconfirm'] + (paru_built_packages.files | map(attribute='path') | list) }}"
+  changed_when: true
+
+- name: AUR | Clean helper build directory
+  ansible.builtin.file:
+    path: "{{ paru_build_dir }}"
+    state: absent

@@ -1,9 +1,2 @@
 ---
 dev_packages: []
-
-# Node version manager
-install_nvm: true
-nvm_version: "0.40.3"
-
-# Rust (via rustup)
-install_rust: true

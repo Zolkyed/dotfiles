@@ -36,6 +36,54 @@ virtualization_enabled: true
 gaming_enabled: false
 
 # ---------------------------------------------------------------------------
+# System defaults
+# ---------------------------------------------------------------------------
+display_manager: sddm
+virtualization_backend: kvm   # kvm or virtualbox
+
+locale: en_US.UTF-8
+timezone: America/Toronto
+keymap: us
+
+# ---------------------------------------------------------------------------
+# NVIDIA
+# ---------------------------------------------------------------------------
+# Arch can use 'auto'. Debian must pin a specific package, e.g. nvidia-driver.
+nvidia_driver_package: auto
+nvidia_persistence_enabled: false
+
+# ---------------------------------------------------------------------------
+# SSH
+# ---------------------------------------------------------------------------
+sshd_permit_root_login: "no"
+sshd_password_authentication: "no"
+sshd_pubkey_authentication: "yes"
+sshd_port: 22
+sshd_x11_forwarding: "no"
+sshd_allow_tcp_forwarding: "no"
+
+# ---------------------------------------------------------------------------
+# Dev tool installers
+# ---------------------------------------------------------------------------
+install_nvm: true
+nvm_version: "0.40.3"
+install_rust: true
+
+# ---------------------------------------------------------------------------
+# Dotfiles
+# ---------------------------------------------------------------------------
+dotfiles_repo: "https://github.com/Zolkyed/dotfiles.git"
+dotfiles_repo_branch: "main"
+dotfiles_use_repo: false          # true = git clone from dotfiles_repo; false = copy from local dotfiles_chezmoi_source
+dotfiles_chezmoi_source: "{{ playbook_dir }}/../../chezmoi"
+
+# ---------------------------------------------------------------------------
+# Hayase
+# ---------------------------------------------------------------------------
+hayase_api_url: https://api.hayase.watch/latest
+hayase_appimage_dest: /usr/local/bin/hayase
+
+# ---------------------------------------------------------------------------
 # Flatpaks (distro-agnostic)
 # ---------------------------------------------------------------------------
 base_flatpaks:
@@ -46,7 +94,46 @@ base_flatpaks:
 
 gaming_flatpaks:
   - com.heroicgameslauncher.hgl
+  - net.pcsx2.PCSX2
   - net.davidotek.pupgui2
+
+# ---------------------------------------------------------------------------
+# Wayland desktop packages
+# ---------------------------------------------------------------------------
+hyprland_packages:
+  - hyprland
+  - xdg-desktop-portal-hyprland
+  - waybar
+  - rofi
+  - kitty
+  - wl-clipboard
+  - grim
+  - slurp
+  - brightnessctl
+  - playerctl
+  - pavucontrol
+  - network-manager-applet
+  - swaylock
+  - swayidle
+  - hyprpaper
+
+niri_packages:
+  - niri
+  - xdg-desktop-portal-wlr
+  - waybar
+  - kitty
+  - rofi
+  - dunst
+  - mako
+  - swaylock
+  - swayidle
+  - wl-clipboard
+  - grim
+  - slurp
+  - brightnessctl
+  - playerctl
+  - network-manager-applet
+  - pavucontrol
 
 # ---------------------------------------------------------------------------
 # Nerd Fonts (downloaded from GitHub)

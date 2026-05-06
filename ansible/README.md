@@ -1,6 +1,6 @@
 # Ansible
 
-Full machine provisioning for Debian/Ubuntu + KDE Plasma.
+Full machine provisioning for Debian and Arch Linux.
 
 ## Usage
 
@@ -21,25 +21,24 @@ ansible-playbook playbooks/setup.yml --check --diff -l desktop
 
 | Variable | File | Notes |
 |---|---|---|
-| `desktop_environment` | `group_vars/all.yml` | Single source of truth |
-| `extra_packages` | `group_vars/all.yml` | Single source of truth |
-| `flatpak_apps` | `group_vars/all.yml` | Single source of truth |
-| `user_groups` | `group_vars/all.yml` | Single source of truth |
-| `base_packages` | `group_vars/Debian.yml` | OS-specific names |
-| `machine_type`, `primary_monitor`, GRUB vars | `host_vars/<host>/vars.yml` | Per-machine overrides |
+| feature flags | `group_vars/all.yml` | Shared defaults; override per host |
+| shared Flatpaks/fonts | `group_vars/all.yml` | Distro-agnostic app/font lists |
+| user defaults/groups | `group_vars/all.yml` | Shared user settings |
+| package/service variables | `group_vars/Debian.yml`, `group_vars/Archlinux.yml` | OS-specific names |
+| host feature flags, monitors, GRUB vars | `host_vars/<host>/vars.yml` | Per-machine overrides |
 
 ## Roles
 
 ### system/
 | Role | Purpose |
 |---|---|
-| packages | apt base + extra packages |
+| packages | distro package cache + base packages |
 | flatpak | Flathub remote + apps |
 | fonts | Nerd Fonts |
 | docker | Docker CE + compose plugin |
 | nvidia | Proprietary driver, nouveau blacklist |
 | virtualization | KVM/QEMU + virt-manager |
-| gaming | Steam, Lutris, gamemode, Heroic |
+| aur | Arch AUR helper (`paru`) |
 | networking | NetworkManager + systemd-resolved |
 | ssh | sshd hardening |
 | bluetooth | bluez |
@@ -49,7 +48,7 @@ ansible-playbook playbooks/setup.yml --check --diff -l desktop
 ### desktop/
 | Role | Purpose |
 |---|---|
-| kde | KDE Plasma packages, optional konsave restore, and keybind settings |
+| kde | KDE Plasma rclone/konsave/keybind setup |
 
 ### home/user/
 | Role | Purpose |
@@ -59,10 +58,9 @@ ansible-playbook playbooks/setup.yml --check --diff -l desktop
 | ssh_keys | Deploy keys from SOPS vault |
 | dev | Dev tools, nvm, rustup |
 | bin | Custom scripts → `~/.local/bin` |
+| gaming | Steam, Lutris, gamemode, Heroic |
 
-## Post-run report
+## Supported distributions
 
-After each playbook run a report is written to `~/ansible-setup-YYYY-MM-DD.log` listing:
-- Tool versions (git, zsh, docker, flatpak, chezmoi)
-- All installed flatpak apps
-- All installed apt packages
+`setup.yml` fails early unless the target is Debian or Arch Linux. Debian-family
+and Arch-family derivatives are intentionally not treated as supported targets.

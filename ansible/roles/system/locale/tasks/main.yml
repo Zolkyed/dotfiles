@@ -1,5 +1,5 @@
 ---
-- name: Set system locale
+- name: Set system locale (Arch)
   ansible.builtin.copy:
     dest: /etc/locale.conf
     content: "LANG={{ locale }}\n"
@@ -7,13 +7,24 @@
     group: root
     mode: "0644"
   become: true
+  when: ansible_facts["os_family"] == "Archlinux"
+
+- name: Set system locale (Debian)
+  ansible.builtin.copy:
+    dest: /etc/default/locale
+    content: "LANG={{ locale }}\n"
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+  when: ansible_facts["os_family"] == "Debian"
 
 - name: Set system timezone
   community.general.timezone:
     name: "{{ timezone }}"
   become: true
 
-- name: Set console keymap
+- name: Set console keymap (Arch)
   ansible.builtin.copy:
     dest: /etc/vconsole.conf
     content: "KEYMAP={{ keymap }}\n"
@@ -21,3 +32,14 @@
     group: root
     mode: "0644"
   become: true
+  when: ansible_facts["os_family"] == "Archlinux"
+
+- name: Set console keymap (Debian)
+  ansible.builtin.copy:
+    dest: /etc/default/keyboard
+    content: "XKBLAYOUT=\"{{ keymap }}\"\n"
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+  when: ansible_facts["os_family"] == "Debian"

@@ -11,7 +11,7 @@
   ansible.builtin.shell:
     cmd: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
     creates: "{{ user_home }}/.cargo/bin/rustup"
-  become: false
+  become: true
   become_user: "{{ user_name }}"
   when: install_rust
 
@@ -22,6 +22,6 @@
     cmd: >
       curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v{{ nvm_version }}/install.sh | bash
     creates: "{{ user_home }}/.nvm/nvm.sh"
-  become: false
+  become: true
   become_user: "{{ user_name }}"
   when: install_nvm

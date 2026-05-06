@@ -1,4 +1,3 @@
-# tasks/main.yml
 ---
 - name: Delete konsave profile from Google Drive
   become: true

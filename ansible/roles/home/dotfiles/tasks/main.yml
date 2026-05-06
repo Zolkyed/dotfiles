@@ -8,7 +8,7 @@
       sh -c "$(curl -fsLS get.chezmoi.io)" --
       -b "{{ user_home }}/.local/bin"
     creates: "{{ chezmoi_bin }}"
-  become: false
+  become: true
   become_user: "{{ user_name }}"
 
 - name: Ensure chezmoi source directory exists
@@ -25,7 +25,7 @@
     dest: "{{ user_home }}/.local/share/chezmoi"
     version: "{{ dotfiles_repo_branch }}"
     update: false
-  become: false
+  become: true
   become_user: "{{ user_name }}"
   when: dotfiles_use_repo
 
@@ -41,7 +41,7 @@
 - name: Apply dotfiles with chezmoi
   ansible.builtin.command:
     cmd: "{{ chezmoi_bin }} apply --no-tty --force"
-  become: false
+  become: true
   become_user: "{{ user_name }}"
   register: chezmoi_apply
   changed_when: chezmoi_apply.stdout != ""

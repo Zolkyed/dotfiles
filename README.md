@@ -1,6 +1,6 @@
 # dotfiles
 
-Full machine provisioning and user environment for Debian/Ubuntu + KDE Plasma.
+Full machine provisioning and user environment for Debian and Arch Linux.
 
 ## Architecture
 
@@ -43,29 +43,31 @@ ansible-playbook playbooks/setup.yml --check --diff -l desktop
 │   ├── inventory/
 │   │   ├── hosts.yml
 │   │   ├── group_vars/
-│   │   │   ├── all.yml       # desktop_environment, extra_packages, flatpak_apps, user_groups
-│   │   │   └── Debian.yml    # base_packages              ← OS-specific names
+│   │   │   ├── all.yml       # feature flags, user settings, shared Flatpaks/fonts
+│   │   │   ├── Debian.yml    # Debian package/service names
+│   │   │   └── Archlinux.yml # Arch package/service names
 │   │   └── host_vars/
-│   │       ├── desktop.yml   # machine_type, monitor, bootloader overrides
-│   │       └── laptop.yml
+│   │       ├── desktop/vars.yml # host feature flags, monitor, bootloader overrides
+│   │       └── laptop/vars.yml
 │   ├── playbooks/
-│   │   └── setup.yml         # Full playbook + post_tasks report
+│   │   └── setup.yml         # Full setup playbook
 │   └── roles/
 │       ├── system/
-│       │   ├── packages/     # apt base + extra packages
+│       │   ├── apt-architecture/ # Debian foreign architectures
+│       │   ├── aur/          # Arch AUR helpers
+│       │   ├── packages/     # distro package cache + base packages
 │       │   ├── flatpak/      # Flathub remotes + apps
 │       │   ├── fonts/        # Nerd Fonts
 │       │   ├── docker/       # Docker CE + compose plugin
 │       │   ├── nvidia/       # Proprietary driver, nouveau blacklist
-│       │   ├── vm/           # KVM/QEMU + virt-manager
-│       │   ├── gaming/       # Steam, Lutris, gamemode, Heroic
+│       │   ├── virtualization/ # KVM/QEMU + virt-manager
 │       │   ├── networking/   # NetworkManager + systemd-resolved
-│       │   ├── ssh/          # sshd hardening
+│       │   ├── sshd/         # sshd hardening
 │       │   ├── bluetooth/    # bluez
 │       │   ├── bootloader/   # GRUB (BIOS + UEFI)
 │       │   └── display_manager/ # SDDM
 │       ├── desktop/
-│       │   ├── kde/          # KDE packages, konsave restore, + keybind settings
+│       │   ├── kde/          # rclone, konsave operations, and keybind settings
 │       └── home/
 │           └── user/
 │               ├── (main)        # User account, shell, groups
@@ -97,21 +99,17 @@ ansible-playbook playbooks/setup.yml --check --diff -l desktop
 
 | What | File |
 |---|---|
-| Desktop environment | `ansible/inventory/group_vars/all.yml` → `desktop_environment` |
-| Extra packages | `ansible/inventory/group_vars/all.yml` → `extra_packages` |
-| Flatpak apps | `ansible/inventory/group_vars/all.yml` → `flatpak_apps` |
-| User groups | `ansible/inventory/group_vars/all.yml` → `user_groups` |
-| Debian packages | `ansible/inventory/group_vars/Debian.yml` → `base_packages` |
-| KDE baseline snapshot | `ansible/roles/desktop/kde/defaults/main.yml` → `kde_konsave_profile_src`, `kde_konsave_profile_name` |
-| KDE keybinds | `ansible/roles/desktop/kde/defaults/main.yml` → `kde_keybind_files` |
+| Feature flags | `ansible/inventory/group_vars/all.yml` |
+| Shared Flatpaks and Nerd Fonts | `ansible/inventory/group_vars/all.yml` |
+| User and group defaults | `ansible/inventory/group_vars/all.yml` |
+| Distro package names | `ansible/inventory/group_vars/Debian.yml`, `ansible/inventory/group_vars/Archlinux.yml` |
+| Host overrides | `ansible/inventory/host_vars/<host>/vars.yml` |
+| KDE keybinds | `ansible/roles/desktop/kde/keybinds/files/<host>.ini` |
 
 ## KDE management
 
-`ansible/roles/desktop/kde/` uses two layers:
-- `kde_konsave_profile_src` / `kde_konsave_profile_name` restore a one-shot visual baseline from a `.knsv` package
-- `kde_keybind_files` enforces keybinds idempotently with `community.general.kdeconfig`
-
-If your `.knsv` file lives in a synced Google Drive folder, point `kde_konsave_profile_src` at that local synced path.
+`ansible/roles/desktop/kde/` is split into focused roles for rclone, konsave profile
+operations, and host-specific keybind files.
 
 ## Secrets
 
@@ -126,6 +124,7 @@ sops secrets/vault.yml
 
 - **Ansible** → how the system is built
 - **Chezmoi** → how the user environment looks
-- **KDE role** → installs KDE packages, restores a konsave baseline, and writes selected keybinds
+- **KDE roles** → manage rclone, konsave operations, and selected keybinds
 - **SOPS** → how secrets stay private
-- `all.yml` → one place to add a flatpak or group
+- `all.yml` → one place for shared feature flags, Flatpaks, fonts, and user defaults
+- `Debian.yml` / `Archlinux.yml` → distro package and service names only

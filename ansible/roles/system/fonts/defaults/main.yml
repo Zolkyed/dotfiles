@@ -1,4 +1,7 @@
 ---
 fonts_packages: []
+fonts_nerd:
+  version: ""
+  families: []
 
 nerd_fonts_install_dir: "/usr/local/share/fonts/nerd-fonts"

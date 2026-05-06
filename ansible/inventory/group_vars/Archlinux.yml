@@ -1,4 +1,15 @@
 ---
+aur_build_packages:
+  - base-devel
+  - git
+  - rust
+
+hyprland_supported: true
+niri_supported: true
+
+paru_repo: https://aur.archlinux.org/paru.git
+paru_build_dir: "{{ user_home }}/paru-build"
+
 core_packages:
   - curl
   - wget
@@ -66,10 +77,8 @@ gaming_packages:
   - mangohud
   - goverlay
   - wine
-  - pcsx2
   - winetricks
   - protontricks
-  - protonup-qt
   - piper
   - retroarch
 
@@ -82,13 +91,15 @@ dev_packages:
   - base-devel
   - python
   - python-pip
-  - pipx
+  - python-pipx
   - jq
   - yq
   - httpie
+  - ansible-lint
+  - yamllint
   - shellcheck
-  - python-pre-commit
-  - playwright
+  - pre-commit
+  - python-playwright
   - gcc
   - gdb
   - cmake
@@ -104,7 +115,6 @@ fonts_packages:
 nvidia_packages:
   - nvidia-settings
   - vulkan-icd-loader
-  - vulkan-tools
 
 virtualization_kvm_packages:
   - qemu-full
@@ -117,6 +127,11 @@ virtualization_kvm_packages:
 virtualization_virtualbox_packages:
   - virtualbox
   - virtualbox-host-modules-arch
+
+libvirt_service: libvirtd
+virtualization_user_groups:
+  - libvirt
+  - kvm
 
 pipewire_packages:
   - pipewire
@@ -135,6 +150,8 @@ docker_packages:
   - docker-compose
   - docker-buildx
 
+docker_group: docker
+
 networking_packages:
   - networkmanager
 
@@ -150,45 +167,7 @@ grub_packages_uefi:
 
 grub_bootloader_id: GRUB
 
-hyprland_packages:
-  - hyprland
-  - xdg-desktop-portal-hyprland
-  - waybar
-  - rofi
-  - kitty
-  - wl-clipboard
-  - grim
-  - slurp
-  - brightnessctl
-  - playerctl
-  - pavucontrol
-  - network-manager-applet
-  - swaylock
-  - swayidle
-  - hyprpaper
-
-niri_packages:
-  - niri
-  - xdg-desktop-portal-wlr
-  - waybar
-  - kitty
-  - rofi
-  - dunst
-  - mako
-  - swaylock
-  - swayidle
-  - wl-clipboard
-  - grim
-  - slurp
-  - brightnessctl
-  - playerctl
-  - network-manager-applet
-  - pavucontrol
-
 user_groups:
   - wheel
   - audio
   - video
-  - docker
-  - libvirt
-  - kvm

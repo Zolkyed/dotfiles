@@ -1,4 +1,3 @@
-# tasks/main.yml
 ---
 - name: Check if konsave is already installed via pipx
   ansible.builtin.stat:

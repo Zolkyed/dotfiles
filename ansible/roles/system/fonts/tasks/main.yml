@@ -3,6 +3,7 @@
   ansible.builtin.package:
     name: "{{ fonts_packages }}"
     state: present
+  register: font_package_install
 
 - name: Create Nerd Fonts install directory
   ansible.builtin.file:
@@ -19,16 +20,21 @@
     mode: "0644"
   loop: "{{ fonts_nerd.families }}"
   register: nerd_fonts_download
+  when: fonts_nerd.version | length > 0
 
 - name: Extract Nerd Fonts
   ansible.builtin.unarchive:
     src: "/tmp/{{ item.item }}.tar.xz"
     dest: "{{ nerd_fonts_install_dir }}"
     remote_src: true
-  loop: "{{ nerd_fonts_download.results }}"
+  loop: "{{ nerd_fonts_download.results | default([]) }}"
   when: item.changed
+  register: nerd_fonts_extract
 
 - name: Update font cache
   ansible.builtin.command:
     cmd: fc-cache -fv
   changed_when: true
+  when: >
+    (font_package_install.changed | default(false)) or
+    (nerd_fonts_extract.results | default([]) | selectattr('changed') | list | length > 0)

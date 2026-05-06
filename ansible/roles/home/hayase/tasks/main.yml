@@ -25,9 +25,40 @@
     (ansible_facts["os_family"] == "Archlinux" and
      not (hayase_appimage_stat.stat.exists | default(false)))
 
-- name: Install Hayase from .deb (Debian/Ubuntu)
+- name: Select Hayase Linux release assets
+  ansible.builtin.set_fact:
+    hayase_linux_deb_url: >-
+      {{
+        hayase_release.json
+        | dict2items
+        | map(attribute='value')
+        | select('match', '^https://.*/linux-hayase-.*-linux[.]deb$')
+        | first
+        | default('')
+      }}
+    hayase_linux_appimage_url: >-
+      {{
+        hayase_release.json
+        | dict2items
+        | map(attribute='value')
+        | select('match', '^https://.*/linux-hayase-.*-linux[.]AppImage$')
+        | first
+        | default('')
+      }}
+  when: hayase_release is not skipped
+
+- name: Assert Hayase Linux asset was found
+  ansible.builtin.assert:
+    that:
+      - >
+        (ansible_facts["os_family"] == "Debian" and hayase_linux_deb_url | length > 0) or
+        (ansible_facts["os_family"] == "Archlinux" and hayase_linux_appimage_url | length > 0)
+    fail_msg: "No matching Hayase Linux asset found in {{ hayase_api_url }} response."
+  when: hayase_release is not skipped
+
+- name: Install Hayase from .deb (Debian)
   ansible.builtin.apt:
-    deb: "{{ hayase_release.json | dict2items | selectattr('key', 'match', 'linux-hayase-.*[.]deb') | map(attribute='value') | first }}"
+    deb: "{{ hayase_linux_deb_url }}"
     state: present
   when:
     - ansible_facts["os_family"] == "Debian"
@@ -35,7 +66,7 @@
 
 - name: Install Hayase AppImage (Arch)
   ansible.builtin.get_url:
-    url: "{{ hayase_release.json | dict2items | selectattr('key', 'match', 'linux-hayase-.*[.]AppImage') | map(attribute='value') | first }}"
+    url: "{{ hayase_linux_appimage_url }}"
     dest: "{{ hayase_appimage_dest }}"
     mode: "0755"
   when:

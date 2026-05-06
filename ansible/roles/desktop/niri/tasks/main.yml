@@ -1,24 +1,27 @@
 ---
+- name: Assert Niri is supported on this distro
+  ansible.builtin.assert:
+    that:
+      - niri_supported | default(false)
+    fail_msg: "Niri is not supported by the configured package set for this distro."
+
 - name: Install Niri and related packages
   ansible.builtin.package:
     name: "{{ niri_packages }}"
     state: present
-  become: true
 
 - name: Ensure niri config directory exists
   ansible.builtin.file:
     path: "{{ niri_config_dir }}"
     state: directory
     owner: "{{ user_name }}"
-    mode: "0700"
-  become: true
-  become_user: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0755"
 
 - name: Deploy config.kdl
   ansible.builtin.template:
     src: config.kdl.j2
     dest: "{{ niri_config_dir }}/config.kdl"
     owner: "{{ user_name }}"
+    group: "{{ user_name }}"
     mode: "0600"
-  become: true
-  become_user: "{{ user_name }}"

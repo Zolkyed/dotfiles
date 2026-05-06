@@ -13,8 +13,14 @@
 
 - name: Enable and start libvirtd
   ansible.builtin.systemd:
-    name: libvirtd
+    name: "{{ libvirt_service }}"
     enabled: true
     state: started
   when: virtualization_backend == "kvm"
 
+- name: Add user to virtualization groups
+  ansible.builtin.user:
+    name: "{{ user_name }}"
+    groups: "{{ virtualization_user_groups }}"
+    append: true
+  when: virtualization_backend == "kvm"

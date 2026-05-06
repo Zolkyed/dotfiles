@@ -1,4 +1,3 @@
-# tasks/main.yml
 ---
 - name: Export KDE profile to Google Drive
   become: true

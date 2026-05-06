@@ -14,8 +14,7 @@
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
     mode: "0755"
-  with_fileglob:
-    - "{{ role_path }}/files/*"
+  loop: "{{ query('ansible.builtin.fileglob', role_path ~ '/files/*') }}"
 
 - name: Ensure ~/.config/homectl exists
   ansible.builtin.file:
@@ -32,3 +31,4 @@
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
     mode: "0644"
+  no_log: true

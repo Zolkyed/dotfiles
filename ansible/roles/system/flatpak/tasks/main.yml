@@ -13,8 +13,6 @@
 
 - name: Install flatpak apps
   community.general.flatpak:
-    name: "{{ item }}"
+    name: "{{ base_flatpaks }}"
     state: present
     remote: flathub
-  loop: "{{ base_flatpaks }}"
-  when: base_flatpaks | length > 0

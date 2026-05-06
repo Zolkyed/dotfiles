@@ -5,6 +5,15 @@
   gather_facts: true
 
   pre_tasks:
+    - name: Assert supported distribution
+      tags: always
+      ansible.builtin.assert:
+        that:
+          - ansible_facts["os_family"] in ["Debian", "Archlinux"]
+        fail_msg: >-
+          Unsupported distribution {{ ansible_facts["distribution"] }}
+          ({{ ansible_facts["os_family"] }} family). Supported: Debian, Arch Linux.
+
     - name: Load shared secrets
       tags: always
       community.sops.load_vars:
@@ -23,12 +32,17 @@
         file: "{{ playbook_dir }}/../inventory/group_vars/{{ ansible_facts['os_family'] }}.yml"
 
   roles:
+    - role: system/package_cache
+      tags: package_cache
+    - role: home/user
+      tags: user
+    - role: system/aur
+      tags: aur
+      when: ansible_facts["os_family"] == "Archlinux"
     - role: home/packages
       tags: packages
     - role: home/hayase
       tags: hayase
-    - role: home/user
-      tags: user
     - role: system/locale
       tags: locale
     - role: system/fonts
@@ -56,8 +70,6 @@
       tags: networking
     - role: system/sshd
       tags: sshd
-    - role: system/aur
-      tags: aur
     - role: system/bluetooth
       tags: bluetooth
       when: bluetooth_enabled
@@ -91,9 +103,6 @@
     - role: home/ai
       tags: ai
       when: ai_enabled
-    - role: system/apt-architecture
-      tags: apt-architecture
-      when: gaming_enabled
     - role: home/gaming
       tags: gaming
       when: gaming_enabled

@@ -1,35 +1,11 @@
 ---
-- name: NVIDIA | Ubuntu auto-install
-  when:
-    - ansible_facts["distribution"] == "Ubuntu"
-    - nvidia_driver_package == "auto"
-  block:
-    - name: Install ubuntu-drivers-common
-      ansible.builtin.package:
-        name: ubuntu-drivers-common
-        state: present
-
-    - name: Check if NVIDIA driver already installed
-      ansible.builtin.command:
-        cmd: dpkg -l nvidia-driver-*
-      register: nvidia_installed
-      changed_when: false
-      failed_when: false
-
-    - name: Auto-install recommended driver
-      ansible.builtin.command:
-        cmd: ubuntu-drivers install
-      changed_when: true
-      notify: Reboot required
-      when: nvidia_installed.rc != 0
-
 - name: NVIDIA | Fail on Debian with auto
   ansible.builtin.fail:
     msg: >
       Set nvidia_driver_package in host_vars (e.g. nvidia-driver-560).
       Run: apt install nvidia-detect && nvidia-detect
   when:
-    - ansible_facts["distribution"] == "Debian"
+    - ansible_facts["os_family"] == "Debian"
     - nvidia_driver_package == "auto"
 
 - name: NVIDIA | Arch auto-install
@@ -52,7 +28,6 @@
   ansible.builtin.package:
     name: "{{ nvidia_packages }}"
     state: present
-  when: nvidia_packages | default([]) | length > 0
 
 - name: NVIDIA | Blacklist nouveau
   ansible.builtin.copy:
@@ -70,4 +45,4 @@
     name: nvidia-persistenced
     enabled: true
     state: started
-  when: nvidia_performance_level | int == 1
+  when: nvidia_persistence_enabled

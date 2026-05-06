@@ -1,23 +1,12 @@
 ---
-- name: Update apt cache
-  ansible.builtin.apt:
-    update_cache: true
-    cache_valid_time: 3600
-  when: ansible_facts["os_family"] == "Debian"
-
-- name: Update pacman cache
-  community.general.pacman:
-    update_cache: true
-  when: ansible_facts["os_family"] == "Archlinux"
-
 - name: Install packages
   ansible.builtin.package:
     name: "{{
-      core_packages | default([]) +
-      utility_packages | default([]) +
-      media_packages | default([]) +
-      office_packages | default([]) +
-      system_packages | default([]) +
-      fun_packages | default([])
+      core_packages +
+      utility_packages +
+      media_packages +
+      office_packages +
+      system_packages +
+      fun_packages
     }}"
     state: present
