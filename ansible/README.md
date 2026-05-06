@@ -1,85 +1,116 @@
 # Ansible
 
-Full machine provisioning for Debian and Arch Linux.
+Full machine provisioning for Debian and Arch Linux — 38 roles, one playbook.
 
 ## Usage
 
 ```bash
-# From repo root - bootstrap everything from scratch
+# From repo root — bootstrap everything from scratch
 bash scripts/run_once_install-ansible.sh
 
-# Run against a host over SSH
+# From repo root with just (after just setup-dev)
+just run desktop                  # remote (SSH)
+just run-local desktop            # local (no SSH)
+just check desktop                # dry-run
+just tags desktop nvidia          # run specific tags
+```
+
+Or run ansible-playbook directly:
+
+```bash
 cd ansible
+
+# Remote (SSH)
 ansible-playbook playbooks/setup.yml -l desktop
-ansible-playbook playbooks/setup.yml -l laptop
 
-# Run directly on the current machine
+# Local (no SSH)
 ansible-playbook -i inventory/local.yml playbooks/setup.yml -l desktop
-
-# Local CI/lint tooling
-just setup-dev
-just ci
 
 # Dry-run
 ansible-playbook playbooks/setup.yml --check --diff -l desktop
 ```
 
-Inventory hosts default to SSH. `inventory/hosts.yml` maps `desktop`, `laptop`, and
-`server` to same-named SSH hosts and uses `ansible_user: charl`. Override
-`ansible_host` or `ansible_user` there if your SSH target names differ.
+## Inventory
 
-`inventory/local.yml` is for running directly on the current machine. It maps the
-same logical hosts to `localhost` with `ansible_connection: local`, so your
-`host_vars/desktop`, `host_vars/laptop`, and `host_vars/server` still apply.
+Two inventory files share the same logical host names and group_vars/host_vars:
+
+| File | Connection | Use case |
+|---|---|---|
+| `inventory/hosts.yml` | SSH (remote) | Target machines by hostname |
+| `inventory/local.yml` | Local | Run on the current machine without SSH |
+
+Hosts: `desktop`, `laptop`, `server`. Each has a `vars.yml` (overrides) and
+`vault.yml` (encrypted secrets) under `host_vars/<host>/`.
 
 ## Inventory variables
 
 | Variable | File | Notes |
 |---|---|---|
-| feature flags | `group_vars/all.yml` | Shared defaults; override per host |
-| shared Flatpaks/fonts | `group_vars/all.yml` | Distro-agnostic app/font lists |
-| user defaults/groups | `group_vars/all.yml` | Shared user settings |
-| package/service variables | `group_vars/Debian.yml`, `group_vars/Archlinux.yml` | OS-specific names |
-| host feature flags, desktop_monitors, GRUB vars | `host_vars/<host>/vars.yml` | Per-machine overrides |
+| Feature flags, user settings, Flatpaks, fonts | `group_vars/all.yml` | Shared defaults; override per host |
+| Shared secrets (HA token, rclone, webhook) | `group_vars/vault.yml` | SOPS-encrypted |
+| Package/service names | `group_vars/Debian.yml`, `group_vars/Archlinux.yml` | OS-specific |
+| Host overrides (flags, bootloader, monitors) | `host_vars/<host>/vars.yml` | Per-machine |
+| Host SSH keys | `host_vars/<host>/vault.yml` | SOPS-encrypted |
 
 ## Roles
 
 ### system/
+
 | Role | Purpose |
 |---|---|
-| packages | distro package cache + base packages |
-| fonts | Nerd Fonts |
-| docker | Docker CE + compose plugin |
-| nvidia | Proprietary driver, nouveau blacklist |
-| virtualization | KVM/QEMU + virt-manager |
-| aur | Arch AUR helper (`paru`) |
-| networking | NetworkManager + systemd-resolved |
-| ssh | sshd hardening |
-| bluetooth | bluez |
-| bootloader | GRUB (auto-detects BIOS vs UEFI) |
-| btrfs | Subvolumes, mounts, scrub/balance timers, quotas |
-| snapper | Snapshot configs and timeline/cleanup timers |
-| grub-btrfs | GRUB snapshot boot menu integration |
-| display_manager | SDDM |
+| `age_key_bootstrap` | Bootstrap the SOPS age identity before encrypted vars load |
+| `package_cache` | Update apt/pacman cache |
+| `sysctl` | Hostname, kernel parameters |
+| `btrfs` | Subvolumes, mounts, scrub/balance timers, quotas |
+| `aur` | Install `paru` AUR helper |
+| `locale` | Locale, timezone, console keymap |
+| `fonts` | Distro font packages + Nerd Fonts |
+| `docker` | Docker CE + compose/buildx plugin |
+| `nvidia` | Proprietary driver, nouveau blacklist, initramfs |
+| `virtualization` | KVM/QEMU or VirtualBox |
+| `networking` | NetworkManager + systemd-resolved |
+| `vpn` | WireGuard + OpenVPN packages |
+| `sshd` | sshd hardening (root login, pubkey, port) |
+| `firewall` | ufw with allow/deny rules |
+| `fail2ban` | jail.local for sshd |
+| `bluetooth` | bluez |
+| `pipewire` | PipeWire + WirePlumber (user mode, lingering) |
+| `splashboot` | Plymouth theme + initramfs |
+| `bootloader` | GRUB (auto-detects BIOS vs UEFI) |
+| `snapper` | btrfs snapshot configs + timeline/cleanup timers |
+| `grub-btrfs` | grub-btrfs daemon for snapshot boot entries |
+| `display_manager` | SDDM |
 
 ### desktop/
+
 | Role | Purpose |
 |---|---|
-| kde | KDE Plasma rclone/konsave/keybind setup |
+| `hyprland` | Hyprland packages + config (monitors, keybinds, animations) |
+| `niri` | Niri packages + config (outputs, keybinds) |
+| `kde/rclone` | rclone config for Google Drive |
+| `kde/keybinds` | Per-host `kglobalshortcutsrc` overrides |
+| `kde/konsave/konsave_install` | Install konsave via pipx |
+| `kde/konsave/konsave_import` | Restore KDE profile from Google Drive (tagged `never`) |
+| `kde/konsave/konsave_export` | Save KDE profile to Google Drive (tagged `never`) |
+| `kde/konsave/konsave_delete` | Delete KDE profile from Google Drive (tagged `never`) |
 
 ### home/
+
 | Role | Purpose |
 |---|---|
-| flatpak | Flathub remote + user apps |
-| (main) | User account, shell, groups |
-| dotfiles | chezmoi install + `apply --force` |
-| browser | Brave install + managed extension policy |
-| home_ssh_keys | Deploy keys from SOPS vault |
-| dev | Dev tools, nvm, rustup |
-| bin | Custom scripts → `~/.local/bin` |
-| gaming | Steam, Lutris, gamemode, Heroic |
+| `user` | User account, shell, groups |
+| `packages` | Core, utility, media, office, system, fun packages |
+| `hayase` | Hayase anime sync (.deb or AppImage) |
+| `flatpak` | Flathub remote + base and gaming apps |
+| `dotfiles` | chezmoi install + `apply --force` |
+| `browser` | Browser install (AUR) + managed extension policy |
+| `ssh_keys` | Deploy SSH keys from SOPS vault |
+| `dev` | Dev tools, nvm, rustup |
+| `bin` | Custom scripts + homectl Home Assistant config |
+| `ai` | opencode CLI assistant |
+| `gaming` | Steam, Lutris, multilib/i386, AUR packages |
 
 ## Supported distributions
 
-`setup.yml` fails early unless the target is Debian or Arch Linux. Debian-family
-and Arch-family derivatives are intentionally not treated as supported targets.
+`setup.yml` fails early unless the target is Debian or Arch Linux.
+Derivatives are intentionally not treated as supported targets.

@@ -14,6 +14,13 @@
           Unsupported distribution {{ ansible_facts["distribution"] }}
           ({{ ansible_facts["os_family"] }} family). Supported: Debian, Arch Linux.
 
+    - name: Bootstrap SOPS age key
+      tags: [always, age_key_bootstrap]
+      ansible.builtin.include_role:
+        name: system/age_key_bootstrap
+        apply:
+          tags: [always, age_key_bootstrap]
+
     - name: Load shared secrets
       tags: always
       community.sops.load_vars:

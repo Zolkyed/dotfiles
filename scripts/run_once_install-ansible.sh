@@ -105,6 +105,53 @@ echo "==> Installing age..."
 pkg_install age age
 
 # ---------------------------------------------------------------------------
+# age key bootstrap
+# ---------------------------------------------------------------------------
+SOPS_AGE_KEY_FILE="${SOPS_AGE_KEY_FILE:-$HOME/.config/sops/age/keys.txt}"
+export SOPS_AGE_KEY_FILE
+
+bootstrap_age_key() {
+    local key_dir key_bootstrap key_bootstrap_file
+
+    key_dir="$(dirname "$SOPS_AGE_KEY_FILE")"
+    key_bootstrap="${AGE_KEY_BOOTSTRAP:-${age_key_bootstrap:-}}"
+    key_bootstrap_file="${AGE_KEY_BOOTSTRAP_FILE:-${age_key_bootstrap_file:-}}"
+
+    if [[ -s "$SOPS_AGE_KEY_FILE" ]]; then
+        chmod 600 "$SOPS_AGE_KEY_FILE"
+        echo "==> Using existing age key: ${SOPS_AGE_KEY_FILE}"
+        return
+    fi
+
+    mkdir -p "$key_dir"
+    chmod 700 "$key_dir"
+
+    if [[ -n "$key_bootstrap_file" ]]; then
+        if [[ ! -f "$key_bootstrap_file" ]]; then
+            echo "ERROR: AGE_KEY_BOOTSTRAP_FILE does not exist: ${key_bootstrap_file}" >&2
+            exit 1
+        fi
+        cp "$key_bootstrap_file" "$SOPS_AGE_KEY_FILE"
+    elif [[ -n "$key_bootstrap" ]]; then
+        printf '%s\n' "$key_bootstrap" >"$SOPS_AGE_KEY_FILE"
+    else
+        echo "ERROR: No age key found at ${SOPS_AGE_KEY_FILE}." >&2
+        echo "Set AGE_KEY_BOOTSTRAP to your AGE-SECRET-KEY line, or set AGE_KEY_BOOTSTRAP_FILE to an existing key file." >&2
+        exit 1
+    fi
+
+    if ! grep -Eq '^AGE-SECRET-KEY-' "$SOPS_AGE_KEY_FILE"; then
+        echo "ERROR: ${SOPS_AGE_KEY_FILE} does not contain an AGE-SECRET-KEY identity." >&2
+        exit 1
+    fi
+
+    chmod 600 "$SOPS_AGE_KEY_FILE"
+    echo "==> Bootstrapped age key: ${SOPS_AGE_KEY_FILE}"
+}
+
+bootstrap_age_key
+
+# ---------------------------------------------------------------------------
 # sops
 # ---------------------------------------------------------------------------
 echo "==> Installing sops (latest)..."

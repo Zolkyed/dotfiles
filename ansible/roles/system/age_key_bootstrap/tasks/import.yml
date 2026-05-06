@@ -1,0 +1,19 @@
+---
+- name: Age key bootstrap | Require imported key content
+  ansible.builtin.assert:
+    that:
+      - age_key_content | length > 0
+      - age_key_content is match('(?s).*AGE-SECRET-KEY-.*')
+    fail_msg: >-
+      age_key_mode is 'import', but age_key_content does not contain an
+      AGE-SECRET-KEY identity. Set age_key_content, AGE_KEY_BOOTSTRAP, or
+      age_key_bootstrap.
+
+- name: Age key bootstrap | Write age key from configured content
+  ansible.builtin.copy:
+    content: "{{ age_key_content }}"
+    dest: "{{ age_key_file }}"
+    owner: "{{ age_key_owner }}"
+    group: "{{ age_key_group }}"
+    mode: "0600"
+  no_log: true

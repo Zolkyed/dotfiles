@@ -1,0 +1,7 @@
+---
+age_key_dir: "{{ user_home | default(ansible_env.HOME) }}/.config/sops/age"
+age_key_file: "{{ age_key_dir }}/keys.txt"
+age_key_mode: generate
+age_key_content: "{{ lookup('ansible.builtin.env', 'AGE_KEY_BOOTSTRAP') | default(lookup('ansible.builtin.env', 'age_key_bootstrap'), true) }}"
+age_key_owner: "{{ user_name | default(omit) }}"
+age_key_group: "{{ user_name | default(omit) }}"

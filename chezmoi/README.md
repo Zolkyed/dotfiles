@@ -1,6 +1,6 @@
 # Chezmoi
 
-User dotfiles managed by [chezmoi](https://www.chezmoi.io/). Applied automatically by Ansible (`home/user/dotfiles` role) or manually:
+User dotfiles managed by [chezmoi](https://www.chezmoi.io/). Applied automatically by Ansible (`home/dotfiles` role) or manually:
 
 ```bash
 chezmoi apply
@@ -15,12 +15,14 @@ Chezmoi strips the `dot_` prefix on apply:
 | `dot_gitconfig` | `~/.gitconfig` |
 | `dot_gitconfig-github` | `~/.gitconfig-github` |
 | `dot_gitconfig-gitlab` | `~/.gitconfig-gitlab` |
+| `dot_gitignore_global` | `~/.gitignore_global` |
+| `dot_zshrc` | `~/.zshrc` |
+| `dot_ssh/config.tmpl` | `~/.ssh/config` |
 | `dot_config/fastfetch/` | `~/.config/fastfetch/` |
 | `dot_config/kitty/` | `~/.config/kitty/` |
 | `dot_config/mpv/` | `~/.config/mpv/` |
 | `dot_config/vscode/settings.json` | `~/.config/vscode/settings.json` |
 | `dot_config/vscode/keybindings.json` | `~/.config/vscode/keybindings.json` |
-| `dot_zshrc` | `~/.zshrc` |
 
 ## Git identity
 
