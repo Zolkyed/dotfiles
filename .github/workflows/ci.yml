@@ -76,8 +76,13 @@ jobs:
         env:
           ANSIBLE_LOCAL_TEMP: /tmp/ansible-local
           ANSIBLE_REMOTE_TEMP: /tmp/ansible-remote
+          TAGS: >-
+            always package_cache sysctl user aur packages hayase locale fonts flatpak
+            docker nvidia virtualization dotfiles ssh_keys dev bin networking vpn sshd
+            bluetooth pipewire splashboot bootloader display_manager rclone konsave
+            konsave-import konsave-export konsave-delete keybinds ai gaming hyprland niri
         run: |
-          for tag in always package_cache sysctl user aur packages hayase locale fonts flatpak docker nvidia virtualization dotfiles ssh_keys dev bin networking vpn sshd bluetooth pipewire splashboot bootloader display_manager rclone konsave konsave-import konsave-export konsave-delete keybinds ai gaming hyprland niri; do
+          for tag in $TAGS; do
             output=$(ansible-playbook playbooks/setup.yml --list-tasks --tags "$tag" 2>&1)
             status=$?
             task_count=$(printf '%s\n' "$output" | rg -c '^      .+TAGS:')

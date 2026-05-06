@@ -1,6 +1,10 @@
 ---
 extends: default
 
+ignore: |
+  ansible/inventory/group_vars/vault.yml
+  ansible/inventory/host_vars/*/vault.yml
+
 rules:
   line-length:
     max: 120

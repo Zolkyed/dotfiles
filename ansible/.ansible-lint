@@ -5,6 +5,10 @@ warn_list:
   - yaml[line-length]
   - experimental
 
+exclude_paths:
+  - inventory/group_vars/vault.yml
+  - inventory/host_vars/*/vault.yml
+
 skip_list:
   - role-name          # roles/home/user etc. don't follow galaxy naming
   - no-changed-when    # some command tasks intentionally always report changed
