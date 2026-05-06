@@ -1,4 +1,5 @@
 ---
+system_virtualization_backend: kvm
 system_virtualization_kvm_packages: []
 system_virtualization_virtualbox_packages: []
 system_virtualization_user_groups: []

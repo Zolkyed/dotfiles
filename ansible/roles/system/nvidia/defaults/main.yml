@@ -1,2 +1,4 @@
 ---
 system_nvidia_packages: []
+system_nvidia_driver_package: auto
+system_nvidia_persistence_enabled: false

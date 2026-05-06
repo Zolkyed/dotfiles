@@ -1,2 +1,5 @@
 ---
 home_dev_packages: []
+home_dev_install_nvm: true
+home_dev_nvm_version: "0.40.3"
+home_dev_install_rust: true

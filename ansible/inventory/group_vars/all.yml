@@ -40,27 +40,6 @@ browser_enabled: false
 # ---------------------------------------------------------------------------
 # Home
 # ---------------------------------------------------------------------------
-
-# Browser
-home_browser_package: ""
-home_browser_policy_dir: /etc/chromium/policies/managed
-home_browser_policy_file: zz-browser-policy.json
-home_browser_extensions: []
-home_browser_extra_policies: {}
-
-# Dev
-home_dev_install_nvm: true
-home_dev_nvm_version: "0.40.3"
-home_dev_install_rust: true
-
-# Dotfiles
-home_dotfiles_repo: "https://github.com/Zolkyed/dotfiles.git"
-home_dotfiles_repo_branch: "main"
-home_dotfiles_use_repo: false
-# true = git clone from home_dotfiles_repo
-# false = copy from local home_dotfiles_chezmoi_source
-home_dotfiles_chezmoi_source: "{{ playbook_dir }}/../../chezmoi"
-
 # Flatpak
 home_base_flatpaks:
   - com.discordapp.Discord
@@ -72,74 +51,16 @@ home_gaming_flatpaks:
   - net.pcsx2.PCSX2
   - net.davidotek.pupgui2
 
-# Hayase
-home_hayase_api_url: https://api.hayase.watch/latest
-home_hayase_appimage_dest: /usr/local/bin/hayase
-
 # ---------------------------------------------------------------------------
 # Desktop
 # ---------------------------------------------------------------------------
-desktop_hyprland_packages:
-  - hyprland
-  - xdg-desktop-portal-hyprland
-  - waybar
-  - rofi
-  - kitty
-  - wl-clipboard
-  - grim
-  - slurp
-  - brightnessctl
-  - playerctl
-  - pavucontrol
-  - network-manager-applet
-  - swaylock
-  - swayidle
-  - hyprpaper
-
-desktop_niri_packages:
-  - niri
-  - xdg-desktop-portal-wlr
-  - waybar
-  - kitty
-  - rofi
-  - dunst
-  - mako
-  - swaylock
-  - swayidle
-  - wl-clipboard
-  - grim
-  - slurp
-  - brightnessctl
-  - playerctl
-  - network-manager-applet
-  - pavucontrol
 
 # ---------------------------------------------------------------------------
 # System
 # ---------------------------------------------------------------------------
-
-# Display manager / locale / sysctl / virtualization
-system_display_manager: sddm
-system_virtualization_backend: kvm   # kvm or virtualbox
 system_locale: en_US.UTF-8
 system_timezone: America/Toronto
 system_keymap: us
-system_hostname: "{{ inventory_hostname }}"
-system_sysctl_settings: {}
-
-# Fonts
-system_fonts_nerd:
-  version: "3.4.0"
-  families:
-    - JetBrainsMono
-    - Hack
-    - FiraCode
-    - NerdFontsSymbolsOnly
-
-# NVIDIA
-# Arch can use 'auto'. Debian must pin a specific package, e.g. nvidia-driver.
-system_nvidia_driver_package: auto
-system_nvidia_persistence_enabled: false
 
 # SSH
 system_sshd_permit_root_login: "no"

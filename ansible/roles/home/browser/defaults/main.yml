@@ -1,0 +1,6 @@
+---
+home_browser_package: ""
+home_browser_policy_dir: /etc/chromium/policies/managed
+home_browser_policy_file: zz-browser-policy.json
+home_browser_extensions: []
+home_browser_extra_policies: {}

@@ -2,3 +2,22 @@
 desktop_hyprland_config_dir: "{{ user_home }}/.config/hypr"
 desktop_hyprland_kb_layout: us
 desktop_monitors: []
+# Keep these here as role defaults because the package names currently match
+# across the supported distros. If Arch and Debian diverge later, move them to
+# the distro group_vars files.
+desktop_hyprland_packages:
+  - hyprland
+  - xdg-desktop-portal-hyprland
+  - waybar
+  - rofi
+  - kitty
+  - wl-clipboard
+  - grim
+  - slurp
+  - brightnessctl
+  - playerctl
+  - pavucontrol
+  - network-manager-applet
+  - swaylock
+  - swayidle
+  - hyprpaper

@@ -1,7 +1,11 @@
 ---
 system_fonts_packages: []
 system_fonts_nerd:
-  version: ""
-  families: []
+  version: "3.4.0"
+  families:
+    - JetBrainsMono
+    - Hack
+    - FiraCode
+    - NerdFontsSymbolsOnly
 
 system_nerd_fonts_install_dir: "/usr/local/share/fonts/nerd-fonts"
