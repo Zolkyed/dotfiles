@@ -1,7 +1,7 @@
 ---
 - name: Install openssh
   ansible.builtin.package:
-    name: "{{ ssh_package }}"
+    name: "{{ system_sshd_package }}"
     state: present
 
 - name: Harden sshd configuration
@@ -28,6 +28,6 @@
 
 - name: Enable and start sshd
   ansible.builtin.systemd:
-    name: "{{ ssh_service }}"
+    name: "{{ system_sshd_service }}"
     enabled: true
     state: started

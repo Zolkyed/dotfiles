@@ -3,24 +3,24 @@
   ansible.builtin.package:
     name: "{{ system_virtualization_kvm_packages }}"
     state: present
-  when: virtualization_backend == "kvm"
+  when: system_virtualization_backend == "kvm"
 
 - name: Install VirtualBox packages
   ansible.builtin.package:
     name: "{{ system_virtualization_virtualbox_packages }}"
     state: present
-  when: virtualization_backend == "virtualbox"
+  when: system_virtualization_backend == "virtualbox"
 
 - name: Enable and start libvirtd
   ansible.builtin.systemd:
     name: "{{ libvirt_service }}"
     enabled: true
     state: started
-  when: virtualization_backend == "kvm"
+  when: system_virtualization_backend == "kvm"
 
 - name: Add user to virtualization groups
   ansible.builtin.user:
     name: "{{ user_name }}"
     groups: "{{ system_virtualization_user_groups }}"
     append: true
-  when: virtualization_backend == "kvm"
+  when: system_virtualization_backend == "kvm"

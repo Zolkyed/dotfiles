@@ -1,5 +1,5 @@
 ---
-docker_repo_codename: "{{ ansible_facts['distribution_release'] }}"
+system_docker_repo_codename: "{{ ansible_facts['distribution_release'] }}"
 
 home_core_packages:
   - curl
@@ -67,7 +67,11 @@ home_system_packages:
   - keepassxc
   - flatpak-builder
 
-home_fun_packages: []
+home_fun_packages:
+  - cowsay
+  - cmatrix
+  - figlet
+  - lolcat
 
 home_gaming_packages:
   - steam
@@ -155,7 +159,7 @@ system_docker_plugin_packages:
   - docker-buildx-plugin
   - docker-compose-plugin
 
-docker_group: docker
+system_docker_group: docker
 
 system_networking_packages:
   - network-manager
@@ -171,8 +175,8 @@ system_splashboot_packages:
   - plymouth
   - plymouth-themes
 
-ssh_package: openssh-server
-ssh_service: ssh
+system_sshd_package: openssh-server
+system_sshd_service: ssh
 
 system_grub_packages_bios:
   - grub2-common

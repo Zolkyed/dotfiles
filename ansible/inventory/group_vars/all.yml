@@ -40,29 +40,25 @@ vpn_enabled: true
 # ---------------------------------------------------------------------------
 # System defaults
 # ---------------------------------------------------------------------------
-display_manager: sddm
-virtualization_backend: kvm   # kvm or virtualbox
+system_display_manager: sddm
+system_virtualization_backend: kvm   # kvm or virtualbox
 
-locale: en_US.UTF-8
-timezone: America/Toronto
-keymap: us
+system_locale: en_US.UTF-8
+system_timezone: America/Toronto
+system_keymap: us
 system_hostname: "{{ inventory_hostname }}"
 system_sysctl_settings: {}
 
 # ---------------------------------------------------------------------------
 # Splash boot
 # ---------------------------------------------------------------------------
-system_splashboot_theme: spinner
-system_splashboot_grub_options:
-  - quiet
-  - splash
 
 # ---------------------------------------------------------------------------
 # NVIDIA
 # ---------------------------------------------------------------------------
 # Arch can use 'auto'. Debian must pin a specific package, e.g. nvidia-driver.
-nvidia_driver_package: auto
-nvidia_persistence_enabled: false
+system_nvidia_driver_package: auto
+system_nvidia_persistence_enabled: false
 
 # ---------------------------------------------------------------------------
 # SSH
@@ -77,23 +73,25 @@ sshd_allow_tcp_forwarding: "no"
 # ---------------------------------------------------------------------------
 # Dev tool installers
 # ---------------------------------------------------------------------------
-install_nvm: true
-nvm_version: "0.40.3"
-install_rust: true
+home_dev_install_nvm: true
+home_dev_nvm_version: "0.40.3"
+home_dev_install_rust: true
 
 # ---------------------------------------------------------------------------
 # Dotfiles
 # ---------------------------------------------------------------------------
-dotfiles_repo: "https://github.com/Zolkyed/dotfiles.git"
-dotfiles_repo_branch: "main"
-dotfiles_use_repo: false          # true = git clone from dotfiles_repo; false = copy from local dotfiles_chezmoi_source
-dotfiles_chezmoi_source: "{{ playbook_dir }}/../../chezmoi"
+home_dotfiles_repo: "https://github.com/Zolkyed/dotfiles.git"
+home_dotfiles_repo_branch: "main"
+home_dotfiles_use_repo: false
+# true = git clone from home_dotfiles_repo
+# false = copy from local home_dotfiles_chezmoi_source
+home_dotfiles_chezmoi_source: "{{ playbook_dir }}/../../chezmoi"
 
 # ---------------------------------------------------------------------------
 # Hayase
 # ---------------------------------------------------------------------------
-hayase_api_url: https://api.hayase.watch/latest
-hayase_appimage_dest: /usr/local/bin/hayase
+home_hayase_api_url: https://api.hayase.watch/latest
+home_hayase_appimage_dest: /usr/local/bin/hayase
 
 # ---------------------------------------------------------------------------
 # Flatpaks (distro-agnostic)

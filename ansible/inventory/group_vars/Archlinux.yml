@@ -1,12 +1,9 @@
 ---
+
 system_aur_build_packages:
   - base-devel
   - git
   - rust
-
-
-system_paru_repo: https://aur.archlinux.org/paru.git
-system_paru_build_dir: "{{ user_home }}/paru-build"
 
 home_core_packages:
   - curl
@@ -69,7 +66,11 @@ home_system_packages:
   - keepassxc
   - flatpak-builder
 
-home_fun_packages: []
+home_fun_packages:
+  - cowsay
+  - cmatrix
+  - figlet
+  - lolcat
 
 home_gaming_packages:
   - steam
@@ -153,7 +154,7 @@ system_docker_plugin_packages:
   - docker-compose
   - docker-buildx
 
-docker_group: docker
+system_docker_group: docker
 
 system_networking_packages:
   - networkmanager
@@ -166,8 +167,8 @@ system_vpn_packages:
 system_splashboot_packages:
   - plymouth
 
-ssh_package: openssh
-ssh_service: sshd
+system_sshd_package: openssh
+system_sshd_service: sshd
 
 system_grub_packages_bios:
   - grub

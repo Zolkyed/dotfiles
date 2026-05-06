@@ -21,22 +21,22 @@
 
 - name: Clone dotfiles repo (remote / fresh machine)
   ansible.builtin.git:
-    repo: "{{ dotfiles_repo }}"
+    repo: "{{ home_dotfiles_repo }}"
     dest: "{{ user_home }}/.local/share/chezmoi"
-    version: "{{ dotfiles_repo_branch }}"
+    version: "{{ home_home_dotfiles_repo_branch }}"
     update: false
   become: true
   become_user: "{{ user_name }}"
-  when: dotfiles_use_repo
+  when: home_dotfiles_use_repo
 
 - name: Sync chezmoi source from local path
   ansible.builtin.copy:
-    src: "{{ dotfiles_chezmoi_source }}/"
+    src: "{{ home_dotfiles_chezmoi_source }}/"
     dest: "{{ user_home }}/.local/share/chezmoi/"
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
     mode: preserve
-  when: not dotfiles_use_repo
+  when: not home_dotfiles_use_repo
 
 - name: Apply dotfiles with chezmoi
   ansible.builtin.command:

@@ -2,11 +2,11 @@
 - name: NVIDIA | Fail on Debian with auto
   ansible.builtin.fail:
     msg: >
-      Set nvidia_driver_package in host_vars (e.g. nvidia-driver-560).
+      Set system_nvidia_driver_package in host_vars (e.g. nvidia-driver-560).
       Run: apt install nvidia-detect && nvidia-detect
   when:
     - ansible_facts["os_family"] == "Debian"
-    - nvidia_driver_package == "auto"
+    - system_nvidia_driver_package == "auto"
 
 - name: NVIDIA | Arch auto-install
   ansible.builtin.package:
@@ -15,14 +15,14 @@
   notify: Reboot required
   when:
     - ansible_facts["os_family"] == "Archlinux"
-    - nvidia_driver_package == "auto"
+    - system_nvidia_driver_package == "auto"
 
 - name: NVIDIA | Install specific driver package
   ansible.builtin.package:
-    name: "{{ nvidia_driver_package }}"
+    name: "{{ system_nvidia_driver_package }}"
     state: present
   notify: Reboot required
-  when: nvidia_driver_package != "auto"
+  when: system_nvidia_driver_package != "auto"
 
 - name: NVIDIA | Install extra packages
   ansible.builtin.package:
@@ -45,4 +45,4 @@
     name: nvidia-persistenced
     enabled: true
     state: started
-  when: nvidia_persistence_enabled
+  when: system_nvidia_persistence_enabled
