@@ -77,6 +77,12 @@
       when: vpn_enabled
     - role: system/sshd
       tags: sshd
+    - role: system/firewall
+      tags: firewall
+      when: firewall_enabled
+    - role: system/fail2ban
+      tags: fail2ban
+      when: fail2ban_enabled
     - role: system/bluetooth
       tags: bluetooth
       when: bluetooth_enabled

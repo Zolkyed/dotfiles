@@ -36,6 +36,8 @@ docker_enabled: true
 virtualization_enabled: true
 gaming_enabled: false
 vpn_enabled: true
+firewall_enabled: true
+fail2ban_enabled: true
 
 # ---------------------------------------------------------------------------
 # System defaults
