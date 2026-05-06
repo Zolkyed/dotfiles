@@ -112,7 +112,7 @@ home_gaming_flatpaks:
 # ---------------------------------------------------------------------------
 # Wayland desktop packages
 # ---------------------------------------------------------------------------
-hyprland_packages:
+desktop_hyprland_packages:
   - hyprland
   - xdg-desktop-portal-hyprland
   - waybar
@@ -129,7 +129,7 @@ hyprland_packages:
   - swayidle
   - hyprpaper
 
-niri_packages:
+desktop_niri_packages:
   - niri
   - xdg-desktop-portal-wlr
   - waybar

@@ -4,8 +4,6 @@ system_aur_build_packages:
   - git
   - rust
 
-hyprland_supported: true
-niri_supported: true
 
 system_paru_repo: https://aur.archlinux.org/paru.git
 system_paru_build_dir: "{{ user_home }}/paru-build"
@@ -136,7 +134,7 @@ system_virtualization_user_groups:
   - libvirt
   - kvm
 
-pipewire_packages:
+system_pipewire_packages:
   - pipewire
   - pipewire-pulse
   - pipewire-alsa
@@ -144,7 +142,7 @@ pipewire_packages:
   - wireplumber
   - gst-plugin-pipewire
 
-bluetooth_packages:
+system_bluetooth_packages:
   - bluez
   - bluez-utils
 
@@ -157,7 +155,7 @@ system_docker_plugin_packages:
 
 docker_group: docker
 
-networking_packages:
+system_networking_packages:
   - networkmanager
 
 system_vpn_packages:

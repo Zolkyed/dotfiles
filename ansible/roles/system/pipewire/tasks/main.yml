@@ -1,7 +1,7 @@
 ---
 - name: Install PipeWire packages
   ansible.builtin.package:
-    name: "{{ pipewire_packages }}"
+    name: "{{ system_pipewire_packages }}"
     state: present
 
 - name: Look up user UID

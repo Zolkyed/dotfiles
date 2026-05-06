@@ -1,7 +1,7 @@
 ---
 - name: Install bluetooth packages
   ansible.builtin.package:
-    name: "{{ bluetooth_packages }}"
+    name: "{{ system_bluetooth_packages }}"
     state: present
 
 - name: Enable and start bluetooth service

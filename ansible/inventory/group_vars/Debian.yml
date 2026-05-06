@@ -1,7 +1,5 @@
 ---
 docker_repo_codename: "{{ ansible_facts['distribution_release'] }}"
-hyprland_supported: false
-niri_supported: false
 
 home_core_packages:
   - curl
@@ -135,7 +133,7 @@ system_virtualization_user_groups:
   - libvirt
   - kvm
 
-pipewire_packages:
+system_pipewire_packages:
   - pipewire
   - pipewire-pulse
   - pipewire-alsa
@@ -143,7 +141,7 @@ pipewire_packages:
   - wireplumber
   - gstreamer1.0-pipewire
 
-bluetooth_packages:
+system_bluetooth_packages:
   - bluez
   - bluetooth
   - bluez-tools
@@ -159,7 +157,7 @@ system_docker_plugin_packages:
 
 docker_group: docker
 
-networking_packages:
+system_networking_packages:
   - network-manager
   - systemd-resolved
 
