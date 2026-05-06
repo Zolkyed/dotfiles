@@ -19,12 +19,14 @@
       community.sops.load_vars:
         file: "{{ playbook_dir }}/../inventory/group_vars/vault.yml"
       become: false
+      no_log: true
 
     - name: Load host secrets
       tags: always
       community.sops.load_vars:
         file: "{{ playbook_dir }}/../inventory/host_vars/{{ inventory_hostname }}/vault.yml"
       become: false
+      no_log: true
 
     - name: Load distro-specific vars
       tags: always

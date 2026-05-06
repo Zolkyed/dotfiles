@@ -16,3 +16,4 @@
     name: "{{ base_flatpaks }}"
     state: present
     remote: flathub
+  when: base_flatpaks | length > 0

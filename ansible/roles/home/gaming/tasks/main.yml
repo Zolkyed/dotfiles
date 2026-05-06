@@ -126,3 +126,4 @@
     name: "{{ gaming_flatpaks }}"
     state: present
     remote: flathub
+  when: gaming_flatpaks | length > 0

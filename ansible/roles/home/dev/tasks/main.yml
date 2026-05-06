@@ -4,23 +4,51 @@
     name: "{{ dev_packages }}"
     state: present
 
-- name: Install rustup (Rust toolchain manager)
-  # Trust: official installer from https://rustup.rs — uses HTTPS + TLS 1.2 minimum.
-  # Verified via: https://rust-lang.github.io/rustup/installation/other.html
-  # Idempotent: 'creates' skips if ~/.cargo/bin/rustup already exists.
-  ansible.builtin.shell:
-    cmd: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+- name: Check rustup installation
+  ansible.builtin.stat:
+    path: "{{ user_home }}/.cargo/bin/rustup"
+  register: rustup_bin
+  when: install_rust
+
+- name: Download rustup installer
+  ansible.builtin.get_url:
+    url: https://sh.rustup.rs
+    dest: /tmp/rustup-init.sh
+    mode: "0755"
+  become: true
+  become_user: "{{ user_name }}"
+  when:
+    - install_rust
+    - not (rustup_bin.stat.exists | default(false))
+
+- name: Install rustup
+  ansible.builtin.command:
+    cmd: /tmp/rustup-init.sh -y --no-modify-path
     creates: "{{ user_home }}/.cargo/bin/rustup"
   become: true
   become_user: "{{ user_name }}"
   when: install_rust
 
-- name: Install nvm (Node version manager)
-  # Trust: pinned to a specific version tag from the official nvm repo.
-  # Idempotent: 'creates' skips if ~/.nvm/nvm.sh already exists.
-  ansible.builtin.shell:
-    cmd: >
-      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v{{ nvm_version }}/install.sh | bash
+- name: Check nvm installation
+  ansible.builtin.stat:
+    path: "{{ user_home }}/.nvm/nvm.sh"
+  register: nvm_script
+  when: install_nvm
+
+- name: Download nvm installer
+  ansible.builtin.get_url:
+    url: "https://raw.githubusercontent.com/nvm-sh/nvm/v{{ nvm_version }}/install.sh"
+    dest: "/tmp/nvm-install-{{ nvm_version }}.sh"
+    mode: "0755"
+  become: true
+  become_user: "{{ user_name }}"
+  when:
+    - install_nvm
+    - not (nvm_script.stat.exists | default(false))
+
+- name: Install nvm
+  ansible.builtin.command:
+    cmd: "bash /tmp/nvm-install-{{ nvm_version }}.sh"
     creates: "{{ user_home }}/.nvm/nvm.sh"
   become: true
   become_user: "{{ user_name }}"
