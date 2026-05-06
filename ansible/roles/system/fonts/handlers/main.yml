@@ -1,0 +1,14 @@
+---
+- name: Extract Nerd Fonts
+  ansible.builtin.unarchive:
+    src: "/tmp/{{ item.item }}.tar.xz"
+    dest: "{{ system_nerd_fonts_install_dir }}"
+    remote_src: true
+  loop: "{{ system_nerd_fonts_download.results | default([]) }}"
+  when: item.changed
+  notify: Update font cache
+
+- name: Update font cache
+  ansible.builtin.command:
+    cmd: fc-cache -fv
+  changed_when: true

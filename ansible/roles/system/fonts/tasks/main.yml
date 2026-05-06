@@ -1,13 +1,13 @@
 ---
 - name: Install font packages
   ansible.builtin.package:
-    name: "{{ fonts_packages }}"
+    name: "{{ system_fonts_packages }}"
     state: present
-  register: font_package_install
+  notify: Update font cache
 
 - name: Create Nerd Fonts install directory
   ansible.builtin.file:
-    path: "{{ nerd_fonts_install_dir }}"
+    path: "{{ system_nerd_fonts_install_dir }}"
     state: directory
     owner: root
     group: root
@@ -15,26 +15,10 @@
 
 - name: Download Nerd Fonts archives
   ansible.builtin.get_url:
-    url: "https://github.com/ryanoasis/nerd-fonts/releases/download/v{{ fonts_nerd.version }}/{{ item }}.tar.xz"
+    url: "https://github.com/ryanoasis/nerd-fonts/releases/download/v{{ system_fonts_nerd.version }}/{{ item }}.tar.xz"
     dest: "/tmp/{{ item }}.tar.xz"
     mode: "0644"
-  loop: "{{ fonts_nerd.families }}"
-  register: nerd_fonts_download
-  when: fonts_nerd.version | length > 0
-
-- name: Extract Nerd Fonts
-  ansible.builtin.unarchive:
-    src: "/tmp/{{ item.item }}.tar.xz"
-    dest: "{{ nerd_fonts_install_dir }}"
-    remote_src: true
-  loop: "{{ nerd_fonts_download.results | default([]) }}"
-  when: item.changed
-  register: nerd_fonts_extract
-
-- name: Update font cache
-  ansible.builtin.command:
-    cmd: fc-cache -fv
-  changed_when: true
-  when: >
-    (font_package_install.changed | default(false)) or
-    (nerd_fonts_extract.results | default([]) | selectattr('changed') | list | length > 0)
+  loop: "{{ system_fonts_nerd.families }}"
+  register: system_nerd_fonts_download
+  when: system_fonts_nerd.version | length > 0
+  notify: Extract Nerd Fonts

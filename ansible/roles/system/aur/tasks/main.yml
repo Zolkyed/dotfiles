@@ -5,16 +5,16 @@
 
 - name: AUR | Install build packages
   ansible.builtin.package:
-    name: "{{ aur_build_packages }}"
+    name: "{{ system_aur_build_packages }}"
     state: present
 
 - name: AUR | Check if paru is installed
   ansible.builtin.command:
     cmd: which paru
-  register: paru_check
+  register: system_paru_check
   changed_when: false
   failed_when: false
 
 - name: AUR | Build and install paru
   ansible.builtin.include_tasks: install_helper.yml
-  when: paru_check.rc != 0
+  when: system_paru_check.rc != 0

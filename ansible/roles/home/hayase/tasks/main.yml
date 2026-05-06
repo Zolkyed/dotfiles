@@ -2,7 +2,7 @@
 - name: Check if Hayase is already installed
   ansible.builtin.command:
     cmd: dpkg-query -W -f='${Status}' hayase
-  register: hayase_pkg_check
+  register: home_hayase_pkg_check
   changed_when: false
   failed_when: false
   when: ansible_facts["os_family"] == "Debian"
@@ -10,65 +10,65 @@
 - name: Check if Hayase AppImage exists
   ansible.builtin.stat:
     path: "{{ hayase_appimage_dest }}"
-  register: hayase_appimage_stat
+  register: home_hayase_appimage_stat
   when: ansible_facts["os_family"] == "Archlinux"
 
 - name: Get Hayase latest release info
   ansible.builtin.uri:
     url: "{{ hayase_api_url }}"
     return_content: true
-  register: hayase_release
+  register: home_hayase_release
   when: >
     (ansible_facts["os_family"] == "Debian" and
-     hayase_pkg_check.stdout | default('') != 'install ok installed')
+     home_hayase_pkg_check.stdout | default('') != 'install ok installed')
     or
     (ansible_facts["os_family"] == "Archlinux" and
-     not (hayase_appimage_stat.stat.exists | default(false)))
+     not (home_hayase_appimage_stat.stat.exists | default(false)))
 
 - name: Select Hayase Linux release assets
   ansible.builtin.set_fact:
-    hayase_linux_deb_url: >-
+    home_hayase_linux_deb_url: >-
       {{
-        hayase_release.json
+        home_hayase_release.json
         | dict2items
         | map(attribute='value')
         | select('match', '^https://.*/linux-hayase-.*-linux[.]deb$')
         | first
         | default('')
       }}
-    hayase_linux_appimage_url: >-
+    home_hayase_linux_appimage_url: >-
       {{
-        hayase_release.json
+        home_hayase_release.json
         | dict2items
         | map(attribute='value')
         | select('match', '^https://.*/linux-hayase-.*-linux[.]AppImage$')
         | first
         | default('')
       }}
-  when: hayase_release is not skipped
+  when: home_hayase_release is not skipped
 
 - name: Assert Hayase Linux asset was found
   ansible.builtin.assert:
     that:
       - >
-        (ansible_facts["os_family"] == "Debian" and hayase_linux_deb_url | length > 0) or
-        (ansible_facts["os_family"] == "Archlinux" and hayase_linux_appimage_url | length > 0)
+        (ansible_facts["os_family"] == "Debian" and home_hayase_linux_deb_url | length > 0) or
+        (ansible_facts["os_family"] == "Archlinux" and home_hayase_linux_appimage_url | length > 0)
     fail_msg: "No matching Hayase Linux asset found in {{ hayase_api_url }} response."
-  when: hayase_release is not skipped
+  when: home_hayase_release is not skipped
 
 - name: Install Hayase from .deb (Debian)
   ansible.builtin.apt:
-    deb: "{{ hayase_linux_deb_url }}"
+    deb: "{{ home_hayase_linux_deb_url }}"
     state: present
   when:
     - ansible_facts["os_family"] == "Debian"
-    - hayase_pkg_check.stdout | default('') != 'install ok installed'
+    - home_hayase_pkg_check.stdout | default('') != 'install ok installed'
 
 - name: Install Hayase AppImage (Arch)
   ansible.builtin.get_url:
-    url: "{{ hayase_linux_appimage_url }}"
+    url: "{{ home_hayase_linux_appimage_url }}"
     dest: "{{ hayase_appimage_dest }}"
     mode: "0755"
   when:
     - ansible_facts["os_family"] == "Archlinux"
-    - not (hayase_appimage_stat.stat.exists | default(false))
+    - not (home_hayase_appimage_stat.stat.exists | default(false))

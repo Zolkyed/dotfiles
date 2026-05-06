@@ -1,7 +1,7 @@
 # GRUB configuration managed by Ansible
 GRUB_DEFAULT=0
-GRUB_TIMEOUT={{ grub_timeout }}
+GRUB_TIMEOUT={{ system_grub_timeout }}
 GRUB_DISTRIBUTOR="{{ ansible_facts['distribution'] }}"
-GRUB_CMDLINE_LINUX_DEFAULT="{{ grub_cmdline_linux_default }}"
-GRUB_CMDLINE_LINUX="{{ grub_cmdline_linux }}"
-GRUB_GFXMODE={{ grub_gfxmode }}
+GRUB_CMDLINE_LINUX_DEFAULT="{{ system_grub_cmdline_linux_default }}"
+GRUB_CMDLINE_LINUX="{{ system_grub_cmdline_linux }}"
+GRUB_GFXMODE={{ system_grub_gfxmode }}

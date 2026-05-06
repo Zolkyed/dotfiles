@@ -6,26 +6,26 @@
     - name: Prompt for profile name
       ansible.builtin.pause:
         prompt: "Enter a name for this profile snapshot (e.g., plasma-may-2026):"
-      register: profile_name_prompt
+      register: desktop_profile_name_prompt
 
     - name: Fail if no name entered
       ansible.builtin.fail:
         msg: "Profile name cannot be empty"
-      when: profile_name_prompt.user_input | length == 0
+      when: desktop_profile_name_prompt.user_input | length == 0
 
     - name: Set profile name fact
       ansible.builtin.set_fact:
-        konsave_profile_name: "{{ profile_name_prompt.user_input }}"
+        desktop_konsave_profile_name: "{{ desktop_profile_name_prompt.user_input }}"
 
     - name: Ensure export directory exists
       ansible.builtin.file:
-        path: "{{ konsave_export_dir }}"
+        path: "{{ desktop_konsave_export_dir }}"
         state: directory
         mode: "0700"
 
     - name: Save current KDE state into konsave profile
       ansible.builtin.command:
-        argv: [konsave, -s, "{{ konsave_profile_name }}"]
+        argv: [konsave, -s, "{{ desktop_konsave_profile_name }}"]
       changed_when: true
 
     - name: Export konsave profile to archive
@@ -33,9 +33,9 @@
         argv:
           - konsave
           - -e
-          - "{{ konsave_profile_name }}"
+          - "{{ desktop_konsave_profile_name }}"
           - -d
-          - "{{ konsave_export_dir }}"
+          - "{{ desktop_konsave_export_dir }}"
       changed_when: true
 
     - name: Upload konsave profile to Google Drive
@@ -43,12 +43,12 @@
         argv:
           - rclone
           - copy
-          - "{{ konsave_export_dir }}/{{ konsave_profile_name }}.knsv"
-          - "{{ konsave_rclone_remote }}:{{ konsave_gdrive_path }}/"
+          - "{{ desktop_konsave_export_dir }}/{{ desktop_konsave_profile_name }}.knsv"
+          - "{{ desktop_konsave_rclone_remote }}:{{ desktop_konsave_gdrive_path }}/"
       changed_when: true
 
   always:
     - name: Remove konsave export directory
       ansible.builtin.file:
-        path: "{{ konsave_export_dir }}"
+        path: "{{ desktop_konsave_export_dir }}"
         state: absent

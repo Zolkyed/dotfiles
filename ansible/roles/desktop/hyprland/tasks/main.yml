@@ -12,7 +12,7 @@
 
 - name: Ensure hyprland config directory exists
   ansible.builtin.file:
-    path: "{{ hyprland_config_dir }}"
+    path: "{{ desktop_hyprland_config_dir }}"
     state: directory
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
@@ -21,7 +21,7 @@
 - name: Deploy hyprland.conf
   ansible.builtin.template:
     src: hyprland.conf.j2
-    dest: "{{ hyprland_config_dir }}/hyprland.conf"
+    dest: "{{ desktop_hyprland_config_dir }}/hyprland.conf"
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
     mode: "0600"

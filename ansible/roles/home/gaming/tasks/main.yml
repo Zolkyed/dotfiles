@@ -2,43 +2,43 @@
 - name: Gaming | Check Debian foreign architectures
   ansible.builtin.command:
     cmd: dpkg --print-foreign-architectures
-  register: gaming_debian_foreign_architectures
+  register: home_gaming_debian_foreign_architectures
   changed_when: false
   when:
     - ansible_facts["os_family"] == "Debian"
     - >
-      ('steam' in gaming_packages) or
-      ('wine' in gaming_packages) or
-      ('winetricks' in gaming_packages)
+      ('steam' in home_gaming_packages) or
+      ('wine' in home_gaming_packages) or
+      ('winetricks' in home_gaming_packages)
 
 - name: Gaming | Enable Debian i386 architecture
   ansible.builtin.command:
     cmd: dpkg --add-architecture i386
-  register: gaming_debian_i386_architecture
+  register: home_gaming_debian_i386_architecture
   changed_when: true
   when:
     - ansible_facts["os_family"] == "Debian"
     - >
-      ('steam' in gaming_packages) or
-      ('wine' in gaming_packages) or
-      ('winetricks' in gaming_packages)
-    - "'i386' not in gaming_debian_foreign_architectures.stdout_lines"
+      ('steam' in home_gaming_packages) or
+      ('wine' in home_gaming_packages) or
+      ('winetricks' in home_gaming_packages)
+    - "'i386' not in home_gaming_debian_foreign_architectures.stdout_lines"
 
 - name: Gaming | Update apt cache after enabling i386
   ansible.builtin.apt:
     update_cache: true
   when:
     - ansible_facts["os_family"] == "Debian"
-    - gaming_debian_i386_architecture.changed | default(false)
+    - home_gaming_debian_i386_architecture.changed | default(false)
 
 - name: Gaming | Check Arch pacman repositories
   ansible.builtin.command:
     cmd: pacman-conf --repo-list
-  register: arch_pacman_repositories
+  register: home_arch_pacman_repositories
   changed_when: false
   when:
     - ansible_facts["os_family"] == "Archlinux"
-    - "'steam' in gaming_packages"
+    - "'steam' in home_gaming_packages"
 
 - name: Gaming | Enable Arch multilib repository for Steam
   ansible.builtin.blockinfile:
@@ -47,83 +47,61 @@
     block: |
       [multilib]
       Include = /etc/pacman.d/mirrorlist
-  register: arch_multilib_repository
+  register: home_arch_multilib_repository
   when:
     - ansible_facts["os_family"] == "Archlinux"
-    - "'steam' in gaming_packages"
-    - "'multilib' not in arch_pacman_repositories.stdout_lines"
+    - "'steam' in home_gaming_packages"
+    - "'multilib' not in home_arch_pacman_repositories.stdout_lines"
 
 - name: Gaming | Update pacman cache after enabling multilib
   community.general.pacman:
     update_cache: true
   when:
     - ansible_facts["os_family"] == "Archlinux"
-    - arch_multilib_repository.changed | default(false)
+    - home_arch_multilib_repository.changed | default(false)
 
 - name: Gaming | Check paru availability for AUR packages
   ansible.builtin.command:
     cmd: which paru
-  register: gaming_paru_check
+  register: home_gaming_paru_check
   changed_when: false
   failed_when: false
   when:
     - ansible_facts["os_family"] == "Archlinux"
-    - aur_gaming_packages | length > 0
+    - home_aur_gaming_packages | length > 0
 
 - name: Gaming | Assert paru is available for AUR packages
   ansible.builtin.assert:
     that:
-      - gaming_paru_check.rc == 0
+      - home_gaming_paru_check.rc == 0
     fail_msg: "AUR gaming packages require paru. Run the aur tag before gaming."
   when:
     - ansible_facts["os_family"] == "Archlinux"
-    - aur_gaming_packages | length > 0
-
-- name: Gaming | Check flatpak availability
-  ansible.builtin.command:
-    cmd: which flatpak
-  register: gaming_flatpak_check
-  changed_when: false
-  failed_when: false
-  when: gaming_flatpaks | length > 0
-
-- name: Gaming | Assert flatpak is available
-  ansible.builtin.assert:
-    that:
-      - gaming_flatpak_check.rc == 0
-    fail_msg: "Gaming Flatpaks require flatpak. Run the flatpak tag before gaming."
-  when: gaming_flatpaks | length > 0
+    - home_aur_gaming_packages | length > 0
 
 - name: Gaming | Install packages
   ansible.builtin.package:
-    name: "{{ gaming_packages }}"
+    name: "{{ home_gaming_packages }}"
     state: present
 
 - name: Gaming | Check installed AUR packages
   ansible.builtin.command:
     cmd: "pacman -Q {{ item }}"
-  loop: "{{ aur_gaming_packages }}"
-  register: aur_gaming_package_checks
+  loop: "{{ home_aur_gaming_packages }}"
+  register: home_aur_gaming_package_checks
   changed_when: false
   failed_when: false
   when: ansible_facts["os_family"] == "Archlinux"
 
 - name: Gaming | Install AUR packages
   ansible.builtin.command:
-    argv: ["paru", "-S", "--needed", "--noconfirm", "{{ aur_gaming_package_check.item }}"]
+    argv: ["paru", "-S", "--needed", "--noconfirm", "{{ home_aur_gaming_package_check.item }}"]
   become: true
   become_user: "{{ user_name }}"
-  loop: "{{ aur_gaming_package_checks.results | default([]) }}"
+  loop: "{{ home_aur_gaming_package_checks.results | default([]) }}"
   loop_control:
-    loop_var: aur_gaming_package_check
-    label: "{{ aur_gaming_package_check.item }}"
+    loop_var: home_aur_gaming_package_check
+    label: "{{ home_aur_gaming_package_check.item }}"
   when:
     - ansible_facts["os_family"] == "Archlinux"
-    - aur_gaming_package_check.rc != 0
-
-- name: Gaming | Install Flatpaks
-  community.general.flatpak:
-    name: "{{ gaming_flatpaks }}"
-    state: present
-    remote: flathub
-  when: gaming_flatpaks | length > 0
+    - home_aur_gaming_package_check.rc != 0

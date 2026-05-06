@@ -1,6 +1,6 @@
 input {
     keyboard {
-        xkb.layout "{{ niri_kb_layout }}"
+        xkb.layout "{{ desktop_niri_kb_layout }}"
         xkb.options "ctrl:nocaps"
     }
 }
@@ -22,8 +22,8 @@ cursor {
     }
 }
 
-# Outputs — auto-detected; override via monitors in host_vars
-{% for m in monitors %}
+# Outputs — auto-detected; override via desktop_monitors in host_vars
+{% for m in desktop_monitors %}
 output "{{ m.connector }}" {
     mode {{ m.mode }}
     scale {{ m.scale }}

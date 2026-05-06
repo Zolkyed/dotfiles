@@ -71,6 +71,13 @@ else
     sudo pacman -S --needed --noconfirm python python-pip curl inetutils
 fi
 
+echo "==> Installing just (optional dev command runner)..."
+if [[ "$DISTRO" == "debian" ]]; then
+    sudo apt-get install -y just || echo "    just package unavailable; install manually or run commands directly."
+else
+    sudo pacman -S --needed --noconfirm just
+fi
+
 # ---------------------------------------------------------------------------
 # Ansible
 # ---------------------------------------------------------------------------

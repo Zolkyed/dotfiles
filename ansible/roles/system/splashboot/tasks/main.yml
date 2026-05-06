@@ -1,42 +1,42 @@
 ---
 - name: Splashboot | Install packages
   ansible.builtin.package:
-    name: "{{ splashboot_packages }}"
+    name: "{{ system_splashboot_packages }}"
     state: present
   notify: Splashboot | Update initramfs
-  when: splashboot_packages | length > 0
+  when: system_splashboot_packages | length > 0
 
 - name: Splashboot | Check available Plymouth themes
   ansible.builtin.command:
     cmd: plymouth-set-default-theme --list
-  register: plymouth_themes
+  register: system_plymouth_themes
   changed_when: false
   failed_when: false
 
 - name: Splashboot | Check current Plymouth theme
   ansible.builtin.command:
     cmd: plymouth-set-default-theme
-  register: plymouth_current_theme
+  register: system_plymouth_current_theme
   changed_when: false
   failed_when: false
 
 - name: Splashboot | Set Plymouth theme
   ansible.builtin.command:
-    cmd: "plymouth-set-default-theme {{ splashboot_theme }}"
+    cmd: "plymouth-set-default-theme {{ system_splashboot_theme }}"
   changed_when: true
   notify: Splashboot | Update initramfs
   when:
-    - plymouth_themes.rc == 0
-    - splashboot_theme in plymouth_themes.stdout_lines
-    - plymouth_current_theme.stdout != splashboot_theme
+    - system_plymouth_themes.rc == 0
+    - system_splashboot_theme in system_plymouth_themes.stdout_lines
+    - system_plymouth_current_theme.stdout != system_splashboot_theme
 
 - name: Splashboot | Merge GRUB splash options
   ansible.builtin.set_fact:
-    grub_cmdline_linux_default: >-
+    system_grub_cmdline_linux_default: >-
       {{
         (
-          (grub_cmdline_linux_default | default('')).split()
-          + splashboot_grub_options
+          (system_grub_cmdline_linux_default | default('')).split()
+          + system_splashboot_grub_options
         )
         | unique
         | join(' ')

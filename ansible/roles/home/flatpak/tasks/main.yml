@@ -1,0 +1,28 @@
+---
+- name: Install flatpak
+  ansible.builtin.package:
+    name: flatpak
+    state: present
+
+- name: Add flatpak remotes
+  community.general.flatpak_remote:
+    name: "{{ item.name }}"
+    flatpakrepo_url: "{{ item.url }}"
+    state: present
+  loop: "{{ home_flatpak_remotes }}"
+
+- name: Install base flatpak apps
+  community.general.flatpak:
+    name: "{{ home_base_flatpaks }}"
+    state: present
+    remote: flathub
+  when: home_base_flatpaks | length > 0
+
+- name: Install gaming flatpak apps
+  community.general.flatpak:
+    name: "{{ home_gaming_flatpaks }}"
+    state: present
+    remote: flathub
+  when:
+    - gaming_enabled
+    - home_gaming_flatpaks | length > 0

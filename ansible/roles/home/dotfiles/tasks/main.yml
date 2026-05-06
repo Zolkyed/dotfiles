@@ -7,7 +7,7 @@
     cmd: >
       sh -c "$(curl -fsLS get.chezmoi.io)" --
       -b "{{ user_home }}/.local/bin"
-    creates: "{{ chezmoi_bin }}"
+    creates: "{{ home_chezmoi_bin }}"
   become: true
   become_user: "{{ user_name }}"
 
@@ -40,8 +40,8 @@
 
 - name: Apply dotfiles with chezmoi
   ansible.builtin.command:
-    cmd: "{{ chezmoi_bin }} apply --no-tty --force"
+    cmd: "{{ home_chezmoi_bin }} apply --no-tty --force"
   become: true
   become_user: "{{ user_name }}"
-  register: chezmoi_apply
-  changed_when: chezmoi_apply.stdout != ""
+  register: home_chezmoi_apply
+  changed_when: home_chezmoi_apply.stdout != ""

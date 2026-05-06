@@ -15,7 +15,7 @@
 - name: Deploy rclone config
   ansible.builtin.template:
     src: rclone.conf.j2
-    dest: "{{ rclone_conf_dest }}"
+    dest: "{{ desktop_rclone_conf_dest }}"
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
     mode: "0600"

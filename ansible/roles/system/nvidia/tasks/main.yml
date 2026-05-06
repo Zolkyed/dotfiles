@@ -26,7 +26,7 @@
 
 - name: NVIDIA | Install extra packages
   ansible.builtin.package:
-    name: "{{ nvidia_packages }}"
+    name: "{{ system_nvidia_packages }}"
     state: present
 
 - name: NVIDIA | Blacklist nouveau

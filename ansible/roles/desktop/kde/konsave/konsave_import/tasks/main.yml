@@ -8,31 +8,31 @@
         argv:
           - rclone
           - lsf
-          - "{{ konsave_rclone_remote }}:{{ konsave_gdrive_path }}/"
-      register: gdrive_profiles
+          - "{{ desktop_konsave_rclone_remote }}:{{ desktop_konsave_gdrive_path }}/"
+      register: desktop_gdrive_profiles
       changed_when: false
 
     - name: Show available profiles
       ansible.builtin.debug:
-        var: gdrive_profiles.stdout_lines
+        var: desktop_gdrive_profiles.stdout_lines
 
     - name: Prompt for profile to restore
       ansible.builtin.pause:
         prompt: "Enter the profile name to restore (from the list above, without .knsv):"
-      register: profile_prompt
+      register: desktop_profile_prompt
 
     - name: Fail if no name entered
       ansible.builtin.fail:
         msg: "Profile name cannot be empty"
-      when: profile_prompt.user_input | length == 0
+      when: desktop_profile_prompt.user_input | length == 0
 
     - name: Set profile name fact
       ansible.builtin.set_fact:
-        konsave_profile_name: "{{ profile_prompt.user_input }}"
+        desktop_konsave_profile_name: "{{ desktop_profile_prompt.user_input }}"
 
     - name: Ensure konsave download directory exists
       ansible.builtin.file:
-        path: "{{ konsave_download_dir }}"
+        path: "{{ desktop_konsave_download_dir }}"
         state: directory
         mode: "0700"
 
@@ -42,14 +42,19 @@
           - rclone
           - copy
           - --checksum
-          - "{{ konsave_rclone_remote }}:{{ konsave_gdrive_path }}/{{ konsave_profile_name }}.knsv"
-          - "{{ konsave_download_dir }}/"
+          - >-
+            {{
+              desktop_konsave_rclone_remote ~ ':' ~
+              desktop_konsave_gdrive_path ~ '/' ~
+              desktop_konsave_profile_name ~ '.knsv'
+            }}
+          - "{{ desktop_konsave_download_dir }}/"
       changed_when: false
 
     - name: Check if profile already imported into konsave
       ansible.builtin.command:
         argv: [konsave, -l]
-      register: konsave_profiles
+      register: desktop_konsave_profiles
       changed_when: false
       failed_when: false
 
@@ -58,17 +63,21 @@
         argv:
           - konsave
           - -i
-          - "{{ konsave_download_dir }}/{{ konsave_profile_name }}.knsv"
+          - >-
+            {{
+              desktop_konsave_download_dir ~ '/' ~
+              desktop_konsave_profile_name ~ '.knsv'
+            }}
           - -f
       changed_when: true
-      when: konsave_profile_name not in konsave_profiles.stdout
+      when: desktop_konsave_profile_name not in desktop_konsave_profiles.stdout
 
     - name: Apply konsave profile
       ansible.builtin.command:
         argv:
           - konsave
           - -a
-          - "{{ konsave_profile_name }}"
+          - "{{ desktop_konsave_profile_name }}"
       changed_when: true
 
     - name: Apply keybind overrides after konsave import
@@ -78,5 +87,5 @@
   always:
     - name: Remove konsave download directory
       ansible.builtin.file:
-        path: "{{ konsave_download_dir }}"
+        path: "{{ desktop_konsave_download_dir }}"
         state: absent

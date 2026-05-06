@@ -1,7 +1,7 @@
 ---
 # Custom scripts deployed to ~/.local/bin
 # Add scripts to roles/home/bin/files/ and they will be installed automatically
-bin_dest: "{{ user_home }}/.local/bin"
+home_bin_dest: "{{ user_home }}/.local/bin"
 
 # Home Assistant connection
 home_assistant_base_url: "https://home.mihon.org"

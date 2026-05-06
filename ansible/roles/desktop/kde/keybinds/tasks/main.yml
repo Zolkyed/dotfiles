@@ -1,8 +1,8 @@
 ---
 - name: Apply per-host keybind overrides
   ansible.builtin.copy:
-    src: "{{ kde_keybinds_file }}"
-    dest: "{{ kde_keybinds_dest }}"
+    src: "{{ desktop_kde_keybinds_file }}"
+    dest: "{{ desktop_kde_keybinds_dest }}"
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
     mode: "0600"

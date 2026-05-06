@@ -1,13 +1,13 @@
 ---
 - name: Install KVM packages
   ansible.builtin.package:
-    name: "{{ virtualization_kvm_packages }}"
+    name: "{{ system_virtualization_kvm_packages }}"
     state: present
   when: virtualization_backend == "kvm"
 
 - name: Install VirtualBox packages
   ansible.builtin.package:
-    name: "{{ virtualization_virtualbox_packages }}"
+    name: "{{ system_virtualization_virtualbox_packages }}"
     state: present
   when: virtualization_backend == "virtualbox"
 
@@ -21,6 +21,6 @@
 - name: Add user to virtualization groups
   ansible.builtin.user:
     name: "{{ user_name }}"
-    groups: "{{ virtualization_user_groups }}"
+    groups: "{{ system_virtualization_user_groups }}"
     append: true
   when: virtualization_backend == "kvm"

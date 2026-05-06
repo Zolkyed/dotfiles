@@ -1,5 +1,5 @@
 ---
-aur_build_packages:
+system_aur_build_packages:
   - base-devel
   - git
   - rust
@@ -7,10 +7,10 @@ aur_build_packages:
 hyprland_supported: true
 niri_supported: true
 
-paru_repo: https://aur.archlinux.org/paru.git
-paru_build_dir: "{{ user_home }}/paru-build"
+system_paru_repo: https://aur.archlinux.org/paru.git
+system_paru_build_dir: "{{ user_home }}/paru-build"
 
-core_packages:
+home_core_packages:
   - curl
   - wget
   - vim
@@ -24,7 +24,7 @@ core_packages:
   - man-db
   - man-pages
 
-utility_packages:
+home_utility_packages:
   - ncdu
   - ripgrep
   - vulkan-tools
@@ -51,7 +51,7 @@ utility_packages:
   - trash-cli
   - neovim
 
-media_packages:
+home_media_packages:
   - ffmpeg
   - yt-dlp
   - gimp
@@ -59,11 +59,11 @@ media_packages:
   - obs-studio
   - flowblade
 
-office_packages:
+home_office_packages:
   - libreoffice-fresh
   - thunderbird
 
-system_packages:
+home_system_packages:
   - gparted
   - dconf-editor
   - qbittorrent
@@ -71,9 +71,9 @@ system_packages:
   - keepassxc
   - flatpak-builder
 
-fun_packages: []
+home_fun_packages: []
 
-gaming_packages:
+home_gaming_packages:
   - steam
   - lutris
   - gamemode
@@ -85,12 +85,13 @@ gaming_packages:
   - piper
   - retroarch
 
-aur_gaming_packages:
+home_aur_gaming_packages:
   - celeste-classic
   - celeste-classic-pm
 
-dev_packages:
+home_dev_packages:
   - git
+  - pkgconf
   - python
   - python-pip
   - python-pipx
@@ -106,7 +107,7 @@ dev_packages:
   - gdb
   - cmake
 
-fonts_packages:
+system_fonts_packages:
   - noto-fonts
   - noto-fonts-cjk
   - noto-fonts-emoji
@@ -114,11 +115,11 @@ fonts_packages:
   - ttf-liberation
   - gnu-free-fonts
 
-nvidia_packages:
+system_nvidia_packages:
   - nvidia-settings
   - vulkan-icd-loader
 
-virtualization_kvm_packages:
+system_virtualization_kvm_packages:
   - qemu-full
   - libvirt
   - virt-install
@@ -126,12 +127,12 @@ virtualization_kvm_packages:
   - bridge-utils
   - edk2-ovmf
 
-virtualization_virtualbox_packages:
+system_virtualization_virtualbox_packages:
   - virtualbox
   - virtualbox-host-modules-arch
 
 libvirt_service: libvirtd
-virtualization_user_groups:
+system_virtualization_user_groups:
   - libvirt
   - kvm
 
@@ -147,8 +148,10 @@ bluetooth_packages:
   - bluez
   - bluez-utils
 
-docker_packages:
+system_docker_engine_packages:
   - docker
+
+system_docker_plugin_packages:
   - docker-compose
   - docker-buildx
 
@@ -157,27 +160,27 @@ docker_group: docker
 networking_packages:
   - networkmanager
 
-vpn_packages:
+system_vpn_packages:
   - wireguard-tools
   - openvpn
   - networkmanager-openvpn
 
-splashboot_packages:
+system_splashboot_packages:
   - plymouth
 
 ssh_package: openssh
 ssh_service: sshd
 
-grub_packages_bios:
+system_grub_packages_bios:
   - grub
 
-grub_packages_uefi:
+system_grub_packages_uefi:
   - grub
   - efibootmgr
 
-grub_bootloader_id: GRUB
+system_grub_bootloader_id: GRUB
 
-user_groups:
+home_user_groups:
   - wheel
   - audio
   - video

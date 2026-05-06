@@ -1,8 +1,8 @@
 ---
 - name: AUR | Clone paru repository
   ansible.builtin.git:
-    repo: "{{ paru_repo }}"
-    dest: "{{ paru_build_dir }}"
+    repo: "{{ system_paru_repo }}"
+    dest: "{{ system_paru_build_dir }}"
     depth: 1
     version: master
   become: true
@@ -11,7 +11,7 @@
 - name: AUR | Build paru package
   ansible.builtin.command:
     cmd: makepkg --noconfirm
-    chdir: "{{ paru_build_dir }}"
+    chdir: "{{ system_paru_build_dir }}"
   become: true
   become_user: "{{ user_name }}"
   environment:
@@ -19,23 +19,23 @@
 
 - name: AUR | Find built paru package
   ansible.builtin.find:
-    paths: "{{ paru_build_dir }}"
+    paths: "{{ system_paru_build_dir }}"
     patterns: "paru-*.pkg.tar.*"
     file_type: file
-  register: paru_built_packages
+  register: system_paru_built_packages
 
 - name: AUR | Assert paru package was built
   ansible.builtin.assert:
     that:
-      - paru_built_packages.files | length > 0
+      - system_paru_built_packages.files | length > 0
     fail_msg: "No built package found for paru."
 
 - name: AUR | Install paru package
   ansible.builtin.command:
-    argv: "{{ ['pacman', '-U', '--noconfirm'] + (paru_built_packages.files | map(attribute='path') | list) }}"
+    argv: "{{ ['pacman', '-U', '--noconfirm'] + (system_paru_built_packages.files | map(attribute='path') | list) }}"
   changed_when: true
 
 - name: AUR | Clean helper build directory
   ansible.builtin.file:
-    path: "{{ paru_build_dir }}"
+    path: "{{ system_paru_build_dir }}"
     state: absent

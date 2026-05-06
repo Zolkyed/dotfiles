@@ -24,6 +24,12 @@ bash scripts/run_once_install-ansible.sh
 ```
 
 ```bash
+# Local CI/lint tooling
+just setup-dev
+just ci
+```
+
+```bash
 # Run manually (Ansible already installed)
 cd ansible
 ansible-playbook playbooks/setup.yml -l desktop
@@ -56,7 +62,6 @@ ansible-playbook playbooks/setup.yml --check --diff -l desktop
 │       │   ├── apt-architecture/ # Debian foreign architectures
 │       │   ├── aur/          # Arch AUR helpers
 │       │   ├── packages/     # distro package cache + base packages
-│       │   ├── flatpak/      # Flathub remotes + apps
 │       │   ├── fonts/        # Nerd Fonts
 │       │   ├── docker/       # Docker CE + compose plugin
 │       │   ├── nvidia/       # Proprietary driver, nouveau blacklist
@@ -69,6 +74,7 @@ ansible-playbook playbooks/setup.yml --check --diff -l desktop
 │       ├── desktop/
 │       │   ├── kde/          # rclone, konsave operations, and keybind settings
 │       └── home/
+│           ├── flatpak/      # Flathub remotes + user apps
 │           └── user/
 │               ├── (main)        # User account, shell, groups
 │               ├── dotfiles/     # chezmoi install + apply --force

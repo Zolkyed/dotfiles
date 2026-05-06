@@ -1,12 +1,12 @@
-# Monitor configuration — auto-detected; override via monitors in host_vars
-{% for m in monitors %}
+# Monitor configuration — auto-detected; override via desktop_monitors in host_vars
+{% for m in desktop_monitors %}
 monitor = {{ m.connector }},{{ m.mode }},0x0,{{ m.scale }}
 {% endfor %}
 
 env = XCURSOR_SIZE,24
 
 input {
-    kb_layout = {{ hyprland_kb_layout }}
+    kb_layout = {{ desktop_hyprland_kb_layout }}
     follow_mouse = 1
     touchpad {
         natural_scroll = true

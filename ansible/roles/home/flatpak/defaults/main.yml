@@ -1,6 +1,7 @@
 ---
-flatpak_remotes:
+home_flatpak_remotes:
   - name: flathub
     url: https://dl.flathub.org/repo/flathub.flatpakrepo
 
-base_flatpaks: []
+home_base_flatpaks: []
+home_gaming_flatpaks: []

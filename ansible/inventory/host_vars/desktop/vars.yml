@@ -4,12 +4,12 @@ nvidia_enabled: true
 gaming_enabled: true
 
 # Bootloader
-grub_timeout: 3
-grub_cmdline_linux_default: "quiet splash"
-grub_efi_directory: /boot/efi
+system_grub_timeout: 3
+system_grub_cmdline_linux_default: "quiet splash"
+system_grub_efi_directory: /boot/efi
 
-# Shared monitor config — replace connector name (run hyprctl monitors)
-monitors:
+# Shared monitor config - replace connector name (run hyprctl monitors)
+desktop_monitors:
   - connector: "DP-1"
     mode: "1920x1080@144"
     scale: 1

@@ -47,13 +47,13 @@ locale: en_US.UTF-8
 timezone: America/Toronto
 keymap: us
 system_hostname: "{{ inventory_hostname }}"
-sysctl_settings: {}
+system_sysctl_settings: {}
 
 # ---------------------------------------------------------------------------
 # Splash boot
 # ---------------------------------------------------------------------------
-splashboot_theme: spinner
-splashboot_grub_options:
+system_splashboot_theme: spinner
+system_splashboot_grub_options:
   - quiet
   - splash
 
@@ -98,13 +98,13 @@ hayase_appimage_dest: /usr/local/bin/hayase
 # ---------------------------------------------------------------------------
 # Flatpaks (distro-agnostic)
 # ---------------------------------------------------------------------------
-base_flatpaks:
+home_base_flatpaks:
   - com.discordapp.Discord
   - com.brave.Browser
   - com.visualstudio.code
   - com.spotify.Client
 
-gaming_flatpaks:
+home_gaming_flatpaks:
   - com.heroicgameslauncher.hgl
   - net.pcsx2.PCSX2
   - net.davidotek.pupgui2
@@ -150,7 +150,7 @@ niri_packages:
 # ---------------------------------------------------------------------------
 # Nerd Fonts (downloaded from GitHub)
 # ---------------------------------------------------------------------------
-fonts_nerd:
+system_fonts_nerd:
   version: "3.4.0"
   families:
     - JetBrainsMono

@@ -1,4 +1,4 @@
 ---
-niri_config_dir: "{{ user_home }}/.config/niri"
-niri_kb_layout: us
-monitors: []
+desktop_niri_config_dir: "{{ user_home }}/.config/niri"
+desktop_niri_kb_layout: us
+desktop_monitors: []

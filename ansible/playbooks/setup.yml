@@ -51,7 +51,7 @@
       tags: locale
     - role: system/fonts
       tags: fonts
-    - role: system/flatpak
+    - role: home/flatpak
       tags: flatpak
     - role: system/docker
       tags: docker

@@ -14,7 +14,7 @@
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
     mode: "0600"
-  loop: "{{ ssh_keys }}"
+  loop: "{{ home_ssh_keys }}"
   when: item.private_key != ''
   no_log: true
 
@@ -25,7 +25,7 @@
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
     mode: "0644"
-  loop: "{{ ssh_keys }}"
+  loop: "{{ home_ssh_keys }}"
   when: item.public_key != ''
   no_log: true
 
@@ -34,4 +34,4 @@
     user: "{{ user_name }}"
     key: "{{ item }}"
     state: present
-  loop: "{{ ssh_authorized_keys }}"
+  loop: "{{ home_ssh_authorized_keys }}"

@@ -8,7 +8,7 @@
   ansible.builtin.user:
     name: "{{ user_name }}"
     shell: "{{ user_shell }}"
-    groups: "{{ user_groups }}"
+    groups: "{{ home_user_groups }}"
     append: true
     state: present
 

@@ -6,6 +6,12 @@ VAULT_FILE := "ansible/inventory/group_vars/vault.yml"
 
 # ─── Ansible ────────────────────────────────────────────────────────────
 
+setup-dev:
+    python -m venv .venv
+    .venv/bin/python -m pip install --upgrade pip
+    .venv/bin/pip install -r requirements.txt
+    ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote .venv/bin/ansible-galaxy collection install -r {{ANSIBLE_DIR}}/requirements.yml
+
 run host="desktop" v="-v":
     cd {{ANSIBLE_DIR}} && ansible-playbook {{PLAYBOOK}} -l {{host}} {{v}}
 
@@ -28,13 +34,13 @@ lint:
     just lint-shell
 
 lint-ansible:
-    cd {{ANSIBLE_DIR}} && ansible-lint
+    cd {{ANSIBLE_DIR}} && if [[ -x ../.venv/bin/ansible-lint ]]; then ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ../.venv/bin/ansible-lint; else ansible-lint; fi
 
 lint-yaml:
-    yamllint -c .yamllint {{ANSIBLE_DIR}} .github
+    if [[ -x .venv/bin/yamllint ]]; then .venv/bin/yamllint -c .yamllint {{ANSIBLE_DIR}} .github; else yamllint -c .yamllint {{ANSIBLE_DIR}} .github; fi
 
 lint-shell:
-    shellcheck scripts/*.sh
+    if [[ -x .venv/bin/shellcheck ]]; then .venv/bin/shellcheck scripts/*.sh; else shellcheck scripts/*.sh; fi
 
 syntax:
     cd {{ANSIBLE_DIR}} && ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-playbook {{PLAYBOOK}} --syntax-check

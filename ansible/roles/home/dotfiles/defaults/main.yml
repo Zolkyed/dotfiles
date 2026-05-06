@@ -1,2 +1,2 @@
 ---
-chezmoi_bin: "{{ user_home }}/.local/bin/chezmoi"
+home_chezmoi_bin: "{{ user_home }}/.local/bin/chezmoi"

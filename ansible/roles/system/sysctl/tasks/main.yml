@@ -10,7 +10,7 @@
     state: present
     sysctl_set: true
     reload: true
-  loop: "{{ sysctl_settings | dict2items }}"
+  loop: "{{ system_sysctl_settings | dict2items }}"
   loop_control:
     label: "{{ item.key }}"
-  when: sysctl_settings | length > 0
+  when: system_sysctl_settings | length > 0

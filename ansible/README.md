@@ -13,6 +13,10 @@ cd ansible
 ansible-playbook playbooks/setup.yml -l desktop
 ansible-playbook playbooks/setup.yml -l laptop
 
+# Local CI/lint tooling
+just setup-dev
+just ci
+
 # Dry-run
 ansible-playbook playbooks/setup.yml --check --diff -l desktop
 ```
@@ -25,7 +29,7 @@ ansible-playbook playbooks/setup.yml --check --diff -l desktop
 | shared Flatpaks/fonts | `group_vars/all.yml` | Distro-agnostic app/font lists |
 | user defaults/groups | `group_vars/all.yml` | Shared user settings |
 | package/service variables | `group_vars/Debian.yml`, `group_vars/Archlinux.yml` | OS-specific names |
-| host feature flags, monitors, GRUB vars | `host_vars/<host>/vars.yml` | Per-machine overrides |
+| host feature flags, desktop_monitors, GRUB vars | `host_vars/<host>/vars.yml` | Per-machine overrides |
 
 ## Roles
 
@@ -33,7 +37,6 @@ ansible-playbook playbooks/setup.yml --check --diff -l desktop
 | Role | Purpose |
 |---|---|
 | packages | distro package cache + base packages |
-| flatpak | Flathub remote + apps |
 | fonts | Nerd Fonts |
 | docker | Docker CE + compose plugin |
 | nvidia | Proprietary driver, nouveau blacklist |
@@ -50,12 +53,13 @@ ansible-playbook playbooks/setup.yml --check --diff -l desktop
 |---|---|
 | kde | KDE Plasma rclone/konsave/keybind setup |
 
-### home/user/
+### home/
 | Role | Purpose |
 |---|---|
+| flatpak | Flathub remote + user apps |
 | (main) | User account, shell, groups |
 | dotfiles | chezmoi install + `apply --force` |
-| ssh_keys | Deploy keys from SOPS vault |
+| home_ssh_keys | Deploy keys from SOPS vault |
 | dev | Dev tools, nvm, rustup |
 | bin | Custom scripts → `~/.local/bin` |
 | gaming | Steam, Lutris, gamemode, Heroic |

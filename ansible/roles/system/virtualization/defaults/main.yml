@@ -1,4 +1,4 @@
 ---
-virtualization_kvm_packages: []
-virtualization_virtualbox_packages: []
-virtualization_user_groups: []
+system_virtualization_kvm_packages: []
+system_virtualization_virtualbox_packages: []
+system_virtualization_user_groups: []

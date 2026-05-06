@@ -19,16 +19,15 @@
         architectures: "{{ ansible_facts['architecture'] | replace('x86_64', 'amd64') }}"
         signed_by: "https://download.docker.com/linux/debian/gpg"
         state: present
-      register: docker_apt_repository
+      notify: Docker | Update apt cache
 
-    - name: Docker | Update apt cache after repository change
-      ansible.builtin.apt:
-        update_cache: true
-      when: docker_apt_repository.changed
+- name: Docker | Flush apt repository handlers
+  ansible.builtin.meta: flush_handlers
+  when: ansible_facts["os_family"] == "Debian"
 
 - name: Docker | Install packages
   ansible.builtin.package:
-    name: "{{ docker_packages }}"
+    name: "{{ system_docker_engine_packages + system_docker_plugin_packages }}"
     state: present
   notify: Restart docker
 
