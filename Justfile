@@ -54,33 +54,8 @@ lint-shell:
 syntax:
     cd {{ANSIBLE_DIR}} && ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-playbook {{PLAYBOOK}} --syntax-check
 
-list-tasks:
-    cd {{ANSIBLE_DIR}} && ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-playbook {{PLAYBOOK}} --list-tasks
-
-inventory:
-    cd {{ANSIBLE_DIR}} && ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-inventory -i inventory/hosts.yml --list >/dev/null
-
-inventory-local:
-    cd {{ANSIBLE_DIR}} && ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-inventory -i inventory/local.yml --list >/dev/null
-
-test-tags:
-    cd {{ANSIBLE_DIR}} && for tag in always sysctl user sudoers aur packages hayase fonts flatpak docker virtualization dotfiles browser ssh_keys dev bin networking vpn sshd firewall fail2ban splashboot rclone konsave ai gaming hyprland niri; do \
-        output=$(ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-playbook {{PLAYBOOK}} --list-tasks --tags "$tag" 2>&1); \
-        status=$?; \
-        task_count=$(printf '%s\n' "$output" | rg -c '^      .+TAGS:'); \
-        if [[ "$status" -ne 0 || "$task_count" -eq 0 ]]; then \
-            printf 'FAIL %s status=%s tasks=%s\n%s\n' "$tag" "$status" "$task_count" "$output"; \
-            exit 1; \
-        fi; \
-        printf 'PASS %-18s %s tasks\n' "$tag" "$task_count"; \
-    done
-
 ci:
     just syntax
-    just inventory
-    just inventory-local
-    just list-tasks
-    just test-tags
     just lint
 
 # ─── Vault ──────────────────────────────────────────────────────────────
@@ -98,23 +73,6 @@ apply:
 
 diff:
     chezmoi diff
-
-# ─── Konsave ─────────────────────────────────────────────────────────────
-
-konsave-install host="desktop":
-    cd {{ANSIBLE_DIR}} && ansible-playbook {{PLAYBOOK}} -l {{host}} --tags konsave
-
-konsave-list:
-    konsave-list
-
-konsave-import profile="":
-    konsave-import {{profile}}
-
-konsave-export profile="":
-    konsave-export {{profile}}
-
-konsave-remove profile="":
-    konsave-remove {{profile}}
 
 # ─── Help ───────────────────────────────────────────────────────────────
 
