@@ -43,6 +43,8 @@
       when: btrfs_enabled
     - role: home/user
       tags: user
+    - role: system/sudoers
+      tags: sudoers
     - role: system/aur
       tags: aur
       when: ansible_facts["os_family"] == "Archlinux"

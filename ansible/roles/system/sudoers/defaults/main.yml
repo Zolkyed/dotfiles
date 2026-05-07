@@ -1,0 +1,3 @@
+---
+system_sudoers_pacman_nopasswd: true
+system_sudoers_pacman_user: "{{ user_name }}"
