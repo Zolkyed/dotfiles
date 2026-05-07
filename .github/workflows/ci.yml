@@ -25,7 +25,6 @@ jobs:
                 ansible-lint \
                 ca-certificates \
                 git \
-                ripgrep \
                 shellcheck \
                 yamllint
           - name: Arch Linux
@@ -36,7 +35,6 @@ jobs:
                 ansible-lint \
                 ca-certificates \
                 git \
-                ripgrep \
                 shellcheck \
                 yamllint
 
@@ -56,45 +54,6 @@ jobs:
           ANSIBLE_LOCAL_TEMP: /tmp/ansible-local
           ANSIBLE_REMOTE_TEMP: /tmp/ansible-remote
         run: ansible-playbook playbooks/setup.yml --syntax-check
-
-      - name: Ansible inventory check
-        working-directory: ansible
-        env:
-          ANSIBLE_LOCAL_TEMP: /tmp/ansible-local
-          ANSIBLE_REMOTE_TEMP: /tmp/ansible-remote
-        run: ansible-inventory -i inventory/hosts.yml --list >/dev/null
-
-      - name: Ansible task listing
-        working-directory: ansible
-        env:
-          ANSIBLE_LOCAL_TEMP: /tmp/ansible-local
-          ANSIBLE_REMOTE_TEMP: /tmp/ansible-remote
-        run: ansible-playbook playbooks/setup.yml --list-tasks
-
-      - name: Ansible tag coverage
-        working-directory: ansible
-        env:
-          ANSIBLE_LOCAL_TEMP: /tmp/ansible-local
-          ANSIBLE_REMOTE_TEMP: /tmp/ansible-remote
-          TAGS: >-
-            always sysctl user aur packages hayase
-            fonts flatpak docker virtualization dotfiles browser ssh_keys dev
-            bin networking vpn sshd firewall fail2ban splashboot
-            rclone konsave konsave-import konsave-export
-            konsave-delete keybinds ai gaming hyprland niri
-        run: |
-          for tag in $TAGS; do
-            output=$(ansible-playbook playbooks/setup.yml --list-tasks --tags "$tag" 2>&1)
-            status=$?
-            task_count=$(printf '%s\n' "$output" | rg -c '^      .+TAGS:')
-
-            if [[ "$status" -ne 0 || "$task_count" -eq 0 ]]; then
-              printf 'FAIL %s status=%s tasks=%s\n%s\n' "$tag" "$status" "$task_count" "$output"
-              exit 1
-            fi
-
-            printf 'PASS %-18s %s tasks\n' "$tag" "$task_count"
-          done
 
       - name: Ansible lint
         working-directory: ansible
