@@ -1,4 +1,9 @@
 ---
 system_nvidia_packages: []
 system_nvidia_driver_package: auto
+system_nvidia_arch_driver_candidates:
+  - nvidia
+  - nvidia-open
+  - nvidia-dkms
+  - nvidia-lts
 system_nvidia_persistence_enabled: false

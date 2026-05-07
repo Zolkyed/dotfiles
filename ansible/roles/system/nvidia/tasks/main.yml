@@ -9,25 +9,89 @@
     - system_nvidia_driver_package == "auto"
 
 - name: NVIDIA | Arch auto-install
-  ansible.builtin.package:
-    name: nvidia
-    state: present
+  ansible.builtin.command:
+    cmd: "pacman -Si {{ item }}"
+  loop: "{{ system_nvidia_arch_driver_candidates }}"
+  register: nvidia_arch_driver_checks
+  changed_when: false
+  failed_when: false
+  when:
+    - ansible_facts["os_family"] == "Archlinux"
+    - system_nvidia_driver_package == "auto"
+
+- name: NVIDIA | Select Arch auto driver package
+  ansible.builtin.set_fact:
+    system_nvidia_driver_package_resolved: >-
+      {{
+        (nvidia_arch_driver_checks.results
+         | selectattr('rc', 'equalto', 0)
+         | map(attribute='item')
+         | list
+         | first) | default('')
+      }}
+  when:
+    - ansible_facts["os_family"] == "Archlinux"
+    - system_nvidia_driver_package == "auto"
+
+- name: NVIDIA | Fail when no Arch driver package is available
+  ansible.builtin.fail:
+    msg: >-
+      None of the configured Arch NVIDIA driver packages are available:
+      {{ system_nvidia_arch_driver_candidates | join(', ') }}.
+      Set system_nvidia_driver_package in host_vars to the package name that
+      exists for this machine and enabled repositories.
+  when:
+    - ansible_facts["os_family"] == "Archlinux"
+    - system_nvidia_driver_package == "auto"
+    - system_nvidia_driver_package_resolved | default('') | length == 0
+
+- name: NVIDIA | Arch auto-install selected driver package
+  ansible.builtin.command:
+    cmd: "pacman -S --noconfirm --needed {{ system_nvidia_driver_package_resolved }}"
+  register: nvidia_auto_install
+  changed_when: >-
+    nvidia_auto_install.stdout is search('installing')
   notify: Reboot required
   when:
     - ansible_facts["os_family"] == "Archlinux"
     - system_nvidia_driver_package == "auto"
+    - system_nvidia_driver_package_resolved | default('') | length > 0
 
 - name: NVIDIA | Install specific driver package
   ansible.builtin.package:
     name: "{{ system_nvidia_driver_package }}"
     state: present
   notify: Reboot required
-  when: system_nvidia_driver_package != "auto"
+  when:
+    - ansible_facts["os_family"] != "Archlinux"
+    - system_nvidia_driver_package != "auto"
+
+- name: NVIDIA | Arch install specific driver package
+  ansible.builtin.command:
+    cmd: pacman -S --noconfirm --needed {{ system_nvidia_driver_package }}
+  register: nvidia_specific_install
+  changed_when: nvidia_specific_install.stdout is search('installing')
+  notify: Reboot required
+  when:
+    - ansible_facts["os_family"] == "Archlinux"
+    - system_nvidia_driver_package != "auto"
 
 - name: NVIDIA | Install extra packages
   ansible.builtin.package:
     name: "{{ system_nvidia_packages }}"
     state: present
+  when:
+    - ansible_facts["os_family"] != "Archlinux"
+    - system_nvidia_packages | length > 0
+
+- name: NVIDIA | Arch install extra packages
+  ansible.builtin.command:
+    cmd: pacman -S --noconfirm --needed {{ system_nvidia_packages | join(' ') }}
+  register: nvidia_extra_install
+  changed_when: nvidia_extra_install.stdout is search('installing')
+  when:
+    - ansible_facts["os_family"] == "Archlinux"
+    - system_nvidia_packages | length > 0
 
 - name: NVIDIA | Blacklist nouveau
   ansible.builtin.copy:

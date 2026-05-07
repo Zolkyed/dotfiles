@@ -3,7 +3,9 @@
   ansible.builtin.package:
     name: "{{ system_virtualization_kvm_packages }}"
     state: present
-  when: system_virtualization_backend == "kvm"
+  when:
+    - system_virtualization_backend == "kvm"
+    - system_virtualization_kvm_packages | length > 0
 
 - name: Install VirtualBox packages
   ansible.builtin.package:
@@ -23,4 +25,6 @@
     name: "{{ user_name }}"
     groups: "{{ system_virtualization_user_groups }}"
     append: true
-  when: system_virtualization_backend == "kvm"
+  when:
+    - system_virtualization_backend == "kvm"
+    - system_virtualization_user_groups | length > 0
