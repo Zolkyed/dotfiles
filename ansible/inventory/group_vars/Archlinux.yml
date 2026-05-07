@@ -54,7 +54,6 @@ home_media_packages:
   - gimp
   - pavucontrol
   - obs-studio
-  - flowblade
 
 home_office_packages:
   - libreoffice-fresh
@@ -62,11 +61,8 @@ home_office_packages:
 
 home_system_packages:
   - gparted
-  - dconf-editor
   - qbittorrent
   - timeshift
-  - keepassxc
-  - flatpak-builder
 
 home_fun_packages:
   - cowsay
@@ -83,7 +79,6 @@ home_gaming_packages:
   - wine
   - winetricks
   - protontricks
-  - piper
   - retroarch
 
 home_distro_flatpaks: []

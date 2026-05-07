@@ -26,7 +26,6 @@ home_core_packages:
   - gnupg
   - man-db
   - manpages
-  - manpages-dev
 
 home_utility_packages:
   - ncdu
@@ -61,7 +60,6 @@ home_media_packages:
   - gimp
   - pavucontrol
   - obs-studio
-  - flowblade
 
 home_office_packages:
   - libreoffice
@@ -69,11 +67,8 @@ home_office_packages:
 
 home_system_packages:
   - gparted
-  - dconf-editor
   - qbittorrent
   - timeshift
-  - keepassxc
-  - flatpak-builder
 
 home_fun_packages:
   - cowsay
@@ -91,7 +86,6 @@ home_gaming_packages:
   - goverlay
   - wine
   - winetricks
-  - piper
   - retroarch
 
 home_distro_flatpaks: []
