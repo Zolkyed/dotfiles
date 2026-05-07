@@ -61,11 +61,12 @@
       tags: dotfiles
     - role: home/browser
       tags: browser
-      when: browser_enabled
     - role: home/ssh_keys
       tags: ssh_keys
     - role: home/dev
       tags: dev
+    - role: home/ai
+      tags: ai
     - role: home/bin
       tags: bin
     - role: system/networking
@@ -84,27 +85,10 @@
     - role: system/splashboot
       tags: splashboot
       when: splashboot_enabled
-    - role: desktop/kde/rclone
+    - role: home/rclone
       tags: rclone
-      when: kde_enabled
-    - role: desktop/kde/konsave/konsave_install
+    - role: home/konsave
       tags: konsave
-      when: kde_enabled
-    - role: desktop/kde/konsave/konsave_import
-      tags: [konsave-import, never]
-      when: kde_enabled
-    - role: desktop/kde/konsave/konsave_export
-      tags: [konsave-export, never]
-      when: kde_enabled
-    - role: desktop/kde/konsave/konsave_delete
-      tags: [konsave-delete, never]
-      when: kde_enabled
-    - role: desktop/kde/keybinds
-      tags: [keybinds, never]
-      when: kde_enabled
-    - role: home/ai
-      tags: ai
-      when: ai_enabled
     - role: home/gaming
       tags: gaming
       when: gaming_enabled

@@ -76,12 +76,10 @@ Hosts: `desktop`, `laptop`, `server`. Each has a `vars.yml` (overrides) and
 |---|---|
 | `hyprland` | Hyprland packages + config (monitors, keybinds, animations) |
 | `niri` | Niri packages + config (outputs, keybinds) |
-| `kde/rclone` | rclone config for Google Drive |
-| `kde/keybinds` | Per-host `kglobalshortcutsrc` overrides |
-| `kde/konsave/konsave_install` | Install konsave via pipx |
-| `kde/konsave/konsave_import` | Restore KDE profile from Google Drive (tagged `never`) |
-| `kde/konsave/konsave_export` | Save KDE profile to Google Drive (tagged `never`) |
-| `kde/konsave/konsave_delete` | Delete KDE profile from Google Drive (tagged `never`) |
+
+Konsave day-to-day commands are installed by the `home/bin` role. The public
+commands are symlinks to one `konsavectl` shell script. Per-host KDE keybind
+files are installed with `konsavectl` and applied after `konsave-import`.
 
 ### home/
 
@@ -91,12 +89,14 @@ Hosts: `desktop`, `laptop`, `server`. Each has a `vars.yml` (overrides) and
 | `packages` | Core, utility, media, office, system, fun packages |
 | `hayase` | Hayase anime sync (.deb or AppImage) |
 | `flatpak` | Flathub remote + shared, distro-specific, and gaming apps |
+| `rclone` | rclone config for Google Drive |
+| `konsave` | Install konsave via pipx |
 | `dotfiles` | chezmoi install + `apply --force` |
 | `browser` | Managed browser extension policy |
 | `ssh_keys` | Deploy SSH keys from SOPS vault |
 | `dev` | Dev tools, nvm, rustup |
-| `bin` | Custom scripts + homectl Home Assistant config |
 | `ai` | opencode CLI assistant |
+| `bin` | Custom scripts + homectl Home Assistant config |
 | `gaming` | Steam, Lutris, multilib/i386 |
 
 ## Supported distributions

@@ -1,5 +1,0 @@
-# defaults/main.yml
----
-desktop_konsave_rclone_remote: gdrive
-desktop_konsave_gdrive_path: "konsave"
-desktop_konsave_export_dir: "/tmp/konsave_export"

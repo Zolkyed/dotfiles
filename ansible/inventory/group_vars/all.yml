@@ -19,14 +19,11 @@ firewall_enabled: true
 fail2ban_enabled: true
 
 # Desktop
-kde_enabled: true
 hyprland_enabled: false
 niri_enabled: false
 
 # Home
-ai_enabled: true
 gaming_enabled: false
-browser_enabled: false
 
 # ---------------------------------------------------------------------------
 # Home

@@ -64,7 +64,7 @@ inventory-local:
     cd {{ANSIBLE_DIR}} && ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-inventory -i inventory/local.yml --list >/dev/null
 
 test-tags:
-    cd {{ANSIBLE_DIR}} && for tag in always sysctl user aur packages hayase fonts flatpak docker virtualization dotfiles browser ssh_keys dev bin networking vpn sshd firewall fail2ban splashboot rclone konsave konsave-import konsave-export konsave-delete keybinds ai gaming hyprland niri; do \
+    cd {{ANSIBLE_DIR}} && for tag in always sysctl user sudoers aur packages hayase fonts flatpak docker virtualization dotfiles browser ssh_keys dev bin networking vpn sshd firewall fail2ban splashboot rclone konsave ai gaming hyprland niri; do \
         output=$(ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-playbook {{PLAYBOOK}} --list-tasks --tags "$tag" 2>&1); \
         status=$?; \
         task_count=$(printf '%s\n' "$output" | rg -c '^      .+TAGS:'); \
@@ -104,14 +104,17 @@ diff:
 konsave-install host="desktop":
     cd {{ANSIBLE_DIR}} && ansible-playbook {{PLAYBOOK}} -l {{host}} --tags konsave
 
-konsave-import host="desktop":
-    cd {{ANSIBLE_DIR}} && ansible-playbook {{PLAYBOOK}} -l {{host}} --tags konsave-import
+konsave-list:
+    konsave-list
 
-konsave-export host="desktop":
-    cd {{ANSIBLE_DIR}} && ansible-playbook {{PLAYBOOK}} -l {{host}} --tags konsave-export
+konsave-import profile="":
+    konsave-import {{profile}}
 
-konsave-delete host="desktop":
-    cd {{ANSIBLE_DIR}} && ansible-playbook {{PLAYBOOK}} -l {{host}} --tags konsave-delete
+konsave-export profile="":
+    konsave-export {{profile}}
+
+konsave-remove profile="":
+    konsave-remove {{profile}}
 
 # ─── Help ───────────────────────────────────────────────────────────────
 

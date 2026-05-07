@@ -8,7 +8,7 @@ Full machine provisioning and user environment for Debian and Arch Linux.
 |---|---|---|
 | System | Ansible | Packages, services, drivers, users |
 | Dotfiles | Chezmoi | Shell, editor, app config |
-| Desktop | Ansible | Hyprland, Niri, KDE (rclone, konsave, keybinds) |
+| Desktop | Ansible | Hyprland, Niri |
 | Secrets | SOPS + age | SSH keys, tokens, credentials |
 
 ## Quick start
@@ -84,25 +84,19 @@ just check desktop
 │       ├── desktop/
 │       │   ├── hyprland/          # Hyprland packages + config
 │       │   ├── niri/              # Niri packages + config
-│       │   └── kde/
-│       │       ├── rclone/        # rclone config for Google Drive
-│       │       ├── keybinds/      # per-host kglobalshortcutsrc
-│       │       └── konsave/
-│       │           ├── konsave_install/
-│       │           ├── konsave_import/   # restore KDE profile from GDrive
-│       │           ├── konsave_export/   # save KDE profile to GDrive
-│       │           └── konsave_delete/   # remove KDE profile from GDrive
 │       └── home/
 │           ├── user/              # user account, groups, zsh shell
 │           ├── packages/          # core, utility, media, office, system, fun
+│           ├── rclone/            # rclone config for Google Drive
+│           ├── konsave/           # install konsave
 │           ├── hayase/            # Hayase anime sync (deb or AppImage)
 │           ├── flatpak/           # Flathub remotes + user apps
 │           ├── dotfiles/          # chezmoi install + apply
 │           ├── browser/           # browser install + managed policy
 │           ├── ssh_keys/          # deploy keys from vault
 │           ├── dev/               # dev tools, nvm, rustup
-│           ├── bin/               # custom scripts + homectl config
 │           ├── ai/                # opencode CLI assistant
+│           ├── bin/               # custom scripts + homectl config
 │           └── gaming/            # Steam, Lutris, multilib, AUR packages
 ├── chezmoi/                       # user dotfiles (applied by chezmoi)
 │   ├── dot_gitconfig              # → ~/.gitconfig
@@ -136,8 +130,7 @@ The playbook applies roles sequentially with tag-based gating:
 sysctl → user → aur → packages → hayase
 → fonts → flatpak → docker → virtualization
 → dotfiles → browser → ssh_keys → dev → bin → networking → vpn
-→ sshd → firewall → fail2ban → splashboot
-→ rclone → konsave_install → konsave_import/export/delete → keybinds
+→ sshd → firewall → fail2ban → splashboot → rclone → konsave
 → ai → gaming → hyprland → niri
 ```
 
@@ -153,23 +146,34 @@ overrides go in `host_vars/<host>/vars.yml`.
 | Distro package and service names | `ansible/inventory/group_vars/Debian.yml`, `ansible/inventory/group_vars/Archlinux.yml` |
 | Host overrides (feature flags, monitors) | `ansible/inventory/host_vars/<host>/vars.yml` |
 | Host secrets (SSH keys) | `ansible/inventory/host_vars/<host>/vault.yml` |
-| KDE keybinds | `ansible/roles/desktop/kde/keybinds/files/<host>.ini` |
+| KDE keybinds | `ansible/roles/home/bin/keybinds/<host>.ini` |
 | Chezmoi dotfiles | `chezmoi/` |
 | Bootstrap script | `scripts/run_once_install-ansible.sh` |
 
-## KDE management
+## Konsave Management
 
-KDE is managed through several focused roles under `desktop/kde/`:
+Konsave profile tooling is split between provisioning and day-to-day commands:
 
-- **rclone** — deploys `~/.config/rclone/rclone.conf` for Google Drive access
-- **konsave_install** — installs konsave via pipx for KDE profile management
-- **konsave_import** — lists profiles on GDrive, prompts for selection, downloads and applies
-- **konsave_export** — saves current KDE state and uploads to GDrive
-- **konsave_delete** — lists and deletes profiles from GDrive with confirmation
-- **keybinds** — copies per-host `kglobalshortcutsrc` overrides
+- **home/konsave** — installs konsave via pipx for KDE profile management
+- **home/bin** — installs one `konsavectl` script and aliases it as `konsave-list`, `konsave-import`, `konsave-export`, and `konsave-remove`
 
-Import, export, and delete are tagged `never` — they only run when explicitly
-targeted (e.g. `just konsave-import desktop`).
+Konsave installation is handled by `home/konsave`.
+Google Drive access stays separate in `home/rclone`.
+KDE keybind overrides are installed by `home/bin` and applied automatically
+after `konsave-import`.
+
+After the playbook has run once, day-to-day KDE profile management is done
+directly from the shell:
+
+```bash
+konsave-list
+konsave-import
+konsave-export plasma-may-2026
+konsave-remove plasma-may-2026
+```
+
+The commands default to `gdrive:konsave/`. Override that with
+`KONSAVE_RCLONE_REMOTE` and `KONSAVE_RCLONE_PATH` if needed.
 
 ## Secrets
 
@@ -196,7 +200,7 @@ bash scripts/run_once_install-ansible.sh desktop
 
 - **Ansible** → how the system is built
 - **Chezmoi** → how the user environment looks
-- **Desktop roles** → Hyprland, Niri, and KDE (rclone, konsave, keybinds)
+- **Desktop roles** → Hyprland and Niri
 - **SOPS + age** → how secrets stay private
 - `all.yml` → one place for shared feature flags, Flatpaks, fonts, and user defaults
 - `Debian.yml` / `Archlinux.yml` → distro package and service names only

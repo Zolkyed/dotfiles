@@ -1,11 +1,9 @@
 ---
 # Feature flag overrides — disable all desktop/UI/gaming features
-kde_enabled: false
 hyprland_enabled: false
 niri_enabled: false
 gaming_enabled: false
 splashboot_enabled: false
-ai_enabled: false
 vpn_enabled: false
 
 # If running Proxmox and docker_repo_codename isn't auto-detected correctly,
