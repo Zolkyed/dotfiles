@@ -199,7 +199,8 @@ Fresh machines need the existing age identity before SOPS can decrypt the
 vaults:
 
 ```bash
-AGE_KEY_BOOTSTRAP='AGE-SECRET-KEY-...' bash scripts/run_once_install-ansible.sh
+install -Dm600 /path/to/keys.txt ~/.config/sops/age/keys.txt
+bash scripts/run_once_install-ansible.sh desktop
 ```
 
 ## Design philosophy

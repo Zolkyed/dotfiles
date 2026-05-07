@@ -13,22 +13,18 @@ What it does:
 
 1. Detects distro family (Debian or Arch)
 2. Updates package cache
-3. Installs base dependencies (python, pip, curl)
-4. Installs `just` (optional command runner)
-5. Installs Ansible (via apt, pacman, or pip fallback)
-6. Installs `age` encryption tool
-7. Bootstraps the SOPS age identity from `AGE_KEY_BOOTSTRAP` or
-   `AGE_KEY_BOOTSTRAP_FILE`
-8. Installs `sops` (latest GitHub release for Debian, pacman for Arch)
-9. Installs Ansible collections from `requirements.yml`
-10. Prompts to set hostname if not already `desktop` or `laptop`
-11. Runs the playbook with `--ask-become-pass`
+3. Installs Ansible
+4. Installs `age`
+5. Exports `SOPS_AGE_KEY_FILE` (defaults to `~/.config/sops/age/keys.txt`)
+6. Installs `sops` (latest GitHub release for Debian, pacman for Arch)
+7. Installs Ansible collections from `requirements.yml`
+8. Runs the local playbook with `--ask-become-pass`
 
-The bootstrap writes the key to `~/.config/sops/age/keys.txt` by default. For
-an existing machine key:
+Put the age identity at `~/.config/sops/age/keys.txt`, or set
+`SOPS_AGE_KEY_FILE` before running. To choose the local inventory host:
 
 ```bash
-AGE_KEY_BOOTSTRAP='AGE-SECRET-KEY-...' bash scripts/run_once_install-ansible.sh
+bash scripts/run_once_install-ansible.sh desktop
 ```
 
 ## vault.sh

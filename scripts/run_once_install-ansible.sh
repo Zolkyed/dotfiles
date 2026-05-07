@@ -62,41 +62,10 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Base dependencies
-# ---------------------------------------------------------------------------
-echo "==> Installing base dependencies..."
-if [[ "$DISTRO" == "debian" ]]; then
-    sudo apt-get install -y software-properties-common python3 python3-pip curl
-else
-    sudo pacman -S --needed --noconfirm python python-pip curl inetutils
-fi
-
-echo "==> Installing just (optional dev command runner)..."
-if [[ "$DISTRO" == "debian" ]]; then
-    sudo apt-get install -y just || echo "    just package unavailable; install manually or run commands directly."
-else
-    sudo pacman -S --needed --noconfirm just
-fi
-
-# ---------------------------------------------------------------------------
 # Ansible
 # ---------------------------------------------------------------------------
 echo "==> Installing Ansible..."
-if [[ "$DISTRO" == "debian" ]]; then
-    sudo apt-get install -y ansible
-else
-    if ! sudo pacman -S --needed --noconfirm ansible 2>/dev/null; then
-        echo "    ansible not found in pacman repos, installing via pip..."
-        pip install --user ansible
-        export PATH="$HOME/.local/bin:$PATH"
-    fi
-fi
-
-# Ensure ansible-playbook is reachable regardless of install method
-export PATH="$HOME/.local/bin:/usr/bin:$PATH"
-
-echo "==> Verifying Ansible installation..."
-ansible --version
+pkg_install ansible ansible
 
 # ---------------------------------------------------------------------------
 # age
@@ -105,46 +74,11 @@ echo "==> Installing age..."
 pkg_install age age
 
 # ---------------------------------------------------------------------------
-# age key bootstrap
+# SOPS age key path
 # ---------------------------------------------------------------------------
 SOPS_AGE_KEY_FILE="${SOPS_AGE_KEY_FILE:-$HOME/.config/sops/age/keys.txt}"
 export SOPS_AGE_KEY_FILE
-
-bootstrap_age_key() {
-    local key_dir key_bootstrap key_bootstrap_file
-
-    key_dir="$(dirname "$SOPS_AGE_KEY_FILE")"
-    key_bootstrap="${AGE_KEY_BOOTSTRAP:-}"
-    key_bootstrap_file="${AGE_KEY_BOOTSTRAP_FILE:-}"
-
-    if [[ -s "$SOPS_AGE_KEY_FILE" ]]; then
-        chmod 600 "$SOPS_AGE_KEY_FILE"
-        echo "==> Using existing age key: ${SOPS_AGE_KEY_FILE}"
-        return
-    fi
-
-    mkdir -p "$key_dir"
-    chmod 700 "$key_dir"
-
-    if [[ -n "$key_bootstrap_file" ]]; then
-        if [[ ! -f "$key_bootstrap_file" ]]; then
-            echo "ERROR: AGE_KEY_BOOTSTRAP_FILE does not exist: ${key_bootstrap_file}" >&2
-            exit 1
-        fi
-        cp "$key_bootstrap_file" "$SOPS_AGE_KEY_FILE"
-    elif [[ -n "$key_bootstrap" ]]; then
-        printf '%s\n' "$key_bootstrap" >"$SOPS_AGE_KEY_FILE"
-    else
-        echo "ERROR: No age key found at ${SOPS_AGE_KEY_FILE}." >&2
-        echo "Set AGE_KEY_BOOTSTRAP to your AGE-SECRET-KEY line, or set AGE_KEY_BOOTSTRAP_FILE to an existing key file." >&2
-        exit 1
-    fi
-
-    chmod 600 "$SOPS_AGE_KEY_FILE"
-    echo "==> Bootstrapped age key: ${SOPS_AGE_KEY_FILE}"
-}
-
-bootstrap_age_key
+echo "==> Using SOPS age key file: ${SOPS_AGE_KEY_FILE}"
 
 # ---------------------------------------------------------------------------
 # sops
@@ -157,6 +91,7 @@ if [[ "$DISTRO" == "arch" ]]; then
     sops --version
 else
     # Debian: download the .deb from GitHub releases
+    sudo apt-get install -y curl
     ARCH_DEB="$(dpkg --print-architecture)"
     SOPS_VERSION="$(curl -fsSL https://api.github.com/repos/getsops/sops/releases/latest \
         | grep '"tag_name"' | cut -d'"' -f4)"
@@ -195,27 +130,19 @@ echo "==> Installing Ansible collections..."
 ansible-galaxy collection install -r "${SCRIPT_DIR}/../ansible/requirements.yml"
 
 # ---------------------------------------------------------------------------
-# Hostname
-# ---------------------------------------------------------------------------
-echo "==> Setting hostname..."
-current_hostname="$(hostname)"
-if [[ "$current_hostname" != "desktop" && "$current_hostname" != "laptop" ]]; then
-    echo "Current hostname is '${current_hostname}'."
-    read -rp "Is this machine a desktop or laptop? [desktop/laptop]: " machine_type
-    if [[ "$machine_type" == "desktop" || "$machine_type" == "laptop" ]]; then
-        sudo hostnamectl set-hostname "$machine_type"
-        echo "Hostname set to '${machine_type}'."
-    else
-        echo "Invalid input. Must be 'desktop' or 'laptop'. Aborting." >&2
-        exit 1
-    fi
-fi
-
-# ---------------------------------------------------------------------------
 # Run playbook
 # ---------------------------------------------------------------------------
 echo "==> Running Ansible playbook..."
 cd "${SCRIPT_DIR}/../ansible"
-ansible-playbook playbooks/setup.yml -l "$(hostname)" --ask-become-pass
+target_host="${BOOTSTRAP_HOST:-${1:-}}"
+case "$target_host" in
+    desktop | laptop | server) ;;
+    *)
+        echo "ERROR: Choose a bootstrap host." >&2
+        echo "Usage: $0 [desktop|laptop|server]" >&2
+        exit 1
+        ;;
+esac
+ansible-playbook -i inventory/local.yml playbooks/setup.yml -l "$target_host" --ask-become-pass
 
 echo "==> Setup complete."
