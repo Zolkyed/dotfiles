@@ -77,10 +77,10 @@ jobs:
           ANSIBLE_LOCAL_TEMP: /tmp/ansible-local
           ANSIBLE_REMOTE_TEMP: /tmp/ansible-remote
           TAGS: >-
-            always package_cache sysctl btrfs user aur packages hayase
-            locale fonts flatpak docker nvidia virtualization dotfiles browser ssh_keys dev
-            bin networking vpn sshd firewall fail2ban bluetooth pipewire splashboot bootloader
-            snapper grub_btrfs display_manager rclone konsave konsave-import konsave-export
+            always sysctl user aur packages hayase
+            fonts flatpak docker virtualization dotfiles browser ssh_keys dev
+            bin networking vpn sshd firewall fail2ban splashboot
+            rclone konsave konsave-import konsave-export
             konsave-delete keybinds ai gaming hyprland niri
         run: |
           for tag in $TAGS; do

@@ -1,11 +1,2 @@
 ---
-# Bootloader
-system_grub_timeout: 3
-system_grub_cmdline_linux_default: "quiet splash"
-system_grub_efi_directory: /boot/efi
-
-# Shared monitor config - replace connector name (run hyprctl monitors)
-desktop_monitors:
-  - connector: "eDP-1"
-    mode: "1920x1080@60"
-    scale: 1
+# Feature flag overrides — add per-host overrides here

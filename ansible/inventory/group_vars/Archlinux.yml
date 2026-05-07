@@ -114,31 +114,6 @@ system_aur_build_packages:
 system_aur_packages:
   - brave-bin
 
-# Bluetooth
-system_bluetooth_packages:
-  - bluez
-  - bluez-utils
-
-# Btrfs / snapshots
-system_btrfs_packages:
-  - btrfs-progs
-
-system_snapper_packages:
-  - snapper
-
-system_grub_btrfs_packages:
-  - grub-btrfs
-
-# Bootloader
-system_grub_packages_bios:
-  - grub
-
-system_grub_packages_uefi:
-  - grub
-  - efibootmgr
-
-system_grub_bootloader_id: GRUB
-
 # Docker
 system_docker_engine_packages:
   - docker
@@ -167,21 +142,8 @@ system_vpn_packages:
   - openvpn
   - networkmanager-openvpn
 
-# NVIDIA
-system_nvidia_packages:
-  - nvidia-settings
-  - vulkan-icd-loader
-
-# PipeWire
-system_pipewire_packages:
-  - pipewire
-  - pipewire-pulse
-  - pipewire-alsa
-  - pipewire-jack
-  - wireplumber
-  - gst-plugin-pipewire
-
 # Splash boot
+
 system_splashboot_packages:
   - plymouth
 

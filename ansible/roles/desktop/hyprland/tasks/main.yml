@@ -3,19 +3,3 @@
   ansible.builtin.package:
     name: "{{ desktop_hyprland_packages }}"
     state: present
-
-- name: Ensure hyprland config directory exists
-  ansible.builtin.file:
-    path: "{{ desktop_hyprland_config_dir }}"
-    state: directory
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
-    mode: "0755"
-
-- name: Deploy hyprland.conf
-  ansible.builtin.template:
-    src: hyprland.conf.j2
-    dest: "{{ desktop_hyprland_config_dir }}/hyprland.conf"
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
-    mode: "0600"

@@ -58,10 +58,10 @@ just check desktop
 │   │   │   └── vault.yml          # shared secrets (HA token, rclone, webhook)
 │   │   └── host_vars/
 │   │       ├── desktop/
-│   │       │   ├── vars.yml       # nvidia, gaming, monitor, bootloader overrides
+│   │       │   ├── vars.yml       # gaming, monitor overrides
 │   │       │   └── vault.yml      # per-host SSH keys
 │   │       ├── laptop/
-│   │       │   ├── vars.yml       # monitor, bootloader overrides
+│   │       │   ├── vars.yml       # monitor overrides
 │   │       │   └── vault.yml
 │   │       └── server/
 │   │           ├── vars.yml       # disables all desktop/UI features
@@ -70,27 +70,17 @@ just check desktop
 │   │   └── setup.yml              # single playbook, tag-controlled
 │   └── roles/
 │       ├── system/
-│       │   ├── package_cache/     # apt/pacman cache update
 │       │   ├── sysctl/            # hostname, kernel parameters
-│       │   ├── btrfs/             # subvolumes, mounts, quotas, scrub/balance
 │       │   ├── aur/               # paru AUR helper install
-│       │   ├── locale/            # locale, timezone, keymap
 │       │   ├── fonts/             # distro fonts + Nerd Fonts
 │       │   ├── docker/            # Docker CE + compose/buildx
-│       │   ├── nvidia/            # proprietary driver, nouveau blacklist
 │       │   ├── virtualization/    # KVM/QEMU or VirtualBox
 │       │   ├── networking/        # NetworkManager + systemd-resolved
 │       │   ├── vpn/               # WireGuard + OpenVPN
 │       │   ├── sshd/              # sshd hardening
 │       │   ├── firewall/          # ufw rules
 │       │   ├── fail2ban/          # fail2ban with sshd jail
-│       │   ├── bluetooth/         # bluez
-│       │   ├── pipewire/          # PipeWire + WirePlumber (user mode)
 │       │   ├── splashboot/        # Plymouth splash
-│       │   ├── bootloader/        # GRUB (BIOS + UEFI)
-│       │   ├── snapper/           # btrfs snapshot configs + timers
-│       │   ├── grub-btrfs/        # grub-btrfs daemon
-│       │   └── display_manager/   # SDDM
 │       ├── desktop/
 │       │   ├── hyprland/          # Hyprland packages + config
 │       │   ├── niri/              # Niri packages + config
@@ -143,11 +133,10 @@ just check desktop
 The playbook applies roles sequentially with tag-based gating:
 
 ```
-package_cache → sysctl → btrfs → user → aur → packages → hayase
-→ locale → fonts → flatpak → docker → nvidia → virtualization
+sysctl → user → aur → packages → hayase
+→ fonts → flatpak → docker → virtualization
 → dotfiles → browser → ssh_keys → dev → bin → networking → vpn
-→ sshd → firewall → fail2ban → bluetooth → pipewire → splashboot
-→ bootloader → snapper → grub-btrfs → display_manager
+→ sshd → firewall → fail2ban → splashboot
 → rclone → konsave_install → konsave_import/export/delete → keybinds
 → ai → gaming → hyprland → niri
 ```
@@ -162,7 +151,7 @@ overrides go in `host_vars/<host>/vars.yml`.
 | Feature flags and global defaults | `ansible/inventory/group_vars/all.yml` |
 | Shared secrets (HA, rclone, webhook) | `ansible/inventory/group_vars/vault.yml` |
 | Distro package and service names | `ansible/inventory/group_vars/Debian.yml`, `ansible/inventory/group_vars/Archlinux.yml` |
-| Host overrides (feature flags, bootloader, monitors) | `ansible/inventory/host_vars/<host>/vars.yml` |
+| Host overrides (feature flags, monitors) | `ansible/inventory/host_vars/<host>/vars.yml` |
 | Host secrets (SSH keys) | `ansible/inventory/host_vars/<host>/vault.yml` |
 | KDE keybinds | `ansible/roles/desktop/kde/keybinds/files/<host>.ini` |
 | Chezmoi dotfiles | `chezmoi/` |
@@ -211,4 +200,4 @@ bash scripts/run_once_install-ansible.sh desktop
 - **SOPS + age** → how secrets stay private
 - `all.yml` → one place for shared feature flags, Flatpaks, fonts, and user defaults
 - `Debian.yml` / `Archlinux.yml` → distro package and service names only
-- `host_vars/<host>/vars.yml` → per-machine overrides (flags, monitors, bootloader)
+- `host_vars/<host>/vars.yml` → per-machine overrides (flags, monitors)

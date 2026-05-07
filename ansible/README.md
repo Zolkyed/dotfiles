@@ -12,7 +12,7 @@ bash scripts/run_once_install-ansible.sh
 just run desktop                  # remote (SSH)
 just run-local desktop            # local (no SSH)
 just check desktop                # dry-run
-just tags desktop nvidia          # run specific tags
+just tags desktop                 # run specific tags
 ```
 
 Or run ansible-playbook directly:
@@ -49,7 +49,7 @@ Hosts: `desktop`, `laptop`, `server`. Each has a `vars.yml` (overrides) and
 | Feature flags, user settings, Flatpaks, fonts | `group_vars/all.yml` | Shared defaults; override per host |
 | Shared secrets (HA token, rclone, webhook) | `group_vars/vault.yml` | SOPS-encrypted |
 | Package/service names | `group_vars/Debian.yml`, `group_vars/Archlinux.yml` | OS-specific |
-| Host overrides (flags, bootloader, monitors) | `host_vars/<host>/vars.yml` | Per-machine |
+| Host overrides (flags, monitors) | `host_vars/<host>/vars.yml` | Per-machine |
 | Host SSH keys | `host_vars/<host>/vault.yml` | SOPS-encrypted |
 
 ## Roles
@@ -58,27 +58,17 @@ Hosts: `desktop`, `laptop`, `server`. Each has a `vars.yml` (overrides) and
 
 | Role | Purpose |
 |---|---|
-| `package_cache` | Update apt/pacman cache |
 | `sysctl` | Hostname, kernel parameters |
-| `btrfs` | Subvolumes, mounts, scrub/balance timers, quotas |
 | `aur` | Install `paru` AUR helper |
-| `locale` | Locale, timezone, console keymap |
 | `fonts` | Distro font packages + Nerd Fonts |
 | `docker` | Docker CE + compose/buildx plugin |
-| `nvidia` | Proprietary driver, nouveau blacklist, initramfs |
 | `virtualization` | KVM/QEMU or VirtualBox |
 | `networking` | NetworkManager + systemd-resolved |
 | `vpn` | WireGuard + OpenVPN packages |
 | `sshd` | sshd hardening (root login, pubkey, port) |
 | `firewall` | ufw with allow/deny rules |
 | `fail2ban` | jail.local for sshd |
-| `bluetooth` | bluez |
-| `pipewire` | PipeWire + WirePlumber (user mode, lingering) |
 | `splashboot` | Plymouth theme + initramfs |
-| `bootloader` | GRUB (auto-detects BIOS vs UEFI) |
-| `snapper` | btrfs snapshot configs + timeline/cleanup timers |
-| `grub-btrfs` | grub-btrfs daemon for snapshot boot entries |
-| `display_manager` | SDDM |
 
 ### desktop/
 

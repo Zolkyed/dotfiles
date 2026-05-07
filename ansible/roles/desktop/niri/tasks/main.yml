@@ -3,19 +3,3 @@
   ansible.builtin.package:
     name: "{{ desktop_niri_packages }}"
     state: present
-
-- name: Ensure niri config directory exists
-  ansible.builtin.file:
-    path: "{{ desktop_niri_config_dir }}"
-    state: directory
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
-    mode: "0755"
-
-- name: Deploy config.kdl
-  ansible.builtin.template:
-    src: config.kdl.j2
-    dest: "{{ desktop_niri_config_dir }}/config.kdl"
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
-    mode: "0600"

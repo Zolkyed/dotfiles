@@ -1,6 +1,6 @@
 input {
     keyboard {
-        xkb.layout "{{ desktop_niri_kb_layout }}"
+        xkb.layout "us"
         xkb.options "ctrl:nocaps"
     }
 }
@@ -22,13 +22,11 @@ cursor {
     }
 }
 
-# Outputs — auto-detected; override via desktop_monitors in host_vars
-{% for m in desktop_monitors %}
-output "{{ m.connector }}" {
-    mode {{ m.mode }}
-    scale {{ m.scale }}
-}
-{% endfor %}
+# Outputs — set per machine (run hyprctl monitors for connector names)
+# output "eDP-1" {
+#     mode 1920x1080@60
+#     scale 1
+# }
 
 window-rule {
     geometry {

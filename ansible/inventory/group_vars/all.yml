@@ -12,22 +12,14 @@ user_shell: /bin/zsh
 # ---------------------------------------------------------------------------
 
 # System
-grub_enabled: false
 splashboot_enabled: false
-grub_btrfs_enabled: false
-nvidia_enabled: false
-bluetooth_enabled: true
-pipewire_enabled: true
 docker_enabled: true
 virtualization_enabled: true
 vpn_enabled: true
 firewall_enabled: true
 fail2ban_enabled: true
-btrfs_enabled: false
-snapper_enabled: false
 
 # Desktop
-display_manager_enabled: true
 kde_enabled: true
 hyprland_enabled: false
 niri_enabled: false
@@ -54,9 +46,6 @@ home_gaming_flatpaks:
 # ---------------------------------------------------------------------------
 # System
 # ---------------------------------------------------------------------------
-system_locale: en_US.UTF-8
-system_timezone: America/Toronto
-system_keymap: us
 
 # SSH
 system_sshd_permit_root_login: "no"

@@ -1,9 +1,0 @@
----
-- name: Reboot required
-  ansible.builtin.debug:
-    msg: "NVIDIA driver installed — a reboot is required to activate it."
-
-- name: Update initramfs
-  ansible.builtin.command:
-    cmd: "{{ 'update-initramfs -u' if ansible_facts['os_family'] == 'Debian' else 'mkinitcpio -P' }}"
-  changed_when: true

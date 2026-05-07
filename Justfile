@@ -64,7 +64,7 @@ inventory-local:
     cd {{ANSIBLE_DIR}} && ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-inventory -i inventory/local.yml --list >/dev/null
 
 test-tags:
-    cd {{ANSIBLE_DIR}} && for tag in always package_cache sysctl btrfs user aur packages hayase locale fonts flatpak docker nvidia virtualization dotfiles browser ssh_keys dev bin networking vpn sshd firewall fail2ban bluetooth pipewire splashboot bootloader snapper grub_btrfs display_manager rclone konsave konsave-import konsave-export konsave-delete keybinds ai gaming hyprland niri; do \
+    cd {{ANSIBLE_DIR}} && for tag in always sysctl user aur packages hayase fonts flatpak docker virtualization dotfiles browser ssh_keys dev bin networking vpn sshd firewall fail2ban splashboot rclone konsave konsave-import konsave-export konsave-delete keybinds ai gaming hyprland niri; do \
         output=$(ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-playbook {{PLAYBOOK}} --list-tasks --tags "$tag" 2>&1); \
         status=$?; \
         task_count=$(printf '%s\n' "$output" | rg -c '^      .+TAGS:'); \

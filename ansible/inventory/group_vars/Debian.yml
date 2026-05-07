@@ -117,34 +117,6 @@ home_dev_packages:
 # Boot / repo metadata
 system_docker_repo_codename: "{{ ansible_facts['distribution_release'] }}"
 
-# Bluetooth
-system_bluetooth_packages:
-  - bluez
-  - bluetooth
-  - bluez-tools
-
-# Btrfs / snapshots
-system_btrfs_packages:
-  - btrfs-progs
-
-system_snapper_packages:
-  - snapper
-
-system_grub_btrfs_packages:
-  - grub-btrfs
-
-# Bootloader
-system_grub_packages_bios:
-  - grub2-common
-  - grub-pc
-
-system_grub_packages_uefi:
-  - grub2-common
-  - grub-efi-amd64
-  - efibootmgr
-
-system_grub_bootloader_id: debian
-
 # Docker
 system_docker_engine_packages:
   - docker-ce
@@ -177,22 +149,8 @@ system_vpn_packages:
   - network-manager-openvpn
   - network-manager-openvpn-gnome
 
-# NVIDIA
-system_nvidia_packages:
-  - nvidia-settings
-  - libvulkan1
-  - mesa-vdpau-drivers
-
-# PipeWire
-system_pipewire_packages:
-  - pipewire
-  - pipewire-pulse
-  - pipewire-alsa
-  - pipewire-jack
-  - wireplumber
-  - gstreamer1.0-pipewire
-
 # Splash boot
+
 system_splashboot_packages:
   - plymouth
   - plymouth-themes
