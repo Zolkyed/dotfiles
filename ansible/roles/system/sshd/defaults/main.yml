@@ -1,0 +1,3 @@
+---
+system_sshd_host_ed25519_private_key: "{{ vault_ssh_host_ed25519_private_key | default('') }}"
+system_sshd_host_ed25519_public_key: "{{ vault_ssh_host_ed25519_public_key | default('') }}"
