@@ -2,7 +2,6 @@
 # ---------------------------------------------------------------------------
 # User
 # ---------------------------------------------------------------------------
-# Target user — ansible_user should be set in inventory if it differs from user_name
 user_name: charl
 user_home: "/home/{{ user_name }}"
 user_shell: /bin/zsh
