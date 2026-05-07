@@ -94,6 +94,8 @@ home_gaming_packages:
   - piper
   - retroarch
 
+home_distro_flatpaks: []
+
 home_dev_packages:
   - git
   - build-essential

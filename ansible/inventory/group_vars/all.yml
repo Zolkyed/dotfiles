@@ -41,7 +41,7 @@ browser_enabled: false
 # Home
 # ---------------------------------------------------------------------------
 # Flatpak
-home_base_flatpaks:
+home_shared_flatpaks:
   - com.discordapp.Discord
   - com.visualstudio.code
   - com.spotify.Client

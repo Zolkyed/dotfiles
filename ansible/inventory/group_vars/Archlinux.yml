@@ -92,6 +92,8 @@ home_aur_gaming_packages:
   - celeste-classic
   - celeste-classic-pm
 
+home_distro_flatpaks: []
+
 home_dev_packages:
   - git
   - pkgconf

@@ -100,7 +100,7 @@ Hosts: `desktop`, `laptop`, `server`. Each has a `vars.yml` (overrides) and
 | `user` | User account, shell, groups |
 | `packages` | Core, utility, media, office, system, fun packages |
 | `hayase` | Hayase anime sync (.deb or AppImage) |
-| `flatpak` | Flathub remote + base and gaming apps |
+| `flatpak` | Flathub remote + shared, distro-specific, and gaming apps |
 | `dotfiles` | chezmoi install + `apply --force` |
 | `browser` | Browser install (AUR) + managed extension policy |
 | `ssh_keys` | Deploy SSH keys from SOPS vault |
