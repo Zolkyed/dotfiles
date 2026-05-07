@@ -108,7 +108,6 @@ home_dev_packages:
 # AUR
 system_aur_build_packages:
   - base-devel
-  - git
   - rust
 
 system_aur_packages:
