@@ -1,0 +1,4 @@
+---
+home_ai_npm_packages:
+  - "opencode-ai"
+  - "@openai/codex"
