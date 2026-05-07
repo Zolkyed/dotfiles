@@ -71,6 +71,7 @@ just check desktop
 │   └── roles/
 │       ├── system/
 │       │   ├── sysctl/            # hostname, kernel parameters
+│       │   ├── sudoers/           # sudoers configuration
 │       │   ├── aur/               # paru AUR helper install
 │       │   ├── fonts/             # distro fonts + Nerd Fonts
 │       │   ├── docker/            # Docker CE + compose/buildx
@@ -106,12 +107,15 @@ just check desktop
 │   ├── dot_zshrc                  # → ~/.zshrc
 │   ├── dot_ssh/                   # → ~/.ssh/
 │   └── dot_config/
+│       ├── Code/User/              # → ~/.config/Code/User/
 │       ├── fastfetch/             # → ~/.config/fastfetch/
+│       ├── hypr/                  # → ~/.config/hypr/
 │       ├── kitty/                 # → ~/.config/kitty/
 │       ├── mpv/                   # → ~/.config/mpv/
-│       └── vscode/                # → ~/.config/vscode/
+│       └── niri/                  # → ~/.config/niri/
 ├── scripts/
-│   └── run_once_install-ansible.sh
+│   ├── run_once_install-ansible.sh
+│   └── vault.sh
 ├── .github/workflows/
 │   └── ci.yml                     # GitHub Actions CI (syntax, lint, inventory, tags)
 ├── .sops.yaml                     # SOPS age key configuration
@@ -127,7 +131,7 @@ just check desktop
 The playbook applies roles sequentially with tag-based gating:
 
 ```
-sysctl → user → aur → packages → hayase
+sysctl → user → sudoers → aur → packages → hayase
 → fonts → flatpak → docker → virtualization
 → dotfiles → browser → ssh_keys → dev → bin → networking → vpn
 → sshd → firewall → fail2ban → splashboot → rclone → konsave
@@ -149,6 +153,7 @@ overrides go in `host_vars/<host>/vars.yml`.
 | KDE keybinds | `ansible/roles/home/bin/keybinds/<host>.ini` |
 | Chezmoi dotfiles | `chezmoi/` |
 | Bootstrap script | `scripts/run_once_install-ansible.sh` |
+| Vault script | `scripts/vault.sh` |
 
 ## Konsave Management
 

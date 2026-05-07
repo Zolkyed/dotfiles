@@ -1,6 +1,6 @@
 # Ansible
 
-Full machine provisioning for Debian and Arch Linux — 38 roles, one playbook.
+Full machine provisioning for Debian and Arch Linux — 27 roles, one playbook.
 
 ## Usage
 
@@ -59,6 +59,7 @@ Hosts: `desktop`, `laptop`, `server`. Each has a `vars.yml` (overrides) and
 | Role | Purpose |
 |---|---|
 | `sysctl` | Hostname, kernel parameters |
+| `sudoers` | Sudoers configuration |
 | `aur` | Install `paru` AUR helper |
 | `fonts` | Distro font packages + Nerd Fonts |
 | `docker` | Docker CE + compose/buildx plugin |

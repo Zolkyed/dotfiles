@@ -19,10 +19,12 @@ Chezmoi strips the `dot_` prefix on apply:
 | `dot_zshrc` | `~/.zshrc` |
 | `dot_ssh/config.tmpl` | `~/.ssh/config` |
 | `dot_config/fastfetch/` | `~/.config/fastfetch/` |
+| `dot_config/hypr/` | `~/.config/hypr/` |
 | `dot_config/kitty/` | `~/.config/kitty/` |
 | `dot_config/mpv/` | `~/.config/mpv/` |
-| `dot_config/vscode/settings.json` | `~/.config/vscode/settings.json` |
-| `dot_config/vscode/keybindings.json` | `~/.config/vscode/keybindings.json` |
+| `dot_config/niri/` | `~/.config/niri/` |
+| `dot_config/Code/User/setting.json` | `~/.config/Code/User/setting.json` |
+| `dot_config/Code/User/keybindings.json` | `~/.config/Code/User/keybindings.json` |
 
 ## Git identity
 
