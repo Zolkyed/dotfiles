@@ -1,9 +1,0 @@
----
-galaxy_info:
-  role_name: age_key_bootstrap
-  author: charl
-  description: Bootstrap the local SOPS age identity before encrypted vars are loaded.
-  license: MIT
-  min_ansible_version: "2.15"
-
-dependencies: []

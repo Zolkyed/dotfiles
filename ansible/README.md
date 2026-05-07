@@ -58,7 +58,6 @@ Hosts: `desktop`, `laptop`, `server`. Each has a `vars.yml` (overrides) and
 
 | Role | Purpose |
 |---|---|
-| `age_key_bootstrap` | Bootstrap the SOPS age identity before encrypted vars load |
 | `package_cache` | Update apt/pacman cache |
 | `sysctl` | Hostname, kernel parameters |
 | `btrfs` | Subvolumes, mounts, scrub/balance timers, quotas |

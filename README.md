@@ -143,7 +143,7 @@ just check desktop
 The playbook applies roles sequentially with tag-based gating:
 
 ```
-age_key_bootstrap → package_cache → sysctl → btrfs → user → aur → packages → hayase
+package_cache → sysctl → btrfs → user → aur → packages → hayase
 → locale → fonts → flatpak → docker → nvidia → virtualization
 → dotfiles → browser → ssh_keys → dev → bin → networking → vpn
 → sshd → firewall → fail2ban → bluetooth → pipewire → splashboot

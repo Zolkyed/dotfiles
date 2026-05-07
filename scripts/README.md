@@ -17,8 +17,8 @@ What it does:
 4. Installs `just` (optional command runner)
 5. Installs Ansible (via apt, pacman, or pip fallback)
 6. Installs `age` encryption tool
-7. Bootstraps the SOPS age identity from `AGE_KEY_BOOTSTRAP`,
-   `age_key_bootstrap`, `AGE_KEY_BOOTSTRAP_FILE`, or `age_key_bootstrap_file`
+7. Bootstraps the SOPS age identity from `AGE_KEY_BOOTSTRAP` or
+   `AGE_KEY_BOOTSTRAP_FILE`
 8. Installs `sops` (latest GitHub release for Debian, pacman for Arch)
 9. Installs Ansible collections from `requirements.yml`
 10. Prompts to set hostname if not already `desktop` or `laptop`

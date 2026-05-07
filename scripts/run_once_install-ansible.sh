@@ -114,8 +114,8 @@ bootstrap_age_key() {
     local key_dir key_bootstrap key_bootstrap_file
 
     key_dir="$(dirname "$SOPS_AGE_KEY_FILE")"
-    key_bootstrap="${AGE_KEY_BOOTSTRAP:-${age_key_bootstrap:-}}"
-    key_bootstrap_file="${AGE_KEY_BOOTSTRAP_FILE:-${age_key_bootstrap_file:-}}"
+    key_bootstrap="${AGE_KEY_BOOTSTRAP:-}"
+    key_bootstrap_file="${AGE_KEY_BOOTSTRAP_FILE:-}"
 
     if [[ -s "$SOPS_AGE_KEY_FILE" ]]; then
         chmod 600 "$SOPS_AGE_KEY_FILE"
@@ -137,11 +137,6 @@ bootstrap_age_key() {
     else
         echo "ERROR: No age key found at ${SOPS_AGE_KEY_FILE}." >&2
         echo "Set AGE_KEY_BOOTSTRAP to your AGE-SECRET-KEY line, or set AGE_KEY_BOOTSTRAP_FILE to an existing key file." >&2
-        exit 1
-    fi
-
-    if ! grep -Eq '^AGE-SECRET-KEY-' "$SOPS_AGE_KEY_FILE"; then
-        echo "ERROR: ${SOPS_AGE_KEY_FILE} does not contain an AGE-SECRET-KEY identity." >&2
         exit 1
     fi
 
