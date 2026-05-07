@@ -1,7 +1,4 @@
-- [ ] Generate SSH host key and store in vault
 - [ ] Store sudoers password in vault
-- [x] Add npm packages for AI tooling
-- [x] Create CLI for konsave instead of calling ansible code
 - [ ] Make sure chezmoi is managing dotfiles after ansible ran once
 - [ ] Make sure hayase autoupdate and executable for appimage
 - [ ] Check celestial game package
