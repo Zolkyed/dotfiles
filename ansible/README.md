@@ -102,12 +102,12 @@ Hosts: `desktop`, `laptop`, `server`. Each has a `vars.yml` (overrides) and
 | `hayase` | Hayase anime sync (.deb or AppImage) |
 | `flatpak` | Flathub remote + shared, distro-specific, and gaming apps |
 | `dotfiles` | chezmoi install + `apply --force` |
-| `browser` | Browser install (AUR) + managed extension policy |
+| `browser` | Managed browser extension policy |
 | `ssh_keys` | Deploy SSH keys from SOPS vault |
 | `dev` | Dev tools, nvm, rustup |
 | `bin` | Custom scripts + homectl Home Assistant config |
 | `ai` | opencode CLI assistant |
-| `gaming` | Steam, Lutris, multilib/i386, AUR packages |
+| `gaming` | Steam, Lutris, multilib/i386 |
 
 ## Supported distributions
 

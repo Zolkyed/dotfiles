@@ -1,45 +1,45 @@
 ---
-- name: Set system system_locale (Arch)
-  ansible.builtin.copy:
-    dest: /etc/locale.conf
-    content: "LANG={{ system_locale }}\n"
-    owner: root
-    group: root
-    mode: "0644"
+- name: Locale | Configure Arch locale files
   become: true
   when: ansible_facts["os_family"] == "Archlinux"
+  block:
+    - name: Locale | Set system locale
+      ansible.builtin.copy:
+        dest: /etc/locale.conf
+        content: "LANG={{ system_locale }}\n"
+        owner: root
+        group: root
+        mode: "0644"
 
-- name: Set system system_locale (Debian)
-  ansible.builtin.copy:
-    dest: /etc/default/locale
-    content: "LANG={{ system_locale }}\n"
-    owner: root
-    group: root
-    mode: "0644"
+    - name: Locale | Set console keymap
+      ansible.builtin.copy:
+        dest: /etc/vconsole.conf
+        content: "KEYMAP={{ system_keymap }}\n"
+        owner: root
+        group: root
+        mode: "0644"
+
+- name: Locale | Configure Debian locale files
   become: true
   when: ansible_facts["os_family"] == "Debian"
+  block:
+    - name: Locale | Set system locale
+      ansible.builtin.copy:
+        dest: /etc/default/locale
+        content: "LANG={{ system_locale }}\n"
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Locale | Set console keymap
+      ansible.builtin.copy:
+        dest: /etc/default/keyboard
+        content: "XKBLAYOUT=\"{{ system_keymap }}\"\n"
+        owner: root
+        group: root
+        mode: "0644"
 
 - name: Set system system_timezone
   community.general.timezone:
     name: "{{ system_timezone }}"
   become: true
-
-- name: Set console system_keymap (Arch)
-  ansible.builtin.copy:
-    dest: /etc/vconsole.conf
-    content: "KEYMAP={{ system_keymap }}\n"
-    owner: root
-    group: root
-    mode: "0644"
-  become: true
-  when: ansible_facts["os_family"] == "Archlinux"
-
-- name: Set console system_keymap (Debian)
-  ansible.builtin.copy:
-    dest: /etc/default/keyboard
-    content: "XKBLAYOUT=\"{{ system_keymap }}\"\n"
-    owner: root
-    group: root
-    mode: "0644"
-  become: true
-  when: ansible_facts["os_family"] == "Debian"

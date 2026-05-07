@@ -1,9 +1,14 @@
 ---
 system_nvidia_packages: []
 system_nvidia_driver_package: auto
-system_nvidia_arch_driver_candidates:
-  - nvidia
-  - nvidia-open
-  - nvidia-dkms
-  - nvidia-lts
+system_nvidia_driver_package_source: pacman
+system_nvidia_kernel_header_packages:
+  - linux-headers
+system_nvidia_arch_open_package: nvidia-open
+system_nvidia_arch_legacy_package: nvidia-580xx-dkms
+system_nvidia_arch_legacy_package_base: nvidia-580xx-utils
+system_nvidia_arch_legacy_lib32_package: lib32-nvidia-580xx-utils
+system_nvidia_arch_legacy_lib32_package_base: lib32-nvidia-580xx-utils
+system_nvidia_aur_build_parent: /var/tmp
+system_nvidia_arch_legacy_gpu_regex: "GeForce GTX (9|10)[0-9]|GeForce GTX TITAN|TITAN X|TITAN V|Quadro [MP][0-9]|Quadro GV|Tesla [PV][0-9]"
 system_nvidia_persistence_enabled: false

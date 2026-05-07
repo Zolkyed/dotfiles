@@ -18,3 +18,29 @@
 - name: AUR | Build and install paru
   ansible.builtin.include_tasks: install_helper.yml
   when: system_paru_check.rc != 0
+
+- name: AUR | Set paru path fact
+  ansible.builtin.set_fact:
+    system_paru_path: "{{ system_paru_check.stdout | default('/usr/bin/paru') }}"
+
+- name: AUR | Install packages
+  when: system_aur_packages | length > 0
+  block:
+    - name: AUR | Check installed packages
+      ansible.builtin.command:
+        cmd: "pacman -Q {{ item }}"
+      loop: "{{ system_aur_packages }}"
+      register: system_aur_package_checks
+      changed_when: false
+      failed_when: false
+
+    - name: AUR | Install missing packages
+      ansible.builtin.command:
+        argv: ["paru", "-S", "--needed", "--noconfirm", "--skipreview", "{{ system_aur_package_check.item }}"]
+      become: true
+      become_user: "{{ user_name }}"
+      loop: "{{ system_aur_package_checks.results | default([]) }}"
+      loop_control:
+        loop_var: system_aur_package_check
+        label: "{{ system_aur_package_check.item }}"
+      when: system_aur_package_check.rc != 0

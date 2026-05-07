@@ -4,6 +4,16 @@
     name: "{{ system_sshd_package }}"
     state: present
 
+- name: Check for existing ssh host keys
+  ansible.builtin.stat:
+    path: /etc/ssh/ssh_host_ed25519_key
+  register: sshd_host_key_stat
+
+- name: Generate ssh host keys when missing
+  ansible.builtin.command:
+    cmd: ssh-keygen -A
+  when: not sshd_host_key_stat.stat.exists
+
 - name: Harden sshd configuration
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config

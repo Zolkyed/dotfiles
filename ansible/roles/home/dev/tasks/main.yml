@@ -4,52 +4,50 @@
     name: "{{ home_dev_packages }}"
     state: present
 
-- name: Check rustup installation
-  ansible.builtin.stat:
-    path: "{{ user_home }}/.cargo/bin/rustup"
-  register: home_rustup_bin
+- name: Dev | Install Rust toolchain
   when: home_dev_install_rust
+  block:
+    - name: Check rustup installation
+      ansible.builtin.stat:
+        path: "{{ user_home }}/.cargo/bin/rustup"
+      register: home_rustup_bin
 
-- name: Download rustup installer
-  ansible.builtin.get_url:
-    url: https://sh.rustup.rs
-    dest: /tmp/rustup-init.sh
-    mode: "0755"
-  become: true
-  become_user: "{{ user_name }}"
-  when:
-    - home_dev_install_rust
-    - not (home_rustup_bin.stat.exists | default(false))
+    - name: Download rustup installer
+      ansible.builtin.get_url:
+        url: https://sh.rustup.rs
+        dest: /tmp/rustup-init.sh
+        mode: "0755"
+      become: true
+      become_user: "{{ user_name }}"
+      when: not (home_rustup_bin.stat.exists | default(false))
 
-- name: Install rustup
-  ansible.builtin.command:
-    cmd: /tmp/rustup-init.sh -y --no-modify-path
-    creates: "{{ user_home }}/.cargo/bin/rustup"
-  become: true
-  become_user: "{{ user_name }}"
-  when: home_dev_install_rust
+    - name: Install rustup
+      ansible.builtin.command:
+        cmd: /tmp/rustup-init.sh -y --no-modify-path
+        creates: "{{ user_home }}/.cargo/bin/rustup"
+      become: true
+      become_user: "{{ user_name }}"
 
-- name: Check nvm installation
-  ansible.builtin.stat:
-    path: "{{ user_home }}/.nvm/nvm.sh"
-  register: home_nvm_script
+- name: Dev | Install NVM
   when: home_dev_install_nvm
+  block:
+    - name: Check nvm installation
+      ansible.builtin.stat:
+        path: "{{ user_home }}/.nvm/nvm.sh"
+      register: home_nvm_script
 
-- name: Download nvm installer
-  ansible.builtin.get_url:
-    url: "https://raw.githubusercontent.com/nvm-sh/nvm/v{{ home_dev_nvm_version }}/install.sh"
-    dest: "/tmp/nvm-install-{{ home_dev_nvm_version }}.sh"
-    mode: "0755"
-  become: true
-  become_user: "{{ user_name }}"
-  when:
-    - home_dev_install_nvm
-    - not (home_nvm_script.stat.exists | default(false))
+    - name: Download nvm installer
+      ansible.builtin.get_url:
+        url: "https://raw.githubusercontent.com/nvm-sh/nvm/v{{ home_dev_nvm_version }}/install.sh"
+        dest: "/tmp/nvm-install-{{ home_dev_nvm_version }}.sh"
+        mode: "0755"
+      become: true
+      become_user: "{{ user_name }}"
+      when: not (home_nvm_script.stat.exists | default(false))
 
-- name: Install nvm
-  ansible.builtin.command:
-    cmd: "bash /tmp/nvm-install-{{ home_dev_nvm_version }}.sh"
-    creates: "{{ user_home }}/.nvm/nvm.sh"
-  become: true
-  become_user: "{{ user_name }}"
-  when: home_dev_install_nvm
+    - name: Install nvm
+      ansible.builtin.command:
+        cmd: "bash /tmp/nvm-install-{{ home_dev_nvm_version }}.sh"
+        creates: "{{ user_home }}/.nvm/nvm.sh"
+      become: true
+      become_user: "{{ user_name }}"

@@ -1,4 +1,5 @@
 ---
 system_aur_build_packages: []
+system_aur_packages: []
 system_paru_repo: https://aur.archlinux.org/paru.git
 system_paru_build_dir: "{{ user_home }}/paru-build"

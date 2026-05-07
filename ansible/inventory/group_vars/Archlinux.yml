@@ -7,8 +7,6 @@ home_user_groups:
   - audio
   - video
 
-home_browser_package: brave-bin
-
 home_core_packages:
   - curl
   - wget
@@ -88,10 +86,6 @@ home_gaming_packages:
   - piper
   - retroarch
 
-home_aur_gaming_packages:
-  - celeste-classic
-  - celeste-classic-pm
-
 home_distro_flatpaks: []
 
 home_dev_packages:
@@ -121,6 +115,9 @@ system_aur_build_packages:
   - base-devel
   - git
   - rust
+
+system_aur_packages:
+  - brave-bin
 
 # Bluetooth
 system_bluetooth_packages:
