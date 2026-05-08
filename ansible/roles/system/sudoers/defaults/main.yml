@@ -1,3 +1,4 @@
 ---
-system_sudoers_pacman_nopasswd: true
-system_sudoers_pacman_user: "{{ user_name }}"
+system_sudoers_nopasswd: true
+system_sudoers_user: "{{ user_name }}"
+system_sudoers_visudo_path: /usr/sbin/visudo

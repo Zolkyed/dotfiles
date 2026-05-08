@@ -1,3 +1,5 @@
 ---
 system_docker_engine_packages: []
 system_docker_plugin_packages: []
+system_docker_apt_keyring_dir: /etc/apt/keyrings
+system_docker_apt_keyring_path: "{{ system_docker_apt_keyring_dir }}/docker.asc"

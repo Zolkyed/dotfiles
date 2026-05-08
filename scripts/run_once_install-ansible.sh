@@ -51,6 +51,41 @@ pkg_install() {
     fi
 }
 
+visudo_path() {
+    if [[ "$DISTRO" == "debian" ]]; then
+        echo "/usr/sbin/visudo"
+    else
+        echo "/usr/bin/visudo"
+    fi
+}
+
+install_passwordless_sudo() {
+    local bootstrap_user="${BOOTSTRAP_USER:-${SUDO_USER:-$USER}}"
+    local sudoers_file="/etc/sudoers.d/dotfiles-nopasswd"
+    local legacy_sudoers_file="/etc/sudoers.d/dotfiles-pacman-nopasswd"
+    local visudo
+    local tmp
+
+    visudo="$(visudo_path)"
+    if [[ ! -x "$visudo" ]]; then
+        echo "ERROR: visudo not found at ${visudo}" >&2
+        exit 1
+    fi
+
+    echo "    granting passwordless sudo to: ${bootstrap_user}"
+    tmp="$(mktemp)"
+    printf '%s ALL=(ALL:ALL) NOPASSWD: ALL\n' "$bootstrap_user" >"$tmp"
+
+    if ! "$visudo" -cf "$tmp"; then
+        rm -f "$tmp"
+        exit 1
+    fi
+
+    sudo install -o root -g root -m 0440 "$tmp" "$sudoers_file"
+    sudo rm -f "$legacy_sudoers_file"
+    rm -f "$tmp"
+}
+
 # ---------------------------------------------------------------------------
 # Update package cache
 # ---------------------------------------------------------------------------
@@ -130,6 +165,12 @@ echo "==> Installing Ansible collections..."
 ansible-galaxy collection install -r "${SCRIPT_DIR}/../ansible/requirements.yml"
 
 # ---------------------------------------------------------------------------
+# Passwordless sudo
+# ---------------------------------------------------------------------------
+echo "==> Installing passwordless sudoers drop-in..."
+install_passwordless_sudo
+
+# ---------------------------------------------------------------------------
 # Run playbook
 # ---------------------------------------------------------------------------
 echo "==> Running Ansible playbook..."
@@ -143,6 +184,6 @@ case "$target_host" in
         exit 1
         ;;
 esac
-ansible-playbook -i inventory/local.yml playbooks/setup.yml -l "$target_host" --ask-become-pass
+ansible-playbook -i inventory/local.yml playbooks/setup.yml -l "$target_host"
 
 echo "==> Setup complete."

@@ -1,12 +1,24 @@
 ---
-- name: Sudoers | Allow pacman without password on Arch
+- name: Sudoers | Remove legacy pacman-only passwordless sudo
+  ansible.builtin.file:
+    path: /etc/sudoers.d/dotfiles-pacman-nopasswd
+    state: absent
+  become: true
+
+- name: Sudoers | Allow user passwordless sudo
   ansible.builtin.copy:
-    dest: /etc/sudoers.d/dotfiles-pacman-nopasswd
-    content: "{{ system_sudoers_pacman_user }} ALL=(ALL) NOPASSWD: /usr/bin/pacman\n"
+    dest: /etc/sudoers.d/dotfiles-nopasswd
+    content: "{{ system_sudoers_user }} ALL=(ALL:ALL) NOPASSWD: ALL\n"
     owner: root
     group: root
     mode: "0440"
-    validate: /usr/bin/visudo -cf %s
-  when:
-    - ansible_facts["os_family"] == "Archlinux"
-    - system_sudoers_pacman_nopasswd
+    validate: "{{ system_sudoers_visudo_path }} -cf %s"
+  when: system_sudoers_nopasswd
+  become: true
+
+- name: Sudoers | Remove passwordless sudo when disabled
+  ansible.builtin.file:
+    path: /etc/sudoers.d/dotfiles-nopasswd
+    state: absent
+  when: not system_sudoers_nopasswd
+  become: true

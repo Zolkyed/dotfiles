@@ -114,9 +114,6 @@ home_dev_packages:
 # System
 # ---------------------------------------------------------------------------
 
-# Boot / repo metadata
-system_docker_repo_codename: "{{ ansible_facts['distribution_release'] }}"
-
 # Docker
 system_docker_engine_packages:
   - docker-ce
