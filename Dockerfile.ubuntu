@@ -14,6 +14,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
     ANSIBLE_LOCAL_TEMP=/tmp/ansible-local \
     ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote
 
+SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
+
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
       age \
@@ -24,8 +26,7 @@ RUN apt-get update && \
       zsh && \
     rm -rf /var/lib/apt/lists/*
 
-RUN set -euo pipefail; \
-    arch="$(dpkg --print-architecture)"; \
+RUN arch="$(dpkg --print-architecture)"; \
     ver="$(curl -fsSL https://api.github.com/repos/getsops/sops/releases/latest \
            | grep '"tag_name"' | cut -d'"' -f4 | sed 's/^v//')"; \
     tmp="$(mktemp --suffix=.deb)"; \
