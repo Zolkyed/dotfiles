@@ -1,7 +1,6 @@
 ---
 - name: Packages | Install packages
   ansible.builtin.apt:
-    update_cache: true
     name: "{{
       home_core_packages +
       home_utility_packages +
