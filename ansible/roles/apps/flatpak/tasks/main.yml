@@ -7,6 +7,14 @@
   ansible.builtin.include_tasks: archlinux.yml
   when: ansible_facts["os_family"] | lower == "archlinux"
 
+- name: Check if Plasma is installed before installing Discover backend
+  ansible.builtin.command:
+    cmd: which plasmashell
+  register: apps_flatpak_plasmashell_check
+  changed_when: false
+  failed_when: false
+  when:
+    - apps_flatpak_discover_backend_packages | length > 0
 
 - name: Add flatpak remotes
   community.general.flatpak_remote:
