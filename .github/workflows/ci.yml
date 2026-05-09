@@ -29,5 +29,5 @@ jobs:
         run: |
           docker build \
             --secret id=sops_age_key,env=SOPS_AGE_KEY \
-            -f ${{ matrix.dockerfile }} \
+            -f docker/${{ matrix.dockerfile }} \
             .

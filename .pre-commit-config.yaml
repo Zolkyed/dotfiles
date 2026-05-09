@@ -18,7 +18,7 @@ repos:
         files: ^(ansible|\.github)/.*\.ya?ml$
 
   - repo: https://github.com/ansible/ansible-lint
-    rev: v24.12.2
+    rev: v25.1.3
     hooks:
       - id: ansible-lint
         files: ^ansible/.*\.ya?ml$
