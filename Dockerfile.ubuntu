@@ -35,7 +35,7 @@ RUN arch="$(dpkg --print-architecture)"; \
     dpkg -i "$tmp"; \
     rm -f "$tmp"
 
-RUN groupadd --gid ${GID} ${GROUP} && \
+RUN groupmod -n ${GROUP} $(getent group ${GID} | cut -d: -f1) && \
     useradd --uid ${UID} --gid ${GID} --create-home --shell /bin/bash ${USER} && \
     echo "${USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${USER} && \
     chmod 0440 /etc/sudoers.d/${USER}
