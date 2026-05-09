@@ -7,7 +7,7 @@
     cmd: >
       sh -c "$(curl -fsLS get.chezmoi.io)" --
       -b "{{ user_home }}/.local/bin"
-    creates: "{{ home_chezmoi_bin }}"
+    creates: "{{ chezmoi_bin }}"
   become: true
   become_user: "{{ user_name }}"
 
@@ -29,27 +29,27 @@
 
 - name: Clone dotfiles repo (remote / fresh machine)
   ansible.builtin.git:
-    repo: "{{ home_dotfiles_repo }}"
+    repo: "{{ dotfiles_repo }}"
     dest: "{{ user_home }}/.local/share/chezmoi"
-    version: "{{ home_dotfiles_repo_branch }}"
+    version: "{{ dotfiles_repo_branch }}"
     update: false
   become: true
   become_user: "{{ user_name }}"
-  when: home_dotfiles_use_repo
+  when: dotfiles_use_repo
 
 - name: Sync chezmoi source from local path
   ansible.builtin.copy:
-    src: "{{ home_dotfiles_chezmoi_source }}/"
+    src: "{{ dotfiles_chezmoi_source }}/"
     dest: "{{ user_home }}/.local/share/chezmoi/"
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
     mode: preserve
-  when: not home_dotfiles_use_repo
+  when: not dotfiles_use_repo
 
 - name: Apply dotfiles with chezmoi
   ansible.builtin.command:
-    cmd: "{{ home_chezmoi_bin }} apply --no-tty --force"
+    cmd: "{{ chezmoi_bin }} apply --no-tty --force"
   become: true
   become_user: "{{ user_name }}"
-  register: home_chezmoi_apply
-  changed_when: home_chezmoi_apply.stdout != ""
+  register: chezmoi_apply
+  changed_when: chezmoi_apply.stdout != ""

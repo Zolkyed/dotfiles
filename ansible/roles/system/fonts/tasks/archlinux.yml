@@ -1,6 +1,6 @@
 ---
 - name: Fonts | Install packages
   community.general.pacman:
-    name: "{{ system_fonts_packages }}"
+    name: "{{ fonts_packages }}"
     state: present
   notify: Update font cache

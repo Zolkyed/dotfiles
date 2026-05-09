@@ -1,4 +1,4 @@
 ---
-apps_ai_npm_packages:
+ai_npm_packages:
   - "opencode-ai"
   - "@openai/codex"

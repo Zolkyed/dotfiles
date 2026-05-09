@@ -4,5 +4,5 @@
     name: system/aur
     tasks_from: install_packages
   vars:
-    system_aur_install_packages:
-      - "{{ apps_vscode_aur_package }}"
+    aur_install_packages:
+      - "{{ vscode_aur_package }}"

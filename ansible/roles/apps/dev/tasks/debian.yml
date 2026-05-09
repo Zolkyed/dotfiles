@@ -1,5 +1,5 @@
 ---
 - name: Dev | Install packages
   ansible.builtin.apt:
-    name: "{{ apps_dev_packages }}"
+    name: "{{ dev_packages }}"
     state: present

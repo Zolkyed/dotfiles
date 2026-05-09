@@ -4,5 +4,5 @@
     name: system/aur
     tasks_from: install_packages
   vars:
-    system_aur_install_packages:
-      - "{{ apps_browser_arch_package }}"
+    aur_install_packages:
+      - "{{ browser_arch_package }}"

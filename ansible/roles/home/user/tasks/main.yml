@@ -10,7 +10,7 @@
   ansible.builtin.user:
     name: "{{ user_name }}"
     shell: "{{ user_shell }}"
-    groups: "{{ home_user_groups | select('in', ansible_facts.getent_group.keys()) | list }}"
+    groups: "{{ user_groups | select('in', ansible_facts.getent_group.keys()) | list }}"
     append: true
     state: present
 

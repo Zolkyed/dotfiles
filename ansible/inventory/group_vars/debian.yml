@@ -2,14 +2,14 @@
 # ---------------------------------------------------------------------------
 # Home
 # ---------------------------------------------------------------------------
-home_user_groups:
+user_groups:
   - sudo
   - audio
   - video
   - plugdev
   - netdev
 
-home_core_packages:
+core_packages:
   - curl
   - wget
   - vim
@@ -25,7 +25,7 @@ home_core_packages:
   - man-db
   - manpages
 
-home_utility_packages:
+utility_packages:
   - ncdu
   - ripgrep
   - vulkan-tools
@@ -52,7 +52,7 @@ home_utility_packages:
   - trash-cli
   - neovim
 
-home_fun_packages:
+fun_packages:
   - cowsay
   - cmatrix
   - figlet
@@ -62,7 +62,7 @@ home_fun_packages:
 # ---------------------------------------------------------------------------
 # Apps
 # ---------------------------------------------------------------------------
-apps_media_packages:
+media_packages:
   - mpv
   - ffmpeg
   - yt-dlp
@@ -71,15 +71,15 @@ apps_media_packages:
   - obs-studio
   - qbittorrent
 
-apps_office_packages:
+office_packages:
   - libreoffice
   - thunderbird
 
-apps_system_tools_packages:
+system_tools_packages:
   - gparted
   - timeshift
 
-apps_gaming_packages:
+gaming_packages:
   - steam
   - lutris
   - gamemode
@@ -92,12 +92,12 @@ apps_gaming_packages:
   - retroarch
 
 # Flatpak
-apps_distro_flatpaks: []
-apps_flatpak_discover_backend_packages:
+distro_flatpaks: []
+flatpak_discover_backend_packages:
   - plasma-discover-backend-flatpak
 
 # Development
-apps_dev_packages:
+dev_packages:
   - git
   - build-essential
   - pkg-config
@@ -120,7 +120,7 @@ apps_dev_packages:
 # ---------------------------------------------------------------------------
 # Desktop
 # ---------------------------------------------------------------------------
-desktop_plasma_packages:
+plasma_packages:
   - kde-plasma-desktop
   - plasma-discover
   - dolphin
@@ -133,19 +133,19 @@ desktop_plasma_packages:
 # ---------------------------------------------------------------------------
 
 # Docker
-system_docker_engine_packages:
+docker_engine_packages:
   - docker-ce
   - docker-ce-cli
   - containerd.io
 
-system_docker_plugin_packages:
+docker_plugin_packages:
   - docker-buildx-plugin
   - docker-compose-plugin
 
-system_docker_group: docker
+docker_group: docker
 
 # Fonts
-system_fonts_packages:
+fonts_packages:
   - fonts-noto
   - fonts-noto-cjk
   - fonts-noto-color-emoji
@@ -154,11 +154,11 @@ system_fonts_packages:
   - fonts-freefont-ttf
 
 # Networking / VPN
-system_networking_packages:
+networking_packages:
   - network-manager
   - systemd-resolved
 
-system_vpn_packages:
+vpn_packages:
   - wireguard-tools
   - openvpn
   - network-manager-openvpn
@@ -166,18 +166,18 @@ system_vpn_packages:
 
 # Splash boot
 
-system_splashboot_packages:
+splashboot_packages:
   - plymouth
   - plymouth-themes
 
 # SSH
-system_sshd_package: openssh-server
-system_sshd_service: ssh
+sshd_package: openssh-server
+sshd_service: ssh
 
 # Virtualization
-system_libvirt_service: libvirtd
+libvirt_service: libvirtd
 
-system_virtualization_kvm_packages:
+virtualization_kvm_packages:
   - qemu-system-x86
   - libvirt-daemon-system
   - libvirt-clients
@@ -186,10 +186,10 @@ system_virtualization_kvm_packages:
   - bridge-utils
   - ovmf
 
-system_virtualization_virtualbox_packages:
+virtualization_virtualbox_packages:
   - virtualbox
   - virtualbox-ext-pack
 
-system_virtualization_user_groups:
+virtualization_user_groups:
   - libvirt
   - kvm

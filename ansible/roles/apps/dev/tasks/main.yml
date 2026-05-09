@@ -6,7 +6,7 @@
 # Rust
 # ---------------------------------------------------------------------------
 - name: Dev | Install Rust toolchain
-  when: apps_dev_install_rust
+  when: dev_install_rust
   block:
     - name: Dev | Download rustup installer
       ansible.builtin.get_url:
@@ -25,17 +25,17 @@
 # NVM
 # ---------------------------------------------------------------------------
 - name: Dev | Install NVM
-  when: apps_dev_install_nvm
+  when: dev_install_nvm
   block:
     - name: Dev | Download nvm installer
       ansible.builtin.get_url:
-        url: "https://raw.githubusercontent.com/nvm-sh/nvm/v{{ apps_dev_nvm_version }}/install.sh"
-        dest: "/tmp/nvm-install-{{ apps_dev_nvm_version }}.sh"
+        url: "https://raw.githubusercontent.com/nvm-sh/nvm/v{{ dev_nvm_version }}/install.sh"
+        dest: "/tmp/nvm-install-{{ dev_nvm_version }}.sh"
         mode: "0755"
 
     - name: Dev | Run nvm installer
       ansible.builtin.command:
-        cmd: "bash /tmp/nvm-install-{{ apps_dev_nvm_version }}.sh"
+        cmd: "bash /tmp/nvm-install-{{ dev_nvm_version }}.sh"
         creates: "{{ user_home }}/.nvm/nvm.sh"
       become: true
       become_user: "{{ user_name }}"
@@ -44,7 +44,7 @@
 # Node.js (via NVM)
 # ---------------------------------------------------------------------------
 - name: Dev | Install Node LTS via NVM
-  when: apps_dev_install_nvm
+  when: dev_install_nvm
   ansible.builtin.shell: |
     export NVM_DIR="{{ user_home }}/.nvm"
     source "$NVM_DIR/nvm.sh"

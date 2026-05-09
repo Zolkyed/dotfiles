@@ -1,15 +1,15 @@
 ---
-apps_browser_debian_keyring_dir: /usr/share/keyrings
-apps_browser_debian_keyring_path: "{{ apps_browser_debian_keyring_dir }}/brave-browser-archive-keyring.gpg"
-apps_browser_debian_sources_dir: /etc/apt/sources.list.d
-apps_browser_debian_sources_path: "{{ apps_browser_debian_sources_dir }}/brave-browser-release.sources"
-apps_browser_debian_keyring_url: https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
-apps_browser_debian_sources_url: https://brave-browser-apt-release.s3.brave.com/brave-browser.sources
-apps_browser_debian_package: brave-browser
-apps_browser_arch_package: brave-bin
-apps_browser_policy_dir: /etc/brave/policies/managed
-apps_browser_policy_file: zz-browser-policy.json
-apps_browser_extensions:
+browser_debian_keyring_dir: /usr/share/keyrings
+browser_debian_keyring_path: "{{ browser_debian_keyring_dir }}/brave-browser-archive-keyring.gpg"
+browser_debian_sources_dir: /etc/apt/sources.list.d
+browser_debian_sources_path: "{{ browser_debian_sources_dir }}/brave-browser-release.sources"
+browser_debian_keyring_url: https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+browser_debian_sources_url: https://brave-browser-apt-release.s3.brave.com/brave-browser.sources
+browser_debian_package: brave-browser
+browser_arch_package: brave-bin
+browser_policy_dir: /etc/brave/policies/managed
+browser_policy_file: zz-browser-policy.json
+browser_extensions:
   - name: Bitwarden
     id: nngceckbapebfimnlniiiahkandclblb
     update_url: https://clients2.google.com/service/update2/crx
@@ -28,4 +28,4 @@ apps_browser_extensions:
   - name: Image Downloader
     id: cnpniohnfphhjihaiiggeabnkjhpaldj
     update_url: https://clients2.google.com/service/update2/crx
-apps_browser_extra_policies: {}
+browser_extra_policies: {}

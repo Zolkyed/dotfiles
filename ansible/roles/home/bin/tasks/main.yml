@@ -1,7 +1,7 @@
 ---
 - name: Ensure ~/.local/bin exists
   ansible.builtin.file:
-    path: "{{ home_bin_dest }}"
+    path: "{{ bin_dest }}"
     state: directory
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
@@ -10,7 +10,7 @@
 - name: Install custom scripts to ~/.local/bin
   ansible.builtin.copy:
     src: "{{ item }}"
-    dest: "{{ home_bin_dest }}/{{ item | basename }}"
+    dest: "{{ bin_dest }}/{{ item | basename }}"
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
     mode: "0755"
@@ -18,17 +18,17 @@
 
 - name: Install konsave command aliases
   ansible.builtin.file:
-    src: "{{ home_bin_dest }}/konsavectl"
-    dest: "{{ home_bin_dest }}/{{ item }}"
+    src: "{{ bin_dest }}/konsavectl"
+    dest: "{{ bin_dest }}/{{ item }}"
     state: link
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
     force: true
-  loop: "{{ home_bin_konsave_links }}"
+  loop: "{{ bin_konsave_links }}"
 
 - name: Ensure konsavectl keybind directory exists
   ansible.builtin.file:
-    path: "{{ home_bin_konsave_keybinds_dest }}"
+    path: "{{ bin_konsave_keybinds_dest }}"
     state: directory
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
@@ -37,7 +37,7 @@
 - name: Install konsavectl KDE keybind overrides
   ansible.builtin.copy:
     src: "{{ item }}"
-    dest: "{{ home_bin_konsave_keybinds_dest }}/{{ item | basename }}"
+    dest: "{{ bin_konsave_keybinds_dest }}/{{ item | basename }}"
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
     mode: "0644"

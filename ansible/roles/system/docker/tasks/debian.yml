@@ -10,7 +10,7 @@
 
     - name: Docker | Create apt keyring directory
       ansible.builtin.file:
-        path: "{{ system_docker_apt_keyring_dir }}"
+        path: "{{ docker_apt_keyring_dir }}"
         state: directory
         owner: root
         group: root
@@ -19,7 +19,7 @@
     - name: Docker | Download official apt repository key
       ansible.builtin.get_url:
         url: "https://download.docker.com/linux/{{ ansible_facts['distribution'] | lower }}/gpg"
-        dest: "{{ system_docker_apt_keyring_path }}"
+        dest: "{{ docker_apt_keyring_path }}"
         owner: root
         group: root
         mode: "0644"
@@ -29,10 +29,10 @@
         name: docker
         types: deb
         uris: "https://download.docker.com/linux/{{ ansible_facts['distribution'] | lower }}"
-        suites: "{{ system_docker_repo_codename | default(ansible_facts['distribution_release']) }}"
+        suites: "{{ docker_repo_codename | default(ansible_facts['distribution_release']) }}"
         components: stable
         architectures: "{{ ansible_facts['architecture'] | replace('x86_64', 'amd64') }}"
-        signed_by: "{{ system_docker_apt_keyring_path }}"
+        signed_by: "{{ docker_apt_keyring_path }}"
         state: present
       notify: Docker | Update apt cache
 
@@ -41,6 +41,6 @@
 
 - name: Docker | Install packages
   ansible.builtin.apt:
-    name: "{{ system_docker_engine_packages + system_docker_plugin_packages }}"
+    name: "{{ docker_engine_packages + docker_plugin_packages }}"
     state: present
   notify: Restart docker

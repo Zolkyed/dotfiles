@@ -1,6 +1,6 @@
 ---
-system_fonts_packages: []
-system_fonts_nerd:
+fonts_packages: []
+fonts_nerd:
   version: "3.4.0"
   families:
     - JetBrainsMono

@@ -5,30 +5,30 @@
 - name: Validate vaulted ssh host key pair when partially set
   ansible.builtin.assert:
     that:
-      - system_sshd_host_ed25519_private_key != ''
-      - system_sshd_host_ed25519_public_key != ''
+      - sshd_host_ed25519_private_key != ''
+      - sshd_host_ed25519_public_key != ''
     fail_msg: "SSH host key vault vars must either both be set or both be empty."
-  when: system_sshd_host_ed25519_private_key != '' or system_sshd_host_ed25519_public_key != ''
+  when: sshd_host_ed25519_private_key != '' or sshd_host_ed25519_public_key != ''
 
 - name: Deploy vaulted ssh host private key
   ansible.builtin.copy:
-    content: "{{ system_sshd_host_ed25519_private_key }}"
+    content: "{{ sshd_host_ed25519_private_key }}"
     dest: /etc/ssh/ssh_host_ed25519_key
     owner: root
     group: root
     mode: "0600"
-  when: system_sshd_host_ed25519_private_key != ''
+  when: sshd_host_ed25519_private_key != ''
   no_log: true
   notify: Restart sshd
 
 - name: Deploy vaulted ssh host public key
   ansible.builtin.copy:
-    content: "{{ system_sshd_host_ed25519_public_key }}"
+    content: "{{ sshd_host_ed25519_public_key }}"
     dest: /etc/ssh/ssh_host_ed25519_key.pub
     owner: root
     group: root
     mode: "0644"
-  when: system_sshd_host_ed25519_public_key != ''
+  when: sshd_host_ed25519_public_key != ''
   notify: Restart sshd
 
 - name: Generate ssh host keys when not vaulted
@@ -36,8 +36,8 @@
     cmd: ssh-keygen -A
     creates: /etc/ssh/ssh_host_ed25519_key
   when:
-    - system_sshd_host_ed25519_private_key == ''
-    - system_sshd_host_ed25519_public_key == ''
+    - sshd_host_ed25519_private_key == ''
+    - sshd_host_ed25519_public_key == ''
 
 - name: Harden sshd configuration
   ansible.builtin.lineinfile:
@@ -48,21 +48,21 @@
     validate: sshd -t -f %s
   loop:
     - regexp: '^#?PermitRootLogin'
-      line: "PermitRootLogin {{ system_sshd_permit_root_login }}"
+      line: "PermitRootLogin {{ sshd_permit_root_login }}"
     - regexp: '^#?PasswordAuthentication'
-      line: "PasswordAuthentication {{ system_sshd_password_authentication }}"
+      line: "PasswordAuthentication {{ sshd_password_authentication }}"
     - regexp: '^#?PubkeyAuthentication'
-      line: "PubkeyAuthentication {{ system_sshd_pubkey_authentication }}"
+      line: "PubkeyAuthentication {{ sshd_pubkey_authentication }}"
     - regexp: '^#?Port '
-      line: "Port {{ system_sshd_port }}"
+      line: "Port {{ sshd_port }}"
     - regexp: '^#?X11Forwarding'
-      line: "X11Forwarding {{ system_sshd_x11_forwarding }}"
+      line: "X11Forwarding {{ sshd_x11_forwarding }}"
     - regexp: '^#?AllowTcpForwarding'
-      line: "AllowTcpForwarding {{ system_sshd_allow_tcp_forwarding }}"
+      line: "AllowTcpForwarding {{ sshd_allow_tcp_forwarding }}"
   notify: Restart sshd
 
 - name: Enable and start sshd
   ansible.builtin.systemd:
-    name: "{{ system_sshd_service }}"
+    name: "{{ sshd_service }}"
     enabled: true
     state: started

@@ -1,4 +1,7 @@
 ---
-home_core_packages: []
-home_utility_packages: []
-home_fun_packages: []
+core_packages: []
+utility_packages: []
+fun_packages: []
+media_packages: []
+office_packages: []
+system_tools_packages: []

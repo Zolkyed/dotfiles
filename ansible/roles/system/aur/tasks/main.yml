@@ -5,15 +5,15 @@
 
 - name: AUR | Install build packages
   community.general.pacman:
-    name: "{{ system_aur_build_packages }}"
+    name: "{{ aur_build_packages }}"
     state: present
-  when: system_aur_build_packages | length > 0
+  when: aur_build_packages | length > 0
 
 - name: AUR | Install packages
   kewlfft.aur.aur:
-    name: "{{ system_aur_packages }}"
+    name: "{{ aur_packages }}"
     use: makepkg
     state: present
   become: true
   become_user: "{{ user_name }}"
-  when: system_aur_packages | length > 0
+  when: aur_packages | length > 0

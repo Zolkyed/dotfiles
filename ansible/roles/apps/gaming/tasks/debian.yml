@@ -2,14 +2,14 @@
 - name: Gaming | Configure Debian i386 support
   when:
     - >
-      ('steam' in apps_gaming_packages) or
-      ('wine' in apps_gaming_packages) or
-      ('winetricks' in apps_gaming_packages)
+      ('steam' in gaming_packages) or
+      ('wine' in gaming_packages) or
+      ('winetricks' in gaming_packages)
   block:
     - name: Gaming | Check Debian foreign architectures
       ansible.builtin.command:
         cmd: dpkg --print-foreign-architectures
-      register: apps_gaming_debian_foreign_architectures
+      register: gaming_debian_foreign_architectures
       changed_when: false
 
     - name: Gaming | Enable Debian i386 architecture
@@ -17,9 +17,9 @@
         cmd: dpkg --add-architecture i386
       changed_when: true
       notify: Gaming | Update apt cache
-      when: "'i386' not in apps_gaming_debian_foreign_architectures.stdout_lines"
+      when: "'i386' not in gaming_debian_foreign_architectures.stdout_lines"
 
 - name: Gaming | Install packages
   ansible.builtin.apt:
-    name: "{{ apps_gaming_packages }}"
+    name: "{{ gaming_packages }}"
     state: present

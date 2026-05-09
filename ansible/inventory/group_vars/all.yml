@@ -44,11 +44,11 @@ xdg_enabled: true
 # Home
 # ---------------------------------------------------------------------------
 # Flatpak
-apps_shared_flatpaks:
+shared_flatpaks:
   - com.discordapp.Discord
   - com.spotify.Client
 
-apps_gaming_flatpaks:
+gaming_flatpaks:
   - com.heroicgameslauncher.hgl
   - net.pcsx2.PCSX2
   - net.davidotek.pupgui2
@@ -58,9 +58,9 @@ apps_gaming_flatpaks:
 # ---------------------------------------------------------------------------
 
 # SSH
-system_sshd_permit_root_login: "no"
-system_sshd_password_authentication: "no"
-system_sshd_pubkey_authentication: "yes"
-system_sshd_port: 22
-system_sshd_x11_forwarding: "no"
-system_sshd_allow_tcp_forwarding: "no"
+sshd_permit_root_login: "no"
+sshd_password_authentication: "no"
+sshd_pubkey_authentication: "yes"
+sshd_port: 22
+sshd_x11_forwarding: "no"
+sshd_allow_tcp_forwarding: "no"

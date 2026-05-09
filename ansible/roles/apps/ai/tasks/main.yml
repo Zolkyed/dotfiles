@@ -11,6 +11,6 @@
     npm install -g {{ item }}
   args:
     executable: /bin/bash
-  loop: "{{ apps_ai_npm_packages }}"
+  loop: "{{ ai_npm_packages }}"
   become: true
   become_user: "{{ user_name }}"

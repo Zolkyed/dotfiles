@@ -1,9 +1,9 @@
 ---
-apps_flatpak_remotes:
+flatpak_remotes:
   - name: flathub
     url: https://dl.flathub.org/repo/flathub.flatpakrepo
 
-apps_shared_flatpaks: []
-apps_distro_flatpaks: []
-apps_gaming_flatpaks: []
-apps_flatpak_discover_backend_packages: []
+shared_flatpaks: []
+distro_flatpaks: []
+gaming_flatpaks: []
+flatpak_discover_backend_packages: []

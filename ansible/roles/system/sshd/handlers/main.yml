@@ -1,6 +1,6 @@
 ---
 - name: Restart sshd
   ansible.builtin.systemd:
-    name: "{{ system_sshd_service }}"
+    name: "{{ sshd_service }}"
     state: restarted
   become: true

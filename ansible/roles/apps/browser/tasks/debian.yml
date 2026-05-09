@@ -8,7 +8,7 @@
 
     - name: Browser | Ensure Debian keyring directory exists
       ansible.builtin.file:
-        path: "{{ apps_browser_debian_keyring_dir }}"
+        path: "{{ browser_debian_keyring_dir }}"
         state: directory
         owner: root
         group: root
@@ -16,7 +16,7 @@
 
     - name: Browser | Ensure Debian sources directory exists
       ansible.builtin.file:
-        path: "{{ apps_browser_debian_sources_dir }}"
+        path: "{{ browser_debian_sources_dir }}"
         state: directory
         owner: root
         group: root
@@ -24,16 +24,16 @@
 
     - name: Browser | Download Brave apt keyring
       ansible.builtin.get_url:
-        url: "{{ apps_browser_debian_keyring_url }}"
-        dest: "{{ apps_browser_debian_keyring_path }}"
+        url: "{{ browser_debian_keyring_url }}"
+        dest: "{{ browser_debian_keyring_path }}"
         owner: root
         group: root
         mode: "0644"
 
     - name: Browser | Download Brave apt sources
       ansible.builtin.get_url:
-        url: "{{ apps_browser_debian_sources_url }}"
-        dest: "{{ apps_browser_debian_sources_path }}"
+        url: "{{ browser_debian_sources_url }}"
+        dest: "{{ browser_debian_sources_path }}"
         owner: root
         group: root
         mode: "0644"
@@ -44,5 +44,5 @@
 
 - name: Browser | Install Debian package
   ansible.builtin.apt:
-    name: "{{ apps_browser_debian_package }}"
+    name: "{{ browser_debian_package }}"
     state: present

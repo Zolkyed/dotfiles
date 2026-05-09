@@ -1,6 +1,6 @@
 ---
-system_splashboot_packages: []
-system_splashboot_theme: spinner
-system_splashboot_grub_options:
+splashboot_packages: []
+splashboot_theme: spinner
+splashboot_grub_options:
   - quiet
   - splash

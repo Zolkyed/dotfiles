@@ -5,26 +5,26 @@
 - name: Splashboot | Check available Plymouth themes
   ansible.builtin.command:
     cmd: plymouth-set-default-theme --list
-  register: system_plymouth_themes
+  register: plymouth_themes
   changed_when: false
   failed_when: false
 
 - name: Splashboot | Check current Plymouth theme
   ansible.builtin.command:
     cmd: plymouth-set-default-theme
-  register: system_plymouth_current_theme
+  register: plymouth_current_theme
   changed_when: false
   failed_when: false
 
 - name: Splashboot | Set Plymouth theme
   ansible.builtin.command:
-    cmd: "plymouth-set-default-theme {{ system_splashboot_theme }}"
+    cmd: "plymouth-set-default-theme {{ splashboot_theme }}"
   changed_when: true
   notify: Splashboot | Update initramfs
   when:
-    - system_plymouth_themes.rc == 0
-    - system_splashboot_theme in system_plymouth_themes.stdout_lines
-    - system_plymouth_current_theme.stdout != system_splashboot_theme
+    - plymouth_themes.rc == 0
+    - splashboot_theme in plymouth_themes.stdout_lines
+    - plymouth_current_theme.stdout != splashboot_theme
 
 - name: Splashboot | Merge GRUB splash options
   ansible.builtin.set_fact:
@@ -32,7 +32,7 @@
       {{
         (
           (system_grub_cmdline_linux_default | default('')).split()
-          + (system_splashboot_grub_options | default([]))
+          + (splashboot_grub_options | default([]))
         )
         | unique
         | join(' ')

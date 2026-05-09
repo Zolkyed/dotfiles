@@ -1,6 +1,6 @@
 ---
-home_chezmoi_bin: "{{ user_home }}/.local/bin/chezmoi"
-home_dotfiles_repo: "https://github.com/Zolkyed/dotfiles.git"
-home_dotfiles_repo_branch: "main"
-home_dotfiles_use_repo: false
-home_dotfiles_chezmoi_source: "{{ playbook_dir }}/../../chezmoi"
+chezmoi_bin: "{{ user_home }}/.local/bin/chezmoi"
+dotfiles_repo: "https://github.com/Zolkyed/dotfiles.git"
+dotfiles_repo_branch: "main"
+dotfiles_use_repo: false
+dotfiles_chezmoi_source: "{{ playbook_dir }}/../../chezmoi"

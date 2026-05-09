@@ -1,4 +1,4 @@
 ---
 # Feature flag overrides
 gaming_enabled: true
-system_docker_repo_codename: noble
+docker_repo_codename: noble

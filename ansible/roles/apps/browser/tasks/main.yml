@@ -4,7 +4,7 @@
 
 - name: Browser | Ensure managed policy directory exists
   ansible.builtin.file:
-    path: "{{ apps_browser_policy_dir }}"
+    path: "{{ browser_policy_dir }}"
     state: directory
     owner: root
     group: root
@@ -13,7 +13,7 @@
 - name: Browser | Deploy managed policy
   ansible.builtin.template:
     src: browser-policy.json.j2
-    dest: "{{ apps_browser_policy_dir }}/{{ apps_browser_policy_file }}"
+    dest: "{{ browser_policy_dir }}/{{ browser_policy_file }}"
     owner: root
     group: root
     mode: "0644"

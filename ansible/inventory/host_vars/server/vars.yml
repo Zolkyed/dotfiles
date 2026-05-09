@@ -18,4 +18,4 @@ vpn_enabled: false
 
 # If running Proxmox and docker_repo_codename isn't auto-detected correctly,
 # uncomment and set to distribution_release value (e.g. "bookworm"):
-# system_docker_repo_codename: "bookworm"
+# docker_repo_codename: "bookworm"

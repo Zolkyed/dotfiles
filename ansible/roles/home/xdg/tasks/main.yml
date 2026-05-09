@@ -14,7 +14,7 @@
       - get
       - default-web-browser
   become: false
-  register: home_xdg_default_browser_check
+  register: xdg_default_browser_check
   changed_when: false
   failed_when: false
 
@@ -24,11 +24,11 @@
       - xdg-settings
       - set
       - default-web-browser
-      - "{{ home_xdg_browser_desktop }}"
+      - "{{ xdg_browser_desktop }}"
   become: false
   changed_when: true
   failed_when: false
-  when: home_xdg_default_browser_check.stdout != home_xdg_browser_desktop
+  when: xdg_default_browser_check.stdout != xdg_browser_desktop
 
 - name: XDG | Check default browser mime types
   ansible.builtin.command:
@@ -38,24 +38,24 @@
       - default
       - "{{ item }}"
   become: false
-  register: home_xdg_browser_mime_checks
+  register: xdg_browser_mime_checks
   changed_when: false
   failed_when: false
-  loop: "{{ home_xdg_browser_mime_types }}"
+  loop: "{{ xdg_browser_mime_types }}"
 
 - name: XDG | Set default browser mime types
   ansible.builtin.command:
     argv:
       - xdg-mime
       - default
-      - "{{ home_xdg_browser_desktop }}"
+      - "{{ xdg_browser_desktop }}"
       - "{{ item.item }}"
   become: false
   changed_when: true
-  loop: "{{ home_xdg_browser_mime_checks.results }}"
+  loop: "{{ xdg_browser_mime_checks.results }}"
   loop_control:
     label: "{{ item.item }}"
-  when: item.stdout != home_xdg_browser_desktop
+  when: item.stdout != xdg_browser_desktop
 
 - name: XDG | Check default editor mime types
   ansible.builtin.command:
@@ -65,24 +65,24 @@
       - default
       - "{{ item }}"
   become: false
-  register: home_xdg_editor_mime_checks
+  register: xdg_editor_mime_checks
   changed_when: false
   failed_when: false
-  loop: "{{ home_xdg_editor_mime_types }}"
+  loop: "{{ xdg_editor_mime_types }}"
 
 - name: XDG | Set default editor mime types
   ansible.builtin.command:
     argv:
       - xdg-mime
       - default
-      - "{{ home_xdg_editor_desktop }}"
+      - "{{ xdg_editor_desktop }}"
       - "{{ item.item }}"
   become: false
   changed_when: true
-  loop: "{{ home_xdg_editor_mime_checks.results }}"
+  loop: "{{ xdg_editor_mime_checks.results }}"
   loop_control:
     label: "{{ item.item }}"
-  when: item.stdout != home_xdg_editor_desktop
+  when: item.stdout != xdg_editor_desktop
 
 - name: XDG | Check default file manager mime types
   ansible.builtin.command:
@@ -92,24 +92,24 @@
       - default
       - "{{ item }}"
   become: false
-  register: home_xdg_file_manager_mime_checks
+  register: xdg_file_manager_mime_checks
   changed_when: false
   failed_when: false
-  loop: "{{ home_xdg_file_manager_mime_types }}"
+  loop: "{{ xdg_file_manager_mime_types }}"
 
 - name: XDG | Set default file manager mime types
   ansible.builtin.command:
     argv:
       - xdg-mime
       - default
-      - "{{ home_xdg_file_manager_desktop }}"
+      - "{{ xdg_file_manager_desktop }}"
       - "{{ item.item }}"
   become: false
   changed_when: true
-  loop: "{{ home_xdg_file_manager_mime_checks.results }}"
+  loop: "{{ xdg_file_manager_mime_checks.results }}"
   loop_control:
     label: "{{ item.item }}"
-  when: item.stdout != home_xdg_file_manager_desktop
+  when: item.stdout != xdg_file_manager_desktop
 
 - name: XDG | Check default mail client mime types
   ansible.builtin.command:
@@ -119,24 +119,24 @@
       - default
       - "{{ item }}"
   become: false
-  register: home_xdg_mail_mime_checks
+  register: xdg_mail_mime_checks
   changed_when: false
   failed_when: false
-  loop: "{{ home_xdg_mail_mime_types }}"
+  loop: "{{ xdg_mail_mime_types }}"
 
 - name: XDG | Set default mail client mime types
   ansible.builtin.command:
     argv:
       - xdg-mime
       - default
-      - "{{ home_xdg_mail_desktop }}"
+      - "{{ xdg_mail_desktop }}"
       - "{{ item.item }}"
   become: false
   changed_when: true
-  loop: "{{ home_xdg_mail_mime_checks.results }}"
+  loop: "{{ xdg_mail_mime_checks.results }}"
   loop_control:
     label: "{{ item.item }}"
-  when: item.stdout != home_xdg_mail_desktop
+  when: item.stdout != xdg_mail_desktop
 
 - name: XDG | Check default media player mime types
   ansible.builtin.command:
@@ -146,28 +146,28 @@
       - default
       - "{{ item }}"
   become: false
-  register: home_xdg_media_mime_checks
+  register: xdg_media_mime_checks
   changed_when: false
   failed_when: false
-  loop: "{{ home_xdg_media_mime_types }}"
+  loop: "{{ xdg_media_mime_types }}"
 
 - name: XDG | Set default media player mime types
   ansible.builtin.command:
     argv:
       - xdg-mime
       - default
-      - "{{ home_xdg_media_player_desktop }}"
+      - "{{ xdg_media_player_desktop }}"
       - "{{ item.item }}"
   become: false
   changed_when: true
-  loop: "{{ home_xdg_media_mime_checks.results }}"
+  loop: "{{ xdg_media_mime_checks.results }}"
   loop_control:
     label: "{{ item.item }}"
-  when: item.stdout != home_xdg_media_player_desktop
+  when: item.stdout != xdg_media_player_desktop
 
 - name: XDG | Configure xdg-terminal-exec preference
   ansible.builtin.copy:
-    content: "{{ home_xdg_terminal_desktop }}\n"
+    content: "{{ xdg_terminal_desktop }}\n"
     dest: "{{ user_home }}/.config/xdg-terminals.list"
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
@@ -176,22 +176,22 @@
 - name: XDG | Locate KDE config writer
   ansible.builtin.command:
     cmd: sh -c 'command -v kwriteconfig6 || command -v kwriteconfig5'
-  register: home_xdg_kwriteconfig_check
+  register: xdg_kwriteconfig_check
   changed_when: false
   failed_when: false
 
 - name: XDG | Set KDE default terminal
   ansible.builtin.command:
     argv:
-      - "{{ home_xdg_kwriteconfig_check.stdout }}"
+      - "{{ xdg_kwriteconfig_check.stdout }}"
       - --file
       - kdeglobals
       - --group
       - General
       - --key
       - TerminalApplication
-      - "{{ home_xdg_terminal_command }}"
+      - "{{ xdg_terminal_command }}"
   become: true
   become_user: "{{ user_name }}"
   changed_when: true
-  when: home_xdg_kwriteconfig_check.rc == 0
+  when: xdg_kwriteconfig_check.rc == 0

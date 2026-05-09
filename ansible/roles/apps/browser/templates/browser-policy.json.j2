@@ -1,10 +1,10 @@
 {
   "ExtensionInstallForcelist": [
-{% for extension in apps_browser_extensions %}
+{% for extension in browser_extensions %}
     "{{ extension.id }};{{ extension.update_url }}"{% if not loop.last %},{% endif %}
 {% endfor %}
-  ]{% if apps_browser_extra_policies | length > 0 %},{% endif %}
-{% for key, value in apps_browser_extra_policies.items() %}
+  ]{% if browser_extra_policies | length > 0 %},{% endif %}
+{% for key, value in browser_extra_policies.items() %}
   "{{ key }}": {{ value | to_json }}{% if not loop.last %},{% endif %}
 {% endfor %}
 }

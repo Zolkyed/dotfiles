@@ -12,10 +12,10 @@
 
 - name: Download Nerd Fonts archives
   ansible.builtin.get_url:
-    url: "https://github.com/ryanoasis/nerd-fonts/releases/download/v{{ system_fonts_nerd.version }}/{{ item }}.tar.xz"
+    url: "https://github.com/ryanoasis/nerd-fonts/releases/download/v{{ fonts_nerd.version }}/{{ item }}.tar.xz"
     dest: "/tmp/{{ item }}.tar.xz"
     mode: "0644"
-  loop: "{{ system_fonts_nerd.families }}"
+  loop: "{{ fonts_nerd.families }}"
   register: system_nerd_fonts_download
-  when: system_fonts_nerd.version | length > 0
+  when: fonts_nerd.version | length > 0
   notify: Extract Nerd Fonts

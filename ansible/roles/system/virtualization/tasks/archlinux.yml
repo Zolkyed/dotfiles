@@ -1,14 +1,14 @@
 ---
 - name: Virtualization | Install KVM packages
   community.general.pacman:
-    name: "{{ system_virtualization_kvm_packages }}"
+    name: "{{ virtualization_kvm_packages }}"
     state: present
   when:
-    - system_virtualization_backend == "kvm"
-    - system_virtualization_kvm_packages | length > 0
+    - virtualization_backend == "kvm"
+    - virtualization_kvm_packages | length > 0
 
 - name: Virtualization | Install VirtualBox packages
   community.general.pacman:
-    name: "{{ system_virtualization_virtualbox_packages }}"
+    name: "{{ virtualization_virtualbox_packages }}"
     state: present
-  when: system_virtualization_backend == "virtualbox"
+  when: virtualization_backend == "virtualbox"
