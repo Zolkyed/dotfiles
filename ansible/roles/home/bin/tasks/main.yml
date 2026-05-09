@@ -1,5 +1,5 @@
 ---
-- name: Ensure ~/.local/bin exists
+- name: Bin | Ensure ~/.local/bin exists
   ansible.builtin.file:
     path: "{{ bin_dest }}"
     state: directory
@@ -7,7 +7,7 @@
     group: "{{ user_name }}"
     mode: "0755"
 
-- name: Install custom scripts to ~/.local/bin
+- name: Bin | Install custom scripts to ~/.local/bin
   ansible.builtin.copy:
     src: "{{ item }}"
     dest: "{{ bin_dest }}/{{ item | basename }}"
@@ -16,7 +16,7 @@
     mode: "0755"
   loop: "{{ query('ansible.builtin.fileglob', role_path ~ '/files/*') }}"
 
-- name: Install konsave command aliases
+- name: Bin | Install konsave command aliases
   ansible.builtin.file:
     src: "{{ bin_dest }}/konsavectl"
     dest: "{{ bin_dest }}/{{ item }}"
@@ -26,7 +26,7 @@
     force: true
   loop: "{{ bin_konsave_links }}"
 
-- name: Ensure konsavectl keybind directory exists
+- name: Bin | Ensure konsavectl keybind directory exists
   ansible.builtin.file:
     path: "{{ bin_konsave_keybinds_dest }}"
     state: directory
@@ -34,7 +34,7 @@
     group: "{{ user_name }}"
     mode: "0755"
 
-- name: Install konsavectl KDE keybind overrides
+- name: Bin | Install konsavectl KDE keybind overrides
   ansible.builtin.copy:
     src: "{{ item }}"
     dest: "{{ bin_konsave_keybinds_dest }}/{{ item | basename }}"
@@ -43,7 +43,7 @@
     mode: "0644"
   loop: "{{ query('ansible.builtin.fileglob', role_path ~ '/keybinds/*') }}"
 
-- name: Ensure ~/.config/homectl exists
+- name: Bin | Ensure ~/.config/homectl exists
   ansible.builtin.file:
     path: "{{ user_home }}/.config/homectl"
     state: directory
@@ -51,7 +51,7 @@
     group: "{{ user_name }}"
     mode: "0755"
 
-- name: Deploy homectl config
+- name: Bin | Deploy homectl config
   ansible.builtin.template:
     src: homectl-config.yml.j2
     dest: "{{ user_home }}/.config/homectl/config.yml"

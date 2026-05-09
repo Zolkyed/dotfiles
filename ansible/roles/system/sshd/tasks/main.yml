@@ -2,7 +2,7 @@
 - name: "SSHD | Run {{ ansible_facts.os_family }} tasks"
   ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
 
-- name: Validate vaulted ssh host key pair when partially set
+- name: SSHD | Validate vaulted ssh host key pair when partially set
   ansible.builtin.assert:
     that:
       - sshd_host_ed25519_private_key != ''
@@ -10,7 +10,7 @@
     fail_msg: "SSH host key vault vars must either both be set or both be empty."
   when: sshd_host_ed25519_private_key != '' or sshd_host_ed25519_public_key != ''
 
-- name: Deploy vaulted ssh host private key
+- name: SSHD | Deploy vaulted ssh host private key
   ansible.builtin.copy:
     content: "{{ sshd_host_ed25519_private_key }}"
     dest: /etc/ssh/ssh_host_ed25519_key
@@ -19,9 +19,9 @@
     mode: "0600"
   when: sshd_host_ed25519_private_key != ''
   no_log: true
-  notify: Restart sshd
+  notify: SSHD | Restart sshd
 
-- name: Deploy vaulted ssh host public key
+- name: SSHD | Deploy vaulted ssh host public key
   ansible.builtin.copy:
     content: "{{ sshd_host_ed25519_public_key }}"
     dest: /etc/ssh/ssh_host_ed25519_key.pub
@@ -29,9 +29,9 @@
     group: root
     mode: "0644"
   when: sshd_host_ed25519_public_key != ''
-  notify: Restart sshd
+  notify: SSHD | Restart sshd
 
-- name: Generate ssh host keys when not vaulted
+- name: SSHD | Generate ssh host keys when not vaulted
   ansible.builtin.command:
     cmd: ssh-keygen -A
     creates: /etc/ssh/ssh_host_ed25519_key
@@ -39,7 +39,7 @@
     - sshd_host_ed25519_private_key == ''
     - sshd_host_ed25519_public_key == ''
 
-- name: Harden sshd configuration
+- name: SSHD | Harden sshd configuration
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     regexp: "{{ item.regexp }}"
@@ -59,9 +59,9 @@
       line: "X11Forwarding {{ sshd_x11_forwarding }}"
     - regexp: '^#?AllowTcpForwarding'
       line: "AllowTcpForwarding {{ sshd_allow_tcp_forwarding }}"
-  notify: Restart sshd
+  notify: SSHD | Restart sshd
 
-- name: Enable and start sshd
+- name: SSHD | Enable and start sshd
   ansible.builtin.systemd:
     name: "{{ sshd_service }}"
     enabled: true

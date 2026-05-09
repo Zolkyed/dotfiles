@@ -2,20 +2,20 @@
 - name: "Fonts | Run {{ ansible_facts.os_family }} tasks"
   ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
 
-- name: Create Nerd Fonts install directory
+- name: Fonts | Create Nerd Fonts install directory
   ansible.builtin.file:
-    path: "{{ system_nerd_fonts_install_dir }}"
+    path: "{{ fonts_nerd_install_dir }}"
     state: directory
     owner: root
     group: root
     mode: "0755"
 
-- name: Download Nerd Fonts archives
+- name: Fonts | Download Nerd Fonts archives
   ansible.builtin.get_url:
     url: "https://github.com/ryanoasis/nerd-fonts/releases/download/v{{ fonts_nerd.version }}/{{ item }}.tar.xz"
     dest: "/tmp/{{ item }}.tar.xz"
     mode: "0644"
   loop: "{{ fonts_nerd.families }}"
-  register: system_nerd_fonts_download
+  register: fonts_nerd_download
   when: fonts_nerd.version | length > 0
-  notify: Extract Nerd Fonts
+  notify: Fonts | Extract Nerd Fonts

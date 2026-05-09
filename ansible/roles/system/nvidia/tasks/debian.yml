@@ -14,7 +14,7 @@
 
 - name: Nvidia | Auto-install driver
   ansible.builtin.command:
-    cmd: ubuntu-drivers autoinstall
+    cmd: ubuntu-drivers install
   changed_when: true
   when: ansible_facts["distribution"] == "Ubuntu"
 

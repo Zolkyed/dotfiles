@@ -8,4 +8,4 @@ fonts_nerd:
     - FiraCode
     - NerdFontsSymbolsOnly
 
-system_nerd_fonts_install_dir: "/usr/local/share/fonts/nerd-fonts"
+fonts_nerd_install_dir: "/usr/local/share/fonts/nerd-fonts"

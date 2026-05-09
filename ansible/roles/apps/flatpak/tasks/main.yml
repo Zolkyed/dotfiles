@@ -9,14 +9,14 @@
 - name: "Flatpak | Run {{ ansible_facts.os_family }} tasks"
   ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
 
-- name: Add flatpak remotes
+- name: Flatpak | Add remotes
   community.general.flatpak_remote:
     name: "{{ item.name }}"
     flatpakrepo_url: "{{ item.url }}"
     state: present
   loop: "{{ flatpak_remotes }}"
 
-- name: Install flatpak apps
+- name: Flatpak | Install apps
   community.general.flatpak:
     name: "{{ flatpak_apps }}"
     state: present

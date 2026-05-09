@@ -1,7 +1,6 @@
 ---
-- name: Install chezmoi
-  # Trust: official installer from https://chezmoi.io — HTTPS only, uses -fsLS (fail on error).
-  # Verified via: https://www.chezmoi.io/install/#one-line-package-install
+- name: Dotfiles | Install chezmoi
+  # Official installer from https://chezmoi.io — HTTPS only, uses -fsLS (fail on error).
   # Idempotent: 'creates' skips if chezmoi binary already exists.
   ansible.builtin.shell:
     cmd: >
@@ -11,7 +10,7 @@
   become: true
   become_user: "{{ user_name }}"
 
-- name: Ensure chezmoi source directory exists
+- name: Dotfiles | Ensure chezmoi source directory exists
   ansible.builtin.file:
     path: "{{ user_home }}/.local/share/chezmoi"
     state: directory
@@ -19,7 +18,7 @@
     group: "{{ user_name }}"
     mode: "0700"
 
-- name: Ensure user config directory exists for chezmoi state
+- name: Dotfiles | Ensure user config directory exists
   ansible.builtin.file:
     path: "{{ user_home }}/.config"
     state: directory
@@ -27,7 +26,7 @@
     group: "{{ user_name }}"
     mode: "0700"
 
-- name: Clone dotfiles repo (remote / fresh machine)
+- name: Dotfiles | Clone dotfiles repo
   ansible.builtin.git:
     repo: "{{ dotfiles_repo }}"
     dest: "{{ user_home }}/.local/share/chezmoi"
@@ -37,7 +36,7 @@
   become_user: "{{ user_name }}"
   when: dotfiles_use_repo
 
-- name: Sync chezmoi source from local path
+- name: Dotfiles | Sync chezmoi source from local path
   ansible.builtin.copy:
     src: "{{ dotfiles_chezmoi_source }}/"
     dest: "{{ user_home }}/.local/share/chezmoi/"
@@ -46,7 +45,7 @@
     mode: preserve
   when: not dotfiles_use_repo
 
-- name: Apply dotfiles with chezmoi
+- name: Dotfiles | Apply dotfiles with chezmoi
   ansible.builtin.command:
     cmd: "{{ chezmoi_bin }} apply --no-tty --force"
   become: true

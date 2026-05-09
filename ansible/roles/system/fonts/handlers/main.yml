@@ -1,19 +1,19 @@
 ---
-- name: Extract Nerd Fonts
+- name: Fonts | Extract Nerd Fonts
   ansible.builtin.unarchive:
     src: "/tmp/{{ item.item }}.tar.xz"
-    dest: "{{ system_nerd_fonts_install_dir }}"
+    dest: "{{ fonts_nerd_install_dir }}"
     remote_src: true
   loop: >-
     {{
-      system_nerd_fonts_download.results
+      fonts_nerd_download.results
       | default([])
       | selectattr('changed')
       | list
     }}
-  notify: Update font cache
+  notify: Fonts | Update font cache
 
-- name: Update font cache
+- name: Fonts | Update font cache
   ansible.builtin.command:
     cmd: fc-cache -fv
   changed_when: true

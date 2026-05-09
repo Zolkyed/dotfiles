@@ -2,28 +2,28 @@
 - name: "Networking | Run {{ ansible_facts.os_family }} tasks"
   ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
 
-- name: Deploy systemd-resolved configuration
+- name: Networking | Deploy systemd-resolved configuration
   ansible.builtin.template:
     src: resolved.conf.j2
     dest: /etc/systemd/resolved.conf
     owner: root
     group: root
     mode: "0644"
-  notify: Restart systemd-resolved
+  notify: Networking | Restart systemd-resolved
 
-- name: Enable and start systemd-resolved
+- name: Networking | Enable and start systemd-resolved
   ansible.builtin.systemd:
     name: systemd-resolved
     enabled: true
     state: started
 
-- name: Enable and start NetworkManager
+- name: Networking | Enable and start NetworkManager
   ansible.builtin.systemd:
     name: NetworkManager
     enabled: true
     state: started
 
-- name: Symlink resolv.conf to systemd-resolved stub
+- name: Networking | Symlink resolv.conf to systemd-resolved stub
   ansible.builtin.file:
     src: /run/systemd/resolve/stub-resolv.conf
     dest: /etc/resolv.conf

@@ -3,22 +3,19 @@
   ansible.builtin.file:
     path: /etc/sudoers.d/dotfiles-pacman-nopasswd
     state: absent
-  become: true
 
 - name: Sudoers | Allow user passwordless sudo
   ansible.builtin.copy:
     dest: /etc/sudoers.d/dotfiles-nopasswd
-    content: "{{ system_sudoers_user }} ALL=(ALL:ALL) NOPASSWD: ALL\n"
+    content: "{{ sudoers_user }} ALL=(ALL:ALL) NOPASSWD: ALL\n"
     owner: root
     group: root
     mode: "0440"
-    validate: "{{ system_sudoers_visudo_path }} -cf %s"
-  when: system_sudoers_nopasswd
-  become: true
+    validate: "{{ sudoers_visudo_path }} -cf %s"
+  when: sudoers_nopasswd
 
 - name: Sudoers | Remove passwordless sudo when disabled
   ansible.builtin.file:
     path: /etc/sudoers.d/dotfiles-nopasswd
     state: absent
-  when: not system_sudoers_nopasswd
-  become: true
+  when: not sudoers_nopasswd

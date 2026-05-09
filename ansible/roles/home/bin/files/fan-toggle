@@ -45,9 +45,9 @@ def call_service(url, token, domain, service, entity_id):
 def main():
     config = load_config()
 
-    url = config["home_assistant_base_url"]
-    token = config["home_assistant_token"]
-    entity_id = config["home_assistant_entity_id_fan"]
+    url = config["assistant_base_url"]
+    token = config["assistant_token"]
+    entity_id = config["assistant_entity_id_fan"]
 
     state = get_state(url, token, entity_id)
 

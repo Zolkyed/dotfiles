@@ -1,5 +1,5 @@
 ---
-- name: Restart systemd-resolved
+- name: Networking | Restart systemd-resolved
   ansible.builtin.systemd:
     name: systemd-resolved
     state: restarted

@@ -5,19 +5,19 @@
 - name: Firewall | Set default incoming policy
   community.general.ufw:
     direction: incoming
-    policy: "{{ system_firewall_default_incoming }}"
+    policy: "{{ firewall_default_incoming }}"
 
 - name: Firewall | Set default outgoing policy
   community.general.ufw:
     direction: outgoing
-    policy: "{{ system_firewall_default_outgoing }}"
+    policy: "{{ firewall_default_outgoing }}"
 
 - name: Firewall | Allow configured ports
   community.general.ufw:
     rule: allow
     port: "{{ item }}"
     proto: tcp
-  loop: "{{ system_firewall_allow_ports }}"
+  loop: "{{ firewall_allow_ports }}"
 
 - name: Firewall | Enable and start ufw
   community.general.ufw:

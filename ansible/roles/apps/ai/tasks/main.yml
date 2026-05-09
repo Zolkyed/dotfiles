@@ -10,5 +10,5 @@
   loop: "{{ ai_npm_packages }}"
   become: true
   become_user: "{{ user_name }}"
-  changed_when: "'added' in _ai_npm_result.stdout"
   register: _ai_npm_result
+  changed_when: "'added' in _ai_npm_result.stdout"

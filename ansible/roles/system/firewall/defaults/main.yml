@@ -1,9 +1,9 @@
 ---
-system_firewall_packages:
+firewall_packages:
   - ufw
 
-system_firewall_allow_ports:
+firewall_allow_ports:
   - "{{ sshd_port }}"
 
-system_firewall_default_incoming: deny
-system_firewall_default_outgoing: allow
+firewall_default_incoming: deny
+firewall_default_outgoing: allow

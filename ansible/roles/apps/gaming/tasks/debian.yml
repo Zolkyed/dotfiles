@@ -19,6 +19,9 @@
       notify: Gaming | Update apt cache
       when: "'i386' not in gaming_debian_foreign_architectures.stdout_lines"
 
+- name: Gaming | Flush repository handlers
+  ansible.builtin.meta: flush_handlers
+
 - name: Gaming | Install packages
   ansible.builtin.apt:
     name: "{{ gaming_packages }}"

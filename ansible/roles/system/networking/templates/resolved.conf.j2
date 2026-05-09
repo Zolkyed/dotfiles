@@ -1,7 +1,7 @@
 # systemd-resolved configuration managed by Ansible
 [Resolve]
-DNS={{ system_dns_servers | join(' ') }}
-FallbackDNS={{ system_dns_fallback_servers | join(' ') }}
-DNSSEC={{ system_dns_dnssec }}
-DNSOverTLS={{ system_dns_dns_over_tls }}
+DNS={{ networking_dns_servers | join(' ') }}
+FallbackDNS={{ networking_dns_fallback_servers | join(' ') }}
+DNSSEC={{ networking_dns_dnssec }}
+DNSOverTLS={{ networking_dns_over_tls }}
 Cache=yes

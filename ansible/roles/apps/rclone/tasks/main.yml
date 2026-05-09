@@ -2,7 +2,7 @@
 - name: "Rclone | Run {{ ansible_facts.os_family }} tasks"
   ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
 
-- name: Ensure rclone config directory exists
+- name: Rclone | Ensure config directory exists
   ansible.builtin.file:
     path: "{{ user_home }}/.config/rclone"
     state: directory
@@ -10,7 +10,7 @@
     group: "{{ user_name }}"
     mode: "0700"
 
-- name: Deploy rclone config
+- name: Rclone | Deploy config
   ansible.builtin.template:
     src: rclone.conf.j2
     dest: "{{ rclone_conf_dest }}"

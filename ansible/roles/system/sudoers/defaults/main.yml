@@ -1,4 +1,4 @@
 ---
-system_sudoers_nopasswd: true
-system_sudoers_user: "{{ user_name }}"
-system_sudoers_visudo_path: /usr/sbin/visudo
+sudoers_nopasswd: true
+sudoers_user: "{{ user_name }}"
+sudoers_visudo_path: /usr/sbin/visudo

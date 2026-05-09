@@ -7,11 +7,9 @@
     name: "{{ user_name }}"
     groups: "{{ docker_group }}"
     append: true
-  become: true
 
 - name: Docker | Enable and start service
   ansible.builtin.systemd:
     name: docker
     enabled: true
     state: started
-  become: true

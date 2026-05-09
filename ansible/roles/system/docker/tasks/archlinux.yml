@@ -3,4 +3,4 @@
   community.general.pacman:
     name: "{{ docker_engine_packages + docker_plugin_packages }}"
     state: present
-  notify: Restart docker
+  notify: Docker | Restart docker

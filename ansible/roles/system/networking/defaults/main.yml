@@ -1,8 +1,8 @@
 ---
-system_dns_servers:
+networking_dns_servers:
   - "1.1.1.1"
   - "9.9.9.9"
-system_dns_fallback_servers:
+networking_dns_fallback_servers:
   - "8.8.8.8"
-system_dns_dnssec: "allow-downgrade"
-system_dns_dns_over_tls: "opportunistic"
+networking_dns_dnssec: "allow-downgrade"
+networking_dns_over_tls: "opportunistic"

@@ -2,9 +2,7 @@
 - name: Gaming | Update apt cache
   ansible.builtin.apt:
     update_cache: true
-  become: true
 
 - name: Gaming | Update pacman cache
   community.general.pacman:
     update_cache: true
-  become: true

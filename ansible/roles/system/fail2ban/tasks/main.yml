@@ -9,7 +9,7 @@
     owner: root
     group: root
     mode: "0644"
-  notify: Restart fail2ban
+  notify: Fail2ban | Restart fail2ban
 
 - name: Fail2ban | Enable and start service
   ansible.builtin.systemd:
