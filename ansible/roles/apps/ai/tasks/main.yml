@@ -2,7 +2,6 @@
 - name: AI | Locate npm from nvm
   ansible.builtin.shell:
     cmd: |
-      set -euo pipefail
       source "{{ user_home }}/.nvm/nvm.sh"
       command -v npm
     executable: /bin/bash
