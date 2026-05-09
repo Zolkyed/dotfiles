@@ -1,0 +1,5 @@
+---
+apps_dev_packages: []
+apps_dev_install_nvm: true
+apps_dev_nvm_version: "0.40.3"
+apps_dev_install_rust: true

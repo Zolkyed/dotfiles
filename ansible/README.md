@@ -1,18 +1,21 @@
 # Ansible
 
-Full machine provisioning for Debian and Arch Linux — 27 roles, one playbook.
+Full machine provisioning for Debian and Arch Linux — 29 roles, one playbook.
 
 ## Usage
 
 ```bash
 # From repo root — bootstrap everything from scratch
-bash scripts/run_once_install-ansible.sh
+just bootstrap
 
 # From repo root with just (after just setup-dev)
 just run desktop                  # remote (SSH)
 just run-local desktop            # local (no SSH)
 just check desktop                # dry-run
-just tags desktop                 # run specific tags
+just check-local desktop          # dry-run (local)
+just tags desktop tags=flatpak    # run specific tags
+just tags-local desktop tags=flatpak
+just rebuild desktop              # run playbook + apply chezmoi
 ```
 
 Or run ansible-playbook directly:
@@ -82,23 +85,30 @@ Konsave day-to-day commands are installed by the `home/bin` role. The public
 commands are symlinks to one `konsavectl` shell script. Per-host KDE keybind
 files are installed with `konsavectl` and applied after `konsave-import`.
 
+### apps/
+
+| Role | Purpose |
+|---|---|
+| `ai` | opencode CLI assistant |
+| `browser` | Managed browser extension policy |
+| `dev` | Dev tools, nvm, rustup |
+| `flatpak` | Flatpak, Discover backend, Flathub remote, and app installs |
+| `gaming` | Steam, Lutris, multilib/i386 |
+| `hayase` | Hayase anime sync (.deb or AppImage) |
+| `konsave` | Install konsave via pipx |
+| `rclone` | rclone config for Google Drive |
+| `vscode` | VS Code native packages |
+
 ### home/
 
 | Role | Purpose |
 |---|---|
 | `user` | User account, shell, groups |
 | `packages` | Core, utility, media, office, system, fun packages |
-| `hayase` | Hayase anime sync (.deb or AppImage) |
-| `flatpak` | Flathub remote + shared, distro-specific, and gaming apps |
-| `rclone` | rclone config for Google Drive |
-| `konsave` | Install konsave via pipx |
 | `dotfiles` | chezmoi install + `apply --force` |
-| `browser` | Managed browser extension policy |
 | `ssh_keys` | Deploy SSH keys from SOPS vault |
-| `dev` | Dev tools, nvm, rustup |
-| `ai` | opencode CLI assistant |
 | `bin` | Custom scripts + homectl Home Assistant config |
-| `gaming` | Steam, Lutris, multilib/i386 |
+| `xdg` | Default browser, editor, media player, and MIME handlers |
 
 ## Supported distributions
 

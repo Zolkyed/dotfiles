@@ -76,7 +76,7 @@ home_fun_packages:
   - figlet
   - lolcat
 
-home_gaming_packages:
+apps_gaming_packages:
   - steam
   - lutris
   - gamemode
@@ -88,9 +88,12 @@ home_gaming_packages:
   - winetricks
   - retroarch
 
-home_distro_flatpaks: []
+apps_distro_flatpaks: []
 
-home_dev_packages:
+apps_flatpak_discover_backend_packages:
+  - plasma-discover-backend-flatpak
+
+apps_dev_packages:
   - git
   - build-essential
   - pkg-config

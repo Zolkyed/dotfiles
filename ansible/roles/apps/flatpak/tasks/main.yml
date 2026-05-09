@@ -1,0 +1,44 @@
+---
+- name: Install flatpak
+  ansible.builtin.package:
+    name: flatpak
+    state: present
+
+- name: Check if Plasma is installed before installing Discover backend
+  ansible.builtin.command:
+    cmd: which plasmashell
+  register: apps_flatpak_plasmashell_check
+  changed_when: false
+  failed_when: false
+  when:
+    - apps_flatpak_discover_backend_packages | length > 0
+
+- name: Install Discover flatpak backend
+  ansible.builtin.package:
+    name: "{{ apps_flatpak_discover_backend_packages }}"
+    state: present
+  when:
+    - apps_flatpak_discover_backend_packages | length > 0
+    - apps_flatpak_plasmashell_check.rc == 0
+
+- name: Add flatpak remotes
+  community.general.flatpak_remote:
+    name: "{{ item.name }}"
+    flatpakrepo_url: "{{ item.url }}"
+    state: present
+  loop: "{{ apps_flatpak_remotes }}"
+
+- name: Install flatpak apps
+  community.general.flatpak:
+    name: "{{ apps_flatpak_apps }}"
+    state: present
+    remote: flathub
+  vars:
+    apps_flatpak_apps: >-
+      {{
+        apps_shared_flatpaks +
+        apps_distro_flatpaks +
+        (gaming_enabled | ternary(apps_gaming_flatpaks, []))
+      }}
+  when:
+    - apps_flatpak_apps | length > 0

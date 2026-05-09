@@ -1,3 +1,0 @@
----
-home_rclone_remote: gdrive
-home_rclone_conf_dest: "{{ user_home }}/.config/rclone/rclone.conf"

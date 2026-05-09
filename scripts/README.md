@@ -7,6 +7,8 @@ then runs the Ansible playbook:
 
 ```bash
 bash scripts/run_once_install-ansible.sh desktop
+# or use just:
+just bootstrap desktop
 ```
 
 What it does:
@@ -38,6 +40,9 @@ Encrypt or decrypt all SOPS vault files in the repo:
 ```bash
 bash scripts/vault.sh encrypt
 bash scripts/vault.sh decrypt
+# or use just:
+just vault-edit
+just vault-view
 ```
 
 Operates on:

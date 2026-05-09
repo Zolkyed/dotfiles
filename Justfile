@@ -43,7 +43,7 @@ lint:
     just lint-shell
 
 lint-ansible:
-    cd {{ANSIBLE_DIR}} && if [[ -x ../.venv/bin/ansible-lint ]]; then ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ../.venv/bin/ansible-lint; else ansible-lint; fi
+    cd {{ANSIBLE_DIR}} && export ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote && if [[ -x ../.venv/bin/ansible-lint ]]; then ../.venv/bin/ansible-lint {{PLAYBOOK}}; else ansible-lint {{PLAYBOOK}}; fi
 
 lint-yaml:
     if [[ -x .venv/bin/yamllint ]]; then .venv/bin/yamllint -c .yamllint {{ANSIBLE_DIR}} .github; else yamllint -c .yamllint {{ANSIBLE_DIR}} .github; fi

@@ -1,0 +1,28 @@
+---
+home_xdg_browser_desktop: brave-browser.desktop
+home_xdg_editor_desktop: code.desktop
+home_xdg_media_player_desktop: mpv.desktop
+
+home_xdg_browser_mime_types:
+  - text/html
+  - x-scheme-handler/http
+  - x-scheme-handler/https
+
+home_xdg_editor_mime_types:
+  - text/plain
+  - application/json
+  - application/x-shellscript
+  - text/markdown
+  - text/x-python
+
+home_xdg_media_mime_types:
+  - audio/aac
+  - audio/flac
+  - audio/mpeg
+  - audio/ogg
+  - audio/wav
+  - video/mp4
+  - video/mpeg
+  - video/ogg
+  - video/webm
+  - video/x-matroska

@@ -1,0 +1,52 @@
+---
+- name: XDG | Ensure user config directory exists
+  ansible.builtin.file:
+    path: "{{ user_home }}/.config"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0755"
+
+- name: XDG | Set default browser application
+  ansible.builtin.command:
+    argv:
+      - xdg-settings
+      - set
+      - default-web-browser
+      - "{{ home_xdg_browser_desktop }}"
+  become: false
+  changed_when: false
+  failed_when: false
+
+- name: XDG | Set default browser mime types
+  ansible.builtin.command:
+    argv:
+      - xdg-mime
+      - default
+      - "{{ home_xdg_browser_desktop }}"
+      - "{{ item }}"
+  become: false
+  changed_when: false
+  loop: "{{ home_xdg_browser_mime_types }}"
+
+- name: XDG | Set default editor mime types
+  ansible.builtin.command:
+    argv:
+      - xdg-mime
+      - default
+      - "{{ home_xdg_editor_desktop }}"
+      - "{{ item }}"
+  become: false
+  changed_when: false
+  loop: "{{ home_xdg_editor_mime_types }}"
+
+- name: XDG | Set default media player mime types
+  ansible.builtin.command:
+    argv:
+      - xdg-mime
+      - default
+      - "{{ home_xdg_media_player_desktop }}"
+      - "{{ item }}"
+  become: false
+  changed_when: false
+  loop: "{{ home_xdg_media_mime_types }}"

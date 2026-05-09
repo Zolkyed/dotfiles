@@ -29,12 +29,11 @@ gaming_enabled: false
 # Home
 # ---------------------------------------------------------------------------
 # Flatpak
-home_shared_flatpaks:
+apps_shared_flatpaks:
   - com.discordapp.Discord
-  - com.visualstudio.code
   - com.spotify.Client
 
-home_gaming_flatpaks:
+apps_gaming_flatpaks:
   - com.heroicgameslauncher.hgl
   - net.pcsx2.PCSX2
   - net.davidotek.pupgui2

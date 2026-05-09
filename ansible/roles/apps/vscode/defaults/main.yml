@@ -1,0 +1,5 @@
+---
+apps_vscode_apt_keyring_dir: /usr/share/keyrings
+apps_vscode_apt_keyring_path: "{{ apps_vscode_apt_keyring_dir }}/microsoft.asc"
+apps_vscode_apt_package: code
+apps_vscode_aur_package: visual-studio-code-bin

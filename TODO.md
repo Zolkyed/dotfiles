@@ -1,4 +1,0 @@
-- [ ] Store sudoers password in vault
-- [ ] Make sure chezmoi is managing dotfiles after ansible ran once
-- [ ] Make sure hayase autoupdate and executable for appimage
-- [ ] Check celestial game package

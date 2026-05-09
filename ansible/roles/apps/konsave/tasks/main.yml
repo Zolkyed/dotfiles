@@ -1,0 +1,14 @@
+---
+- name: Check if konsave is already installed via pipx
+  ansible.builtin.stat:
+    path: "{{ user_home }}/.local/bin/konsave"
+  register: apps_konsave_bin
+
+- name: Install konsave via pipx
+  ansible.builtin.command:
+    argv: [pipx, install, konsave]
+  become: true
+  become_user: "{{ user_name }}"
+  when: not apps_konsave_bin.stat.exists
+  register: apps_konsave_install
+  changed_when: "'installed' in apps_konsave_install.stdout"

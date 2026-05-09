@@ -19,13 +19,15 @@ git clone https://github.com/Zolkyed/dotfiles ~/dotfiles
 cd ~/dotfiles
 
 # Bootstrap: installs Ansible, sops, age, collections, then runs the playbook
-bash scripts/run_once_install-ansible.sh
+just bootstrap
 ```
 
 ```bash
 # Local CI/lint tooling
 just setup-dev
 just ci
+just lint
+just syntax
 ```
 
 ```bash
@@ -38,6 +40,26 @@ just run-local desktop
 
 # Dry-run
 just check desktop
+just check-local desktop
+
+# Run specific tags
+just tags desktop tags=flatpak
+just tags-local desktop tags=flatpak
+
+# Rebuild (run playbook + apply chezmoi)
+just rebuild desktop
+```
+
+```bash
+# Vault management
+just vault-edit
+just vault-view
+```
+
+```bash
+# Chezmoi
+just apply
+just diff
 ```
 
 ## Repository structure
@@ -70,35 +92,38 @@ just check desktop
 │   │   └── setup.yml              # single playbook, tag-controlled
 │   └── roles/
 │       ├── system/
-│       │   ├── sysctl/            # hostname, kernel parameters
-│       │   ├── sudoers/           # sudoers configuration
 │       │   ├── aur/               # paru AUR helper install
-│       │   ├── fonts/             # distro fonts + Nerd Fonts
 │       │   ├── docker/            # Docker CE + compose/buildx
-│       │   ├── virtualization/    # KVM/QEMU or VirtualBox
-│       │   ├── networking/        # NetworkManager + systemd-resolved
-│       │   ├── vpn/               # WireGuard + OpenVPN
-│       │   ├── sshd/              # sshd hardening
-│       │   ├── firewall/          # ufw rules
 │       │   ├── fail2ban/          # fail2ban with sshd jail
+│       │   ├── firewall/          # ufw rules
+│       │   ├── fonts/             # distro fonts + Nerd Fonts
+│       │   ├── networking/        # NetworkManager + systemd-resolved
 │       │   ├── splashboot/        # Plymouth splash
+│       │   ├── sshd/              # sshd hardening
+│       │   ├── sudoers/           # sudoers configuration
+│       │   ├── sysctl/            # hostname, kernel parameters
+│       │   ├── virtualization/    # KVM/QEMU or VirtualBox
+│       │   └── vpn/               # WireGuard + OpenVPN
 │       ├── desktop/
 │       │   ├── hyprland/          # Hyprland packages + config
-│       │   ├── niri/              # Niri packages + config
+│       │   └── niri/              # Niri packages + config
+│       ├── apps/
+│       │   ├── ai/                # opencode CLI assistant
+│       │   ├── browser/           # browser install + managed policy
+│       │   ├── dev/               # dev tools, nvm, rustup
+│       │   ├── flatpak/           # Flathub remotes + user apps
+│       │   ├── gaming/            # Steam, Lutris, multilib, AUR packages
+│       │   ├── hayase/            # Hayase anime sync (deb or AppImage)
+│       │   ├── konsave/           # install konsave
+│       │   ├── rclone/            # rclone config for Google Drive
+│       │   └── vscode/            # VS Code native packages
 │       └── home/
 │           ├── user/              # user account, groups, zsh shell
 │           ├── packages/          # core, utility, media, office, system, fun
-│           ├── rclone/            # rclone config for Google Drive
-│           ├── konsave/           # install konsave
-│           ├── hayase/            # Hayase anime sync (deb or AppImage)
-│           ├── flatpak/           # Flathub remotes + user apps
 │           ├── dotfiles/          # chezmoi install + apply
-│           ├── browser/           # browser install + managed policy
 │           ├── ssh_keys/          # deploy keys from vault
-│           ├── dev/               # dev tools, nvm, rustup
-│           ├── ai/                # opencode CLI assistant
 │           ├── bin/               # custom scripts + homectl config
-│           └── gaming/            # Steam, Lutris, multilib, AUR packages
+│           └── xdg/               # default apps and MIME handlers
 ├── chezmoi/                       # user dotfiles (applied by chezmoi)
 │   ├── dot_gitconfig              # → ~/.gitconfig
 │   ├── dot_gitconfig-github       # → ~/.gitconfig-github
@@ -123,7 +148,7 @@ just check desktop
 ├── .yamllint                      # yamllint config
 ├── .editorconfig
 ├── Justfile                       # just task runner
-└── requirements.txt               # pip dependencies (ansible, sops, ansible-lint, etc.)
+└── requirements.txt               # pip dependencies (ansible-lint, yamllint, shellcheck-py)
 ```
 
 ## Role execution order
@@ -131,11 +156,11 @@ just check desktop
 The playbook applies roles sequentially with tag-based gating:
 
 ```
-sysctl → user → sudoers → aur → packages → hayase
+sysctl → user → sudoers → aur → vscode → packages → hayase
 → fonts → flatpak → docker → virtualization
-→ dotfiles → browser → ssh_keys → dev → bin → networking → vpn
+→ dotfiles → browser → ssh_keys → dev → ai → bin → xdg → networking → vpn
 → sshd → firewall → fail2ban → splashboot → rclone → konsave
-→ ai → gaming → hyprland → niri
+→ gaming → hyprland → niri
 ```
 
 All roles are gated behind feature flags in `group_vars/all.yml`. Host-specific
@@ -159,11 +184,11 @@ overrides go in `host_vars/<host>/vars.yml`.
 
 Konsave profile tooling is split between provisioning and day-to-day commands:
 
-- **home/konsave** — installs konsave via pipx for KDE profile management
+- **apps/konsave** — installs konsave via pipx for KDE profile management
 - **home/bin** — installs one `konsavectl` script and aliases it as `konsave-list`, `konsave-import`, `konsave-export`, and `konsave-remove`
 
-Konsave installation is handled by `home/konsave`.
-Google Drive access stays separate in `home/rclone`.
+Konsave installation is handled by `apps/konsave`.
+Google Drive access stays separate in `apps/rclone`.
 KDE keybind overrides are installed by `home/bin` and applied automatically
 after `konsave-import`.
 
@@ -198,7 +223,7 @@ vaults:
 
 ```bash
 install -Dm600 /path/to/keys.txt ~/.config/sops/age/keys.txt
-bash scripts/run_once_install-ansible.sh desktop
+just bootstrap desktop
 ```
 
 ## Design philosophy

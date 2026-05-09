@@ -1,0 +1,81 @@
+---
+- name: Browser | Configure Debian apt repository
+  when: ansible_facts["os_family"] == "Debian"
+  block:
+    - name: Browser | Install Debian repository dependencies
+      ansible.builtin.package:
+        name: curl
+        state: present
+
+    - name: Browser | Ensure Debian keyring directory exists
+      ansible.builtin.file:
+        path: "{{ apps_browser_debian_keyring_dir }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Browser | Ensure Debian sources directory exists
+      ansible.builtin.file:
+        path: "{{ apps_browser_debian_sources_dir }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Browser | Download Brave apt keyring
+      ansible.builtin.get_url:
+        url: "{{ apps_browser_debian_keyring_url }}"
+        dest: "{{ apps_browser_debian_keyring_path }}"
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Browser | Download Brave apt sources
+      ansible.builtin.get_url:
+        url: "{{ apps_browser_debian_sources_url }}"
+        dest: "{{ apps_browser_debian_sources_path }}"
+        owner: root
+        group: root
+        mode: "0644"
+      notify: Browser | Update apt cache
+
+- name: Browser | Flush repository handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: Browser | Install Debian package
+  ansible.builtin.apt:
+    name: "{{ apps_browser_debian_package }}"
+    state: present
+  when: ansible_facts["os_family"] == "Debian"
+
+- name: Browser | Install Arch package
+  ansible.builtin.command:
+    argv:
+      - paru
+      - -S
+      - --needed
+      - --noconfirm
+      - --skipreview
+      - "{{ apps_browser_arch_package }}"
+  become: true
+  become_user: "{{ user_name }}"
+  when: ansible_facts["os_family"] == "Archlinux"
+  register: apps_browser_arch_install
+  changed_when: "'installing' in apps_browser_arch_install.stdout"
+
+- name: Browser | Ensure managed policy directory exists
+  ansible.builtin.file:
+    path: "{{ apps_browser_policy_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Browser | Deploy managed policy
+  ansible.builtin.template:
+    src: browser-policy.json.j2
+    dest: "{{ apps_browser_policy_dir }}/{{ apps_browser_policy_file }}"
+    owner: root
+    group: root
+    mode: "0644"

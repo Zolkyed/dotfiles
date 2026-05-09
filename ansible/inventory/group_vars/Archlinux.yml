@@ -70,7 +70,7 @@ home_fun_packages:
   - figlet
   - lolcat
 
-home_gaming_packages:
+apps_gaming_packages:
   - steam
   - lutris
   - gamemode
@@ -81,9 +81,12 @@ home_gaming_packages:
   - protontricks
   - retroarch
 
-home_distro_flatpaks: []
+apps_distro_flatpaks: []
 
-home_dev_packages:
+apps_flatpak_discover_backend_packages:
+  - discover
+
+apps_dev_packages:
   - git
   - pkgconf
   - python
@@ -110,8 +113,7 @@ system_aur_build_packages:
   - base-devel
   - rust
 
-system_aur_packages:
-  - brave-bin
+system_aur_packages: []
 
 # Docker
 system_docker_engine_packages:

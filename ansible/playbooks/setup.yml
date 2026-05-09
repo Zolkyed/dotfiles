@@ -34,6 +34,7 @@
         file: "{{ playbook_dir }}/../inventory/group_vars/{{ ansible_facts['os_family'] }}.yml"
 
   roles:
+    # --- System foundation ---
     - role: system/sysctl
       tags: sysctl
     - role: home/user
@@ -43,32 +44,53 @@
     - role: system/aur
       tags: aur
       when: ansible_facts["os_family"] == "Archlinux"
+
+    # --- Packages (core installs first) ---
     - role: home/packages
       tags: packages
-    - role: home/hayase
-      tags: hayase
     - role: system/fonts
       tags: fonts
-    - role: home/flatpak
+    - role: apps/flatpak
       tags: flatpak
+
+    # --- App installs ---
+    - role: apps/vscode
+      tags: vscode
+    - role: apps/hayase
+      tags: hayase
+    - role: apps/browser
+      tags: browser
+    - role: apps/dev
+      tags: dev
+    - role: apps/ai
+      tags: ai
+    - role: apps/gaming
+      tags: gaming
+      when: gaming_enabled
+    - role: apps/rclone
+      tags: rclone
+    - role: apps/konsave
+      tags: konsave
+
+    # --- Containers / VMs ---
     - role: system/docker
       tags: docker
       when: docker_enabled
     - role: system/virtualization
       tags: virtualization
       when: virtualization_enabled
-    - role: home/dotfiles
-      tags: dotfiles
-    - role: home/browser
-      tags: browser
+
+    # --- Home / dotfiles (after all tools are installed) ---
     - role: home/ssh_keys
       tags: ssh_keys
-    - role: home/dev
-      tags: dev
-    - role: home/ai
-      tags: ai
     - role: home/bin
       tags: bin
+    - role: home/xdg
+      tags: xdg
+    - role: home/dotfiles
+      tags: dotfiles
+
+    # --- Network / security hardening ---
     - role: system/networking
       tags: networking
     - role: system/vpn
@@ -82,16 +104,11 @@
     - role: system/fail2ban
       tags: fail2ban
       when: fail2ban_enabled
+
+    # --- Desktop (last: depends on everything above) ---
     - role: system/splashboot
       tags: splashboot
       when: splashboot_enabled
-    - role: home/rclone
-      tags: rclone
-    - role: home/konsave
-      tags: konsave
-    - role: home/gaming
-      tags: gaming
-      when: gaming_enabled
     - role: desktop/hyprland
       tags: hyprland
       when: hyprland_enabled

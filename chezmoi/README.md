@@ -4,6 +4,9 @@ User dotfiles managed by [chezmoi](https://www.chezmoi.io/). Applied automatical
 
 ```bash
 chezmoi apply
+# or use just:
+just apply
+just diff
 ```
 
 ## Source → target mapping
@@ -23,7 +26,7 @@ Chezmoi strips the `dot_` prefix on apply:
 | `dot_config/kitty/` | `~/.config/kitty/` |
 | `dot_config/mpv/` | `~/.config/mpv/` |
 | `dot_config/niri/` | `~/.config/niri/` |
-| `dot_config/Code/User/setting.json` | `~/.config/Code/User/setting.json` |
+| `dot_config/Code/User/settings.json` | `~/.config/Code/User/settings.json` |
 | `dot_config/Code/User/keybindings.json` | `~/.config/Code/User/keybindings.json` |
 
 ## Git identity
