@@ -18,7 +18,6 @@ home_core_packages:
   - unzip
   - rsync
   - kitty
-  - fastfetch
   - software-properties-common
   - apt-transport-https
   - ca-certificates
@@ -58,6 +57,7 @@ home_fun_packages:
   - cmatrix
   - figlet
   - lolcat
+  - fastfetch
 
 # ---------------------------------------------------------------------------
 # Apps

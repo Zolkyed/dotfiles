@@ -16,7 +16,6 @@ home_core_packages:
   - unzip
   - rsync
   - kitty
-  - fastfetch
   - man-db
   - man-pages
 
@@ -52,6 +51,7 @@ home_fun_packages:
   - cmatrix
   - figlet
   - lolcat
+  - fastfetch
 
 # ---------------------------------------------------------------------------
 # Apps
