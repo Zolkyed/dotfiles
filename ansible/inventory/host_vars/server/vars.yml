@@ -1,8 +1,18 @@
 ---
 # Feature flag overrides — disable all desktop/UI/gaming features
+plasma_enabled: false
 hyprland_enabled: false
 niri_enabled: false
+browser_enabled: false
+flatpak_enabled: false
+hayase_enabled: false
+media_enabled: false
+office_enabled: false
+system_tools_enabled: false
+vscode_enabled: false
 gaming_enabled: false
+konsave_enabled: false
+xdg_enabled: false
 splashboot_enabled: false
 vpn_enabled: false
 

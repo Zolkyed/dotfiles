@@ -34,7 +34,11 @@
 
     - name: AUR | Install paru package
       ansible.builtin.command:
-        argv: "{{ ['pacman', '-U', '--noconfirm'] + (system_paru_built_packages.files | map(attribute='path') | list) }}"
+        argv: >-
+          {{
+            ['pacman', '-U', '--noconfirm'] +
+            (system_paru_built_packages.files | map(attribute='path') | list)
+          }}
       changed_when: true
 
   always:

@@ -15,7 +15,6 @@ home_core_packages:
   - zsh
   - unzip
   - rsync
-  - mpv
   - kitty
   - fastfetch
   - man-db
@@ -48,27 +47,31 @@ home_utility_packages:
   - trash-cli
   - neovim
 
-home_media_packages:
-  - ffmpeg
-  - yt-dlp
-  - gimp
-  - pavucontrol
-  - obs-studio
-
-home_office_packages:
-  - libreoffice-fresh
-  - thunderbird
-
-home_system_packages:
-  - gparted
-  - qbittorrent
-  - timeshift
-
 home_fun_packages:
   - cowsay
   - cmatrix
   - figlet
   - lolcat
+
+# ---------------------------------------------------------------------------
+# Apps
+# ---------------------------------------------------------------------------
+apps_media_packages:
+  - mpv
+  - ffmpeg
+  - yt-dlp
+  - gimp
+  - pavucontrol
+  - obs-studio
+  - qbittorrent
+
+apps_office_packages:
+  - libreoffice-fresh
+  - thunderbird
+
+apps_system_tools_packages:
+  - gparted
+  - timeshift
 
 apps_gaming_packages:
   - steam
@@ -81,11 +84,11 @@ apps_gaming_packages:
   - protontricks
   - retroarch
 
+# Flatpak
 apps_distro_flatpaks: []
+apps_flatpak_discover_backend_packages: []
 
-apps_flatpak_discover_backend_packages:
-  - discover
-
+# Development
 apps_dev_packages:
   - git
   - pkgconf
@@ -103,6 +106,17 @@ apps_dev_packages:
   - gcc
   - gdb
   - cmake
+
+# ---------------------------------------------------------------------------
+# Desktop
+# ---------------------------------------------------------------------------
+desktop_plasma_packages:
+  - plasma-desktop
+  - discover
+  - dolphin
+  - konsole
+  - kcalc
+  - spectacle
 
 # ---------------------------------------------------------------------------
 # System

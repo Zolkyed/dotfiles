@@ -52,25 +52,11 @@
     state: present
   when: ansible_facts["os_family"] == "Debian"
 
-- name: VS Code | Check Arch package
-  ansible.builtin.command:
-    cmd: "pacman -Q {{ apps_vscode_aur_package }}"
-  register: apps_vscode_arch_package_check
-  changed_when: false
-  failed_when: false
-  when: ansible_facts["os_family"] == "Archlinux"
-
-- name: VS Code | Install Arch package from AUR
-  ansible.builtin.command:
-    argv:
-      - paru
-      - -S
-      - --needed
-      - --noconfirm
-      - --skipreview
+- name: VS Code | Install Arch package from AUR  # noqa var-naming[no-role-prefix]
+  ansible.builtin.include_role:
+    name: system/aur
+    tasks_from: install_packages
+  vars:
+    system_aur_install_packages:
       - "{{ apps_vscode_aur_package }}"
-  become: true
-  become_user: "{{ user_name }}"
-  when:
-    - ansible_facts["os_family"] == "Archlinux"
-    - apps_vscode_arch_package_check.rc != 0
+  when: ansible_facts["os_family"] == "Archlinux"

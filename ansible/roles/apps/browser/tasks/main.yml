@@ -49,20 +49,14 @@
     state: present
   when: ansible_facts["os_family"] == "Debian"
 
-- name: Browser | Install Arch package
-  ansible.builtin.command:
-    argv:
-      - paru
-      - -S
-      - --needed
-      - --noconfirm
-      - --skipreview
+- name: Browser | Install Arch package from AUR
+  ansible.builtin.include_role:
+    name: system/aur
+    tasks_from: install_packages
+  vars:
+    system_aur_install_packages:
       - "{{ apps_browser_arch_package }}"
-  become: true
-  become_user: "{{ user_name }}"
   when: ansible_facts["os_family"] == "Archlinux"
-  register: apps_browser_arch_install
-  changed_when: "'installing' in apps_browser_arch_install.stdout"
 
 - name: Browser | Ensure managed policy directory exists
   ansible.builtin.file:

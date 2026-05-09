@@ -19,11 +19,26 @@ firewall_enabled: true
 fail2ban_enabled: true
 
 # Desktop
+plasma_enabled: false
 hyprland_enabled: false
 niri_enabled: false
 
-# Home
+# Apps
+ai_enabled: true
+browser_enabled: true
+dev_enabled: true
+flatpak_enabled: true
+hayase_enabled: true
+media_enabled: true
+office_enabled: true
+rclone_enabled: true
+system_tools_enabled: true
+vscode_enabled: true
 gaming_enabled: false
+konsave_enabled: false
+
+# Home
+xdg_enabled: true
 
 # ---------------------------------------------------------------------------
 # Home

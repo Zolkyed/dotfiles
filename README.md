@@ -8,7 +8,7 @@ Full machine provisioning and user environment for Debian and Arch Linux.
 |---|---|---|
 | System | Ansible | Packages, services, drivers, users |
 | Dotfiles | Chezmoi | Shell, editor, app config |
-| Desktop | Ansible | Hyprland, Niri |
+| Desktop | Ansible | Plasma, Hyprland, Niri |
 | Secrets | SOPS + age | SSH keys, tokens, credentials |
 
 ## Quick start
@@ -105,6 +105,7 @@ just diff
 │       │   ├── virtualization/    # KVM/QEMU or VirtualBox
 │       │   └── vpn/               # WireGuard + OpenVPN
 │       ├── desktop/
+│       │   ├── plasma/            # Plasma desktop packages
 │       │   ├── hyprland/          # Hyprland packages + config
 │       │   └── niri/              # Niri packages + config
 │       ├── apps/
@@ -156,15 +157,15 @@ just diff
 The playbook applies roles sequentially with tag-based gating:
 
 ```
-sysctl → user → sudoers → aur → vscode → packages → hayase
-→ fonts → flatpak → docker → virtualization
-→ dotfiles → browser → ssh_keys → dev → ai → bin → xdg → networking → vpn
-→ sshd → firewall → fail2ban → splashboot → rclone → konsave
-→ gaming → hyprland → niri
+sysctl → user → sudoers → aur → packages → fonts → plasma → flatpak
+→ vscode → hayase → browser → dev → ai → gaming → rclone → konsave
+→ docker → virtualization
+→ ssh_keys → bin → xdg → dotfiles → networking → vpn
+→ sshd → firewall → fail2ban → splashboot → hyprland → niri
 ```
 
-All roles are gated behind feature flags in `group_vars/all.yml`. Host-specific
-overrides go in `host_vars/<host>/vars.yml`.
+Optional roles are gated behind feature flags in `group_vars/all.yml`.
+Host-specific overrides go in `host_vars/<host>/vars.yml`.
 
 ## Sources of truth
 
@@ -230,7 +231,7 @@ just bootstrap desktop
 
 - **Ansible** → how the system is built
 - **Chezmoi** → how the user environment looks
-- **Desktop roles** → Hyprland and Niri
+- **Desktop roles** → Plasma, Hyprland and Niri
 - **SOPS + age** → how secrets stay private
 - `all.yml` → one place for shared feature flags, Flatpaks, fonts, and user defaults
 - `Debian.yml` / `Archlinux.yml` → distro package and service names only

@@ -1,6 +1,6 @@
 # Ansible
 
-Full machine provisioning for Debian and Arch Linux — 29 roles, one playbook.
+Full machine provisioning for Debian and Arch Linux — 30 roles, one playbook.
 
 ## Usage
 
@@ -78,6 +78,7 @@ Hosts: `desktop`, `laptop`, `server`. Each has a `vars.yml` (overrides) and
 
 | Role | Purpose |
 |---|---|
+| `plasma` | Plasma desktop packages |
 | `hyprland` | Hyprland packages + config (monitors, keybinds, animations) |
 | `niri` | Niri packages + config (outputs, keybinds) |
 
@@ -104,7 +105,7 @@ files are installed with `konsavectl` and applied after `konsave-import`.
 | Role | Purpose |
 |---|---|
 | `user` | User account, shell, groups |
-| `packages` | Core, utility, media, office, system, fun packages |
+| `packages` | Core, utility, media, office, system, and fun packages |
 | `dotfiles` | chezmoi install + `apply --force` |
 | `ssh_keys` | Deploy SSH keys from SOPS vault |
 | `bin` | Custom scripts + homectl Home Assistant config |

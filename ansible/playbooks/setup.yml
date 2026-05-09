@@ -50,27 +50,38 @@
       tags: packages
     - role: system/fonts
       tags: fonts
+    - role: desktop/plasma
+      tags: plasma
+      when: plasma_enabled
     - role: apps/flatpak
       tags: flatpak
+      when: flatpak_enabled
 
     # --- App installs ---
     - role: apps/vscode
       tags: vscode
+      when: vscode_enabled
     - role: apps/hayase
       tags: hayase
+      when: hayase_enabled
     - role: apps/browser
       tags: browser
+      when: browser_enabled
     - role: apps/dev
       tags: dev
+      when: dev_enabled
     - role: apps/ai
       tags: ai
+      when: ai_enabled
     - role: apps/gaming
       tags: gaming
       when: gaming_enabled
     - role: apps/rclone
       tags: rclone
+      when: rclone_enabled
     - role: apps/konsave
       tags: konsave
+      when: konsave_enabled
 
     # --- Containers / VMs ---
     - role: system/docker
@@ -87,6 +98,7 @@
       tags: bin
     - role: home/xdg
       tags: xdg
+      when: xdg_enabled
     - role: home/dotfiles
       tags: dotfiles
 
