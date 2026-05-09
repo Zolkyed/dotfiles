@@ -1,5 +1,5 @@
 ---
-- name: "SSHD | Run {{ ansible_facts.os_family }} tasks"
+- name: "SSHD | Run tasks for {{ ansible_facts.os_family }}"
   ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
 
 - name: SSHD | Validate vaulted ssh host key pair when partially set

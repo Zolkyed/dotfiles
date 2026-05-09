@@ -10,7 +10,8 @@ exclude_paths:
   - inventory/host_vars/*/vault.yml
 
 skip_list:
-  - role-name          # roles/home/user etc. don't follow galaxy naming
-  - no-changed-when    # some command tasks intentionally always report changed
+  - role-name              # nested role paths (user/bin etc.) don't follow galaxy naming
+  - no-changed-when        # some command tasks intentionally always report changed
+  - var-naming[no-role-prefix]  # leaf-name prefix convention; linter misreads nested role paths as parent-dir prefix
 
 use_default_rules: true

@@ -1,5 +1,5 @@
 ---
-- name: "Virtualization | Run {{ ansible_facts.os_family }} tasks"
+- name: "Virtualization | Run tasks for {{ ansible_facts.os_family }}"
   ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
 
 - name: Enable and start libvirtd

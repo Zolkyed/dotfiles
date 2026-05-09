@@ -6,7 +6,7 @@
   changed_when: false
   failed_when: false
 
-- name: "Flatpak | Run {{ ansible_facts.os_family }} tasks"
+- name: "Flatpak | Run tasks for {{ ansible_facts.os_family }}"
   ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
 
 - name: Flatpak | Add remotes
