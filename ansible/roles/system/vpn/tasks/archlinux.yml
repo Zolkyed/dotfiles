@@ -1,0 +1,6 @@
+---
+- name: VPN | Install packages
+  community.general.pacman:
+    name: "{{ system_vpn_packages }}"
+    state: present
+  when: system_vpn_packages | length > 0

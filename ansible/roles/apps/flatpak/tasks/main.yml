@@ -1,8 +1,11 @@
 ---
-- name: Install flatpak
-  ansible.builtin.package:
-    name: flatpak
-    state: present
+- name: Flatpak | Run Debian tasks
+  ansible.builtin.include_tasks: debian.yml
+  when: ansible_facts["os_family"] | lower == "debian"
+
+- name: Flatpak | Run Arch Linux tasks
+  ansible.builtin.include_tasks: archlinux.yml
+  when: ansible_facts["os_family"] | lower == "archlinux"
 
 - name: Check if Plasma is installed before installing Discover backend
   ansible.builtin.command:
@@ -12,14 +15,6 @@
   failed_when: false
   when:
     - apps_flatpak_discover_backend_packages | length > 0
-
-- name: Install Discover flatpak backend
-  ansible.builtin.package:
-    name: "{{ apps_flatpak_discover_backend_packages }}"
-    state: present
-  when:
-    - apps_flatpak_discover_backend_packages | length > 0
-    - apps_flatpak_plasmashell_check.rc == 0
 
 - name: Add flatpak remotes
   community.general.flatpak_remote:

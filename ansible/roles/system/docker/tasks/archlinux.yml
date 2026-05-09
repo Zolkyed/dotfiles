@@ -1,0 +1,6 @@
+---
+- name: Docker | Install packages
+  community.general.pacman:
+    name: "{{ system_docker_engine_packages + system_docker_plugin_packages }}"
+    state: present
+  notify: Restart docker

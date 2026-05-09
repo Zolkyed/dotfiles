@@ -1,0 +1,5 @@
+---
+- name: User | Install zsh
+  ansible.builtin.apt:
+    name: zsh
+    state: present

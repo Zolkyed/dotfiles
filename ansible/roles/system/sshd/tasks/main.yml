@@ -1,8 +1,11 @@
 ---
-- name: Install openssh
-  ansible.builtin.package:
-    name: "{{ system_sshd_package }}"
-    state: present
+- name: SSHD | Run Debian tasks
+  ansible.builtin.include_tasks: debian.yml
+  when: ansible_facts["os_family"] | lower == "debian"
+
+- name: SSHD | Run Arch Linux tasks
+  ansible.builtin.include_tasks: archlinux.yml
+  when: ansible_facts["os_family"] | lower == "archlinux"
 
 - name: Validate vaulted ssh host key pair when partially set
   ansible.builtin.assert:

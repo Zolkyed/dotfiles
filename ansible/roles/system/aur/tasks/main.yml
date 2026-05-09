@@ -4,27 +4,16 @@
     update_cache: true
 
 - name: AUR | Install build packages
-  ansible.builtin.package:
+  community.general.pacman:
     name: "{{ system_aur_build_packages }}"
     state: present
-
-- name: AUR | Check if paru is installed
-  ansible.builtin.command:
-    cmd: which paru
-  register: system_paru_check
-  changed_when: false
-  failed_when: false
-
-- name: AUR | Build and install paru
-  ansible.builtin.include_tasks: install_helper.yml
-  when: system_paru_check.rc != 0
-
-- name: AUR | Set paru path fact
-  ansible.builtin.set_fact:
-    system_paru_path: "{{ system_paru_check.stdout | default('/usr/bin/paru') }}"
+  when: system_aur_build_packages | length > 0
 
 - name: AUR | Install packages
+  kewlfft.aur.aur:
+    name: "{{ system_aur_packages }}"
+    use: makepkg
+    state: present
+  become: true
+  become_user: "{{ user_name }}"
   when: system_aur_packages | length > 0
-  ansible.builtin.include_tasks: install_packages.yml
-  vars:
-    system_aur_install_packages: "{{ system_aur_packages }}"

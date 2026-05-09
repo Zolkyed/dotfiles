@@ -1,10 +1,11 @@
 ---
-- name: Splashboot | Install packages
-  ansible.builtin.package:
-    name: "{{ system_splashboot_packages }}"
-    state: present
-  notify: Splashboot | Update initramfs
-  when: system_splashboot_packages | length > 0
+- name: Splashboot | Run Debian tasks
+  ansible.builtin.include_tasks: debian.yml
+  when: ansible_facts["os_family"] | lower == "debian"
+
+- name: Splashboot | Run Arch Linux tasks
+  ansible.builtin.include_tasks: archlinux.yml
+  when: ansible_facts["os_family"] | lower == "archlinux"
 
 - name: Splashboot | Check available Plymouth themes
   ansible.builtin.command:

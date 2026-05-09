@@ -1,51 +1,11 @@
 ---
-- name: Gaming | Configure Debian i386 support
-  when:
-    - ansible_facts["os_family"] == "Debian"
-    - >
-      ('steam' in apps_gaming_packages) or
-      ('wine' in apps_gaming_packages) or
-      ('winetricks' in apps_gaming_packages)
-  block:
-    - name: Gaming | Check Debian foreign architectures
-      ansible.builtin.command:
-        cmd: dpkg --print-foreign-architectures
-      register: apps_gaming_debian_foreign_architectures
-      changed_when: false
+- name: Gaming | Run Debian tasks
+  ansible.builtin.include_tasks: debian.yml
+  when: ansible_facts["os_family"] | lower == "debian"
 
-    - name: Gaming | Enable Debian i386 architecture
-      ansible.builtin.command:
-        cmd: dpkg --add-architecture i386
-      changed_when: true
-      notify: Gaming | Update apt cache
-      when: "'i386' not in apps_gaming_debian_foreign_architectures.stdout_lines"
-
-- name: Gaming | Configure Arch multilib support
-  when:
-    - ansible_facts["os_family"] == "Archlinux"
-    - "'steam' in apps_gaming_packages"
-  block:
-    - name: Gaming | Check Arch pacman repositories
-      ansible.builtin.command:
-        cmd: pacman-conf --repo-list
-      register: apps_arch_pacman_repositories
-      changed_when: false
-
-    - name: Gaming | Enable Arch multilib repository for Steam
-      ansible.builtin.blockinfile:
-        path: /etc/pacman.conf
-        marker: "# {mark} ANSIBLE MANAGED MULTILIB"
-        block: |
-          [multilib]
-          Include = /etc/pacman.d/mirrorlist
-      register: apps_arch_multilib_repository
-      notify: Gaming | Update pacman cache
-      when: "'multilib' not in apps_arch_pacman_repositories.stdout_lines"
+- name: Gaming | Run Arch Linux tasks
+  ansible.builtin.include_tasks: archlinux.yml
+  when: ansible_facts["os_family"] | lower == "archlinux"
 
 - name: Gaming | Flush repository handlers
   ansible.builtin.meta: flush_handlers
-
-- name: Gaming | Install packages
-  ansible.builtin.package:
-    name: "{{ apps_gaming_packages }}"
-    state: present

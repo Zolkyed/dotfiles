@@ -1,0 +1,5 @@
+---
+- name: SSHD | Install package
+  ansible.builtin.apt:
+    name: "{{ system_sshd_package }}"
+    state: present

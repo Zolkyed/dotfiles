@@ -1,0 +1,50 @@
+---
+- name: VS Code | Configure Debian apt repository
+  block:
+    - name: VS Code | Install repository dependencies
+      ansible.builtin.apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - gpg
+          - wget
+        state: present
+
+    - name: VS Code | Create apt keyring directory
+      ansible.builtin.file:
+        path: "{{ apps_vscode_apt_keyring_dir }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: VS Code | Download Microsoft apt repository key
+      ansible.builtin.get_url:
+        url: https://packages.microsoft.com/keys/microsoft.asc
+        dest: "{{ apps_vscode_apt_keyring_path }}"
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: VS Code | Add Microsoft apt repository
+      ansible.builtin.deb822_repository:
+        name: vscode
+        types: deb
+        uris: https://packages.microsoft.com/repos/code
+        suites: stable
+        components: main
+        architectures:
+          - amd64
+          - arm64
+          - armhf
+        signed_by: "{{ apps_vscode_apt_keyring_path }}"
+        state: present
+      notify: VS Code | Update apt cache
+
+- name: VS Code | Flush apt repository handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: VS Code | Install Debian package
+  ansible.builtin.apt:
+    name: "{{ apps_vscode_apt_package }}"
+    state: present

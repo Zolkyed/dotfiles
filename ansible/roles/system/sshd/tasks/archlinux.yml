@@ -1,0 +1,5 @@
+---
+- name: SSHD | Install package
+  community.general.pacman:
+    name: "{{ system_sshd_package }}"
+    state: present

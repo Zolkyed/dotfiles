@@ -1,0 +1,14 @@
+---
+- name: Virtualization | Install KVM packages
+  ansible.builtin.apt:
+    name: "{{ system_virtualization_kvm_packages }}"
+    state: present
+  when:
+    - system_virtualization_backend == "kvm"
+    - system_virtualization_kvm_packages | length > 0
+
+- name: Virtualization | Install VirtualBox packages
+  ansible.builtin.apt:
+    name: "{{ system_virtualization_virtualbox_packages }}"
+    state: present
+  when: system_virtualization_backend == "virtualbox"

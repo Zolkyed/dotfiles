@@ -1,5 +1,8 @@
 ---
-- name: Install Hyprland and related packages
-  ansible.builtin.package:
-    name: "{{ desktop_hyprland_packages }}"
-    state: present
+- name: Hyprland | Run Debian tasks
+  ansible.builtin.include_tasks: debian.yml
+  when: ansible_facts["os_family"] | lower == "debian"
+
+- name: Hyprland | Run Arch Linux tasks
+  ansible.builtin.include_tasks: archlinux.yml
+  when: ansible_facts["os_family"] | lower == "archlinux"

@@ -1,0 +1,5 @@
+---
+- name: Niri | Install packages
+  community.general.pacman:
+    name: "{{ desktop_niri_packages }}"
+    state: present

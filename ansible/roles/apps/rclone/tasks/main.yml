@@ -1,8 +1,11 @@
 ---
-- name: Install rclone
-  ansible.builtin.package:
-    name: rclone
-    state: present
+- name: Rclone | Run Debian tasks
+  ansible.builtin.include_tasks: debian.yml
+  when: ansible_facts["os_family"] | lower == "debian"
+
+- name: Rclone | Run Arch Linux tasks
+  ansible.builtin.include_tasks: archlinux.yml
+  when: ansible_facts["os_family"] | lower == "archlinux"
 
 - name: Ensure rclone config directory exists
   ansible.builtin.file:

@@ -1,8 +1,11 @@
 ---
-- name: Ensure zsh is installed
-  ansible.builtin.package:
-    name: zsh
-    state: present
+- name: User | Run Debian tasks
+  ansible.builtin.include_tasks: debian.yml
+  when: ansible_facts["os_family"] | lower == "debian"
+
+- name: User | Run Arch Linux tasks
+  ansible.builtin.include_tasks: archlinux.yml
+  when: ansible_facts["os_family"] | lower == "archlinux"
 
 - name: Ensure user exists with correct shell and groups
   ansible.builtin.user:

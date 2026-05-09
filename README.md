@@ -31,6 +31,12 @@ just syntax
 ```
 
 ```bash
+# Container test matrix (same idea as CI)
+docker build -f Dockerfile.ubuntu -t dotfiles-test-ubuntu .
+docker build -f Dockerfile.archlinux -t dotfiles-test-archlinux .
+```
+
+```bash
 # Run remotely (SSH)
 just run desktop
 just run laptop
@@ -66,6 +72,8 @@ just diff
 
 ```
 .
+├── Dockerfile.ubuntu               # Ubuntu test image (syntax, lint, safe playbook subset)
+├── Dockerfile.archlinux            # Arch Linux test image (syntax, lint, safe playbook subset)
 ├── ansible/
 │   ├── ansible.cfg
 │   ├── .ansible-lint
@@ -75,8 +83,8 @@ just diff
 │   │   ├── local.yml              # local inventory (ansible_connection: local)
 │   │   ├── group_vars/
 │   │   │   ├── all.yml            # feature flags, user settings, shared Flatpaks/fonts
-│   │   │   ├── Debian.yml         # Debian package/service names
-│   │   │   ├── Archlinux.yml      # Arch package/service names
+│   │   │   ├── debian.yml         # Debian package/service names
+│   │   │   ├── archlinux.yml      # Arch package/service names
 │   │   │   └── vault.yml          # shared secrets (HA token, rclone, webhook)
 │   │   └── host_vars/
 │   │       ├── desktop/
@@ -92,7 +100,7 @@ just diff
 │   │   └── setup.yml              # single playbook, tag-controlled
 │   └── roles/
 │       ├── system/
-│       │   ├── aur/               # paru AUR helper install
+│       │   ├── aur/               # Arch AUR packages via kewlfft.aur
 │       │   ├── docker/            # Docker CE + compose/buildx
 │       │   ├── fail2ban/          # fail2ban with sshd jail
 │       │   ├── firewall/          # ufw rules
@@ -143,13 +151,31 @@ just diff
 │   ├── run_once_install-ansible.sh
 │   └── vault.sh
 ├── .github/workflows/
-│   └── ci.yml                     # GitHub Actions CI (syntax, lint, inventory, tags)
+│   └── ci.yml                     # GitHub Actions CI (builds the Ubuntu/Arch test images)
 ├── .sops.yaml                     # SOPS age key configuration
 ├── .pre-commit-config.yaml        # pre-commit hooks (yaml, ansible-lint, shellcheck)
 ├── .yamllint                      # yamllint config
 ├── .editorconfig
 ├── Justfile                       # just task runner
 └── requirements.txt               # pip dependencies (ansible-lint, yamllint, shellcheck-py)
+```
+
+## Container tests
+
+Each Dockerfile installs the required collections, stubs the encrypted vault
+files for container use, then runs:
+
+- `ansible-playbook --syntax-check`
+- `ansible-lint`
+- `yamllint`
+- `shellcheck`
+- a safe local playbook subset: `--tags user,packages`
+
+Run them manually with:
+
+```bash
+docker build -f Dockerfile.ubuntu -t dotfiles-test-ubuntu .
+docker build -f Dockerfile.archlinux -t dotfiles-test-archlinux .
 ```
 
 ## Role execution order
@@ -173,7 +199,7 @@ Host-specific overrides go in `host_vars/<host>/vars.yml`.
 |---|---|
 | Feature flags and global defaults | `ansible/inventory/group_vars/all.yml` |
 | Shared secrets (HA, rclone, webhook) | `ansible/inventory/group_vars/vault.yml` |
-| Distro package and service names | `ansible/inventory/group_vars/Debian.yml`, `ansible/inventory/group_vars/Archlinux.yml` |
+| Distro package and service names | `ansible/inventory/group_vars/debian.yml`, `ansible/inventory/group_vars/archlinux.yml` |
 | Host overrides (feature flags, monitors) | `ansible/inventory/host_vars/<host>/vars.yml` |
 | Host secrets (SSH keys) | `ansible/inventory/host_vars/<host>/vault.yml` |
 | KDE keybinds | `ansible/roles/home/bin/keybinds/<host>.ini` |
@@ -234,5 +260,5 @@ just bootstrap desktop
 - **Desktop roles** → Plasma, Hyprland and Niri
 - **SOPS + age** → how secrets stay private
 - `all.yml` → one place for shared feature flags, Flatpaks, fonts, and user defaults
-- `Debian.yml` / `Archlinux.yml` → distro package and service names only
+- `debian.yml` / `archlinux.yml` → distro package and service names only
 - `host_vars/<host>/vars.yml` → per-machine overrides (flags, monitors)

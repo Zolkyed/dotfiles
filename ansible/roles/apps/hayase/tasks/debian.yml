@@ -1,0 +1,40 @@
+---
+- name: Check if Hayase is already installed
+  ansible.builtin.command:
+    cmd: dpkg-query -W -f='${Status}' hayase
+  register: apps_hayase_pkg_check
+  changed_when: false
+  failed_when: false
+
+- name: Get Hayase latest release info
+  ansible.builtin.uri:
+    url: "{{ apps_hayase_api_url }}"
+    return_content: true
+  register: apps_hayase_release
+  when: apps_hayase_pkg_check.stdout | default('') != 'install ok installed'
+
+- name: Select Hayase Debian release asset
+  ansible.builtin.set_fact:
+    apps_hayase_linux_deb_url: >-
+      {{
+        apps_hayase_release.json
+        | dict2items
+        | map(attribute='value')
+        | select('match', '^https://.*/linux-hayase-.*-linux[.]deb$')
+        | first
+        | default('')
+      }}
+  when: apps_hayase_release is not skipped
+
+- name: Assert Hayase Debian asset was found
+  ansible.builtin.assert:
+    that:
+      - apps_hayase_linux_deb_url | length > 0
+    fail_msg: "No matching Hayase Debian asset found in {{ apps_hayase_api_url }} response."
+  when: apps_hayase_release is not skipped
+
+- name: Install Hayase from .deb
+  ansible.builtin.apt:
+    deb: "{{ apps_hayase_linux_deb_url }}"
+    state: present
+  when: apps_hayase_pkg_check.stdout | default('') != 'install ok installed'

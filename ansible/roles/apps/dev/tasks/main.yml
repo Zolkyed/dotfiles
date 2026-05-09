@@ -1,8 +1,11 @@
 ---
-- name: Dev | Install packages
-  ansible.builtin.package:
-    name: "{{ apps_dev_packages }}"
-    state: present
+- name: Dev | Run Debian tasks
+  ansible.builtin.include_tasks: debian.yml
+  when: ansible_facts["os_family"] | lower == "debian"
+
+- name: Dev | Run Arch Linux tasks
+  ansible.builtin.include_tasks: archlinux.yml
+  when: ansible_facts["os_family"] | lower == "archlinux"
 
 - name: Dev | Install Rust toolchain
   when: apps_dev_install_rust

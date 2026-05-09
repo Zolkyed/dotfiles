@@ -9,7 +9,7 @@
       tags: always
       ansible.builtin.assert:
         that:
-          - ansible_facts["os_family"] in ["Debian", "Archlinux"]
+          - ansible_facts["os_family"] | lower in ["debian", "archlinux"]
         fail_msg: >-
           Unsupported distribution {{ ansible_facts["distribution"] }}
           ({{ ansible_facts["os_family"] }} family). Supported: Debian, Arch Linux.
@@ -31,7 +31,7 @@
     - name: Load distro-specific vars
       tags: always
       ansible.builtin.include_vars:
-        file: "{{ playbook_dir }}/../inventory/group_vars/{{ ansible_facts['os_family'] }}.yml"
+        file: "{{ playbook_dir }}/../inventory/group_vars/{{ ansible_facts['os_family'] | lower }}.yml"
 
   roles:
     # --- System foundation ---
@@ -43,7 +43,6 @@
       tags: sudoers
     - role: system/aur
       tags: aur
-      when: ansible_facts["os_family"] == "Archlinux"
 
     # --- Packages (core installs first) ---
     - role: home/packages

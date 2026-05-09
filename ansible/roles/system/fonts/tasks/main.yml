@@ -1,9 +1,11 @@
 ---
-- name: Install font packages
-  ansible.builtin.package:
-    name: "{{ system_fonts_packages }}"
-    state: present
-  notify: Update font cache
+- name: Fonts | Run Debian tasks
+  ansible.builtin.include_tasks: debian.yml
+  when: ansible_facts["os_family"] | lower == "debian"
+
+- name: Fonts | Run Arch Linux tasks
+  ansible.builtin.include_tasks: archlinux.yml
+  when: ansible_facts["os_family"] | lower == "archlinux"
 
 - name: Create Nerd Fonts install directory
   ansible.builtin.file:

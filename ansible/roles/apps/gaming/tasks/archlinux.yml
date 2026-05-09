@@ -1,0 +1,25 @@
+---
+- name: Gaming | Configure Arch multilib support
+  when: "'steam' in apps_gaming_packages"
+  block:
+    - name: Gaming | Check Arch pacman repositories
+      ansible.builtin.command:
+        cmd: pacman-conf --repo-list
+      register: apps_arch_pacman_repositories
+      changed_when: false
+
+    - name: Gaming | Enable Arch multilib repository for Steam
+      ansible.builtin.blockinfile:
+        path: /etc/pacman.conf
+        marker: "# {mark} ANSIBLE MANAGED MULTILIB"
+        block: |
+          [multilib]
+          Include = /etc/pacman.d/mirrorlist
+      register: apps_arch_multilib_repository
+      notify: Gaming | Update pacman cache
+      when: "'multilib' not in apps_arch_pacman_repositories.stdout_lines"
+
+- name: Gaming | Install packages
+  community.general.pacman:
+    name: "{{ apps_gaming_packages }}"
+    state: present

@@ -1,0 +1,39 @@
+---
+- name: Check if Hayase AppImage exists
+  ansible.builtin.stat:
+    path: "{{ apps_hayase_appimage_dest }}"
+  register: apps_hayase_appimage_stat
+
+- name: Get Hayase latest release info
+  ansible.builtin.uri:
+    url: "{{ apps_hayase_api_url }}"
+    return_content: true
+  register: apps_hayase_release
+  when: not (apps_hayase_appimage_stat.stat.exists | default(false))
+
+- name: Select Hayase AppImage release asset
+  ansible.builtin.set_fact:
+    apps_hayase_linux_appimage_url: >-
+      {{
+        apps_hayase_release.json
+        | dict2items
+        | map(attribute='value')
+        | select('match', '^https://.*/linux-hayase-.*-linux[.]AppImage$')
+        | first
+        | default('')
+      }}
+  when: apps_hayase_release is not skipped
+
+- name: Assert Hayase AppImage asset was found
+  ansible.builtin.assert:
+    that:
+      - apps_hayase_linux_appimage_url | length > 0
+    fail_msg: "No matching Hayase Arch Linux asset found in {{ apps_hayase_api_url }} response."
+  when: apps_hayase_release is not skipped
+
+- name: Install Hayase AppImage
+  ansible.builtin.get_url:
+    url: "{{ apps_hayase_linux_appimage_url }}"
+    dest: "{{ apps_hayase_appimage_dest }}"
+    mode: "0755"
+  when: not (apps_hayase_appimage_stat.stat.exists | default(false))

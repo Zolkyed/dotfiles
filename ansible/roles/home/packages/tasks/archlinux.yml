@@ -1,0 +1,12 @@
+---
+- name: Packages | Install packages
+  community.general.pacman:
+    name: "{{
+      home_core_packages +
+      home_utility_packages +
+      home_fun_packages +
+      (media_enabled | ternary(apps_media_packages | default([]), [])) +
+      (office_enabled | ternary(apps_office_packages | default([]), [])) +
+      (system_tools_enabled | ternary(apps_system_tools_packages | default([]), []))
+    }}"
+    state: present

@@ -1,0 +1,69 @@
+FROM archlinux:latest
+
+LABEL org.opencontainers.image.source="https://github.com/Zolkyed/dotfiles"
+LABEL org.opencontainers.image.description="Arch Linux container test environment for this dotfiles Ansible setup"
+LABEL org.opencontainers.image.title="dotfiles-ansible-test-archlinux"
+
+ARG USER=charl
+ARG GROUP=charl
+ARG UID=1000
+ARG GID=1000
+
+ENV ANSIBLE_LOCAL_TEMP=/tmp/ansible-local
+ENV ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote
+
+USER root
+
+RUN pacman -Syu --noconfirm && \
+    pacman -S --noconfirm --needed \
+      ansible \
+      ansible-lint \
+      base-devel \
+      curl \
+      git \
+      rsync \
+      shellcheck \
+      sudo \
+      wget \
+      which \
+      yamllint \
+      zsh
+
+RUN groupadd --gid ${GID} ${GROUP} && \
+    useradd --uid ${UID} --gid ${GID} --create-home --shell /bin/bash ${USER} && \
+    echo "${USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${USER} && \
+    chmod 0440 /etc/sudoers.d/${USER}
+
+WORKDIR /home/${USER}/dotfiles
+COPY . /home/${USER}/dotfiles
+
+RUN chown -R ${USER}:${GROUP} /home/${USER}/dotfiles /home/${USER}
+
+USER ${USER}
+
+RUN ansible-galaxy collection install -r ansible/requirements.yml
+
+RUN printf '%s\n' \
+      'vault_ha_token: ""' \
+      'vault_rclone_token: ""' \
+      'vault_webhook_url: ""' \
+      > /home/${USER}/dotfiles/ansible/inventory/group_vars/vault.yml && \
+    printf '%s\n' \
+      'vault_ssh_public_key: ""' \
+      'vault_ssh_private_key: ""' \
+      > /home/${USER}/dotfiles/ansible/inventory/host_vars/server/vault.yml
+
+RUN cd /home/${USER}/dotfiles/ansible && \
+    ansible-playbook -i inventory/local.yml playbooks/setup.yml --syntax-check && \
+    ansible-lint playbooks/setup.yml
+
+RUN cd /home/${USER}/dotfiles && \
+    yamllint -c .yamllint ansible .github && \
+    shellcheck scripts/*.sh
+
+RUN cd /home/${USER}/dotfiles/ansible && \
+    ansible-playbook \
+      -i inventory/local.yml \
+      playbooks/setup.yml \
+      -l server \
+      --tags user,packages

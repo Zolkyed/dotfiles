@@ -1,0 +1,5 @@
+---
+- name: Fail2ban | Install packages
+  ansible.builtin.apt:
+    name: "{{ system_fail2ban_packages }}"
+    state: present

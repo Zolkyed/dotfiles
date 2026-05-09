@@ -1,17 +1,11 @@
 ---
-- name: Install KVM packages
-  ansible.builtin.package:
-    name: "{{ system_virtualization_kvm_packages }}"
-    state: present
-  when:
-    - system_virtualization_backend == "kvm"
-    - system_virtualization_kvm_packages | length > 0
+- name: Virtualization | Run Debian tasks
+  ansible.builtin.include_tasks: debian.yml
+  when: ansible_facts["os_family"] | lower == "debian"
 
-- name: Install VirtualBox packages
-  ansible.builtin.package:
-    name: "{{ system_virtualization_virtualbox_packages }}"
-    state: present
-  when: system_virtualization_backend == "virtualbox"
+- name: Virtualization | Run Arch Linux tasks
+  ansible.builtin.include_tasks: archlinux.yml
+  when: ansible_facts["os_family"] | lower == "archlinux"
 
 - name: Enable and start libvirtd
   ansible.builtin.systemd:

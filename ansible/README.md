@@ -51,7 +51,7 @@ Hosts: `desktop`, `laptop`, `server`. Each has a `vars.yml` (overrides) and
 |---|---|---|
 | Feature flags, user settings, Flatpaks, fonts | `group_vars/all.yml` | Shared defaults; override per host |
 | Shared secrets (HA token, rclone, webhook) | `group_vars/vault.yml` | SOPS-encrypted |
-| Package/service names | `group_vars/Debian.yml`, `group_vars/Archlinux.yml` | OS-specific |
+| Package/service names | `group_vars/debian.yml`, `group_vars/archlinux.yml` | OS-specific |
 | Host overrides (flags, monitors) | `host_vars/<host>/vars.yml` | Per-machine |
 | Host SSH keys | `host_vars/<host>/vault.yml` | SOPS-encrypted |
 
@@ -63,7 +63,7 @@ Hosts: `desktop`, `laptop`, `server`. Each has a `vars.yml` (overrides) and
 |---|---|
 | `sysctl` | Hostname, kernel parameters |
 | `sudoers` | Sudoers configuration |
-| `aur` | Install `paru` AUR helper |
+| `aur` | Install Arch AUR packages via `kewlfft.aur` |
 | `fonts` | Distro font packages + Nerd Fonts |
 | `docker` | Docker CE + compose/buildx plugin |
 | `virtualization` | KVM/QEMU or VirtualBox |

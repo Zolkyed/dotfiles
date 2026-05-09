@@ -1,6 +1,8 @@
 ---
-- name: VPN | Install VPN packages
-  ansible.builtin.package:
-    name: "{{ system_vpn_packages }}"
-    state: present
-  when: system_vpn_packages | length > 0
+- name: VPN | Run Debian tasks
+  ansible.builtin.include_tasks: debian.yml
+  when: ansible_facts["os_family"] | lower == "debian"
+
+- name: VPN | Run Arch Linux tasks
+  ansible.builtin.include_tasks: archlinux.yml
+  when: ansible_facts["os_family"] | lower == "archlinux"

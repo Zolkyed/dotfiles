@@ -1,8 +1,11 @@
 ---
-- name: Install networking packages
-  ansible.builtin.package:
-    name: "{{ system_networking_packages }}"
-    state: present
+- name: Networking | Run Debian tasks
+  ansible.builtin.include_tasks: debian.yml
+  when: ansible_facts["os_family"] | lower == "debian"
+
+- name: Networking | Run Arch Linux tasks
+  ansible.builtin.include_tasks: archlinux.yml
+  when: ansible_facts["os_family"] | lower == "archlinux"
 
 - name: Deploy systemd-resolved configuration
   ansible.builtin.template:

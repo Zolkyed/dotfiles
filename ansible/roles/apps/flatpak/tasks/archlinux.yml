@@ -1,0 +1,13 @@
+---
+- name: Flatpak | Install flatpak
+  community.general.pacman:
+    name: flatpak
+    state: present
+
+- name: Flatpak | Install Discover backend
+  community.general.pacman:
+    name: "{{ apps_flatpak_discover_backend_packages }}"
+    state: present
+  when:
+    - apps_flatpak_discover_backend_packages | length > 0
+    - apps_flatpak_plasmashell_check.rc == 0
