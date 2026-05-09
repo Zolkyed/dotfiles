@@ -1,5 +1,5 @@
 ---
 - name: Hyprland | Install packages
   community.general.pacman:
-    name: "{{ desktop_hyprland_packages }}"
+    name: "{{ hyprland_packages }}"
     state: present

@@ -1,0 +1,12 @@
+---
+nvidia_packages_arch:
+  - nvidia
+  - nvidia-utils
+  - lib32-nvidia-utils
+  - nvidia-settings
+
+nvidia_packages_debian:
+  - nvidia-driver
+  - nvidia-settings
+
+nvidia_debian_release: "{{ ansible_facts['distribution_release'] }}"

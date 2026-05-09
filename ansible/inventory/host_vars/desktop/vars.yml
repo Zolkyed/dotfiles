@@ -1,4 +1,5 @@
 ---
 # Feature flag overrides
 gaming_enabled: true
+nvidia_enabled: true
 docker_repo_codename: noble

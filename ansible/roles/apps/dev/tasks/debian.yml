@@ -3,3 +3,4 @@
   ansible.builtin.apt:
     name: "{{ dev_packages }}"
     state: present
+  when: dev_packages | length > 0

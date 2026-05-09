@@ -16,6 +16,7 @@ core_packages:
   - unzip
   - rsync
   - kitty
+  - base-devel
   - man-db
   - man-pages
 
@@ -106,26 +107,8 @@ dev_packages:
   - cmake
 
 # ---------------------------------------------------------------------------
-# Desktop
-# ---------------------------------------------------------------------------
-plasma_packages:
-  - plasma-desktop
-  - discover
-  - dolphin
-  - konsole
-  - kcalc
-  - spectacle
-
-# ---------------------------------------------------------------------------
 # System
 # ---------------------------------------------------------------------------
-
-# AUR
-aur_build_packages:
-  - base-devel
-  - rust
-
-aur_packages: []
 
 # Docker
 docker_engine_packages:

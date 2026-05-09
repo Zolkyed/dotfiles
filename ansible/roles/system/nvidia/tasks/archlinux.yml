@@ -1,0 +1,5 @@
+---
+- name: Nvidia | Install driver
+  community.general.pacman:
+    name: "{{ nvidia_packages_arch }}"
+    state: present

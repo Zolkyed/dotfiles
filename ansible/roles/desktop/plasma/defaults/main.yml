@@ -1,2 +1,19 @@
 ---
-plasma_packages: []
+plasma_packages:
+  - plasma-desktop
+  - sddm
+  - sddm-kcm
+  - xdg-desktop-portal-kde
+  - plasma-pa
+  - plasma-nm
+  - kscreen
+  - powerdevil
+  - bluedevil
+  - plasma-systemmonitor
+  - breeze-gtk
+  - discover
+  - dolphin
+  - konsole
+  - spectacle
+  - kcalc
+  - ark

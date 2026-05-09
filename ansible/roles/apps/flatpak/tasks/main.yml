@@ -1,13 +1,13 @@
 ---
-- name: "Flatpak | Run {{ ansible_facts.os_family }} tasks"
-  ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
-
-- name: Check if Plasma is installed before installing Discover backend
+- name: Flatpak | Check if Plasma is installed
   ansible.builtin.command:
     cmd: which plasmashell
   register: flatpak_plasmashell_check
   changed_when: false
   failed_when: false
+
+- name: "Flatpak | Run {{ ansible_facts.os_family }} tasks"
+  ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
 
 - name: Add flatpak remotes
   community.general.flatpak_remote:

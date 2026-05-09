@@ -12,6 +12,7 @@ user_shell: /bin/zsh
 
 # System
 splashboot_enabled: false
+nvidia_enabled: false
 docker_enabled: true
 virtualization_enabled: true
 vpn_enabled: true

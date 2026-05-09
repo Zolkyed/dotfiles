@@ -1,0 +1,12 @@
+---
+- name: Nvidia | Enable non-free repository
+  ansible.builtin.apt_repository:
+    repo: "deb http://deb.debian.org/debian {{ nvidia_debian_release }} main contrib non-free non-free-firmware"
+    state: present
+    update_cache: true
+  when: ansible_facts["distribution"] == "Debian"
+
+- name: Nvidia | Install driver
+  ansible.builtin.apt:
+    name: "{{ nvidia_packages_debian }}"
+    state: present

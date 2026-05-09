@@ -1,5 +1,5 @@
 ---
-desktop_hyprland_packages:
+hyprland_packages:
   - hyprland
   - xdg-desktop-portal-hyprland
   - waybar

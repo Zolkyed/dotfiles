@@ -41,10 +41,6 @@
       tags: user
     - role: system/sudoers
       tags: sudoers
-    - role: system/aur
-      tags: aur
-      when: ansible_facts["os_family"] | lower == "archlinux"
-
     # --- Packages (core installs first) ---
     - role: home/packages
       tags: packages
@@ -84,6 +80,9 @@
       when: konsave_enabled
 
     # --- Containers / VMs ---
+    - role: system/nvidia
+      tags: nvidia
+      when: nvidia_enabled
     - role: system/docker
       tags: docker
       when: docker_enabled

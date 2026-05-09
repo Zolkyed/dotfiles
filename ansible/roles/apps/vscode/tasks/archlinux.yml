@@ -1,8 +1,8 @@
 ---
-- name: VS Code | Install Arch package from AUR  # noqa var-naming[no-role-prefix]
-  ansible.builtin.include_role:
-    name: system/aur
-    tasks_from: install_packages
-  vars:
-    aur_install_packages:
-      - "{{ vscode_aur_package }}"
+- name: VS Code | Install Arch package from AUR
+  kewlfft.aur.aur:
+    name: "{{ vscode_aur_package }}"
+    use: makepkg
+    state: present
+  become: true
+  become_user: "{{ user_name }}"

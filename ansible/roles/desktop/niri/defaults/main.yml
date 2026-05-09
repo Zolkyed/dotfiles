@@ -1,5 +1,5 @@
 ---
-desktop_niri_packages:
+niri_packages:
   - niri
   - xdg-desktop-portal-wlr
   - waybar

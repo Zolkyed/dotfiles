@@ -1,8 +1,8 @@
 ---
-- name: Browser | Install Arch package from AUR  # noqa var-naming[no-role-prefix]
-  ansible.builtin.include_role:
-    name: system/aur
-    tasks_from: install_packages
-  vars:
-    aur_install_packages:
-      - "{{ browser_arch_package }}"
+- name: Browser | Install Arch package from AUR
+  kewlfft.aur.aur:
+    name: "{{ browser_arch_package }}"
+    use: makepkg
+    state: present
+  become: true
+  become_user: "{{ user_name }}"

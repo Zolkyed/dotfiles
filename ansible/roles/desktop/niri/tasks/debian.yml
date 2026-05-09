@@ -1,5 +1,5 @@
 ---
 - name: Niri | Install packages
   ansible.builtin.apt:
-    name: "{{ desktop_niri_packages }}"
+    name: "{{ niri_packages }}"
     state: present
