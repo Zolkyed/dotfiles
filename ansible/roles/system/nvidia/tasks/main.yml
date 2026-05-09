@@ -9,4 +9,4 @@
     owner: root
     group: root
     mode: "0644"
-  notify: Rebuild initramfs
+  notify: Nvidia | Rebuild initramfs

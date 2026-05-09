@@ -1,25 +1,59 @@
 ---
+# --- Debian ---
 - name: Nvidia | Enable non-free repository
-  ansible.builtin.apt_repository:
-    repo: "deb http://deb.debian.org/debian {{ nvidia_debian_release }} main contrib non-free non-free-firmware"
+  ansible.builtin.deb822_repository:
+    name: debian-non-free
+    types: deb
+    uris: "http://deb.debian.org/debian"
+    suites: "{{ nvidia_debian_release }}"
+    components:
+      - main
+      - contrib
+      - non-free
+      - non-free-firmware
     state: present
-    update_cache: true
+  notify: Nvidia | Update apt cache
   when: ansible_facts["distribution"] == "Debian"
 
-- name: Nvidia | Install ubuntu-drivers
-  ansible.builtin.apt:
-    name: ubuntu-drivers-common
-    state: present
-  when: ansible_facts["distribution"] == "Ubuntu"
+- name: Nvidia | Flush apt repository handlers
+  ansible.builtin.meta: flush_handlers
 
-- name: Nvidia | Auto-install driver
-  ansible.builtin.command:
-    cmd: ubuntu-drivers install
-  changed_when: true
-  when: ansible_facts["distribution"] == "Ubuntu"
+- name: Nvidia | Install kernel headers
+  ansible.builtin.apt:
+    name: "linux-headers-{{ ansible_facts['kernel'] }}"
+    state: present
+  when: ansible_facts["distribution"] == "Debian"
 
 - name: Nvidia | Install driver
   ansible.builtin.apt:
     name: "{{ nvidia_packages_debian }}"
     state: present
   when: ansible_facts["distribution"] == "Debian"
+
+# --- Ubuntu ---
+- name: Nvidia | Install ubuntu-drivers
+  ansible.builtin.apt:
+    name: ubuntu-drivers-common
+    state: present
+  when: ansible_facts["distribution"] == "Ubuntu"
+
+- name: Nvidia | Check if NVIDIA driver already installed
+  ansible.builtin.shell:
+    cmd: dpkg -l | grep -c '^ii.*nvidia-driver' || true
+  register: nvidia_ubuntu_driver_check
+  changed_when: false
+  when: ansible_facts["distribution"] == "Ubuntu"
+
+- name: Nvidia | Install kernel headers
+  ansible.builtin.apt:
+    name: "linux-headers-{{ ansible_facts['kernel'] }}"
+    state: present
+  when: ansible_facts["distribution"] == "Ubuntu"
+
+- name: Nvidia | Auto-install recommended driver
+  ansible.builtin.command:
+    cmd: ubuntu-drivers install
+  changed_when: true
+  when:
+    - ansible_facts["distribution"] == "Ubuntu"
+    - (nvidia_ubuntu_driver_check.stdout | int) == 0
