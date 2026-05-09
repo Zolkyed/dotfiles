@@ -10,4 +10,5 @@
     state: present
   when:
     - apps_flatpak_discover_backend_packages | length > 0
+    - apps_flatpak_plasmashell_check is defined
     - apps_flatpak_plasmashell_check.rc == 0
