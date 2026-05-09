@@ -1,7 +1,11 @@
 ---
 home_xdg_browser_desktop: brave-browser.desktop
 home_xdg_editor_desktop: code.desktop
+home_xdg_file_manager_desktop: org.kde.dolphin.desktop
+home_xdg_mail_desktop: thunderbird.desktop
 home_xdg_media_player_desktop: mpv.desktop
+home_xdg_terminal_desktop: kitty.desktop
+home_xdg_terminal_command: kitty
 
 home_xdg_browser_mime_types:
   - text/html
@@ -14,6 +18,13 @@ home_xdg_editor_mime_types:
   - application/x-shellscript
   - text/markdown
   - text/x-python
+
+home_xdg_file_manager_mime_types:
+  - inode/directory
+
+home_xdg_mail_mime_types:
+  - message/rfc822
+  - x-scheme-handler/mailto
 
 home_xdg_media_mime_types:
   - audio/aac
