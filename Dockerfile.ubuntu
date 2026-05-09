@@ -35,14 +35,14 @@ RUN apt-get update && \
       zsh && \
     rm -rf /var/lib/apt/lists/*
 
-RUN set -euo pipefail; \
+RUN bash -lc 'set -euo pipefail; \
     arch="$(dpkg --print-architecture)"; \
-    sops_version="$(curl -fsSL https://api.github.com/repos/getsops/sops/releases/latest | grep '"tag_name"' | cut -d'\"' -f4)"; \
+    sops_version="$(curl -fsSL https://api.github.com/repos/getsops/sops/releases/latest | grep '"'"'"tag_name"'"'"' | cut -d'"'"'"'"'"' -f4)"; \
     sops_version="${sops_version#v}"; \
     tmp="$(mktemp --suffix=.deb)"; \
     curl -fsSL "https://github.com/getsops/sops/releases/download/v${sops_version}/sops_${sops_version}_${arch}.deb" -o "${tmp}"; \
     dpkg -i "${tmp}"; \
-    rm -f "${tmp}"
+    rm -f "${tmp}"'
 
 RUN if ! getent group "${GROUP}" >/dev/null; then \
       if getent group "${GID}" >/dev/null; then \
