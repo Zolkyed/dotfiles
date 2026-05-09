@@ -19,6 +19,14 @@
     group: "{{ user_name }}"
     mode: "0700"
 
+- name: Ensure user config directory exists for chezmoi state
+  ansible.builtin.file:
+    path: "{{ user_home }}/.config"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0700"
+
 - name: Clone dotfiles repo (remote / fresh machine)
   ansible.builtin.git:
     repo: "{{ home_dotfiles_repo }}"
