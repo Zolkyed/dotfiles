@@ -262,3 +262,6 @@ just bootstrap desktop
 - `all.yml` → one place for shared feature flags, Flatpaks, fonts, and user defaults
 - `debian.yml` / `archlinux.yml` → distro package and service names only
 - `host_vars/<host>/vars.yml` → per-machine overrides (flags, monitors)
+
+Ref
+https://github.com/shricodev/dotfiles/tree/f7814b58179c5ece4a59f4c0396c91cb30e75f3c
