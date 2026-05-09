@@ -4,8 +4,13 @@
     src: "/tmp/{{ item.item }}.tar.xz"
     dest: "{{ system_nerd_fonts_install_dir }}"
     remote_src: true
-  loop: "{{ system_nerd_fonts_download.results | default([]) }}"
-  when: item.changed
+  loop: >-
+    {{
+      system_nerd_fonts_download.results
+      | default([])
+      | selectattr('changed')
+      | list
+    }}
   notify: Update font cache
 
 - name: Update font cache
