@@ -1,5 +1,4 @@
 .git
-.github
 .venv
 ansible/.ansible
 __pycache__
