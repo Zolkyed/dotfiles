@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1.7
 FROM ubuntu:24.04
 
 LABEL org.opencontainers.image.source="https://github.com/Zolkyed/dotfiles"
@@ -17,6 +18,7 @@ USER root
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+      age \
       ansible \
       ansible-lint \
       curl \
@@ -26,6 +28,7 @@ RUN apt-get update && \
       python3-apt \
       rsync \
       shellcheck \
+      sops \
       sudo \
       tzdata \
       wget \
@@ -55,27 +58,20 @@ USER ${USER}
 
 RUN ansible-galaxy collection install -r ansible/requirements.yml
 
-RUN printf '%s\n' \
-      'vault_ha_token: ""' \
-      'vault_rclone_token: ""' \
-      'vault_webhook_url: ""' \
-      > /home/${USER}/dotfiles/ansible/inventory/group_vars/vault.yml && \
-    printf '%s\n' \
-      'vault_ssh_public_key: ""' \
-      'vault_ssh_private_key: ""' \
-      > /home/${USER}/dotfiles/ansible/inventory/host_vars/server/vault.yml
-
-RUN cd /home/${USER}/dotfiles/ansible && \
-    ansible-playbook -i inventory/local.yml playbooks/setup.yml --syntax-check && \
-    ansible-lint playbooks/setup.yml
-
 RUN cd /home/${USER}/dotfiles && \
     yamllint -c .yamllint ansible .github && \
     shellcheck scripts/*.sh
 
-RUN cd /home/${USER}/dotfiles/ansible && \
+RUN --mount=type=secret,id=sops_age_key \
+    install -d -m 700 /home/${USER}/.config/sops/age && \
+    install -m 600 /run/secrets/sops_age_key /home/${USER}/.config/sops/age/keys.txt && \
+    export SOPS_AGE_KEY_FILE=/home/${USER}/.config/sops/age/keys.txt && \
+    cd /home/${USER}/dotfiles/ansible && \
+    ansible-playbook -i inventory/local.yml playbooks/setup.yml --syntax-check && \
+    ansible-lint playbooks/setup.yml && \
     ansible-playbook \
       -i inventory/local.yml \
       playbooks/setup.yml \
       -l server \
-      --tags user,packages,dotfiles
+      --tags user,packages,dotfiles && \
+    rm -f "${SOPS_AGE_KEY_FILE}"

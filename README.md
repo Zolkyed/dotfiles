@@ -32,8 +32,9 @@ just syntax
 
 ```bash
 # Container test matrix (same idea as CI)
-docker build -f Dockerfile.ubuntu -t dotfiles-test-ubuntu .
-docker build -f Dockerfile.archlinux -t dotfiles-test-archlinux .
+export DOCKER_BUILDKIT=1
+docker build --secret id=sops_age_key,src="$HOME/.config/sops/age/keys.txt" -f Dockerfile.ubuntu -t dotfiles-test-ubuntu .
+docker build --secret id=sops_age_key,src="$HOME/.config/sops/age/keys.txt" -f Dockerfile.archlinux -t dotfiles-test-archlinux .
 ```
 
 ```bash
@@ -162,8 +163,8 @@ just diff
 
 ## Container tests
 
-Each Dockerfile installs the required collections, stubs the encrypted vault
-files for container use, then runs:
+Each Dockerfile installs the required collections plus `sops`/`age`, mounts the
+age identity as a BuildKit secret for the Ansible steps, then runs:
 
 - `ansible-playbook --syntax-check`
 - `ansible-lint`
@@ -174,8 +175,9 @@ files for container use, then runs:
 Run them manually with:
 
 ```bash
-docker build -f Dockerfile.ubuntu -t dotfiles-test-ubuntu .
-docker build -f Dockerfile.archlinux -t dotfiles-test-archlinux .
+export DOCKER_BUILDKIT=1
+docker build --secret id=sops_age_key,src="$HOME/.config/sops/age/keys.txt" -f Dockerfile.ubuntu -t dotfiles-test-ubuntu .
+docker build --secret id=sops_age_key,src="$HOME/.config/sops/age/keys.txt" -f Dockerfile.archlinux -t dotfiles-test-archlinux .
 ```
 
 ## Role execution order

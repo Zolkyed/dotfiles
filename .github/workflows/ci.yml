@@ -27,4 +27,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build test image
-        run: docker build -f ${{ matrix.dockerfile }} -t ${{ matrix.image }} .
+        env:
+          DOCKER_BUILDKIT: "1"
+          SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
+        run: >-
+          docker build
+          --secret id=sops_age_key,env=SOPS_AGE_KEY
+          -f ${{ matrix.dockerfile }}
+          -t ${{ matrix.image }}
+          .
