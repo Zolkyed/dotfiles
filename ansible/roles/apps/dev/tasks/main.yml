@@ -1,11 +1,6 @@
 ---
-- name: Dev | Run Debian tasks
-  ansible.builtin.include_tasks: debian.yml
-  when: ansible_facts["os_family"] | lower == "debian"
-
-- name: Dev | Run Arch Linux tasks
-  ansible.builtin.include_tasks: archlinux.yml
-  when: ansible_facts["os_family"] | lower == "archlinux"
+- name: "Dev | Run {{ ansible_facts.os_family }} tasks"
+  ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
 
 # ---------------------------------------------------------------------------
 # Rust

@@ -1,8 +1,3 @@
 ---
-- name: Niri | Run Debian tasks
-  ansible.builtin.include_tasks: debian.yml
-  when: ansible_facts["os_family"] | lower == "debian"
-
-- name: Niri | Run Arch Linux tasks
-  ansible.builtin.include_tasks: archlinux.yml
-  when: ansible_facts["os_family"] | lower == "archlinux"
+- name: "Niri | Run {{ ansible_facts.os_family }} tasks"
+  ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"

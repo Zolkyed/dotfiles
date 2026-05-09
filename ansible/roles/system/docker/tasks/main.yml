@@ -1,11 +1,6 @@
 ---
-- name: Docker | Run Debian tasks
-  ansible.builtin.include_tasks: debian.yml
-  when: ansible_facts["os_family"] | lower == "debian"
-
-- name: Docker | Run Arch Linux tasks
-  ansible.builtin.include_tasks: archlinux.yml
-  when: ansible_facts["os_family"] | lower == "archlinux"
+- name: "Docker | Run {{ ansible_facts.os_family }} tasks"
+  ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
 
 - name: Docker | Add user to docker group
   ansible.builtin.user:

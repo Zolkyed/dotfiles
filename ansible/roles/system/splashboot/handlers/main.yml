@@ -1,10 +1,4 @@
 ---
-- name: Splashboot | Run Debian handlers
-  ansible.builtin.include_tasks: debian.yml
-  when: ansible_facts["os_family"] | lower == "debian"
-  listen: Splashboot | Update initramfs
-
-- name: Splashboot | Run Arch Linux handlers
-  ansible.builtin.include_tasks: archlinux.yml
-  when: ansible_facts["os_family"] | lower == "archlinux"
+- name: "Splashboot | Run {{ ansible_facts.os_family }} handlers"
+  ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
   listen: Splashboot | Update initramfs

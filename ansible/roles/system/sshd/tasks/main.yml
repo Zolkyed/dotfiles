@@ -1,11 +1,6 @@
 ---
-- name: SSHD | Run Debian tasks
-  ansible.builtin.include_tasks: debian.yml
-  when: ansible_facts["os_family"] | lower == "debian"
-
-- name: SSHD | Run Arch Linux tasks
-  ansible.builtin.include_tasks: archlinux.yml
-  when: ansible_facts["os_family"] | lower == "archlinux"
+- name: "SSHD | Run {{ ansible_facts.os_family }} tasks"
+  ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
 
 - name: Validate vaulted ssh host key pair when partially set
   ansible.builtin.assert:

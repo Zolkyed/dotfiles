@@ -1,11 +1,6 @@
 ---
-- name: Fonts | Run Debian tasks
-  ansible.builtin.include_tasks: debian.yml
-  when: ansible_facts["os_family"] | lower == "debian"
-
-- name: Fonts | Run Arch Linux tasks
-  ansible.builtin.include_tasks: archlinux.yml
-  when: ansible_facts["os_family"] | lower == "archlinux"
+- name: "Fonts | Run {{ ansible_facts.os_family }} tasks"
+  ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
 
 - name: Create Nerd Fonts install directory
   ansible.builtin.file:
