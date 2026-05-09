@@ -8,31 +8,26 @@ on:
       - main
 
 jobs:
-  docker-checks:
-    name: Docker checks (${{ matrix.name }})
+  integration:
+    name: Integration (${{ matrix.name }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         include:
-          - name: Ubuntu
+          - name: Ubuntu 24.04
             dockerfile: Dockerfile.ubuntu
-            image: dotfiles-ansible-test-ubuntu
           - name: Arch Linux
             dockerfile: Dockerfile.archlinux
-            image: dotfiles-ansible-test-archlinux
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Build test image
+      - name: Build and run
         env:
-          DOCKER_BUILDKIT: "1"
           SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
-        run: >-
-          docker build
-          --secret id=sops_age_key,env=SOPS_AGE_KEY
-          -f ${{ matrix.dockerfile }}
-          -t ${{ matrix.image }}
-          .
+        run: |
+          docker build \
+            --secret id=sops_age_key,env=SOPS_AGE_KEY \
+            -f ${{ matrix.dockerfile }} \
+            .

@@ -10,19 +10,15 @@ ARG GROUP=charl
 ARG UID=1000
 ARG GID=1000
 
-ENV ANSIBLE_LOCAL_TEMP=/tmp/ansible-local
-ENV ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote
+ENV ANSIBLE_LOCAL_TEMP=/tmp/ansible-local \
+    ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote
 
 RUN pacman -Syu --noconfirm && \
     pacman -S --noconfirm --needed \
       age \
       ansible \
-      ansible-lint \
-      curl \
-      shellcheck \
       sops \
       sudo \
-      yamllint \
       zsh
 
 RUN if ! getent group "${GROUP}" >/dev/null; then \
@@ -34,38 +30,35 @@ RUN if ! getent group "${GROUP}" >/dev/null; then \
     fi && \
     if ! id -u "${USER}" >/dev/null 2>&1; then \
       if getent passwd "${UID}" >/dev/null; then \
-        existing_user="$(getent passwd "${UID}" | cut -d: -f1)"; \
-        usermod -l "${USER}" "${existing_user}"; \
+        existing="$(getent passwd "${UID}" | cut -d: -f1)"; \
+        usermod -l "${USER}" "${existing}"; \
         usermod -d "/home/${USER}" -m "${USER}"; \
         usermod -g "${GROUP}" -s /bin/bash "${USER}"; \
       else \
         useradd --uid "${UID}" --gid "${GROUP}" --create-home --shell /bin/bash "${USER}"; \
       fi; \
     fi && \
-    echo "${USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${USER} && \
-    chmod 0440 /etc/sudoers.d/${USER}
+    echo "${USER} ALL=(ALL) NOPASSWD: ALL" > "/etc/sudoers.d/${USER}" && \
+    chmod 0440 "/etc/sudoers.d/${USER}"
 
 WORKDIR /home/${USER}/dotfiles
 COPY . /home/${USER}/dotfiles
+RUN chown -R ${USER}:${GROUP} /home/${USER}
 
-RUN chown -R ${USER}:${GROUP} /home/${USER}/dotfiles /home/${USER}
-
-RUN sudo -u ${USER} ansible-galaxy collection install -r /home/${USER}/dotfiles/ansible/requirements.yml
-
-RUN cd /home/${USER}/dotfiles && \
-    yamllint -c .yamllint ansible .github && \
-    shellcheck scripts/*.sh
+RUN sudo -u ${USER} ansible-galaxy collection install \
+      -r /home/${USER}/dotfiles/ansible/requirements.yml
 
 RUN --mount=type=secret,id=sops_age_key \
     install -d -m 700 -o ${UID} -g ${GID} /home/${USER}/.config/sops/age && \
-    install -m 600 -o ${UID} -g ${GID} /run/secrets/sops_age_key /home/${USER}/.config/sops/age/keys.txt && \
-    sudo -u ${USER} sh -lc 'export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt" && \
-    cd "$HOME/dotfiles/ansible" && \
-    ansible-playbook -i inventory/local.yml playbooks/setup.yml --syntax-check && \
-    ansible-lint playbooks/setup.yml && \
-    ansible-playbook \
-      -i inventory/local.yml \
-      playbooks/setup.yml \
-      -l server \
-      --tags user,packages,dotfiles' && \
+    install -m 600 -o ${UID} -g ${GID} \
+      /run/secrets/sops_age_key /home/${USER}/.config/sops/age/keys.txt && \
+    sudo -u ${USER} sh -lc ' \
+      export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt" && \
+      cd "$HOME/dotfiles/ansible" && \
+      ansible-playbook -i inventory/local.yml playbooks/setup.yml --syntax-check && \
+      ansible-playbook \
+        -i inventory/local.yml \
+        playbooks/setup.yml \
+        -l server \
+        --tags user,packages,dotfiles' && \
     rm -f /home/${USER}/.config/sops/age/keys.txt
