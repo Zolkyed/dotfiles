@@ -13,6 +13,8 @@ ARG GID=1000
 ENV ANSIBLE_LOCAL_TEMP=/tmp/ansible-local \
     ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote
 
+SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
+
 RUN pacman -Syu --noconfirm && \
     pacman -S --noconfirm --needed \
       age \
@@ -45,5 +47,5 @@ RUN --mount=type=secret,id=sops_age_key \
         -i inventory/local.yml \
         playbooks/setup.yml \
         -l server \
-        --tags user,packages,dotfiles' && \
+        --skip-tags sysctl,nvidia,plasma,hyprland,niri,flatpak,gaming,virtualization,docker,networking,sshd,firewall,fail2ban,vpn,splashboot,xdg,konsave,rclone,vscode,browser' && \
     rm -f /home/${USER}/.config/sops/age/keys.txt

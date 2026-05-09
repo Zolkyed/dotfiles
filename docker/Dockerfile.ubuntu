@@ -60,5 +60,5 @@ RUN --mount=type=secret,id=sops_age_key \
         -i inventory/local.yml \
         playbooks/setup.yml \
         -l server \
-        --tags user,packages,dotfiles' && \
+        --skip-tags sysctl,nvidia,plasma,hyprland,niri,flatpak,gaming,virtualization,docker,networking,sshd,firewall,fail2ban,vpn,splashboot,xdg,konsave,rclone,vscode,browser' && \
     rm -f /home/${USER}/.config/sops/age/keys.txt

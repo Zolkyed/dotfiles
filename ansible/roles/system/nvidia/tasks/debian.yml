@@ -6,7 +6,20 @@
     update_cache: true
   when: ansible_facts["distribution"] == "Debian"
 
+- name: Nvidia | Install ubuntu-drivers
+  ansible.builtin.apt:
+    name: ubuntu-drivers-common
+    state: present
+  when: ansible_facts["distribution"] == "Ubuntu"
+
+- name: Nvidia | Auto-install driver
+  ansible.builtin.command:
+    cmd: ubuntu-drivers autoinstall
+  changed_when: true
+  when: ansible_facts["distribution"] == "Ubuntu"
+
 - name: Nvidia | Install driver
   ansible.builtin.apt:
     name: "{{ nvidia_packages_debian }}"
     state: present
+  when: ansible_facts["distribution"] == "Debian"
