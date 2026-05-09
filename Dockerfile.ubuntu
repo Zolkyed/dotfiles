@@ -35,25 +35,10 @@ RUN arch="$(dpkg --print-architecture)"; \
     dpkg -i "$tmp"; \
     rm -f "$tmp"
 
-RUN if ! getent group "${GROUP}" >/dev/null; then \
-      if getent group "${GID}" >/dev/null; then \
-        groupmod -n "${GROUP}" "$(getent group "${GID}" | cut -d: -f1)"; \
-      else \
-        groupadd --gid "${GID}" "${GROUP}"; \
-      fi; \
-    fi && \
-    if ! id -u "${USER}" >/dev/null 2>&1; then \
-      if getent passwd "${UID}" >/dev/null; then \
-        existing="$(getent passwd "${UID}" | cut -d: -f1)"; \
-        usermod -l "${USER}" "${existing}"; \
-        usermod -d "/home/${USER}" -m "${USER}"; \
-        usermod -g "${GROUP}" -s /bin/bash "${USER}"; \
-      else \
-        useradd --uid "${UID}" --gid "${GROUP}" --create-home --shell /bin/bash "${USER}"; \
-      fi; \
-    fi && \
-    echo "${USER} ALL=(ALL) NOPASSWD: ALL" > "/etc/sudoers.d/${USER}" && \
-    chmod 0440 "/etc/sudoers.d/${USER}"
+RUN groupadd --gid ${GID} ${GROUP} && \
+    useradd --uid ${UID} --gid ${GID} --create-home --shell /bin/bash ${USER} && \
+    echo "${USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${USER} && \
+    chmod 0440 /etc/sudoers.d/${USER}
 
 WORKDIR /home/${USER}/dotfiles
 COPY . /home/${USER}/dotfiles
@@ -63,8 +48,8 @@ RUN sudo -u ${USER} ansible-galaxy collection install \
       -r /home/${USER}/dotfiles/ansible/requirements.yml
 
 RUN --mount=type=secret,id=sops_age_key \
-    install -d -m 700 -o ${UID} -g ${GID} /home/${USER}/.config/sops/age && \
-    install -m 600 -o ${UID} -g ${GID} \
+    install -d -m 700 -o ${USER} -g ${GROUP} /home/${USER}/.config/sops/age && \
+    install -m 600 -o ${USER} -g ${GROUP} \
       /run/secrets/sops_age_key /home/${USER}/.config/sops/age/keys.txt && \
     sudo -u ${USER} sh -lc ' \
       export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt" && \
