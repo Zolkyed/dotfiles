@@ -43,6 +43,7 @@
       tags: sudoers
     - role: system/aur
       tags: aur
+      when: ansible_facts["os_family"] | lower == "archlinux"
 
     # --- Packages (core installs first) ---
     - role: home/packages
