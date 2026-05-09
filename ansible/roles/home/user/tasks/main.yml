@@ -7,11 +7,24 @@
   ansible.builtin.include_tasks: archlinux.yml
   when: ansible_facts["os_family"] | lower == "archlinux"
 
+- name: User | Collect existing groups
+  ansible.builtin.getent:
+    database: group
+
+- name: User | Filter groups to those present on the system
+  ansible.builtin.set_fact:
+    home_user_existing_groups: >-
+      {{
+        home_user_groups
+        | select('in', ansible_facts.getent_group.keys())
+        | list
+      }}
+
 - name: Ensure user exists with correct shell and groups
   ansible.builtin.user:
     name: "{{ user_name }}"
     shell: "{{ user_shell }}"
-    groups: "{{ home_user_groups }}"
+    groups: "{{ home_user_existing_groups }}"
     append: true
     state: present
 
