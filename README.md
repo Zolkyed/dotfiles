@@ -19,7 +19,7 @@ git clone https://github.com/Zolkyed/dotfiles ~/dotfiles
 cd ~/dotfiles
 
 # Bootstrap: installs Ansible, sops, age, collections, then runs the playbook
-just bootstrap
+just bootstrap desktop
 ```
 
 ```bash

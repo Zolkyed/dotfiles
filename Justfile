@@ -30,8 +30,8 @@ tags host="desktop" tags="all":
 tags-local host="desktop" tags="all":
     cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{PLAYBOOK}} -l {{host}} --tags {{tags}}
 
-bootstrap:
-    bash scripts/run_once_install-ansible.sh
+bootstrap host="desktop":
+    bash scripts/run_once_install-ansible.sh {{host}}
 
 rebuild host="desktop":
     just run {{host}}

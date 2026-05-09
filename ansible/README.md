@@ -6,7 +6,7 @@ Full machine provisioning for Debian and Arch Linux — 30 roles, one playbook.
 
 ```bash
 # From repo root — bootstrap everything from scratch
-just bootstrap
+just bootstrap desktop
 
 # From repo root with just (after just setup-dev)
 just run desktop                  # remote (SSH)
