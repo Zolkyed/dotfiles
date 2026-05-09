@@ -37,12 +37,12 @@
     # --- System foundation ---
     - role: system/sysctl
       tags: sysctl
-    - role: home/user
+    - role: user/account
       tags: user
     - role: system/sudoers
       tags: sudoers
     # --- Packages (core installs first) ---
-    - role: home/packages
+    - role: user/packages
       tags: packages
     - role: system/fonts
       tags: fonts
@@ -90,15 +90,15 @@
       tags: virtualization
       when: virtualization_enabled
 
-    # --- Home / dotfiles (after all tools are installed) ---
-    - role: home/ssh_keys
+    # --- User / dotfiles (after all tools are installed) ---
+    - role: user/ssh_keys
       tags: ssh_keys
-    - role: home/bin
+    - role: user/bin
       tags: bin
-    - role: home/xdg
+    - role: user/xdg
       tags: xdg
       when: xdg_enabled
-    - role: home/dotfiles
+    - role: user/dotfiles
       tags: dotfiles
 
     # --- Network / security hardening ---

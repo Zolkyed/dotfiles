@@ -20,7 +20,7 @@ firewall_enabled: true
 fail2ban_enabled: true
 
 # Desktop
-plasma_enabled: false
+plasma_enabled: true
 hyprland_enabled: false
 niri_enabled: false
 

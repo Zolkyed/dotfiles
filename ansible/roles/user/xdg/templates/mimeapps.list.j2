@@ -1,0 +1,16 @@
+[Default Applications]
+{% for mime in xdg_browser_mime_types %}
+{{ mime }}={{ xdg_browser_desktop }}
+{% endfor %}
+{% for mime in xdg_editor_mime_types %}
+{{ mime }}={{ xdg_editor_desktop }}
+{% endfor %}
+{% for mime in xdg_file_manager_mime_types %}
+{{ mime }}={{ xdg_file_manager_desktop }}
+{% endfor %}
+{% for mime in xdg_mail_mime_types %}
+{{ mime }}={{ xdg_mail_desktop }}
+{% endfor %}
+{% for mime in xdg_media_mime_types %}
+{{ mime }}={{ xdg_media_player_desktop }}
+{% endfor %}
