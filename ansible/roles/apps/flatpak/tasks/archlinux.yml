@@ -3,12 +3,3 @@
   community.general.pacman:
     name: flatpak
     state: present
-
-- name: Flatpak | Install Discover backend
-  community.general.pacman:
-    name: "{{ flatpak_discover_backend_packages }}"
-    state: present
-  when:
-    - flatpak_discover_backend_packages | length > 0
-    - flatpak_plasmashell_check is defined
-    - flatpak_plasmashell_check.rc == 0

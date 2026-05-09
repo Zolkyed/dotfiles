@@ -6,9 +6,8 @@
 
 - name: Flatpak | Install Discover backend
   ansible.builtin.apt:
-    name: "{{ flatpak_discover_backend_packages }}"
+    name: plasma-discover-backend-flatpak
     state: present
   when:
-    - flatpak_discover_backend_packages | length > 0
     - flatpak_plasmashell_check is defined
     - flatpak_plasmashell_check.rc == 0

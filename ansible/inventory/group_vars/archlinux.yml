@@ -86,8 +86,6 @@ gaming_packages:
 
 # Flatpak
 distro_flatpaks: []
-flatpak_discover_backend_packages: []
-
 # Development
 dev_packages:
   - git

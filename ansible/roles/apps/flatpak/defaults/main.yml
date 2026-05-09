@@ -6,4 +6,3 @@ flatpak_remotes:
 shared_flatpaks: []
 distro_flatpaks: []
 gaming_flatpaks: []
-flatpak_discover_backend_packages: []

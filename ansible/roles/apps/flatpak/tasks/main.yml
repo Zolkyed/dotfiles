@@ -8,8 +8,6 @@
   register: flatpak_plasmashell_check
   changed_when: false
   failed_when: false
-  when:
-    - flatpak_discover_backend_packages | length > 0
 
 - name: Add flatpak remotes
   community.general.flatpak_remote:
