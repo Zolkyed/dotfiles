@@ -1,23 +1,22 @@
-- name: AI | Check nvm.sh exists and is readable
-  ansible.builtin.stat:
-    path: "{{ user_home }}/.nvm/nvm.sh"
-  register: nvm_stat
-  become: true
-  become_user: "{{ user_name }}"
-
-- name: AI | Debug nvm stat
-  ansible.builtin.debug:
-    var: nvm_stat.stat
-
 - name: AI | Locate npm from nvm
-  ansible.builtin.shell:
-    cmd: . {{ user_home }}/.nvm/nvm.sh && command -v npm
-    executable: /bin/bash -i
-  register: apps_ai_npm_path
+  ansible.builtin.shell: |
+    export NVM_DIR="{{ user_home }}/.nvm"
+    source "$NVM_DIR/nvm.sh"
+    NODE_PATH="$(nvm which current)"
+    dirname "$NODE_PATH"
+  args:
+    executable: /bin/bash
+  register: apps_ai_node_bin
   changed_when: false
   become: true
   become_user: "{{ user_name }}"
 
-- name: AI | Debug npm path
-  ansible.builtin.debug:
-    var: apps_ai_npm_path
+- name: AI | Install npm CLIs
+  community.general.npm:
+    name: "{{ item }}"
+    global: true
+    state: present
+    executable: "{{ apps_ai_node_bin.stdout }}/npm"
+  loop: "{{ apps_ai_npm_packages }}"
+  become: true
+  become_user: "{{ user_name }}"
