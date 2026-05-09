@@ -1,9 +1,7 @@
 ---
 - name: AI | Locate npm from nvm
   ansible.builtin.shell:
-    cmd: |
-      source "{{ user_home }}/.nvm/nvm.sh"
-      command -v npm
+    cmd: . {{ user_home }}/.nvm/nvm.sh && command -v npm
     executable: /bin/bash
   register: apps_ai_npm_path
   changed_when: false
