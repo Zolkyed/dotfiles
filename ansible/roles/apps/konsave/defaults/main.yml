@@ -1,0 +1,2 @@
+---
+konsave_bin_path: "{{ user_home }}/.local/bin/konsave"

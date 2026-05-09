@@ -15,11 +15,14 @@
         block: |
           [multilib]
           Include = /etc/pacman.d/mirrorlist
-      register: arch_multilib_repository
       notify: Gaming | Update pacman cache
       when: "'multilib' not in arch_pacman_repositories.stdout_lines"
+
+- name: Gaming | Flush repository handlers
+  ansible.builtin.meta: flush_handlers
 
 - name: Gaming | Install packages
   community.general.pacman:
     name: "{{ gaming_packages }}"
     state: present
+  when: gaming_packages | length > 0

@@ -26,3 +26,4 @@
   ansible.builtin.apt:
     name: "{{ gaming_packages }}"
     state: present
+  when: gaming_packages | length > 0
