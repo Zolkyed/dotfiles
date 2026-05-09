@@ -2,11 +2,15 @@
   ansible.builtin.shell: |
     export NVM_DIR="{{ user_home }}/.nvm"
     source "$NVM_DIR/nvm.sh"
-    nvm use >/dev/null
+
+    nvm install --lts >/dev/null
+    nvm alias default 'lts/*' >/dev/null
+
+    nvm use default >/dev/null
+
     npm install -g {{ item }}
   args:
     executable: /bin/bash
   loop: "{{ apps_ai_npm_packages }}"
-  changed_when: true
   become: true
   become_user: "{{ user_name }}"

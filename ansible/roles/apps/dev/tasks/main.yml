@@ -7,6 +7,9 @@
   ansible.builtin.include_tasks: archlinux.yml
   when: ansible_facts["os_family"] | lower == "archlinux"
 
+# ---------------------------------------------------------------------------
+# Rust
+# ---------------------------------------------------------------------------
 - name: Dev | Install Rust toolchain
   when: apps_dev_install_rust
   block:
@@ -23,6 +26,9 @@
       become: true
       become_user: "{{ user_name }}"
 
+# ---------------------------------------------------------------------------
+# NVM
+# ---------------------------------------------------------------------------
 - name: Dev | Install NVM
   when: apps_dev_install_nvm
   block:
@@ -32,12 +38,27 @@
         dest: "/tmp/nvm-install-{{ apps_dev_nvm_version }}.sh"
         mode: "0755"
 
-    - name: Dev | Install nvm
+    - name: Dev | Run nvm installer
       ansible.builtin.command:
         cmd: "bash /tmp/nvm-install-{{ apps_dev_nvm_version }}.sh"
         creates: "{{ user_home }}/.nvm/nvm.sh"
       become: true
       become_user: "{{ user_name }}"
-      environment:
-        NVM_DIR: "{{ user_home }}/.nvm"
-        PROFILE: /dev/null
+
+# ---------------------------------------------------------------------------
+# Node.js (via NVM)
+# ---------------------------------------------------------------------------
+- name: Dev | Install Node LTS via NVM
+  when: apps_dev_install_nvm
+  ansible.builtin.shell: |
+    export NVM_DIR="{{ user_home }}/.nvm"
+    source "$NVM_DIR/nvm.sh"
+
+    nvm install --lts
+    nvm alias default 'lts/*'
+    nvm use default
+  args:
+    executable: /bin/bash
+    creates: "{{ user_home }}/.nvm/versions/node"
+  become: true
+  become_user: "{{ user_name }}"
