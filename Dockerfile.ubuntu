@@ -52,7 +52,14 @@ RUN if ! getent group "${GROUP}" >/dev/null; then \
       fi; \
     fi && \
     if ! id -u "${USER}" >/dev/null 2>&1; then \
-      useradd --uid "${UID}" --gid "${GROUP}" --create-home --shell /bin/bash "${USER}"; \
+      if getent passwd "${UID}" >/dev/null; then \
+        existing_user="$(getent passwd "${UID}" | cut -d: -f1)"; \
+        usermod -l "${USER}" "${existing_user}"; \
+        usermod -d "/home/${USER}" -m "${USER}"; \
+        usermod -g "${GROUP}" -s /bin/bash "${USER}"; \
+      else \
+        useradd --uid "${UID}" --gid "${GROUP}" --create-home --shell /bin/bash "${USER}"; \
+      fi; \
     fi && \
     echo "${USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${USER} && \
     chmod 0440 /etc/sudoers.d/${USER}
