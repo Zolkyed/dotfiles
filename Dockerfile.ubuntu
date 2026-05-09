@@ -70,16 +70,18 @@ RUN cd /home/${USER}/dotfiles && \
     yamllint -c .yamllint ansible .github && \
     shellcheck scripts/*.sh
 
+USER root
+
 RUN --mount=type=secret,id=sops_age_key \
-    install -d -m 700 /home/${USER}/.config/sops/age && \
-    install -m 600 /run/secrets/sops_age_key /home/${USER}/.config/sops/age/keys.txt && \
-    export SOPS_AGE_KEY_FILE=/home/${USER}/.config/sops/age/keys.txt && \
-    cd /home/${USER}/dotfiles/ansible && \
+    install -d -m 700 -o ${UID} -g ${GID} /home/${USER}/.config/sops/age && \
+    install -m 600 -o ${UID} -g ${GID} /run/secrets/sops_age_key /home/${USER}/.config/sops/age/keys.txt && \
+    su -s /bin/sh -c 'export SOPS_AGE_KEY_FILE=/home/'"${USER}"'/.config/sops/age/keys.txt && \
+    cd /home/'"${USER}"'/dotfiles/ansible && \
     ansible-playbook -i inventory/local.yml playbooks/setup.yml --syntax-check && \
     ansible-lint playbooks/setup.yml && \
     ansible-playbook \
       -i inventory/local.yml \
       playbooks/setup.yml \
       -l server \
-      --tags user,packages,dotfiles && \
-    rm -f "${SOPS_AGE_KEY_FILE}"
+      --tags user,packages,dotfiles' ${USER} && \
+    rm -f /home/${USER}/.config/sops/age/keys.txt
