@@ -13,22 +13,15 @@ ARG GID=1000
 ENV ANSIBLE_LOCAL_TEMP=/tmp/ansible-local
 ENV ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote
 
-USER root
-
 RUN pacman -Syu --noconfirm && \
     pacman -S --noconfirm --needed \
       age \
       ansible \
       ansible-lint \
-      base-devel \
       curl \
-      git \
-      rsync \
       shellcheck \
       sops \
       sudo \
-      wget \
-      which \
       yamllint \
       zsh
 
@@ -57,26 +50,22 @@ COPY . /home/${USER}/dotfiles
 
 RUN chown -R ${USER}:${GROUP} /home/${USER}/dotfiles /home/${USER}
 
-USER ${USER}
-
-RUN ansible-galaxy collection install -r ansible/requirements.yml
+RUN sudo -u ${USER} ansible-galaxy collection install -r /home/${USER}/dotfiles/ansible/requirements.yml
 
 RUN cd /home/${USER}/dotfiles && \
     yamllint -c .yamllint ansible .github && \
     shellcheck scripts/*.sh
 
-USER root
-
 RUN --mount=type=secret,id=sops_age_key \
     install -d -m 700 -o ${UID} -g ${GID} /home/${USER}/.config/sops/age && \
     install -m 600 -o ${UID} -g ${GID} /run/secrets/sops_age_key /home/${USER}/.config/sops/age/keys.txt && \
-    su -s /bin/sh -c 'export SOPS_AGE_KEY_FILE=/home/'"${USER}"'/.config/sops/age/keys.txt && \
-    cd /home/'"${USER}"'/dotfiles/ansible && \
+    sudo -u ${USER} sh -lc 'export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt" && \
+    cd "$HOME/dotfiles/ansible" && \
     ansible-playbook -i inventory/local.yml playbooks/setup.yml --syntax-check && \
     ansible-lint playbooks/setup.yml && \
     ansible-playbook \
       -i inventory/local.yml \
       playbooks/setup.yml \
       -l server \
-      --tags user,packages,dotfiles' ${USER} && \
+      --tags user,packages,dotfiles' && \
     rm -f /home/${USER}/.config/sops/age/keys.txt
