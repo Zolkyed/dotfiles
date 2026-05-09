@@ -29,8 +29,16 @@ RUN pacman -Syu --noconfirm && \
       yamllint \
       zsh
 
-RUN groupadd --gid ${GID} ${GROUP} && \
-    useradd --uid ${UID} --gid ${GID} --create-home --shell /bin/bash ${USER} && \
+RUN if ! getent group "${GROUP}" >/dev/null; then \
+      if getent group "${GID}" >/dev/null; then \
+        groupmod -n "${GROUP}" "$(getent group "${GID}" | cut -d: -f1)"; \
+      else \
+        groupadd --gid "${GID}" "${GROUP}"; \
+      fi; \
+    fi && \
+    if ! id -u "${USER}" >/dev/null 2>&1; then \
+      useradd --uid "${UID}" --gid "${GROUP}" --create-home --shell /bin/bash "${USER}"; \
+    fi && \
     echo "${USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${USER} && \
     chmod 0440 /etc/sudoers.d/${USER}
 
@@ -66,4 +74,4 @@ RUN cd /home/${USER}/dotfiles/ansible && \
       -i inventory/local.yml \
       playbooks/setup.yml \
       -l server \
-      --tags user,packages
+      --tags user,packages,dotfiles
