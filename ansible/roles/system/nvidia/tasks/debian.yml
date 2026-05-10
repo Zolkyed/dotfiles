@@ -39,7 +39,8 @@
 
 - name: Nvidia | Check if NVIDIA driver already installed
   ansible.builtin.shell:
-    cmd: dpkg -l | grep -c '^ii.*nvidia-driver' || true
+    cmd: set -o pipefail && dpkg -l | grep -c '^ii.*nvidia-driver' || true
+    executable: /bin/bash
   register: nvidia_ubuntu_driver_check
   changed_when: false
   when: ansible_facts["distribution"] == "Ubuntu"

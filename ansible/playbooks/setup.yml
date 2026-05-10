@@ -41,7 +41,7 @@
       tags: user
     - role: system/sudoers
       tags: sudoers
-      
+
     # --- Packages (core installs first) ---
     - role: system/packages
       tags: packages

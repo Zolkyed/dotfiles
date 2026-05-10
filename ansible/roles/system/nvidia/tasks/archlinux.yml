@@ -1,7 +1,8 @@
 ---
 - name: Nvidia | Detect installed kernels
   ansible.builtin.shell:
-    cmd: pacman -Qq | grep -E '^linux(-lts|-zen|-hardened|-rt|-rt-lts)?$'
+    cmd: set -o pipefail && pacman -Qq | grep -E '^linux(-lts|-zen|-hardened|-rt|-rt-lts)?$'
+    executable: /bin/bash
   register: nvidia_arch_kernels
   changed_when: false
   failed_when: false

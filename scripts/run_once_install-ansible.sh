@@ -10,6 +10,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # ---------------------------------------------------------------------------
 detect_distro() {
     if [[ -f /etc/os-release ]]; then
+        # shellcheck source=/dev/null
         source /etc/os-release
         distro_id="${ID:-}"
         distro_like=" ${ID_LIKE:-} "
