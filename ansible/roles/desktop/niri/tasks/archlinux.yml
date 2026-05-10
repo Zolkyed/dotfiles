@@ -3,3 +3,4 @@
   community.general.pacman:
     name: "{{ niri_packages }}"
     state: present
+  when: niri_packages | length > 0

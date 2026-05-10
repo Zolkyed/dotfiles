@@ -3,3 +3,4 @@
   community.general.pacman:
     name: "{{ hyprland_packages }}"
     state: present
+  when: hyprland_packages | length > 0
