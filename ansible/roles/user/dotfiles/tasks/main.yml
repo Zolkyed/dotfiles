@@ -44,6 +44,6 @@
 
     - name: Dotfiles | Apply dotfiles
       ansible.builtin.command:
-        cmd: "{{ chezmoi_bin }} apply --source {{ chezmoi_source_dir }} --no-tty --force--exclude scripts"
+        cmd: "{{ chezmoi_bin }} apply --source {{ chezmoi_source_dir }} --no-tty --force --exclude scripts"
       register: chezmoi_apply
       changed_when: chezmoi_apply.stdout != ""
