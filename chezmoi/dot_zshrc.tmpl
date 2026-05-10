@@ -90,8 +90,13 @@ alias zshrc='${EDITOR:-nvim} ~/.zshrc'
 # ========================
 export EDITOR='nvim'
 export VISUAL='nvim'
+{{- if eq .distro_family "debian" }}
+export PAGER='batcat'
+export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
+{{- else }}
 export PAGER='bat'
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+{{- end }}
 export PATH="$HOME/.local/bin:$PATH"
 export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt"
 

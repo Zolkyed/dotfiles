@@ -41,12 +41,15 @@
   when: dotfiles_use_repo
 
 - name: Dotfiles | Sync chezmoi source from local path
-  ansible.builtin.copy:
+  ansible.posix.synchronize:
     src: "{{ dotfiles_chezmoi_source }}/"
     dest: "{{ user_home }}/.local/share/chezmoi/"
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
-    mode: preserve
+    delete: true
+    recursive: true
+    owner: false
+    group: false
+  become: true
+  become_user: "{{ user_name }}"
   when: not dotfiles_use_repo
 
 - name: Dotfiles | Apply dotfiles with chezmoi
