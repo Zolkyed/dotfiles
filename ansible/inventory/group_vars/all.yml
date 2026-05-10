@@ -7,7 +7,7 @@ user_home: "/home/{{ user_name }}"
 user_shell: /bin/zsh
 
 # ---------------------------------------------------------------------------
-# Feature flags — shared defaults; override per host in host_vars
+# Feature flags
 # ---------------------------------------------------------------------------
 
 # System
@@ -42,9 +42,8 @@ konsave_enabled: false
 xdg_enabled: true
 
 # ---------------------------------------------------------------------------
-# Home
-# ---------------------------------------------------------------------------
 # Flatpak
+# ---------------------------------------------------------------------------
 shared_flatpaks:
   - com.discordapp.Discord
   - com.spotify.Client

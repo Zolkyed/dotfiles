@@ -51,6 +51,7 @@ utility_packages:
   - just
   - trash-cli
   - neovim
+  - starship
 
 fun_packages:
   - cowsay
