@@ -1,0 +1,11 @@
+---
+- name: Bluetooth | Install packages
+  ansible.builtin.package:
+    name: "{{ bluetooth_packages }}"
+    state: present
+
+- name: Bluetooth | Enable and start bluetooth service
+  ansible.builtin.systemd:
+    name: bluetooth
+    enabled: true
+    state: started

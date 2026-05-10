@@ -11,6 +11,7 @@ user_shell: /bin/zsh
 # ---------------------------------------------------------------------------
 
 # System
+bluetooth_enabled: true
 splashboot_enabled: false
 nvidia_enabled: false
 docker_enabled: true

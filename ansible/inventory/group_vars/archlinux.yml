@@ -132,6 +132,12 @@ fonts_packages:
   - ttf-liberation
   - gnu-free-fonts
 
+# Bluetooth
+bluetooth_packages:
+  - bluez
+  - bluez-utils
+  - blueman
+
 # Networking / VPN
 networking_packages:
   - networkmanager

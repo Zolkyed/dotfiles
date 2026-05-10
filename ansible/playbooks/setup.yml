@@ -105,6 +105,9 @@
     # --- Network / security hardening ---
     - role: system/networking
       tags: networking
+    - role: system/bluetooth
+      tags: bluetooth
+      when: bluetooth_enabled
     - role: system/vpn
       tags: vpn
       when: vpn_enabled

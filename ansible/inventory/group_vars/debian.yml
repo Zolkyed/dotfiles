@@ -153,6 +153,11 @@ fonts_packages:
   - fonts-liberation
   - fonts-freefont-ttf
 
+# Bluetooth
+bluetooth_packages:
+  - bluez
+  - blueman
+
 # Networking / VPN
 networking_packages:
   - network-manager
