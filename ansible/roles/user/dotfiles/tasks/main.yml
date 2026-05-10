@@ -1,27 +1,22 @@
 ---
-- name: Dotfiles | Check if chezmoi is installed
-  ansible.builtin.stat:
-    path: "{{ chezmoi_bin }}"
-  register: chezmoi_binary
+- name: Dotfiles | Ensure ~/.local/bin exists
+  ansible.builtin.file:
+    path: "{{ user_home }}/.local/bin"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0755"
 
 - name: Dotfiles | Install chezmoi
   ansible.builtin.shell:
     cmd: sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "{{ user_home }}/.local/bin"
+    creates: "{{ chezmoi_bin }}"
   become: true
   become_user: "{{ user_name }}"
-  when: not chezmoi_binary.stat.exists
 
 - name: Dotfiles | Ensure chezmoi source directory exists
   ansible.builtin.file:
     path: "{{ user_home }}/.local/share/chezmoi"
-    state: directory
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
-    mode: "0700"
-
-- name: Dotfiles | Ensure user config directory exists
-  ansible.builtin.file:
-    path: "{{ user_home }}/.config"
     state: directory
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
@@ -48,7 +43,7 @@
 
 - name: Dotfiles | Apply dotfiles with chezmoi
   ansible.builtin.command:
-    cmd: "{{ chezmoi_bin }} apply --no-tty --force"
+    cmd: "{{ chezmoi_bin }} apply --no-tty --force --verbose"
   become: true
   become_user: "{{ user_name }}"
   register: chezmoi_apply
