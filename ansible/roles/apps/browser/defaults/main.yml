@@ -26,4 +26,9 @@ browser_extensions:
   - name: Image Downloader
     id: cnpniohnfphhjihaiiggeabnkjhpaldj
     update_url: https://clients2.google.com/service/update2/crx
-browser_extra_policies: {}
+browser_extra_policies:
+  DefaultSearchProviderEnabled: true
+  DefaultSearchProviderName: "Google"
+  DefaultSearchProviderSearchURL: "https://www.google.com/search?q={searchTerms}"
+  DefaultSearchProviderSuggestURL: "https://www.google.com/complete/search?output=chrome&q={searchTerms}"
+  RestoreOnStartup: 5
