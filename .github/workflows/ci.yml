@@ -13,7 +13,7 @@ permissions:
 jobs:
   lint:
     name: Lint
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -39,7 +39,7 @@ jobs:
 
   integration:
     name: Integration (${{ matrix.name }})
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs: lint
     strategy:
       fail-fast: false
