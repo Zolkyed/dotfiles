@@ -21,30 +21,39 @@ on:
 permissions:
   contents: read
 
+env:
+  SOPS_VERSION: "3.9.4"
+
 jobs:
-  deploy:
-    name: Local deploy on ${{ inputs.host }}
-    runs-on:
-      - self-hosted
-      - ${{ inputs.host }}
+  prepare:
+    name: Prepare for local run on ${{ inputs.host }}
+    runs-on: ubuntu-24.04
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
 
-      - name: Install Ansible collections
-        env:
-          ANSIBLE_LOCAL_TEMP: /tmp/ansible-local
-          ANSIBLE_REMOTE_TEMP: /tmp/ansible-remote
-        run: ansible-galaxy collection install -r ansible/requirements.yml
+      - name: Install sops
+        run: |
+          curl -fsSL \
+            "https://github.com/getsops/sops/releases/download/v${SOPS_VERSION}/sops-v${SOPS_VERSION}.linux.amd64" \
+            -o /tmp/sops
+          sudo install -m 755 /tmp/sops /usr/local/bin/sops
 
-      - name: Run playbook
+      - name: Decrypt vault files
         env:
           SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
-          ANSIBLE_LOCAL_TEMP: /tmp/ansible-local
-          ANSIBLE_REMOTE_TEMP: /tmp/ansible-remote
         run: |
-          cd ansible
-          ansible-playbook -i inventory/local.yml playbooks/setup.yml \
-            -l "${{ inputs.host }}" \
-            -v \
-            ${{ inputs.tags && format('--tags {0}', inputs.tags) || '' }}
+          find ansible/inventory -name 'vault.yml' | while read -r f; do
+            sops --decrypt "$f" > "$f.tmp"
+            mv "$f.tmp" "$f"
+          done
+
+      - name: Package for local run
+        run: tar czf ansible-ready.tar.gz ansible/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ansible-ready-${{ inputs.host }}
+          path: ansible-ready.tar.gz
+          retention-days: 1
