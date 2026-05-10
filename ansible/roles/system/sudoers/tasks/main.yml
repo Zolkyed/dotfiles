@@ -1,9 +1,4 @@
 ---
-- name: Sudoers | Remove legacy pacman-only passwordless sudo
-  ansible.builtin.file:
-    path: /etc/sudoers.d/dotfiles-pacman-nopasswd
-    state: absent
-
 - name: Sudoers | Allow user passwordless sudo
   ansible.builtin.copy:
     dest: /etc/sudoers.d/dotfiles-nopasswd
@@ -11,7 +6,7 @@
     owner: root
     group: root
     mode: "0440"
-    validate: "{{ sudoers_visudo_path }} -cf %s"
+    validate: "visudo -cf %s"
   when: sudoers_nopasswd
 
 - name: Sudoers | Remove passwordless sudo when disabled
