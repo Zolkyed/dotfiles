@@ -25,7 +25,6 @@ hyprland_enabled: false
 niri_enabled: false
 
 # Apps
-ai_enabled: true
 browser_enabled: true
 dev_enabled: true
 flatpak_enabled: true

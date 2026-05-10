@@ -95,6 +95,8 @@ dev_packages:
   - python
   - python-pip
   - python-pipx
+  - nodejs
+  - npm
   - jq
   - yq
   - httpie

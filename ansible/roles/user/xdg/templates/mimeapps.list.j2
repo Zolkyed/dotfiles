@@ -11,6 +11,9 @@
 {% for mime in xdg_mail_mime_types %}
 {{ mime }}={{ xdg_mail_desktop }}
 {% endfor %}
+{% for mime in xdg_pdf_mime_types %}
+{{ mime }}={{ xdg_pdf_desktop }}
+{% endfor %}
 {% for mime in xdg_media_mime_types %}
 {{ mime }}={{ xdg_media_player_desktop }}
 {% endfor %}

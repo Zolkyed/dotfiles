@@ -26,6 +26,11 @@ xdg_mail_mime_types:
   - message/rfc822
   - x-scheme-handler/mailto
 
+xdg_pdf_desktop: brave-browser.desktop
+
+xdg_pdf_mime_types:
+  - application/pdf
+
 xdg_media_mime_types:
   - audio/aac
   - audio/flac

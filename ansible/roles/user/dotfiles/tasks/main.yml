@@ -1,14 +1,15 @@
 ---
+- name: Dotfiles | Check if chezmoi is installed
+  ansible.builtin.stat:
+    path: "{{ chezmoi_bin }}"
+  register: chezmoi_binary
+
 - name: Dotfiles | Install chezmoi
-  # Official installer from https://chezmoi.io — HTTPS only, uses -fsLS (fail on error).
-  # Idempotent: 'creates' skips if chezmoi binary already exists.
   ansible.builtin.shell:
-    cmd: >
-      sh -c "$(curl -fsLS get.chezmoi.io)" --
-      -b "{{ user_home }}/.local/bin"
-    creates: "{{ chezmoi_bin }}"
+    cmd: sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "{{ user_home }}/.local/bin"
   become: true
   become_user: "{{ user_name }}"
+  when: not chezmoi_binary.stat.exists
 
 - name: Dotfiles | Ensure chezmoi source directory exists
   ansible.builtin.file:

@@ -70,9 +70,6 @@
     - role: apps/dev
       tags: dev
       when: dev_enabled
-    - role: apps/ai
-      tags: ai
-      when: ai_enabled
     - role: apps/gaming
       tags: gaming
       when: gaming_enabled
