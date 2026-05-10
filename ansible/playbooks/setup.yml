@@ -61,6 +61,9 @@
     - role: apps/hayase
       tags: hayase
       when: hayase_enabled
+    - role: apps/mihon
+      tags: mihon
+      when: mihon_enabled
     - role: apps/browser
       tags: browser
       when: browser_enabled

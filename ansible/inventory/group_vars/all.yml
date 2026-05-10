@@ -30,6 +30,7 @@ browser_enabled: true
 dev_enabled: true
 flatpak_enabled: true
 hayase_enabled: true
+mihon_enabled: true
 media_enabled: true
 office_enabled: true
 rclone_enabled: true

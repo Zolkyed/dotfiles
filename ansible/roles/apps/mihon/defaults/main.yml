@@ -1,0 +1,7 @@
+---
+mihon_desktop_dest: "{{ user_home }}/.local/share/applications/mihon.desktop"
+mihon_icon_dest: "{{ user_home }}/.local/share/icons/mihon.png"
+mihon_url: "https://mihon.org"
+mihon_icon_url: "https://mihon.org/favicon-96x96.png"
+mihon_browser: "brave-browser"
+mihon_wm_class: "brave-mihon.org__-Default"
