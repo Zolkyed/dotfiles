@@ -36,7 +36,13 @@ alias -g .....='../../../..'
 # Aliases
 # ========================
 # Core tools
+{{- if eq .distro_family "debian" }}
+alias cat='batcat --paging=never'
+alias find='fdfind'
+{{- else if eq .distro_family "arch" }}
 alias cat='bat --paging=never'
+alias find='fd'
+{{- end }}
 alias ls='eza --icons'
 alias ll='eza -lah --icons --git'
 alias la='eza -a --icons'
@@ -45,7 +51,6 @@ alias lt2='eza --tree --level=2 --icons'
 
 # Search
 alias grep='rg'
-alias find='fdfind'
 
 # Editors
 alias vim='nvim'
@@ -179,6 +184,16 @@ ZSH_AUTOSUGGEST_USE_ASYNC=true
 # FZF
 # ========================
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+{{- if eq .distro_family "debian" }}
+export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND='fdfind --type d --hidden --follow --exclude .git'
+export FZF_DEFAULT_OPTS=$'
+  --height 40% --layout=reverse --border
+  --preview "batcat --style=numbers --color=always {}"
+  --preview-window=right:50%
+'
+{{- else if eq .distro_family "arch" }}
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
@@ -187,6 +202,7 @@ export FZF_DEFAULT_OPTS=$'
   --preview "bat --style=numbers --color=always {}"
   --preview-window=right:50%
 '
+{{- end }}
 
 # ========================
 # Zoxide
