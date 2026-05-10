@@ -1,0 +1,50 @@
+---
+name: Deploy (Local)
+
+on:
+  workflow_dispatch:
+    inputs:
+      host:
+        description: Target host
+        required: true
+        default: desktop
+        type: choice
+        options:
+          - desktop
+          - laptop
+          - server
+      tags:
+        description: "Ansible tags, comma-separated (leave empty for all)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Local deploy on ${{ inputs.host }}
+    runs-on:
+      - self-hosted
+      - ${{ inputs.host }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Install Ansible collections
+        env:
+          ANSIBLE_LOCAL_TEMP: /tmp/ansible-local
+          ANSIBLE_REMOTE_TEMP: /tmp/ansible-remote
+        run: ansible-galaxy collection install -r ansible/requirements.yml
+
+      - name: Run playbook
+        env:
+          SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
+          ANSIBLE_LOCAL_TEMP: /tmp/ansible-local
+          ANSIBLE_REMOTE_TEMP: /tmp/ansible-remote
+        run: |
+          cd ansible
+          ansible-playbook -i inventory/local.yml playbooks/setup.yml \
+            -l "${{ inputs.host }}" \
+            -v \
+            ${{ inputs.tags && format('--tags {0}', inputs.tags) || '' }}
