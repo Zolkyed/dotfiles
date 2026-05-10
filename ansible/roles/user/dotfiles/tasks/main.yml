@@ -42,6 +42,11 @@
         version: "{{ dotfiles_repo_branch }}"
         update: true
 
+    - name: Dotfiles | Init chezmoi (generates config from .chezmoi.toml.tmpl)
+      ansible.builtin.command:
+        cmd: "{{ chezmoi_bin }} init --source {{ chezmoi_source_dir }} --no-tty"
+      changed_when: false
+
     - name: Dotfiles | Apply dotfiles
       ansible.builtin.command:
         cmd: "{{ chezmoi_bin }} apply --source {{ chezmoi_source_dir }} --no-tty --force --exclude scripts"
