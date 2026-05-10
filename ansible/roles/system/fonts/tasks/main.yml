@@ -10,6 +10,12 @@
     group: root
     mode: "0755"
 
+- name: Fonts | Check installed Nerd Fonts version
+  ansible.builtin.slurp:
+    src: "{{ fonts_nerd_install_dir }}/.version"
+  register: fonts_nerd_installed_version
+  failed_when: false
+
 - name: Fonts | Download Nerd Fonts archives
   ansible.builtin.get_url:
     url: "https://github.com/ryanoasis/nerd-fonts/releases/download/v{{ fonts_nerd.version }}/{{ item }}.tar.xz"
@@ -17,5 +23,7 @@
     mode: "0644"
   loop: "{{ fonts_nerd.families }}"
   register: fonts_nerd_download
-  when: fonts_nerd.version | length > 0
+  when:
+    - fonts_nerd.version | length > 0
+    - (fonts_nerd_installed_version.content | default('') | b64decode | trim) != fonts_nerd.version
   notify: Fonts | Extract Nerd Fonts

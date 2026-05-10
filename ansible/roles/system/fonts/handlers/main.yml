@@ -13,7 +13,16 @@
     }}
   notify: Fonts | Update font cache
 
+- name: Fonts | Write Nerd Fonts version marker
+  ansible.builtin.copy:
+    content: "{{ fonts_nerd.version }}\n"
+    dest: "{{ fonts_nerd_install_dir }}/.version"
+    owner: root
+    group: root
+    mode: "0644"
+  listen: "Fonts | Extract Nerd Fonts"
+
 - name: Fonts | Update font cache
   ansible.builtin.command:
     cmd: fc-cache -fv
-  changed_when: true
+  changed_when: false

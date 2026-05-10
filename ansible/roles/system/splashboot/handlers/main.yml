@@ -1,4 +1,6 @@
 ---
-- name: "Splashboot | Run handlers for {{ ansible_facts.os_family }}"
-  ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
+- name: Splashboot | Update initramfs
+  ansible.builtin.command:
+    cmd: "{{ 'mkinitcpio -P' if ansible_facts.os_family | lower == 'archlinux' else 'update-initramfs -u' }}"
+  changed_when: false
   listen: Splashboot | Update initramfs

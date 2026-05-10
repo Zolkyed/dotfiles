@@ -3,4 +3,5 @@
   community.general.pacman:
     name: "{{ fonts_packages }}"
     state: present
+  when: fonts_packages | length > 0
   notify: Fonts | Update font cache

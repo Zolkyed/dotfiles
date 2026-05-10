@@ -1,5 +1,0 @@
----
-- name: Splashboot | Update initramfs on Debian
-  ansible.builtin.command:
-    cmd: update-initramfs -u
-  changed_when: true

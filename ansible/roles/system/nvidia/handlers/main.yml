@@ -1,5 +1,5 @@
 ---
-- name: Rebuild initramfs
+- name: Nvidia | Rebuild initramfs
   ansible.builtin.command:
     cmd: "{{ 'mkinitcpio -P' if ansible_facts.os_family | lower == 'archlinux' else 'update-initramfs -u' }}"
-  changed_when: true
+  changed_when: false
