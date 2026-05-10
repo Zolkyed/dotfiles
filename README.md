@@ -201,3 +201,5 @@ just bootstrap desktop
 - `host_vars/<host>/vars.yml` → per-machine overrides only
 
 https://github.com/shricodev/dotfiles/tree/f7814b58179c5ece4a59f4c0396c91cb30e75f3c  
+https://www.reddit.com/r/unixporn/comments/1qimvm8/kde_monochrome_in_the_night/
+https://www.reddit.com/r/unixporn/comments/1srpss0/kde_plasma_who_said_desktop_environments_cant_be/
