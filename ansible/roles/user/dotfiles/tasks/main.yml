@@ -7,14 +7,7 @@
     group: "{{ user_name }}"
     mode: "0755"
 
-- name: Dotfiles | Install chezmoi
-  ansible.builtin.shell:
-    cmd: sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "{{ user_home }}/.local/bin"
-    creates: "{{ chezmoi_bin }}"
-  become: true
-  become_user: "{{ user_name }}"
-
-- name: Dotfiles | Ensure ~/.config is owned by {{ user_name }}
+- name: Dotfiles | Ensure ~/.config exists
   ansible.builtin.file:
     path: "{{ user_home }}/.config"
     state: directory
@@ -22,40 +15,35 @@
     group: "{{ user_name }}"
     mode: "0700"
 
-- name: Dotfiles | Ensure chezmoi source directory exists
-  ansible.builtin.file:
-    path: "{{ user_home }}/.local/share/chezmoi"
-    state: directory
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
-    mode: "0700"
-
-- name: Dotfiles | Clone dotfiles repo
-  ansible.builtin.git:
-    repo: "{{ dotfiles_repo }}"
-    dest: "{{ user_home }}/.local/share/chezmoi"
-    version: "{{ dotfiles_repo_branch }}"
-    update: false
+- name: Dotfiles | Manage as user
   become: true
   become_user: "{{ user_name }}"
-  when: dotfiles_use_repo
+  block:
+    - name: Dotfiles | Install chezmoi
+      ansible.builtin.shell:
+        cmd: sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "{{ user_home }}/.local/bin"
+        creates: "{{ chezmoi_bin }}"
 
-- name: Dotfiles | Sync chezmoi source from local path
-  ansible.posix.synchronize:
-    src: "{{ dotfiles_chezmoi_source }}/"
-    dest: "{{ user_home }}/.local/share/chezmoi/"
-    delete: true
-    recursive: true
-    owner: false
-    group: false
-  become: true
-  become_user: "{{ user_name }}"
-  when: not dotfiles_use_repo
+    - name: Dotfiles | Check if dotfiles repo is initialized
+      ansible.builtin.stat:
+        path: "{{ dotfiles_repo_dir }}/.git"
+      register: dotfiles_git
 
-- name: Dotfiles | Apply dotfiles with chezmoi
-  ansible.builtin.command:
-    cmd: "{{ chezmoi_bin }} apply --init --no-tty --force --verbose"
-  become: true
-  become_user: "{{ user_name }}"
-  register: chezmoi_apply
-  changed_when: chezmoi_apply.stdout != ""
+    - name: Dotfiles | Remove non-git dotfiles dir to allow fresh clone
+      ansible.builtin.file:
+        path: "{{ dotfiles_repo_dir }}"
+        state: absent
+      when: not dotfiles_git.stat.exists
+
+    - name: Dotfiles | Clone/pull dotfiles repo
+      ansible.builtin.git:
+        repo: "{{ dotfiles_repo }}"
+        dest: "{{ dotfiles_repo_dir }}"
+        version: "{{ dotfiles_repo_branch }}"
+        update: true
+
+    - name: Dotfiles | Apply dotfiles
+      ansible.builtin.command:
+        cmd: "{{ chezmoi_bin }} apply --source {{ chezmoi_source_dir }} --no-tty --force --verbose --exclude scripts"
+      register: chezmoi_apply
+      changed_when: chezmoi_apply.stdout != ""
