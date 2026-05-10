@@ -1,3 +1,9 @@
+{{- $bat := "bat" -}}
+{{- $fd  := "fd"  -}}
+{{- if eq .distro_family "debian" -}}
+{{-   $bat = "batcat" -}}
+{{-   $fd  = "fdfind" -}}
+{{- end -}}
 # ========================
 # Performance
 # ========================
@@ -36,13 +42,8 @@ alias -g .....='../../../..'
 # Aliases
 # ========================
 # Core tools
-{{- if eq .distro_family "debian" }}
-alias cat='batcat --paging=never'
-alias find='fdfind'
-{{- else if eq .distro_family "arch" }}
-alias cat='bat --paging=never'
-alias find='fd'
-{{- end }}
+alias cat='{{ $bat }} --paging=never'
+alias find='{{ $fd }}'
 alias ls='eza --icons'
 alias ll='eza -lah --icons --git'
 alias la='eza -a --icons'
@@ -90,13 +91,8 @@ alias zshrc='${EDITOR:-nvim} ~/.zshrc'
 # ========================
 export EDITOR='nvim'
 export VISUAL='nvim'
-{{- if eq .distro_family "debian" }}
-export PAGER='batcat'
-export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
-{{- else }}
-export PAGER='bat'
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-{{- end }}
+export PAGER='{{ $bat }}'
+export MANPAGER="sh -c 'col -bx | {{ $bat }} -l man -p'"
 export PATH="$HOME/.local/bin:$PATH"
 export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt"
 
@@ -104,11 +100,17 @@ export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt"
 # Node (NVM)
 # ========================
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"
 
-# ensures global npm binaries always resolve
-export PATH="$HOME/.nvm/versions/node/$(nvm version 2>/dev/null)/bin:$PATH"
+_nvm_load() {
+  unset -f nvm node npm npx
+  [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"
+}
+
+nvm()  { _nvm_load; nvm  "$@"; }
+node() { _nvm_load; node "$@"; }
+npm()  { _nvm_load; npm  "$@"; }
+npx()  { _nvm_load; npx  "$@"; }
 
 # ========================
 # Plugins (auto-install)
@@ -189,25 +191,14 @@ ZSH_AUTOSUGGEST_USE_ASYNC=true
 # FZF
 # ========================
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-{{- if eq .distro_family "debian" }}
-export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude .git'
+export FZF_DEFAULT_COMMAND='{{ $fd }} --type f --hidden --follow --exclude .git'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_C_COMMAND='fdfind --type d --hidden --follow --exclude .git'
+export FZF_ALT_C_COMMAND='{{ $fd }} --type d --hidden --follow --exclude .git'
 export FZF_DEFAULT_OPTS=$'
   --height 40% --layout=reverse --border
-  --preview "batcat --style=numbers --color=always {}"
+  --preview "{{ $bat }} --style=numbers --color=always {}"
   --preview-window=right:50%
 '
-{{- else if eq .distro_family "arch" }}
-export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
-export FZF_DEFAULT_OPTS=$'
-  --height 40% --layout=reverse --border
-  --preview "bat --style=numbers --color=always {}"
-  --preview-window=right:50%
-'
-{{- end }}
 
 # ========================
 # Zoxide
