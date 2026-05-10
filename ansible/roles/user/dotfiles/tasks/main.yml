@@ -14,6 +14,14 @@
   become: true
   become_user: "{{ user_name }}"
 
+- name: Dotfiles | Ensure ~/.config is owned by {{ user_name }}
+  ansible.builtin.file:
+    path: "{{ user_home }}/.config"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0700"
+
 - name: Dotfiles | Ensure chezmoi source directory exists
   ansible.builtin.file:
     path: "{{ user_home }}/.local/share/chezmoi"

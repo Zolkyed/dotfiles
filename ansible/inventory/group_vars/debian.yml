@@ -153,6 +153,13 @@ fonts_packages:
   - fonts-liberation
   - fonts-freefont-ttf
 
+# Audio
+audio_packages:
+  - pipewire
+  - wireplumber
+  - pipewire-pulse
+  - pipewire-alsa
+
 # Bluetooth
 bluetooth_packages:
   - bluez

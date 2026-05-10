@@ -132,6 +132,13 @@ fonts_packages:
   - ttf-liberation
   - gnu-free-fonts
 
+# Audio
+audio_packages:
+  - pipewire
+  - wireplumber
+  - pipewire-pulse
+  - pipewire-alsa
+
 # Bluetooth
 bluetooth_packages:
   - bluez

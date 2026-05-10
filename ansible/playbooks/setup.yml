@@ -108,6 +108,9 @@
     - role: system/bluetooth
       tags: bluetooth
       when: bluetooth_enabled
+    - role: system/audio
+      tags: audio
+      when: audio_enabled
     - role: system/vpn
       tags: vpn
       when: vpn_enabled

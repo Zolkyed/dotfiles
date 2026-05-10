@@ -1,0 +1,6 @@
+---
+- name: Audio | Install packages
+  community.general.pacman:
+    name: "{{ audio_packages }}"
+    state: present
+  when: audio_packages | length > 0
