@@ -1,8 +1,6 @@
 ---
-browser_debian_keyring_dir: /usr/share/keyrings
-browser_debian_keyring_path: "{{ browser_debian_keyring_dir }}/brave-browser-archive-keyring.gpg"
-browser_debian_sources_dir: /etc/apt/sources.list.d
-browser_debian_sources_path: "{{ browser_debian_sources_dir }}/brave-browser-release.sources"
+browser_debian_keyring_path: /usr/share/keyrings/brave-browser-archive-keyring.gpg
+browser_debian_sources_path: /etc/apt/sources.list.d/brave-browser-release.sources
 browser_debian_keyring_url: https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
 browser_debian_sources_url: https://brave-browser-apt-release.s3.brave.com/brave-browser.sources
 browser_debian_package: brave-browser

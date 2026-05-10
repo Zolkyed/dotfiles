@@ -28,7 +28,7 @@
   ansible.builtin.assert:
     that:
       - hayase_linux_appimage_url | length > 0
-    fail_msg: "No matching Hayase Arch Linux asset found in {{ hayase_api_url }} response."
+    fail_msg: "No matching Hayase AppImage asset found in {{ hayase_api_url }} response."
   when: hayase_release is not skipped
 
 - name: Hayase | Install AppImage

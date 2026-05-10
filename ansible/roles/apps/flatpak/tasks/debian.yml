@@ -8,4 +8,4 @@
   ansible.builtin.apt:
     name: plasma-discover-backend-flatpak
     state: present
-  when: flatpak_plasmashell_check.rc == 0
+  when: plasma_enabled

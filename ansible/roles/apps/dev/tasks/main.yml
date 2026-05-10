@@ -64,7 +64,7 @@
 # Global npm packages
 # ---------------------------------------------------------------------------
 - name: Dev | Install global npm packages
-  when: dev_npm_global_packages | length > 0
+  when: dev_install_nvm and dev_npm_global_packages | length > 0
   ansible.builtin.shell: |
     set -e
 

@@ -4,10 +4,8 @@
     - name: VS Code | Install repository dependencies
       ansible.builtin.apt:
         name:
-          - apt-transport-https
           - ca-certificates
           - gpg
-          - wget
         state: present
 
     - name: VS Code | Create apt keyring directory

@@ -6,22 +6,6 @@
         name: curl
         state: present
 
-    - name: Browser | Ensure Debian keyring directory exists
-      ansible.builtin.file:
-        path: "{{ browser_debian_keyring_dir }}"
-        state: directory
-        owner: root
-        group: root
-        mode: "0755"
-
-    - name: Browser | Ensure Debian sources directory exists
-      ansible.builtin.file:
-        path: "{{ browser_debian_sources_dir }}"
-        state: directory
-        owner: root
-        group: root
-        mode: "0755"
-
     - name: Browser | Download Brave apt keyring
       ansible.builtin.get_url:
         url: "{{ browser_debian_keyring_url }}"
