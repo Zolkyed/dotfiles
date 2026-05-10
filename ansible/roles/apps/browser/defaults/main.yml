@@ -26,11 +26,26 @@ browser_extensions:
   - name: Image Downloader
     id: cnpniohnfphhjihaiiggeabnkjhpaldj
     update_url: https://clients2.google.com/service/update2/crx
+# Policy reference: brave://policy/
 browser_extra_policies:
   DefaultSearchProviderEnabled: true
   DefaultSearchProviderName: "Google"
   DefaultSearchProviderSearchURL: "https://www.google.com/search?q={searchTerms}"
   DefaultSearchProviderSuggestURL: "https://www.google.com/complete/search?output=chrome&q={searchTerms}"
   RestoreOnStartup: 5
+  # Brave clutter
   BraveRewardsDisabled: true
   BraveWalletDisabled: true
+  BraveNewsDisabled: true
+  BraveTalkDisabled: true
+  BraveAIChatEnabled: false
+  # Privacy / telemetry
+  MetricsReportingEnabled: false
+  # Autofill
+  PasswordManagerEnabled: false
+  AutofillAddressEnabled: false
+  AutofillCreditCardEnabled: false
+  # Misc
+  BackgroundModeEnabled: false
+  TranslateEnabled: false
+  SyncDisabled: true
