@@ -8,6 +8,12 @@
 {{-   $family = "arch" -}}
 {{- end -}}
 
+[encryption]
+    tool = "age"
+
+[age]
+    identity = "~/.config/sops/age/keys.txt"
+
 [data]
     distro_family = {{ $family | quote }}
     distro = {{ $id | quote }}
