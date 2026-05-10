@@ -9,3 +9,12 @@
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
     mode: "0644"
+
+- name: Plasma | Deploy kcminputrc
+  ansible.builtin.copy:
+    src: kcminputrc
+    dest: "{{ user_home }}/.config/kcminputrc"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0644"
+  when: inventory_hostname == "desktop"

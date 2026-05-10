@@ -5,7 +5,8 @@ KDE Plasma desktop role — installs packages and deploys global keybinds.
 ## What this role does
 
 - Installs `plasma_packages` (defined in `group_vars/debian.yml` / `group_vars/archlinux.yml`)
-- Deploys per-host KDE global shortcut overrides via `kdeconfig`
+- Deploys per-host KDE global shortcuts (`files/keybinds/<hostname>.ini` → `~/.config/kglobalshortcutsrc`)
+- Deploys mouse button rebinds and pointer settings (`files/kcminputrc` → `~/.config/kcminputrc`, desktop only)
 
 ## What chezmoi manages
 
@@ -19,7 +20,6 @@ configured machine.
 | `~/.config/kdeglobals` | Theme, colors, fonts, icon set |
 | `~/.config/plasma-org.kde.plasma.desktop-appletsrc` | Panel layout, widgets |
 | `~/.config/plasmashellrc` | Panel visibility, screen mapping |
-| `~/.config/kcminputrc` | Mouse/touchpad settings |
 | `~/.config/kxkbrc` | Keyboard layout |
 | `~/.config/konsolerc` | Terminal settings |
 | `~/.local/share/konsole/*.profile` | Konsole profiles |
@@ -40,3 +40,5 @@ cd ~/dotfiles
 git add chezmoi/dot_config/kwinrc chezmoi/dot_config/kdeglobals
 git commit -m "feat: add plasma kwin and global config"
 ```
+
+https://github.com/shalva97/kde-configuration-files
