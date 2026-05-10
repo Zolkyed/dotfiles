@@ -10,12 +10,22 @@ repos:
       - id: end-of-file-fixer
       - id: trailing-whitespace
 
+  - repo: local
+    hooks:
+      - id: check-vault-encrypted
+        name: vault files must be SOPS-encrypted
+        language: pygrep
+        entry: "^sops:"
+        args: [--negate]
+        files: ^ansible/inventory/.*/vault\.yml$
+
   - repo: https://github.com/adrienverge/yamllint.git
     rev: v1.35.1
     hooks:
       - id: yamllint
         args: [-c, .yamllint]
         files: ^(ansible|\.github)/.*\.ya?ml$
+        exclude: ^ansible/inventory/.*/vault\.yml$
 
   - repo: https://github.com/ansible/ansible-lint
     rev: v25.1.3
