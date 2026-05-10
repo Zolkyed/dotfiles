@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.7
-FROM ubuntu:24.04
+FROM ubuntu:26.04
 
 LABEL org.opencontainers.image.source="https://github.com/Zolkyed/dotfiles"
 LABEL org.opencontainers.image.description="Ubuntu 24.04 container test environment for this dotfiles Ansible setup"
