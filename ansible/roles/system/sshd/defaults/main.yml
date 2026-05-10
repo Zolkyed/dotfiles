@@ -1,3 +1,11 @@
 ---
 sshd_host_ed25519_private_key: "{{ vault_ssh_host_ed25519_private_key | default('') }}"
 sshd_host_ed25519_public_key: "{{ vault_ssh_host_ed25519_public_key | default('') }}"
+sshd_package: openssh-server
+sshd_service: ssh
+sshd_port: 22
+sshd_permit_root_login: "no"
+sshd_password_authentication: "no"
+sshd_pubkey_authentication: "yes"
+sshd_x11_forwarding: "no"
+sshd_allow_tcp_forwarding: "no"

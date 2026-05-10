@@ -39,27 +39,33 @@
     - sshd_host_ed25519_private_key == ''
     - sshd_host_ed25519_public_key == ''
 
+- name: SSHD | Ensure sshd_config.d directory exists
+  ansible.builtin.file:
+    path: /etc/ssh/sshd_config.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
 - name: SSHD | Harden sshd configuration
-  ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: "{{ item.regexp }}"
-    line: "{{ item.line }}"
-    state: present
-    validate: sshd -t -f %s
-  loop:
-    - regexp: '^#?PermitRootLogin'
-      line: "PermitRootLogin {{ sshd_permit_root_login }}"
-    - regexp: '^#?PasswordAuthentication'
-      line: "PasswordAuthentication {{ sshd_password_authentication }}"
-    - regexp: '^#?PubkeyAuthentication'
-      line: "PubkeyAuthentication {{ sshd_pubkey_authentication }}"
-    - regexp: '^#?Port '
-      line: "Port {{ sshd_port }}"
-    - regexp: '^#?X11Forwarding'
-      line: "X11Forwarding {{ sshd_x11_forwarding }}"
-    - regexp: '^#?AllowTcpForwarding'
-      line: "AllowTcpForwarding {{ sshd_allow_tcp_forwarding }}"
+  ansible.builtin.copy:
+    dest: /etc/ssh/sshd_config.d/99-hardened.conf
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      PermitRootLogin {{ sshd_permit_root_login }}
+      PasswordAuthentication {{ sshd_password_authentication }}
+      PubkeyAuthentication {{ sshd_pubkey_authentication }}
+      Port {{ sshd_port }}
+      X11Forwarding {{ sshd_x11_forwarding }}
+      AllowTcpForwarding {{ sshd_allow_tcp_forwarding }}
   notify: SSHD | Restart sshd
+
+- name: SSHD | Validate sshd configuration
+  ansible.builtin.command:
+    cmd: sshd -t
+  changed_when: false
 
 - name: SSHD | Enable and start sshd
   ansible.builtin.systemd:
