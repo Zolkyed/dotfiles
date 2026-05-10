@@ -1,0 +1,6 @@
+---
+- name: Shell | Install packages
+  ansible.builtin.apt:
+    name: "{{ shell_packages }}"
+    state: present
+  when: shell_packages | length > 0

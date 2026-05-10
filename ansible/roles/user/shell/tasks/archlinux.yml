@@ -1,0 +1,6 @@
+---
+- name: Shell | Install packages
+  community.general.pacman:
+    name: "{{ shell_packages }}"
+    state: present
+  when: shell_packages | length > 0

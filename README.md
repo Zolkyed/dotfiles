@@ -98,6 +98,7 @@ just diff
 │       │   ├── gaming/            # Steam, Lutris, Wine
 │       │   ├── hayase/            # anime sync (.deb or AppImage)
 │       │   ├── konsave/           # KDE profile manager
+│       │   ├── media/             # mpv, ffmpeg, yt-dlp, media tooling
 │       │   ├── mihon/             # manga reader desktop entry
 │       │   ├── rclone/            # Google Drive config
 │       │   └── vscode/            # VS Code native package
@@ -105,6 +106,7 @@ just diff
 │           ├── account/           # user account, shell, groups
 │           ├── bin/               # custom scripts + homectl config
 │           ├── dotfiles/          # chezmoi install + apply
+│           ├── shell/             # zsh plugins, shell provisioning
 │           ├── ssh_keys/          # deploy keys from vault
 │           └── xdg/               # default apps + MIME handlers
 ├── chezmoi/                       # user dotfiles (applied by chezmoi)
@@ -148,9 +150,9 @@ just diff
 
 ```
 sysctl → account → sudoers → packages → fonts
-→ plasma → flatpak → vscode → hayase → mihon → browser → dev → gaming → rclone → konsave
+→ plasma → flatpak → vscode → hayase → mihon → browser → dev → media → gaming → rclone → konsave
 → nvidia → docker → virtualization
-→ ssh_keys → bin → xdg → dotfiles
+→ shell → ssh_keys → bin → xdg → dotfiles
 → networking → bluetooth → vpn → sshd → firewall → fail2ban
 → splashboot → hyprland → niri
 ```

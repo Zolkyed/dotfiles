@@ -14,7 +14,6 @@ core_packages:
   - wget
   - vim
   - htop
-  - zsh
   - unzip
   - rsync
   - kitty
@@ -66,6 +65,7 @@ fun_packages:
 media_packages:
   - mpv
   - ffmpeg
+  - ffmpegthumbnailer
   - yt-dlp
   - gimp
   - pavucontrol
@@ -91,6 +91,11 @@ gaming_packages:
   - wine
   - winetricks
   - retroarch
+
+shell_packages:
+  - zsh
+  - zsh-autosuggestions
+  - zsh-syntax-highlighting
 
 # Flatpak
 distro_flatpaks: []

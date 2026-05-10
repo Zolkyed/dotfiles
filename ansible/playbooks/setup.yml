@@ -70,6 +70,9 @@
     - role: apps/dev
       tags: dev
       when: dev_enabled
+    - role: apps/media
+      tags: media
+      when: media_enabled
     - role: apps/gaming
       tags: gaming
       when: gaming_enabled
@@ -92,6 +95,8 @@
       when: virtualization_enabled
 
     # --- User / dotfiles (after all tools are installed) ---
+    - role: user/shell
+      tags: shell
     - role: user/ssh_keys
       tags: ssh_keys
     - role: user/bin

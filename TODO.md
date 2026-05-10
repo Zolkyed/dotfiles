@@ -122,7 +122,7 @@ Complements existing:
 
 ## Lower Priority
 
-### [ ] apps/media
+### [x] apps/media
 Centralized media ecosystem tooling.
 
 #### Manage
@@ -142,7 +142,7 @@ Consolidate scattered media tooling:
 
 ---
 
-### [ ] user/shell
+### [x] user/shell
 Shell environment provisioning role.
 
 #### Manage
