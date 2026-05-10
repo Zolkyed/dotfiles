@@ -2,3 +2,4 @@
 ai_npm_packages:
   - "opencode-ai"
   - "@openai/codex"
+  - "@anthropic-ai/claude-code"
