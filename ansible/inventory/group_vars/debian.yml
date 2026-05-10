@@ -187,6 +187,10 @@ splashboot_packages:
   - plymouth
   - plymouth-themes
 
+# Bootloader
+bootloader_grub_packages:
+  - grub-pc
+
 # SSH
 sshd_package: openssh-server
 sshd_service: ssh

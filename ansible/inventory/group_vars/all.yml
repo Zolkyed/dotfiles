@@ -11,9 +11,10 @@ user_shell: /bin/zsh
 # ---------------------------------------------------------------------------
 
 # System
+bootloader_enabled: false
+splashboot_enabled: false
 bluetooth_enabled: true
 audio_enabled: true
-splashboot_enabled: false
 nvidia_enabled: false
 docker_enabled: true
 virtualization_enabled: true

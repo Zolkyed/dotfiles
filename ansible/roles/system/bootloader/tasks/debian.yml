@@ -1,0 +1,5 @@
+---
+- name: Bootloader | Install GRUB packages
+  ansible.builtin.apt:
+    name: "{{ bootloader_grub_packages }}"
+    state: present

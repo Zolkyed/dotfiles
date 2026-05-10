@@ -132,6 +132,10 @@
     - role: system/splashboot
       tags: splashboot
       when: splashboot_enabled
+    - role: system/bootloader
+      tags: bootloader
+      when: bootloader_enabled
+
     - role: desktop/hyprland
       tags: hyprland
       when: hyprland_enabled

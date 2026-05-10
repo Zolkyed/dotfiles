@@ -27,27 +27,6 @@ roles/system/backup/
 - Repo provisions systems well but lacks recovery automation
 - Integrate with existing `rclone` role if possible
 
----
-
-### [ ] system/audio
-Centralized Linux audio stack configuration.
-
-#### Manage
-- PipeWire
-- WirePlumber
-- Bluetooth audio
-- low-latency tuning
-- codec packages
-- JACK compatibility
-
-#### Notes
-Shared setup across:
-- Hyprland
-- Niri
-- Plasma
-- MPV
-
----
 
 ### [ ] system/power
 Power management and thermal tuning.
@@ -64,22 +43,6 @@ Power management and thermal tuning.
 #### Notes
 - Especially useful for laptops
 - Related to existing `fan-toggle` utility
-
----
-
-## Medium Priority
-
-### [ ] system/maintenance
-Long-term system health and cleanup automation.
-
-#### Manage
-- unattended upgrades
-- pacman hooks
-- cache cleanup
-- journal rotation
-- orphan package cleanup
-- fstrim timers
-- health checks
 
 ---
 
@@ -102,7 +65,7 @@ Existing secret-related systems:
 
 ---
 
-### [ ] system/bootloader
+### [x] system/bootloader
 Unified bootloader and kernel boot management.
 
 #### Manage

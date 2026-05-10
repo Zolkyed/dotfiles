@@ -1,0 +1,19 @@
+---
+- name: "Bootloader | Run tasks for {{ ansible_facts.os_family }}"
+  ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
+
+- name: Bootloader | Configure GRUB
+  ansible.builtin.copy:
+    dest: /etc/default/grub
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      GRUB_DEFAULT=0
+      GRUB_TIMEOUT={{ bootloader_grub_timeout }}
+      GRUB_DISTRIBUTOR="{{ ansible_facts.distribution }}"
+      GRUB_CMDLINE_LINUX_DEFAULT="{{ system_grub_cmdline_linux_default | default(bootloader_grub_cmdline_linux_default) }}"
+      GRUB_CMDLINE_LINUX=""
+      GRUB_GFXMODE={{ bootloader_grub_gfxmode }}
+      GRUB_DISABLE_OS_PROBER={{ bootloader_grub_disable_os_prober | lower }}
+  notify: Bootloader | Update grub

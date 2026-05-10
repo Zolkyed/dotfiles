@@ -1,0 +1,6 @@
+---
+- name: Bootloader | Update grub
+  ansible.builtin.command:
+    cmd: "{{ 'grub-mkconfig -o /boot/grub/grub.cfg' if ansible_facts.os_family | lower == 'archlinux' else 'update-grub' }}"
+  changed_when: false
+  listen: Bootloader | Update grub
