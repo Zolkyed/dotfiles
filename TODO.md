@@ -120,51 +120,6 @@ Complements existing:
 
 ---
 
-## Lower Priority
-
-### [x] apps/media
-Centralized media ecosystem tooling.
-
-#### Manage
-- ffmpeg
-- yt-dlp
-- codecs
-- thumbnailers
-- media utilities
-- anime/manga ecosystem apps
-
-#### Notes
-Consolidate scattered media tooling:
-- MPV
-- Mihon
-- Hayase
-- gaming-related media packages
-
----
-
-### [x] user/shell
-Shell environment provisioning role.
-
-#### Manage
-- shell packages
-- default shell setup
-- plugin management
-- terminal tooling consistency
-- shell defaults
-
-#### Notes
-Current shell-related configs live mostly in chezmoi:
-- zsh
-- atuin
-- tmux
-- gitconfig
-
-Goal:
-- Ansible → provisioning
-- chezmoi → personalization
-
----
-
 # Future Architecture
 
 ## [ ] Introduce profile/meta roles
