@@ -32,3 +32,5 @@ browser_extra_policies:
   DefaultSearchProviderSearchURL: "https://www.google.com/search?q={searchTerms}"
   DefaultSearchProviderSuggestURL: "https://www.google.com/complete/search?output=chrome&q={searchTerms}"
   RestoreOnStartup: 5
+  BraveRewardsDisabled: true
+  BraveWalletDisabled: true
