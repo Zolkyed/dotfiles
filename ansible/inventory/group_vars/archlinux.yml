@@ -1,6 +1,6 @@
 ---
 # ---------------------------------------------------------------------------
-# Home
+# User
 # ---------------------------------------------------------------------------
 user_groups:
   - wheel
@@ -92,9 +92,8 @@ shell_packages:
   - zsh-syntax-highlighting
   - zsh-completions
 
-# Flatpak
 distro_flatpaks: []
-# Development
+
 dev_packages:
   - git
   - pkgconf
@@ -118,8 +117,6 @@ dev_packages:
 # ---------------------------------------------------------------------------
 # System
 # ---------------------------------------------------------------------------
-
-# Docker
 docker_engine_packages:
   - docker
 
@@ -129,7 +126,6 @@ docker_plugin_packages:
 
 docker_group: docker
 
-# Fonts
 fonts_packages:
   - noto-fonts
   - noto-fonts-cjk
@@ -138,20 +134,17 @@ fonts_packages:
   - ttf-liberation
   - gnu-free-fonts
 
-# Audio
 audio_packages:
   - pipewire
   - wireplumber
   - pipewire-pulse
   - pipewire-alsa
 
-# Bluetooth
 bluetooth_packages:
   - bluez
   - bluez-utils
   - blueman
 
-# Networking / VPN
 networking_packages:
   - networkmanager
 
@@ -160,21 +153,16 @@ vpn_packages:
   - openvpn
   - networkmanager-openvpn
 
-# Splash boot
-
 splashboot_packages:
   - plymouth
 
-# Bootloader
 bootloader_grub_packages:
   - grub
   - efibootmgr
 
-# SSH
 sshd_package: openssh
 sshd_service: sshd
 
-# Virtualization
 libvirt_service: libvirtd
 
 virtualization_kvm_packages:

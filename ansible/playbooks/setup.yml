@@ -34,7 +34,7 @@
         file: "{{ playbook_dir }}/../inventory/group_vars/{{ ansible_facts['os_family'] | lower }}.yml"
 
   roles:
-    # --- System foundation ---
+    # --- System  ---
     - role: system/sysctl
       tags: sysctl
     - role: user/account
@@ -42,7 +42,7 @@
     - role: system/sudoers
       tags: sudoers
 
-    # --- Packages (core installs first) ---
+    # --- Packages  ---
     - role: system/packages
       tags: packages
     - role: system/fonts
@@ -54,7 +54,7 @@
       tags: flatpak
       when: flatpak_enabled
 
-    # --- App installs ---
+    # --- Apps  ---
     - role: apps/vscode
       tags: vscode
       when: vscode_enabled
@@ -94,7 +94,7 @@
       tags: virtualization
       when: virtualization_enabled
 
-    # --- User / dotfiles (after all tools are installed) ---
+    # --- User / dotfiles  ---
     - role: user/shell
       tags: shell
     - role: user/ssh_keys
@@ -128,7 +128,7 @@
       tags: fail2ban
       when: fail2ban_enabled
 
-    # --- Desktop (last: depends on everything above) ---
+    # --- Desktop  ---
     - role: system/splashboot
       tags: splashboot
       when: splashboot_enabled
