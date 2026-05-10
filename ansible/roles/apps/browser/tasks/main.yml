@@ -10,13 +10,6 @@
     group: root
     mode: "0755"
 
-- name: Browser | Seed default bookmarks
-  ansible.builtin.copy:
-    src: Bookmarks
-    dest: "{{ ansible_env.HOME }}/.config/BraveSoftware/Brave-Browser/Default/Bookmarks"
-    mode: "0600"
-    force: false
-
 - name: Browser | Deploy managed policy
   ansible.builtin.template:
     src: browser-policy.json.j2
