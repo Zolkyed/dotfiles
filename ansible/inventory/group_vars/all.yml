@@ -37,8 +37,6 @@ system_tools_enabled: true
 vscode_enabled: true
 gaming_enabled: false
 konsave_enabled: false
-
-# Home
 xdg_enabled: true
 
 # ---------------------------------------------------------------------------

@@ -12,6 +12,8 @@ system_tools_enabled: false
 vscode_enabled: false
 gaming_enabled: false
 konsave_enabled: false
+mihon_enabled: false
+rclone_enabled: false
 xdg_enabled: false
 splashboot_enabled: false
 vpn_enabled: false

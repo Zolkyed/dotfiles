@@ -43,7 +43,7 @@
       tags: sudoers
       
     # --- Packages (core installs first) ---
-    - role: user/packages
+    - role: system/packages
       tags: packages
     - role: system/fonts
       tags: fonts
