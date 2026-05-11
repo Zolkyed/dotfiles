@@ -1,8 +1,8 @@
 ---
 - name: VS Code | Install Arch package from AUR
   kewlfft.aur.aur:
-    name: "{{ vscode_aur_package }}"
-    use: makepkg
+    name: "{{ aur_packages.vscode }}"
+    use: paru
     state: present
   become: true
   become_user: "{{ user_name }}"

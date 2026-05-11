@@ -1,6 +1,7 @@
 ---
 # https://archlinux.org/packages/
 # https://aur.archlinux.org/packages
+
 # ---------------------------------------------------------------------------
 # User
 # ---------------------------------------------------------------------------
@@ -9,180 +10,262 @@ user_groups:
   - audio
   - video
 
-core_packages:
-  - curl
-  - wget
-  - vim
-  - htop
-  - unzip
-  - rsync
-  - kitty
-  - base-devel
-  - man-db
-  - man-pages
+# ---------------------------------------------------------------------------
+# Packages (official)
+# ---------------------------------------------------------------------------
+pacman_packages:
+  core:
+    - curl
+    - wget
+    - vim
+    - htop
+    - unzip
+    - rsync
+    - kitty
+    - base-devel
+    - man-db
+    - man-pages
 
-utility_packages:
-  - ncdu
-  - ripgrep
-  - vulkan-tools
-  - fuse2
-  - fuse3
-  - atuin
-  - openssl
-  - pamixer
-  - xdg-utils
-  - plocate
-  - psmisc
-  - github-cli
-  - tmux
-  - eza
-  - bat
-  - fd
-  - zoxide
-  - fzf
-  - lazygit
-  - git-delta
-  - duf
-  - procs
-  - just
-  - trash-cli
-  - neovim
-  - starship
+  utility:
+    - ncdu
+    - ripgrep
+    - vulkan-tools
+    - fuse2
+    - fuse3
+    - atuin
+    - openssl
+    - pamixer
+    - xdg-utils
+    - plocate
+    - psmisc
+    - github-cli
+    - tmux
+    - eza
+    - bat
+    - fd
+    - zoxide
+    - fzf
+    - lazygit
+    - git-delta
+    - duf
+    - procs
+    - just
+    - trash-cli
+    - neovim
+    - starship
 
-fun_packages:
-  - cowsay
-  - cmatrix
-  - figlet
-  - lolcat
-  - fastfetch
+  fun:
+    - cowsay
+    - cmatrix
+    - figlet
+    - lolcat
+    - fastfetch
+
+  shell:
+    - zsh
+    - zsh-autosuggestions
+    - zsh-syntax-highlighting
+    - zsh-completions
+
+  dev:
+    - git
+    - pkgconf
+    - python
+    - python-pip
+    - python-pipx
+    - nodejs
+    - npm
+    - rustup
+    - jq
+    - yq
+    - httpie
+    - ansible-lint
+    - yamllint
+    - shellcheck
+    - pre-commit
+    - python-playwright
+    - gcc
+    - gdb
+    - cmake
+
+  media:
+    - mpv
+    - ffmpeg
+    - ffmpegthumbnailer
+    - yt-dlp
+    - gimp
+    - pavucontrol
+    - obs-studio
+    - qbittorrent
+
+  office:
+    - libreoffice-fresh
+    - thunderbird
+
+  system_tools:
+    - gparted
+    - timeshift
+
+  gaming:
+    - steam
+    - lutris
+    - gamemode
+    - mangohud
+    - goverlay
+    - wine
+    - winetricks
+    - protontricks
+    - retroarch
+
+  audio:
+    - pipewire
+    - wireplumber
+    - pipewire-pulse
+    - pipewire-alsa
+
+  bluetooth:
+    - bluez
+    - bluez-utils
+    - blueman
+
+  networking:
+    - networkmanager
+
+  vpn:
+    - wireguard-tools
+    - openvpn
+    - networkmanager-openvpn
+
+  splashboot:
+    - plymouth
+
+  bootloader:
+    - grub
+    - efibootmgr
+
+  fonts:
+    - noto-fonts
+    - noto-fonts-cjk
+    - noto-fonts-emoji
+    - ttf-dejavu
+    - ttf-liberation
+    - gnu-free-fonts
+
+  docker_engine:
+    - docker
+
+  docker_plugins:
+    - docker-compose
+    - docker-buildx
+
+  virtualization_kvm:
+    - qemu-full
+    - libvirt
+    - virt-install
+    - virt-manager
+    - edk2-ovmf
+
+  virtualization_virtualbox:
+    - virtualbox
+    - virtualbox-host-modules-arch
+
+  nvidia:
+    - nvidia-dkms
+    - nvidia-utils
+    - lib32-nvidia-utils
+    - nvidia-settings
+
+  firewall:
+    - ufw
+
+  fail2ban:
+    - fail2ban
+
+  plasma:
+    - plasma-desktop
+    - sddm
+    - sddm-kcm
+    - xdg-desktop-portal-kde
+    - plasma-pa
+    - plasma-nm
+    - kscreen
+    - powerdevil
+    - bluedevil
+    - plasma-systemmonitor
+    - breeze-gtk
+    - discover
+    - dolphin
+    - konsole
+    - spectacle
+    - kcalc
+    - ark
+
+  hyprland:
+    - hyprland
+    - xdg-desktop-portal-hyprland
+    - waybar
+    - rofi
+    - wl-clipboard
+    - grim
+    - slurp
+    - brightnessctl
+    - playerctl
+    - network-manager-applet
+    - swaylock
+    - swayidle
+    - hyprpaper
+
+  niri:
+    - xdg-desktop-portal-wlr
+    - waybar
+    - rofi
+    - mako
+    - swaylock
+    - swayidle
+    - wl-clipboard
+    - grim
+    - slurp
+    - brightnessctl
+    - playerctl
+    - network-manager-applet
+
+  discord:
+    - discord
+
+# ---------------------------------------------------------------------------
+# Packages (AUR)
+# ---------------------------------------------------------------------------
+aur_packages:
+  entertainment:
+    - spotify
+  gaming:
+    - proton-ge-custom-bin
+    - heroic-games-launcher-bin
+  tools:
+    - ventoy-bin
+  dev:
+    - nvm
+  desktop:
+    - niri
+  browser:
+    - brave-bin
+  vscode:
+    - visual-studio-code-bin
 
 # ---------------------------------------------------------------------------
 # Apps
 # ---------------------------------------------------------------------------
-media_packages:
-  - mpv
-  - ffmpeg
-  - ffmpegthumbnailer
-  - yt-dlp
-  - gimp
-  - pavucontrol
-  - obs-studio
-  - qbittorrent
-
-office_packages:
-  - libreoffice-fresh
-  - thunderbird
-
-system_tools_packages:
-  - gparted
-  - timeshift
-
-gaming_packages:
-  - steam
-  - lutris
-  - gamemode
-  - mangohud
-  - goverlay
-  - wine
-  - winetricks
-  - protontricks
-  - retroarch
-
-shell_packages:
-  - zsh
-  - zsh-autosuggestions
-  - zsh-syntax-highlighting
-  - zsh-completions
-
 distro_flatpaks: []
-
-aur_packages:
-  - spotify
-  - proton-ge-custom-bin
-  - heroic-games-launcher-bin
-  - ventoy-bin
-
-dev_packages:
-  - git
-  - pkgconf
-  - python
-  - python-pip
-  - python-pipx
-  - nodejs
-  - npm
-  - jq
-  - yq
-  - httpie
-  - ansible-lint
-  - yamllint
-  - shellcheck
-  - pre-commit
-  - python-playwright
-  - gcc
-  - gdb
-  - cmake
 
 # ---------------------------------------------------------------------------
 # System
 # ---------------------------------------------------------------------------
-docker_engine_packages:
-  - docker
-
-docker_plugin_packages:
-  - docker-compose
-  - docker-buildx
-
 docker_group: docker
-
-fonts_packages:
-  - noto-fonts
-  - noto-fonts-cjk
-  - noto-fonts-emoji
-  - ttf-dejavu
-  - ttf-liberation
-  - gnu-free-fonts
-
-audio_packages:
-  - pipewire
-  - wireplumber
-  - pipewire-pulse
-  - pipewire-alsa
-
-bluetooth_packages:
-  - bluez
-  - bluez-utils
-  - blueman
-
-networking_packages:
-  - networkmanager
-
-vpn_packages:
-  - wireguard-tools
-  - openvpn
-  - networkmanager-openvpn
-
-splashboot_packages:
-  - plymouth
-
-bootloader_grub_packages:
-  - grub
-  - efibootmgr
 
 sshd_package: openssh
 sshd_service: sshd
 
 libvirt_service: libvirtd
-
-virtualization_kvm_packages:
-  - qemu-full
-  - libvirt
-  - virt-install
-  - virt-manager
-  - edk2-ovmf
-
-virtualization_virtualbox_packages:
-  - virtualbox
-  - virtualbox-host-modules-arch
 
 virtualization_user_groups:
   - libvirt

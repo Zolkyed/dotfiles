@@ -1,8 +1,8 @@
 ---
 - name: Browser | Install Arch package from AUR
   kewlfft.aur.aur:
-    name: "{{ browser_arch_package }}"
-    use: makepkg
+    name: "{{ aur_packages.browser }}"
+    use: paru
     state: present
   become: true
   become_user: "{{ user_name }}"

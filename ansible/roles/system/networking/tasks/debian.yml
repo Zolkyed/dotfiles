@@ -1,5 +1,5 @@
 ---
 - name: Networking | Install packages
   ansible.builtin.apt:
-    name: "{{ networking_packages }}"
+    name: "{{ apt_packages.networking }}"
     state: present

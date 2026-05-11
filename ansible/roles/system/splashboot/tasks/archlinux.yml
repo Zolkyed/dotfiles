@@ -1,7 +1,7 @@
 ---
 - name: Splashboot | Install packages
   community.general.pacman:
-    name: "{{ splashboot_packages }}"
+    name: "{{ pacman_packages.splashboot }}"
     state: present
   notify: Splashboot | Update initramfs
-  when: splashboot_packages | length > 0
+  when: pacman_packages.splashboot | length > 0

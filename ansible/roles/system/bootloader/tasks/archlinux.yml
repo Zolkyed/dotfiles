@@ -1,5 +1,5 @@
 ---
 - name: Bootloader | Install GRUB packages
   community.general.pacman:
-    name: "{{ bootloader_grub_packages }}"
+    name: "{{ pacman_packages.bootloader }}"
     state: present

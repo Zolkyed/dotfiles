@@ -1,5 +1,5 @@
 ---
 - name: Firewall | Install packages
   ansible.builtin.apt:
-    name: "{{ firewall_packages }}"
+    name: "{{ apt_packages.firewall }}"
     state: present

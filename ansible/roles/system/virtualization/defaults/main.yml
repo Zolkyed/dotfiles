@@ -1,5 +1,2 @@
 ---
 virtualization_backend: kvm
-virtualization_kvm_packages: []
-virtualization_virtualbox_packages: []
-virtualization_user_groups: []

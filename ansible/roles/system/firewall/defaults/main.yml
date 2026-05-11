@@ -1,7 +1,4 @@
 ---
-firewall_packages:
-  - ufw
-
 firewall_allow_ports:
   - "{{ sshd_port }}"
 

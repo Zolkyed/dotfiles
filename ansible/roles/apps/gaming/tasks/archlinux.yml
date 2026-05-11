@@ -1,6 +1,6 @@
 ---
 - name: Gaming | Configure Arch multilib support
-  when: "'steam' in gaming_packages"
+  when: "'steam' in pacman_packages.gaming"
   block:
     - name: Gaming | Check Arch pacman repositories
       ansible.builtin.command:
@@ -23,6 +23,6 @@
 
 - name: Gaming | Install packages
   community.general.pacman:
-    name: "{{ gaming_packages }}"
+    name: "{{ pacman_packages.gaming }}"
     state: present
-  when: gaming_packages | length > 0
+  when: pacman_packages.gaming | length > 0

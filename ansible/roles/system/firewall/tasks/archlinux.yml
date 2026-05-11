@@ -1,5 +1,5 @@
 ---
 - name: Firewall | Install packages
   community.general.pacman:
-    name: "{{ firewall_packages }}"
+    name: "{{ pacman_packages.firewall }}"
     state: present

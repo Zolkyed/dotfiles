@@ -1,6 +1,6 @@
 ---
 - name: Hyprland | Install packages
   community.general.pacman:
-    name: "{{ hyprland_packages }}"
+    name: "{{ pacman_packages.hyprland }}"
     state: present
-  when: hyprland_packages | length > 0
+  when: pacman_packages.hyprland | length > 0

@@ -2,9 +2,9 @@
 - name: Gaming | Configure Debian i386 support
   when:
     - >
-      ('steam' in gaming_packages) or
-      ('wine' in gaming_packages) or
-      ('winetricks' in gaming_packages)
+      ('steam' in apt_packages.gaming) or
+      ('wine' in apt_packages.gaming) or
+      ('winetricks' in apt_packages.gaming)
   block:
     - name: Gaming | Check Debian foreign architectures
       ansible.builtin.command:
@@ -24,6 +24,6 @@
 
 - name: Gaming | Install packages
   ansible.builtin.apt:
-    name: "{{ gaming_packages }}"
+    name: "{{ apt_packages.gaming }}"
     state: present
-  when: gaming_packages | length > 0
+  when: apt_packages.gaming | length > 0

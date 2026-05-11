@@ -1,5 +1,4 @@
 ---
-dev_packages: []
 dev_install_rust: true
 dev_install_nvm: true
 dev_nvm_version: "0.40.3"

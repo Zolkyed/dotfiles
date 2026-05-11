@@ -1,6 +1,26 @@
 ---
 - name: Dev | Install packages
   community.general.pacman:
-    name: "{{ dev_packages }}"
+    name: "{{ pacman_packages.dev }}"
     state: present
-  when: dev_packages | length > 0
+  when: pacman_packages.dev | length > 0
+
+- name: Dev | Set default Rust toolchain
+  ansible.builtin.command:
+    cmd: rustup default stable
+    creates: "{{ user_home }}/.cargo/bin/rustc"
+  become: true
+  become_user: "{{ user_name }}"
+  when: dev_install_rust
+
+- name: Dev | Install global npm packages
+  ansible.builtin.shell: |
+    set -e
+    for pkg in {{ dev_npm_global_packages | join(' ') }}; do
+      npm list -g "$pkg" >/dev/null 2>&1 || npm install -g "$pkg"
+    done
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ user_name }}"
+  when: dev_install_nvm and dev_npm_global_packages | length > 0

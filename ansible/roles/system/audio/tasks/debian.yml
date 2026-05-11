@@ -1,6 +1,6 @@
 ---
 - name: Audio | Install packages
   ansible.builtin.apt:
-    name: "{{ audio_packages }}"
+    name: "{{ apt_packages.audio }}"
     state: present
-  when: audio_packages | length > 0
+  when: apt_packages.audio | length > 0

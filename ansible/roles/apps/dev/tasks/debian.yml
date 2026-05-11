@@ -1,6 +1,85 @@
 ---
 - name: Dev | Install packages
   ansible.builtin.apt:
-    name: "{{ dev_packages }}"
+    name: "{{ apt_packages.dev }}"
     state: present
-  when: dev_packages | length > 0
+  when: apt_packages.dev | length > 0
+
+# ---------------------------------------------------------------------------
+# NVM
+# ---------------------------------------------------------------------------
+- name: Dev | Install NVM
+  when: dev_install_nvm
+  block:
+    - name: Dev | Download nvm installer
+      ansible.builtin.get_url:
+        url: "https://raw.githubusercontent.com/nvm-sh/nvm/v{{ dev_nvm_version }}/install.sh"
+        dest: "/tmp/nvm-install-{{ dev_nvm_version }}.sh"
+        mode: "0755"
+
+    - name: Dev | Run nvm installer
+      ansible.builtin.command:
+        cmd: "bash /tmp/nvm-install-{{ dev_nvm_version }}.sh"
+        creates: "{{ user_home }}/.nvm/nvm.sh"
+      become: true
+      become_user: "{{ user_name }}"
+
+# ---------------------------------------------------------------------------
+# Node.js (via NVM)
+# ---------------------------------------------------------------------------
+- name: Dev | Install Node LTS via NVM
+  when: dev_install_nvm
+  ansible.builtin.shell: |
+    set -e
+
+    export NVM_DIR="{{ user_home }}/.nvm"
+    . "$NVM_DIR/nvm.sh"
+
+    nvm install --lts
+    nvm alias default node
+    nvm use default
+  args:
+    executable: /bin/bash
+    creates: "{{ user_home }}/.nvm/versions/node"
+  become: true
+  become_user: "{{ user_name }}"
+
+# ---------------------------------------------------------------------------
+# Rust
+# ---------------------------------------------------------------------------
+- name: Dev | Install Rust toolchain
+  when: dev_install_rust
+  block:
+    - name: Dev | Download rustup installer
+      ansible.builtin.get_url:
+        url: https://sh.rustup.rs
+        dest: /tmp/rustup-init.sh
+        mode: "0755"
+
+    - name: Dev | Install rustup
+      ansible.builtin.command:
+        cmd: /tmp/rustup-init.sh -y --no-modify-path
+        creates: "{{ user_home }}/.cargo/bin/rustup"
+      become: true
+      become_user: "{{ user_name }}"
+
+# ---------------------------------------------------------------------------
+# Global npm packages
+# ---------------------------------------------------------------------------
+- name: Dev | Install global npm packages
+  when: dev_install_nvm and dev_npm_global_packages | length > 0
+  ansible.builtin.shell: |
+    set -e
+
+    export NVM_DIR="{{ user_home }}/.nvm"
+    . "$NVM_DIR/nvm.sh"
+
+    nvm use default >/dev/null
+
+    for pkg in {{ dev_npm_global_packages | join(' ') }}; do
+      npm list -g "$pkg" >/dev/null 2>&1 || npm install -g "$pkg"
+    done
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ user_name }}"

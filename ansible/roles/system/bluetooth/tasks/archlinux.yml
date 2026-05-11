@@ -1,0 +1,5 @@
+---
+- name: Bluetooth | Install packages
+  community.general.pacman:
+    name: "{{ pacman_packages.bluetooth }}"
+    state: present

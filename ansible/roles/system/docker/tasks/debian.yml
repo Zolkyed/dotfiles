@@ -41,6 +41,6 @@
 
 - name: Docker | Install packages
   ansible.builtin.apt:
-    name: "{{ docker_engine_packages + docker_plugin_packages }}"
+    name: "{{ apt_packages.docker_engine + apt_packages.docker_plugins }}"
     state: present
   notify: Docker | Restart docker

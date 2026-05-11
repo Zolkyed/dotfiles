@@ -1,14 +1,2 @@
 ---
-# nvidia-dkms works with any kernel (linux, linux-lts, linux-zen, linux-hardened, etc.)
-nvidia_packages_arch:
-  - nvidia-dkms
-  - nvidia-utils
-  - lib32-nvidia-utils
-  - nvidia-settings
-
-nvidia_packages_debian:
-  - nvidia-driver
-  - nvidia-settings
-  - firmware-misc-nonfree
-
 nvidia_debian_release: "{{ ansible_facts['distribution_release'] }}"
