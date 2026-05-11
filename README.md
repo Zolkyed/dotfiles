@@ -153,9 +153,11 @@ chezmoi edit ~/.zshrc   # edit a managed file in $EDITOR
 - `all.yml` → single source for feature flags and shared defaults
 - `debian.yml` / `archlinux.yml` → distro package names only, no logic
 - `host_vars/<host>/vars.yml` → per-machine overrides only
+monochrome for theme
 
 ## References
 
 - [shricodev/dotfiles](https://github.com/shricodev/dotfiles/tree/f7814b58179c5ece4a59f4c0396c91cb30e75f3c)
 - [KDE monochrome in the night](https://www.reddit.com/r/unixporn/comments/1qimvm8/kde_monochrome_in_the_night/)
 - [KDE Plasma — who said DEs can't be beautiful](https://www.reddit.com/r/unixporn/comments/1srpss0/kde_plasma_who_said_desktop_environments_cant_be/)
+- https://www.reddit.com/r/unixporn/comments/1g5im30/kde_plasma_minimalist_monochrome_because_color_is/
