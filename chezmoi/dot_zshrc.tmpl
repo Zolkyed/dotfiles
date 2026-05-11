@@ -16,14 +16,34 @@ ZSH_DISABLE_COMPFIX=true
 HISTSIZE=10000
 SAVEHIST=10000
 HISTFILE=~/.zsh_history
-setopt hist_ignore_dups hist_ignore_all_dups hist_ignore_space
-setopt hist_reduce_blanks share_history inc_append_history extended_history
+setopt hist_ignore_all_dups hist_ignore_space
+setopt hist_reduce_blanks share_history extended_history
+
+# ========================
+# Plugins (auto-install) — must run before compinit
+# ========================
+ZSH_PLUGIN_DIR="$HOME/.zsh"
+
+_zsh_plugin_load() {
+  local plugin_dir="$ZSH_PLUGIN_DIR/${1##*/}"
+  [[ ! -d "$plugin_dir" ]] && git clone --depth=1 "https://github.com/$1" "$plugin_dir"
+}
+
+_zsh_plugin_load zsh-users/zsh-autosuggestions
+_zsh_plugin_load zsh-users/zsh-syntax-highlighting
+_zsh_plugin_load zsh-users/zsh-completions
+
+fpath=("$ZSH_PLUGIN_DIR/zsh-completions/src" $fpath)
 
 # ========================
 # Completion
 # ========================
 autoload -Uz compinit
-compinit -C
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
@@ -113,19 +133,12 @@ npm()  { _nvm_load; npm  "$@"; }
 npx()  { _nvm_load; npx  "$@"; }
 
 # ========================
-# Plugins (auto-install)
+# Plugins (source)
 # ========================
-ZSH_PLUGIN_DIR="$HOME/.zsh"
-
-_zsh_plugin_load() {
-  local plugin_dir="$ZSH_PLUGIN_DIR/${1##*/}"
-  [[ ! -d "$plugin_dir" ]] && git clone --depth=1 "https://github.com/$1" "$plugin_dir"
-}
-
-_zsh_plugin_load zsh-users/zsh-autosuggestions
-_zsh_plugin_load zsh-users/zsh-syntax-highlighting
-_zsh_plugin_load zsh-users/zsh-completions
-
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+ZSH_AUTOSUGGEST_USE_ASYNC=true
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#525252'
 source "$ZSH_PLUGIN_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
 # ========================
@@ -181,12 +194,6 @@ done
 ZSH_HIGHLIGHT_STYLES[history-expansion]='fg=#be95ff'
 
 source "$ZSH_PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-fpath=("$ZSH_PLUGIN_DIR/zsh-completions/src" $fpath)
-
-ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
-ZSH_AUTOSUGGEST_USE_ASYNC=true
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#525252'
 
 # ========================
 # FZF
