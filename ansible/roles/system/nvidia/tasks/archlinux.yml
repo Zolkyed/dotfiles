@@ -12,8 +12,3 @@
     name: "{{ nvidia_arch_kernels.stdout_lines | map('regex_replace', '$', '-headers') | list }}"
     state: present
   when: nvidia_arch_kernels.stdout_lines | length > 0
-
-- name: Nvidia | Install driver
-  community.general.pacman:
-    name: "{{ pacman_packages.nvidia }}"
-    state: present

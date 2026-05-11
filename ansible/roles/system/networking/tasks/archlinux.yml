@@ -1,5 +1,0 @@
----
-- name: Networking | Install packages
-  community.general.pacman:
-    name: "{{ pacman_packages.networking }}"
-    state: present

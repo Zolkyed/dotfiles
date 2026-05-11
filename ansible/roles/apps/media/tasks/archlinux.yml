@@ -1,6 +1,0 @@
----
-- name: Media | Install packages
-  community.general.pacman:
-    name: "{{ pacman_packages.media }}"
-    state: present
-  when: pacman_packages.media | length > 0

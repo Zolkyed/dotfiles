@@ -33,6 +33,12 @@
       ansible.builtin.include_vars:
         file: "{{ playbook_dir }}/../inventory/group_vars/{{ ansible_facts['os_family'] | lower }}.yml"
 
+    - name: Apply preset flags
+      tags: always
+      ansible.builtin.set_fact:
+        "{{ item.key }}": "{{ item.value }}"
+      loop: "{{ presets[active_preset] | dict2items }}"
+
   roles:
     # --- System  ---
     - role: system/sysctl
@@ -73,9 +79,6 @@
     - role: apps/dev
       tags: dev
       when: dev_enabled
-    - role: apps/media
-      tags: media
-      when: media_enabled
     - role: apps/gaming
       tags: gaming
       when: gaming_enabled
@@ -98,8 +101,6 @@
       when: virtualization_enabled
 
     # --- User / dotfiles  ---
-    - role: user/shell
-      tags: shell
     - role: user/ssh_keys
       tags: ssh_keys
     - role: user/bin
@@ -116,12 +117,6 @@
     - role: system/bluetooth
       tags: bluetooth
       when: bluetooth_enabled
-    - role: system/audio
-      tags: audio
-      when: audio_enabled
-    - role: system/vpn
-      tags: vpn
-      when: vpn_enabled
     - role: system/sshd
       tags: sshd
     - role: system/firewall
@@ -138,10 +133,3 @@
     - role: system/bootloader
       tags: bootloader
       when: bootloader_enabled
-
-    - role: desktop/hyprland
-      tags: hyprland
-      when: hyprland_enabled
-    - role: desktop/niri
-      tags: niri
-      when: niri_enabled

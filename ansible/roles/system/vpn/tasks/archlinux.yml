@@ -1,6 +1,0 @@
----
-- name: VPN | Install packages
-  community.general.pacman:
-    name: "{{ pacman_packages.vpn }}"
-    state: present
-  when: pacman_packages.vpn | length > 0

@@ -1,6 +1,6 @@
 ---
 - name: Gaming | Configure Arch multilib support
-  when: "'steam' in pacman_packages.gaming"
+  when: "'steam' in (profiles.gaming.pacman | default([]))"
   block:
     - name: Gaming | Check Arch pacman repositories
       ansible.builtin.command:
@@ -20,9 +20,3 @@
 
 - name: Gaming | Flush repository handlers
   ansible.builtin.meta: flush_handlers
-
-- name: Gaming | Install packages
-  community.general.pacman:
-    name: "{{ pacman_packages.gaming }}"
-    state: present
-  when: pacman_packages.gaming | length > 0

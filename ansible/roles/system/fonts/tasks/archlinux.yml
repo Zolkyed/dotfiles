@@ -1,7 +1,0 @@
----
-- name: Fonts | Install packages
-  community.general.pacman:
-    name: "{{ pacman_packages.fonts }}"
-    state: present
-  when: pacman_packages.fonts | length > 0
-  notify: Fonts | Update font cache

@@ -7,52 +7,94 @@ user_home: "/home/{{ user_name }}"
 user_shell: /bin/zsh
 
 # ---------------------------------------------------------------------------
-# Flags
+# Presets
 # ---------------------------------------------------------------------------
+active_preset: desktop
 
-# System
-bootloader_enabled: false
-splashboot_enabled: false
-bluetooth_enabled: true
-audio_enabled: true
-nvidia_enabled: false
-docker_enabled: true
-virtualization_enabled: true
-vpn_enabled: true
-firewall_enabled: true
-fail2ban_enabled: true
+presets:
+  desktop:
+    bootloader_enabled: false
+    splashboot_enabled: false
+    bluetooth_enabled: true
+    audio_enabled: true
+    nvidia_enabled: true
+    docker_enabled: true
+    virtualization_enabled: true
+    vpn_enabled: true
+    firewall_enabled: true
+    fail2ban_enabled: true
+    plasma_enabled: true
+    hyprland_enabled: false
+    niri_enabled: false
+    browser_enabled: true
+    dev_enabled: true
+    flatpak_enabled: true
+    hayase_enabled: true
+    mihon_enabled: true
+    media_enabled: true
+    office_enabled: true
+    rclone_enabled: true
+    system_tools_enabled: true
+    vscode_enabled: true
+    gaming_enabled: true
+    discord_enabled: true
+    konsave_enabled: true
+    xdg_enabled: true
 
-# Desktop
-plasma_enabled: true
-hyprland_enabled: false
-niri_enabled: false
+  laptop:
+    bootloader_enabled: false
+    splashboot_enabled: false
+    bluetooth_enabled: true
+    audio_enabled: true
+    nvidia_enabled: false
+    docker_enabled: true
+    virtualization_enabled: true
+    vpn_enabled: true
+    firewall_enabled: true
+    fail2ban_enabled: true
+    plasma_enabled: true
+    hyprland_enabled: false
+    niri_enabled: false
+    browser_enabled: true
+    dev_enabled: true
+    flatpak_enabled: true
+    hayase_enabled: true
+    mihon_enabled: true
+    media_enabled: true
+    office_enabled: true
+    rclone_enabled: true
+    system_tools_enabled: true
+    vscode_enabled: true
+    gaming_enabled: false
+    discord_enabled: true
+    konsave_enabled: true
+    xdg_enabled: true
 
-# Apps
-browser_enabled: true
-dev_enabled: true
-flatpak_enabled: true
-hayase_enabled: true
-mihon_enabled: true
-media_enabled: true
-office_enabled: true
-rclone_enabled: true
-system_tools_enabled: true
-vscode_enabled: true
-gaming_enabled: false
-discord_enabled: true
-konsave_enabled: true
-xdg_enabled: true
-
-# ---------------------------------------------------------------------------
-# Flatpak
-# ---------------------------------------------------------------------------
-# https://flathub.org/en
-shared_flatpaks:
-  - com.spotify.Client
-  - com.getpostman.Postman
-  - net.portswigger.BurpSuite-Community
-
-gaming_flatpaks:
-  - com.heroicgameslauncher.hgl
-  - net.pcsx2.PCSX2
-  - net.davidotek.pupgui2
+  server:
+    bootloader_enabled: false
+    splashboot_enabled: false
+    bluetooth_enabled: false
+    audio_enabled: false
+    nvidia_enabled: false
+    docker_enabled: true
+    virtualization_enabled: true
+    vpn_enabled: true
+    firewall_enabled: true
+    fail2ban_enabled: true
+    plasma_enabled: false
+    hyprland_enabled: false
+    niri_enabled: false
+    browser_enabled: false
+    dev_enabled: false
+    flatpak_enabled: false
+    hayase_enabled: false
+    mihon_enabled: false
+    media_enabled: false
+    office_enabled: false
+    rclone_enabled: false
+    system_tools_enabled: false
+    vscode_enabled: false
+    gaming_enabled: false
+    discord_enabled: false
+    konsave_enabled: false
+    xdg_enabled: false

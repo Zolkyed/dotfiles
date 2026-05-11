@@ -1,7 +1,4 @@
 ---
-- name: "Fail2ban | Run tasks for {{ ansible_facts.os_family }}"
-  ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
-
 - name: Fail2ban | Deploy jail.local
   ansible.builtin.template:
     src: jail.local.j2

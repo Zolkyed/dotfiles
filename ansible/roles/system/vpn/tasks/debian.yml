@@ -1,6 +1,0 @@
----
-- name: VPN | Install packages
-  ansible.builtin.apt:
-    name: "{{ apt_packages.vpn }}"
-    state: present
-  when: apt_packages.vpn | length > 0

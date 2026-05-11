@@ -1,6 +1,0 @@
----
-- name: Niri | Install packages
-  community.general.pacman:
-    name: "{{ pacman_packages.niri }}"
-    state: present
-  when: pacman_packages.niri | length > 0

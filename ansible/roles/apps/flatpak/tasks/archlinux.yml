@@ -1,5 +1,0 @@
----
-- name: Flatpak | Install flatpak
-  community.general.pacman:
-    name: flatpak
-    state: present

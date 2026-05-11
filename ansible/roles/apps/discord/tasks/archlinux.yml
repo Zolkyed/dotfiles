@@ -1,5 +1,0 @@
----
-- name: Discord | Install Arch package
-  community.general.pacman:
-    name: "{{ pacman_packages.discord }}"
-    state: present

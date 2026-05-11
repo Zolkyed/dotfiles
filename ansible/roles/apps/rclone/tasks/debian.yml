@@ -1,5 +1,0 @@
----
-- name: Rclone | Install package
-  ansible.builtin.apt:
-    name: rclone
-    state: present

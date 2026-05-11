@@ -1,11 +1,12 @@
 ---
-- name: "Docker | Run tasks for {{ ansible_facts.os_family }}"
-  ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
+- name: "Docker | Run Debian tasks"
+  ansible.builtin.include_tasks: debian.yml
+  when: ansible_facts.os_family | lower == "debian"
 
 - name: Docker | Add user to docker group
   ansible.builtin.user:
     name: "{{ user_name }}"
-    groups: "{{ docker_group }}"
+    groups: "{{ profiles.docker.group | default([]) }}"
     append: true
 
 - name: Docker | Enable and start service

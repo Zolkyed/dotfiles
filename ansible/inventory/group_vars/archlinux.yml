@@ -11,262 +11,309 @@ user_groups:
   - video
 
 # ---------------------------------------------------------------------------
-# Packages (official)
+# Profiles
 # ---------------------------------------------------------------------------
-pacman_packages:
+profiles:
+  # -----------------------------------------------------------------------
+  # Core
+  # -----------------------------------------------------------------------
   core:
-    - curl
-    - wget
-    - vim
-    - htop
-    - unzip
-    - rsync
-    - kitty
-    - base-devel
-    - man-db
-    - man-pages
-
-  utility:
-    - ncdu
-    - ripgrep
-    - vulkan-tools
-    - fuse2
-    - fuse3
-    - atuin
-    - openssl
-    - pamixer
-    - xdg-utils
-    - plocate
-    - psmisc
-    - github-cli
-    - tmux
-    - eza
-    - bat
-    - fd
-    - zoxide
-    - fzf
-    - lazygit
-    - git-delta
-    - duf
-    - procs
-    - just
-    - trash-cli
-    - neovim
-    - starship
-
-  fun:
-    - cowsay
-    - cmatrix
-    - figlet
-    - lolcat
-    - fastfetch
+    pacman:
+      - curl
+      - wget
+      - vim
+      - htop
+      - unzip
+      - rsync
+      - kitty
+      - base-devel
+      - man-db
+      - man-pages
 
   shell:
-    - zsh
-    - zsh-autosuggestions
-    - zsh-syntax-highlighting
-    - zsh-completions
+    pacman:
+      - zsh
+      - zsh-autosuggestions
+      - zsh-syntax-highlighting
+      - zsh-completions
 
-  dev:
-    - git
-    - pkgconf
-    - python
-    - python-pip
-    - python-pipx
-    - nodejs
-    - npm
-    - rustup
-    - jq
-    - yq
-    - httpie
-    - ansible-lint
-    - yamllint
-    - shellcheck
-    - pre-commit
-    - python-playwright
-    - gcc
-    - gdb
-    - cmake
+  utility:
+    pacman:
+      - ncdu
+      - ripgrep
+      - vulkan-tools
+      - fuse2
+      - fuse3
+      - atuin
+      - openssl
+      - pamixer
+      - xdg-utils
+      - plocate
+      - psmisc
+      - github-cli
+      - tmux
+      - eza
+      - bat
+      - fd
+      - zoxide
+      - fzf
+      - lazygit
+      - git-delta
+      - duf
+      - procs
+      - just
+      - trash-cli
+      - neovim
+      - starship
+    aur:
+      - ventoy-bin
 
-  media:
-    - mpv
-    - ffmpeg
-    - ffmpegthumbnailer
-    - yt-dlp
-    - gimp
-    - pavucontrol
-    - obs-studio
-    - qbittorrent
-
-  office:
-    - libreoffice-fresh
-    - thunderbird
-
-  system_tools:
-    - gparted
-    - timeshift
-
-  gaming:
-    - steam
-    - lutris
-    - gamemode
-    - mangohud
-    - goverlay
-    - wine
-    - winetricks
-    - protontricks
-    - retroarch
-
-  audio:
-    - pipewire
-    - wireplumber
-    - pipewire-pulse
-    - pipewire-alsa
-
-  bluetooth:
-    - bluez
-    - bluez-utils
-    - blueman
-
-  networking:
-    - networkmanager
-
-  vpn:
-    - wireguard-tools
-    - openvpn
-    - networkmanager-openvpn
-
-  splashboot:
-    - plymouth
-
-  bootloader:
-    - grub
-    - efibootmgr
+  fun:
+    pacman:
+      - cowsay
+      - cmatrix
+      - figlet
+      - lolcat
+      - fastfetch
 
   fonts:
-    - noto-fonts
-    - noto-fonts-cjk
-    - noto-fonts-emoji
-    - ttf-dejavu
-    - ttf-liberation
-    - gnu-free-fonts
+    pacman:
+      - noto-fonts
+      - noto-fonts-cjk
+      - noto-fonts-emoji
+      - ttf-dejavu
+      - ttf-liberation
+      - gnu-free-fonts
 
-  docker_engine:
-    - docker
+  # -----------------------------------------------------------------------
+  # System
+  # -----------------------------------------------------------------------
+  audio:
+    pacman:
+      - pipewire
+      - wireplumber
+      - pipewire-pulse
+      - pipewire-alsa
 
-  docker_plugins:
-    - docker-compose
-    - docker-buildx
+  bluetooth:
+    pacman:
+      - bluez
+      - bluez-utils
+      - blueman
 
-  virtualization_kvm:
-    - qemu-full
-    - libvirt
-    - virt-install
-    - virt-manager
-    - edk2-ovmf
+  networking:
+    pacman:
+      - networkmanager
 
-  virtualization_virtualbox:
-    - virtualbox
-    - virtualbox-host-modules-arch
-
-  nvidia:
-    - nvidia-dkms
-    - nvidia-utils
-    - lib32-nvidia-utils
-    - nvidia-settings
+  vpn:
+    pacman:
+      - wireguard-tools
+      - openvpn
+      - networkmanager-openvpn
 
   firewall:
-    - ufw
+    pacman:
+      - ufw
 
   fail2ban:
-    - fail2ban
+    pacman:
+      - fail2ban
 
+  sshd:
+    pacman:
+      - openssh
+    service:
+      - sshd
+
+  nvidia:
+    pacman:
+      - nvidia-dkms
+      - nvidia-utils
+      - lib32-nvidia-utils
+      - nvidia-settings
+
+  bootloader:
+    pacman:
+      - grub
+      - efibootmgr
+
+  splashboot:
+    pacman:
+      - plymouth
+
+  system_tools:
+    pacman:
+      - gparted
+      - timeshift
+
+  # -----------------------------------------------------------------------
+  # Virtualization / Containers
+  # -----------------------------------------------------------------------
+  docker:
+    pacman:
+      - docker
+      - docker-compose
+      - docker-buildx
+    group:
+      - docker
+
+  virtualization_kvm:
+    pacman:
+      - qemu-full
+      - libvirt
+      - virt-install
+      - virt-manager
+      - edk2-ovmf
+    service:
+      - libvirtd
+    group:
+      - libvirt
+      - kvm
+
+  virtualization_virtualbox:
+    pacman:
+      - virtualbox
+      - virtualbox-host-modules-arch
+
+  # -----------------------------------------------------------------------
+  # Desktop / WM
+  # -----------------------------------------------------------------------
   plasma:
-    - plasma-desktop
-    - sddm
-    - sddm-kcm
-    - xdg-desktop-portal-kde
-    - plasma-pa
-    - plasma-nm
-    - kscreen
-    - powerdevil
-    - bluedevil
-    - plasma-systemmonitor
-    - breeze-gtk
-    - discover
-    - dolphin
-    - konsole
-    - spectacle
-    - kcalc
-    - ark
+    pacman:
+      - plasma-desktop
+      - sddm
+      - sddm-kcm
+      - xdg-desktop-portal-kde
+      - plasma-pa
+      - plasma-nm
+      - kscreen
+      - powerdevil
+      - bluedevil
+      - plasma-systemmonitor
+      - breeze-gtk
+      - discover
+      - dolphin
+      - konsole
+      - spectacle
+      - kcalc
+      - ark
 
   hyprland:
-    - hyprland
-    - xdg-desktop-portal-hyprland
-    - waybar
-    - rofi
-    - wl-clipboard
-    - grim
-    - slurp
-    - brightnessctl
-    - playerctl
-    - network-manager-applet
-    - swaylock
-    - swayidle
-    - hyprpaper
+    pacman:
+      - hyprland
+      - xdg-desktop-portal-hyprland
+      - waybar
+      - rofi
+      - wl-clipboard
+      - grim
+      - slurp
+      - brightnessctl
+      - playerctl
+      - network-manager-applet
+      - swaylock
+      - swayidle
+      - hyprpaper
 
   niri:
-    - xdg-desktop-portal-wlr
-    - waybar
-    - rofi
-    - mako
-    - swaylock
-    - swayidle
-    - wl-clipboard
-    - grim
-    - slurp
-    - brightnessctl
-    - playerctl
-    - network-manager-applet
+    pacman:
+      - xdg-desktop-portal-wlr
+      - waybar
+      - rofi
+      - mako
+      - swaylock
+      - swayidle
+      - wl-clipboard
+      - grim
+      - slurp
+      - brightnessctl
+      - playerctl
+      - network-manager-applet
+    aur:
+      - niri
 
-  discord:
-    - discord
-
-# ---------------------------------------------------------------------------
-# Packages (AUR)
-# ---------------------------------------------------------------------------
-aur_packages:
-  entertainment:
-    - spotify
-  gaming:
-    - proton-ge-custom-bin
-    - heroic-games-launcher-bin
-  tools:
-    - ventoy-bin
-  dev:
-    - nvm
-  desktop:
-    - niri
+  # -----------------------------------------------------------------------
+  # Applications
+  # -----------------------------------------------------------------------
   browser:
-    - brave-bin
-  vscode:
-    - visual-studio-code-bin
+    aur:
+      - brave-bin
 
-# ---------------------------------------------------------------------------
-# Apps
-# ---------------------------------------------------------------------------
-distro_flatpaks: []
+  dev:
+    pacman:
+      - git
+      - pkgconf
+      - python
+      - python-pip
+      - python-pipx
+      - nodejs
+      - npm
+      - rustup
+      - jq
+      - yq
+      - httpie
+      - ansible-lint
+      - yamllint
+      - shellcheck
+      - pre-commit
+      - python-playwright
+      - gcc
+      - gdb
+      - cmake
+    aur:
+      - nvm
+      - visual-studio-code-bin
+    npm:
+      - opencode-ai
+      - "@openai/codex"
+      - "@anthropic-ai/claude-code"
+    flatpak:
+      - com.getpostman.Postman
+      - net.portswigger.BurpSuite-Community
 
-# ---------------------------------------------------------------------------
-# System
-# ---------------------------------------------------------------------------
-docker_group: docker
+  flatpak:
+    pacman:
+      - flatpak
 
-sshd_package: openssh
-sshd_service: sshd
+  media:
+    pacman:
+      - mpv
+      - ffmpeg
+      - ffmpegthumbnailer
+      - yt-dlp
+      - gimp
+      - pavucontrol
+      - obs-studio
+      - qbittorrent
+      - discord
+    aur:
+      - spotify
+    flatpak:
+      - com.spotify.Client
 
-libvirt_service: libvirtd
+  gaming:
+    pacman:
+      - steam
+      - lutris
+      - gamemode
+      - mangohud
+      - goverlay
+      - wine
+      - winetricks
+      - protontricks
+      - retroarch
+    aur:
+      - proton-ge-custom-bin
+      - heroic-games-launcher-bin
+    flatpak:
+      - com.heroicgameslauncher.hgl
+      - net.pcsx2.PCSX2
+      - net.davidotek.pupgui2
 
-virtualization_user_groups:
-  - libvirt
-  - kvm
+  office:
+    pacman:
+      - libreoffice-fresh
+      - thunderbird
+
+  rclone:
+    pacman:
+      - rclone

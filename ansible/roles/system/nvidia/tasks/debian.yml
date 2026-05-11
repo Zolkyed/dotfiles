@@ -24,12 +24,6 @@
     state: present
   when: ansible_facts["distribution"] == "Debian"
 
-- name: Nvidia | Install driver
-  ansible.builtin.apt:
-    name: "{{ apt_packages.nvidia }}"
-    state: present
-  when: ansible_facts["distribution"] == "Debian"
-
 # --- Ubuntu ---
 - name: Nvidia | Install ubuntu-drivers
   ansible.builtin.apt:

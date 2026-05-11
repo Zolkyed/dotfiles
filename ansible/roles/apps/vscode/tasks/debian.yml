@@ -44,5 +44,5 @@
 
 - name: VS Code | Install Debian package
   ansible.builtin.apt:
-    name: "{{ vscode_apt_package }}"
+    name: "{{ profiles.dev.package }}"
     state: present

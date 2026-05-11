@@ -1,6 +1,0 @@
----
-- name: Hyprland | Install packages
-  ansible.builtin.apt:
-    name: "{{ apt_packages.hyprland }}"
-    state: present
-  when: apt_packages.hyprland | length > 0

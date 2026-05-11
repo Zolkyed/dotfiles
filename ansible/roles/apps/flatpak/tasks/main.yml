@@ -1,7 +1,4 @@
 ---
-- name: "Flatpak | Run tasks for {{ ansible_facts.os_family }}"
-  ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
-
 - name: Flatpak | Add remotes
   community.general.flatpak_remote:
     name: "{{ item.name }}"
@@ -17,9 +14,10 @@
   vars:
     flatpak_apps: >-
       {{
-        shared_flatpaks +
-        distro_flatpaks +
-        (gaming_enabled | ternary(gaming_flatpaks, []))
+        profiles | dict2items
+        | map(attribute='value')
+        | map(attribute='flatpak', default=[])
+        | flatten
       }}
   when:
     - flatpak_apps | length > 0

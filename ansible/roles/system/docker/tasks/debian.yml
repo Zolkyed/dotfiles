@@ -38,9 +38,3 @@
 
 - name: Docker | Flush apt repository handlers
   ansible.builtin.meta: flush_handlers
-
-- name: Docker | Install packages
-  ansible.builtin.apt:
-    name: "{{ apt_packages.docker_engine + apt_packages.docker_plugins }}"
-    state: present
-  notify: Docker | Restart docker

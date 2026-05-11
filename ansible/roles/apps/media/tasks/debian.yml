@@ -1,6 +1,0 @@
----
-- name: Media | Install packages
-  ansible.builtin.apt:
-    name: "{{ apt_packages.media }}"
-    state: present
-  when: apt_packages.media | length > 0

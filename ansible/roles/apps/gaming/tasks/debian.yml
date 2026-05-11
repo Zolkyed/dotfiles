@@ -2,9 +2,9 @@
 - name: Gaming | Configure Debian i386 support
   when:
     - >
-      ('steam' in apt_packages.gaming) or
-      ('wine' in apt_packages.gaming) or
-      ('winetricks' in apt_packages.gaming)
+      ('steam' in (profiles.gaming.apt | default([]))) or
+      ('wine' in (profiles.gaming.apt | default([]))) or
+      ('winetricks' in (profiles.gaming.apt | default([])))
   block:
     - name: Gaming | Check Debian foreign architectures
       ansible.builtin.command:
@@ -21,9 +21,3 @@
 
 - name: Gaming | Flush repository handlers
   ansible.builtin.meta: flush_handlers
-
-- name: Gaming | Install packages
-  ansible.builtin.apt:
-    name: "{{ apt_packages.gaming }}"
-    state: present
-  when: apt_packages.gaming | length > 0

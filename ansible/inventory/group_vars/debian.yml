@@ -13,214 +13,271 @@ user_groups:
   - netdev
 
 # ---------------------------------------------------------------------------
-# Packages
+# Profiles
 # ---------------------------------------------------------------------------
-apt_packages:
+profiles:
+  # -----------------------------------------------------------------------
+  # Core
+  # -----------------------------------------------------------------------
   core:
-    - curl
-    - wget
-    - vim
-    - htop
-    - unzip
-    - rsync
-    - kitty
-    - software-properties-common
-    - apt-transport-https
-    - ca-certificates
-    - gnupg
-    - man-db
-    - manpages
-
-  utility:
-    - ncdu
-    - ripgrep
-    - vulkan-tools
-    - fuse3
-    - libfuse2
-    - atuin
-    - openssl
-    - pamixer
-    - xdg-utils
-    - plocate
-    - psmisc
-    - gh
-    - tmux
-    - eza
-    - bat
-    - fd-find
-    - zoxide
-    - fzf
-    - lazygit
-    - git-delta
-    - duf
-    - procs
-    - just
-    - trash-cli
-    - neovim
-    - starship
-
-  fun:
-    - cowsay
-    - cmatrix
-    - figlet
-    - lolcat
-    - fastfetch
+    apt:
+      - curl
+      - wget
+      - vim
+      - htop
+      - unzip
+      - rsync
+      - kitty
+      - software-properties-common
+      - apt-transport-https
+      - ca-certificates
+      - gnupg
+      - man-db
+      - manpages
 
   shell:
-    - zsh
-    - zsh-autosuggestions
-    - zsh-syntax-highlighting
+    apt:
+      - zsh
+      - zsh-autosuggestions
+      - zsh-syntax-highlighting
 
-  dev:
-    - git
-    - build-essential
-    - pkg-config
-    - python3
-    - python3-pip
-    - python3-venv
-    - pipx
-    - nodejs
-    - npm
-    - jq
-    - yq
-    - httpie
-    - ansible-lint
-    - yamllint
-    - shellcheck
-    - pre-commit
-    - playwright
-    - gcc
-    - gdb
-    - cmake
+  utility:
+    apt:
+      - ncdu
+      - ripgrep
+      - vulkan-tools
+      - fuse3
+      - libfuse2
+      - atuin
+      - openssl
+      - pamixer
+      - xdg-utils
+      - plocate
+      - psmisc
+      - gh
+      - tmux
+      - eza
+      - bat
+      - fd-find
+      - zoxide
+      - fzf
+      - lazygit
+      - git-delta
+      - duf
+      - procs
+      - just
+      - trash-cli
+      - neovim
+      - starship
 
-  media:
-    - mpv
-    - ffmpeg
-    - ffmpegthumbnailer
-    - yt-dlp
-    - gimp
-    - pavucontrol
-    - obs-studio
-    - qbittorrent
-
-  office:
-    - libreoffice
-    - thunderbird
-
-  system_tools:
-    - gparted
-    - timeshift
-
-  gaming:
-    - steam
-    - lutris
-    - gamemode
-    - mangohud
-    - libgamemode0
-    - libgamemodeauto0
-    - goverlay
-    - wine
-    - winetricks
-    - retroarch
-
-  audio:
-    - pipewire
-    - wireplumber
-    - pipewire-pulse
-    - pipewire-alsa
-
-  bluetooth:
-    - bluez
-    - blueman
-
-  networking:
-    - network-manager
-    - systemd-resolved
-
-  vpn:
-    - wireguard-tools
-    - openvpn
-    - network-manager-openvpn
-    - network-manager-openvpn-gnome
-
-  splashboot:
-    - plymouth
-    - plymouth-themes
-
-  bootloader:
-    - grub-pc
+  fun:
+    apt:
+      - cowsay
+      - cmatrix
+      - figlet
+      - lolcat
+      - fastfetch
 
   fonts:
-    - fonts-noto
-    - fonts-noto-cjk
-    - fonts-noto-color-emoji
-    - fonts-dejavu
-    - fonts-liberation
-    - fonts-freefont-ttf
+    apt:
+      - fonts-noto
+      - fonts-noto-cjk
+      - fonts-noto-color-emoji
+      - fonts-dejavu
+      - fonts-liberation
+      - fonts-freefont-ttf
 
-  docker_engine:
-    - docker-ce
-    - docker-ce-cli
-    - containerd.io
+  # -----------------------------------------------------------------------
+  # System
+  # -----------------------------------------------------------------------
+  audio:
+    apt:
+      - pipewire
+      - wireplumber
+      - pipewire-pulse
+      - pipewire-alsa
 
-  docker_plugins:
-    - docker-buildx-plugin
-    - docker-compose-plugin
+  bluetooth:
+    apt:
+      - bluez
+      - blueman
 
-  virtualization_kvm:
-    - qemu-system-x86
-    - libvirt-daemon-system
-    - libvirt-clients
-    - virtinst
-    - virt-manager
-    - bridge-utils
-    - ovmf
+  networking:
+    apt:
+      - network-manager
+      - systemd-resolved
 
-  virtualization_virtualbox:
-    - virtualbox
-    - virtualbox-ext-pack
+  vpn:
+    apt:
+      - wireguard-tools
+      - openvpn
+      - network-manager-openvpn
+      - network-manager-openvpn-gnome
 
   firewall:
-    - ufw
+    apt:
+      - ufw
 
   fail2ban:
-    - fail2ban
+    apt:
+      - fail2ban
+
+  sshd:
+    apt:
+      - openssh-server
+    service:
+      - ssh
 
   nvidia:
-    - nvidia-driver
-    - nvidia-settings
-    - firmware-misc-nonfree
+    apt:
+      - nvidia-driver
+      - nvidia-settings
+      - firmware-misc-nonfree
+      - ubuntu-drivers-common
 
+  bootloader:
+    apt:
+      - grub-pc
+
+  splashboot:
+    apt:
+      - plymouth
+      - plymouth-themes
+
+  system_tools:
+    apt:
+      - gparted
+      - timeshift
+
+  # -----------------------------------------------------------------------
+  # Virtualization / Containers
+  # -----------------------------------------------------------------------
+  docker:
+    apt:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    group:
+      - docker
+
+  virtualization_kvm:
+    apt:
+      - qemu-system-x86
+      - libvirt-daemon-system
+      - libvirt-clients
+      - virtinst
+      - virt-manager
+      - bridge-utils
+      - ovmf
+    service:
+      - libvirtd
+    group:
+      - libvirt
+      - kvm
+
+  virtualization_virtualbox:
+    apt:
+      - virtualbox
+      - virtualbox-ext-pack
+
+  # -----------------------------------------------------------------------
+  # Desktop / WM
+  # -----------------------------------------------------------------------
   plasma:
-    - kde-plasma-desktop
-    - plasma-discover
-    - dolphin
-    - konsole
-    - kcalc
-    - kde-spectacle
+    apt:
+      - kde-plasma-desktop
+      - plasma-discover
+      - dolphin
+      - konsole
+      - kcalc
+      - kde-spectacle
+      - plasma-discover-backend-flatpak
 
-  hyprland: []
+  hyprland:
+    apt: []
 
-  niri: []
+  niri:
+    apt: []
 
-# ---------------------------------------------------------------------------
-# Apps
-# ---------------------------------------------------------------------------
-browser_debian_package: brave-browser
-vscode_apt_package: code
+  # -----------------------------------------------------------------------
+  # Applications
+  # -----------------------------------------------------------------------
+  browser:
+    package: brave-browser
 
-distro_flatpaks: []
+  dev:
+    apt:
+      - git
+      - build-essential
+      - pkg-config
+      - python3
+      - python3-pip
+      - python3-venv
+      - pipx
+      - nodejs
+      - npm
+      - jq
+      - yq
+      - httpie
+      - ansible-lint
+      - yamllint
+      - shellcheck
+      - pre-commit
+      - playwright
+      - gcc
+      - gdb
+      - cmake
+      - gpg
+    package: code
+    npm:
+      - opencode-ai
+      - "@openai/codex"
+      - "@anthropic-ai/claude-code"
+    flatpak:
+      - com.getpostman.Postman
+      - net.portswigger.BurpSuite-Community
 
-# ---------------------------------------------------------------------------
-# System
-# ---------------------------------------------------------------------------
-docker_group: docker
+  flatpak:
+    apt:
+      - flatpak
 
-sshd_package: openssh-server
-sshd_service: ssh
+  media:
+    apt:
+      - mpv
+      - ffmpeg
+      - ffmpegthumbnailer
+      - yt-dlp
+      - gimp
+      - pavucontrol
+      - obs-studio
+      - qbittorrent
+    flatpak:
+      - com.spotify.Client
 
-libvirt_service: libvirtd
+  gaming:
+    apt:
+      - steam
+      - lutris
+      - gamemode
+      - mangohud
+      - libgamemode0
+      - libgamemodeauto0
+      - goverlay
+      - wine
+      - winetricks
+      - retroarch
+    flatpak:
+      - com.heroicgameslauncher.hgl
+      - net.pcsx2.PCSX2
+      - net.davidotek.pupgui2
 
-virtualization_user_groups:
-  - libvirt
-  - kvm
+  office:
+    apt:
+      - libreoffice
+      - thunderbird
+
+  rclone:
+    apt:
+      - rclone

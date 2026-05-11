@@ -1,19 +1,17 @@
 ---
-- name: "Virtualization | Run tasks for {{ ansible_facts.os_family }}"
-  ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
-
-- name: Enable and start libvirtd
+- name: Enable and start libvirt services
   ansible.builtin.systemd:
-    name: "{{ libvirt_service }}"
+    name: "{{ item }}"
     enabled: true
     state: started
+  loop: "{{ profiles.virtualization_kvm.service | default([]) }}"
   when: virtualization_backend == "kvm"
 
 - name: Add user to virtualization groups
   ansible.builtin.user:
     name: "{{ user_name }}"
-    groups: "{{ virtualization_user_groups }}"
+    groups: "{{ profiles.virtualization_kvm.group | default([]) }}"
     append: true
   when:
     - virtualization_backend == "kvm"
-    - virtualization_user_groups | length > 0
+    - (profiles.virtualization_kvm.group | default([])) | length > 0

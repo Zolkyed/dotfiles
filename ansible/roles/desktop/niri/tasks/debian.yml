@@ -1,6 +1,0 @@
----
-- name: Niri | Install packages
-  ansible.builtin.apt:
-    name: "{{ apt_packages.niri }}"
-    state: present
-  when: apt_packages.niri | length > 0

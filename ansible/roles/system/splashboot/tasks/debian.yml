@@ -1,7 +1,0 @@
----
-- name: Splashboot | Install packages
-  ansible.builtin.apt:
-    name: "{{ apt_packages.splashboot }}"
-    state: present
-  notify: Splashboot | Update initramfs
-  when: apt_packages.splashboot | length > 0

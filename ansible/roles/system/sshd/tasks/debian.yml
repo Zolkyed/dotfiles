@@ -1,5 +1,5 @@
 ---
 - name: SSHD | Install package
   ansible.builtin.apt:
-    name: "{{ sshd_package }}"
+    name: "{{ (profiles.sshd.apt | default([])) }}"
     state: present

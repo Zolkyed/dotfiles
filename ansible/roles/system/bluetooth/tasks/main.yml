@@ -1,7 +1,4 @@
 ---
-- name: "Bluetooth | Run tasks for {{ ansible_facts.os_family }}"
-  ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
-
 - name: Bluetooth | Enable and start bluetooth service
   ansible.builtin.systemd:
     name: bluetooth

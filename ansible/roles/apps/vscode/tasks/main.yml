@@ -1,3 +1,4 @@
 ---
-- name: "VS Code | Run tasks for {{ ansible_facts.os_family }}"
-  ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
+- name: "VS Code | Run Debian tasks"
+  ansible.builtin.include_tasks: debian.yml
+  when: ansible_facts.os_family | lower == "debian"

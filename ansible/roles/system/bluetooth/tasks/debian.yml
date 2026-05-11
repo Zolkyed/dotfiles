@@ -1,5 +1,0 @@
----
-- name: Bluetooth | Install packages
-  ansible.builtin.apt:
-    name: "{{ apt_packages.bluetooth }}"
-    state: present

@@ -1,5 +1,0 @@
----
-- name: Fail2ban | Install packages
-  community.general.pacman:
-    name: "{{ pacman_packages.fail2ban }}"
-    state: present

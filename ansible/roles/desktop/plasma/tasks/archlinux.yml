@@ -1,6 +1,0 @@
----
-- name: Plasma | Install packages
-  community.general.pacman:
-    name: "{{ pacman_packages.plasma }}"
-    state: present
-  when: pacman_packages.plasma | length > 0

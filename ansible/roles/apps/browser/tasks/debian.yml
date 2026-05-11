@@ -28,5 +28,5 @@
 
 - name: Browser | Install Debian package
   ansible.builtin.apt:
-    name: "{{ browser_debian_package }}"
+    name: "{{ profiles.browser.package }}"
     state: present

@@ -1,7 +1,0 @@
----
-- name: Fonts | Install packages
-  ansible.builtin.apt:
-    name: "{{ apt_packages.fonts }}"
-    state: present
-  when: apt_packages.fonts | length > 0
-  notify: Fonts | Update font cache

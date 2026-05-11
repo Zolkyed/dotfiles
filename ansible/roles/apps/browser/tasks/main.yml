@@ -1,6 +1,7 @@
 ---
-- name: "Browser | Run tasks for {{ ansible_facts.os_family }}"
-  ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
+- name: "Browser | Run Debian tasks"
+  ansible.builtin.include_tasks: debian.yml
+  when: ansible_facts.os_family | lower == "debian"
 
 - name: Browser | Ensure managed policy directory exists
   ansible.builtin.file:

@@ -1,7 +1,4 @@
 ---
-- name: "Rclone | Run tasks for {{ ansible_facts.os_family }}"
-  ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
-
 - name: Rclone | Ensure config directory exists
   ansible.builtin.file:
     path: "{{ user_home }}/.config/rclone"

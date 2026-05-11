@@ -1,5 +1,0 @@
----
-- name: Firewall | Install packages
-  community.general.pacman:
-    name: "{{ pacman_packages.firewall }}"
-    state: present

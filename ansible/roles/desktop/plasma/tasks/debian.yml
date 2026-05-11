@@ -1,6 +1,0 @@
----
-- name: Plasma | Install packages
-  ansible.builtin.apt:
-    name: "{{ apt_packages.plasma }}"
-    state: present
-  when: apt_packages.plasma | length > 0

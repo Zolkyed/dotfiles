@@ -1,5 +1,5 @@
 ---
 - name: SSHD | Install package
   community.general.pacman:
-    name: "{{ sshd_package }}"
+    name: "{{ (profiles.sshd.pacman | default([])) }}"
     state: present

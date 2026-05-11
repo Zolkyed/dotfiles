@@ -1,10 +1,4 @@
 ---
-- name: Dev | Install packages
-  ansible.builtin.apt:
-    name: "{{ apt_packages.dev }}"
-    state: present
-  when: apt_packages.dev | length > 0
-
 # ---------------------------------------------------------------------------
 # NVM
 # ---------------------------------------------------------------------------
@@ -67,7 +61,7 @@
 # Global npm packages
 # ---------------------------------------------------------------------------
 - name: Dev | Install global npm packages
-  when: dev_install_nvm and dev_npm_global_packages | length > 0
+  when: dev_install_nvm and (profiles.dev.npm | default([])) | length > 0
   ansible.builtin.shell: |
     set -e
 
@@ -76,7 +70,7 @@
 
     nvm use default >/dev/null
 
-    for pkg in {{ dev_npm_global_packages | join(' ') }}; do
+    for pkg in {{ (profiles.dev.npm | default([])) | join(' ') }}; do
       npm list -g "$pkg" >/dev/null 2>&1 || npm install -g "$pkg"
     done
   args:
