@@ -48,6 +48,8 @@ xdg_enabled: true
 shared_flatpaks:
   - com.discordapp.Discord
   - com.spotify.Client
+  - com.getpostman.Postman
+  - com.burpsuite.BurpSuiteCommunity
 
 gaming_flatpaks:
   - com.heroicgameslauncher.hgl
