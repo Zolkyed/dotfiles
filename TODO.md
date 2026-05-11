@@ -28,24 +28,6 @@ roles/system/backup/
 - Integrate with existing `rclone` role if possible
 
 
-### [ ] system/power
-Power management and thermal tuning.
-
-#### Manage
-- tlp
-- power-profiles-daemon
-- thermald
-- suspend settings
-- lid behavior
-- CPU governors
-- AMD/Intel tuning
-
-#### Notes
-- Especially useful for laptops
-- Related to existing `fan-toggle` utility
-
----
-
 ### [ ] system/secrets
 Centralized secrets and credential management.
 
@@ -64,25 +46,6 @@ Existing secret-related systems:
 - MPV AniList token
 
 ---
-
-### [x] system/bootloader
-Unified bootloader and kernel boot management.
-
-#### Manage
-- GRUB / systemd-boot
-- kernel parameters
-- unified kernel images
-- Secure Boot
-- microcode
-- boot entry cleanup
-
-#### Notes
-Complements existing:
-- splashboot
-- nvidia
-
----
-
 # Future Architecture
 
 ## [ ] Introduce profile/meta roles
