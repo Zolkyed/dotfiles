@@ -129,56 +129,56 @@ _zsh_plugin_load zsh-users/zsh-completions
 source "$ZSH_PLUGIN_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
 # ========================
-# Syntax Highlighting (Catppuccin Mocha)
+# Syntax Highlighting (Oxocarbon)
 # ========================
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main cursor)
 typeset -gA ZSH_HIGHLIGHT_STYLES
 
 # Comments
-ZSH_HIGHLIGHT_STYLES[comment]='fg=#585b70'
+ZSH_HIGHLIGHT_STYLES[comment]='fg=#525252'
 
 # Functions / aliases
 for key in alias suffix-alias global-alias function command precommand; do
-  ZSH_HIGHLIGHT_STYLES[$key]='fg=#a6e3a1'
+  ZSH_HIGHLIGHT_STYLES[$key]='fg=#42be65'
 done
 ZSH_HIGHLIGHT_STYLES[precommand]+=',italic'
-ZSH_HIGHLIGHT_STYLES[autodirectory]='fg=#fab387,italic'
-ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=#fab387'
-ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=#fab387'
-ZSH_HIGHLIGHT_STYLES[back-quoted-argument]='fg=#cba6f7'
+ZSH_HIGHLIGHT_STYLES[autodirectory]='fg=#f1c21b,italic'
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=#78a9ff'
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=#78a9ff'
+ZSH_HIGHLIGHT_STYLES[back-quoted-argument]='fg=#be95ff'
 
 # Builtins / keywords
 for key in builtin reserved-word hashed-command; do
-  ZSH_HIGHLIGHT_STYLES[$key]='fg=#a6e3a1'
+  ZSH_HIGHLIGHT_STYLES[$key]='fg=#42be65'
 done
 
 # Punctuation
 for key in commandseparator command-substitution-delimiter command-substitution-delimiter-unquoted \
            process-substitution-delimiter back-quoted-argument-delimiter back-double-quoted-argument \
            back-dollar-quoted-argument; do
-  ZSH_HIGHLIGHT_STYLES[$key]='fg=#f38ba8'
+  ZSH_HIGHLIGHT_STYLES[$key]='fg=#ee5396'
 done
 
 # Strings / quoted arguments
 for key in command-substitution-quoted command-substitution-delimiter-quoted single-quoted-argument \
            double-quoted-argument rc-quote; do
-  ZSH_HIGHLIGHT_STYLES[$key]='fg=#f9e2af'
+  ZSH_HIGHLIGHT_STYLES[$key]='fg=#f1c21b'
 done
-ZSH_HIGHLIGHT_STYLES[single-quoted-argument-unclosed]='fg=#eba0ac'
-ZSH_HIGHLIGHT_STYLES[double-quoted-argument-unclosed]='fg=#eba0ac'
-ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument-unclosed]='fg=#eba0ac'
-ZSH_HIGHLIGHT_STYLES[back-quoted-argument-unclosed]='fg=#eba0ac'
+ZSH_HIGHLIGHT_STYLES[single-quoted-argument-unclosed]='fg=#ff7eb6'
+ZSH_HIGHLIGHT_STYLES[double-quoted-argument-unclosed]='fg=#ff7eb6'
+ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument-unclosed]='fg=#ff7eb6'
+ZSH_HIGHLIGHT_STYLES[back-quoted-argument-unclosed]='fg=#ff7eb6'
 
 # Paths
 for key in path path_prefix; do
-  ZSH_HIGHLIGHT_STYLES[$key]='fg=#cdd6f4,underline'
+  ZSH_HIGHLIGHT_STYLES[$key]='fg=#f2f4f8,underline'
 done
 
 # Misc
 for key in globbing history-expansion redirection arg0 default cursor; do
-  ZSH_HIGHLIGHT_STYLES[$key]='fg=#cdd6f4'
+  ZSH_HIGHLIGHT_STYLES[$key]='fg=#f2f4f8'
 done
-ZSH_HIGHLIGHT_STYLES[history-expansion]='fg=#cba6f7'
+ZSH_HIGHLIGHT_STYLES[history-expansion]='fg=#be95ff'
 
 source "$ZSH_PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 fpath=("$ZSH_PLUGIN_DIR/zsh-completions/src" $fpath)
@@ -186,6 +186,7 @@ fpath=("$ZSH_PLUGIN_DIR/zsh-completions/src" $fpath)
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 ZSH_AUTOSUGGEST_USE_ASYNC=true
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#525252'
 
 # ========================
 # FZF
