@@ -18,8 +18,5 @@ encryption = "age"
     args    = ["--wait"]
 
 [data]
-    username      = {{ .chezmoi.username | quote }}
-    hostname      = {{ .chezmoi.hostname | quote }}
-    shell         = {{ .chezmoi.shell | quote }}
     distro        = {{ $id | quote }}
     distro_family = {{ $family | quote }}
