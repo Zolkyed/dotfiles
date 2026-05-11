@@ -13,6 +13,13 @@ encryption = "age"
 [age]
     identity = "~/.config/sops/age/keys.txt"
 
+[edit]
+    command = "code"
+    args    = ["--wait"]
+
 [data]
-    distro_family = {{ $family | quote }}
+    username      = {{ .chezmoi.username | quote }}
+    hostname      = {{ .chezmoi.hostname | quote }}
+    shell         = {{ .chezmoi.shell | quote }}
     distro        = {{ $id | quote }}
+    distro_family = {{ $family | quote }}
