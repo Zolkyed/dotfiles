@@ -2,28 +2,23 @@
 
 Full machine provisioning and user environment for Debian and Arch Linux.
 
-## Architecture
+## Desktop
 
-| Layer | Tool | Responsibility |
-|---|---|---|
-| System | Ansible | Packages, services, drivers, users |
-| Dotfiles | Chezmoi | Shell, editor, app config |
-| Desktop | Ansible | Plasma, Hyprland, Niri packages |
-| Secrets | SOPS + age | SSH keys, tokens, credentials |
+![desktop](assets/desktop.png)
 
 ## Quick start
 
 ```bash
-# Clone
 git clone https://github.com/Zolkyed/dotfiles ~/dotfiles
 cd ~/dotfiles
 
-# Bootstrap: installs Ansible, sops, age, collections, then runs the playbook
 just bootstrap desktop
 ```
 
+## Commands
+
 ```bash
-# Local dev tooling
+# Dev tooling
 just setup-dev   # create .venv with ansible-lint, yamllint, shellcheck-py
 just ci          # syntax check + full lint
 just lint        # yamllint + shellcheck + ansible-lint
@@ -41,16 +36,20 @@ just run-local desktop
 # Dry-run
 just check desktop
 
-# Vault management
+# Vault
 just vault-edit
 just vault-view
 
 # Chezmoi
-just apply
-just diff
+just apply              # apply all dotfiles
+just diff               # show pending changes
+
+chezmoi status          # list files with pending changes
+chezmoi update          # git pull source + apply
+chezmoi edit ~/.zshrc   # edit a managed file in $EDITOR
 ```
 
-## Repository structure
+## Structure
 
 ```
 .
@@ -146,54 +145,7 @@ just diff
 └── Justfile
 ```
 
-## Role execution order
-
-```
-sysctl → account → sudoers → packages → fonts
-→ plasma → flatpak → vscode → hayase → mihon → browser → dev → media → gaming → rclone → konsave
-→ nvidia → docker → virtualization
-→ shell → ssh_keys → bin → xdg → dotfiles
-→ networking → bluetooth → vpn → sshd → firewall → fail2ban
-→ splashboot → hyprland → niri
-```
-
-Optional roles are gated behind feature flags in `group_vars/all.yml`.
-Host-specific overrides go in `host_vars/<host>/vars.yml`.
-
-## Sources of truth
-
-| What | File |
-|---|---|
-| Feature flags and global defaults | `ansible/inventory/group_vars/all.yml` |
-| Shared secrets | `ansible/inventory/group_vars/vault.yml` |
-| Distro package and service names | `ansible/inventory/group_vars/debian.yml`, `archlinux.yml` |
-| Host overrides (flags, monitors) | `ansible/inventory/host_vars/<host>/vars.yml` |
-| Host secrets (SSH keys) | `ansible/inventory/host_vars/<host>/vault.yml` |
-| KDE keybinds | `ansible/roles/user/bin/keybinds/<host>.ini` |
-| Chezmoi dotfiles | `chezmoi/` |
-| Bootstrap script | `scripts/run_once_install-ansible.sh` |
-
-## Secrets
-
-Encrypted with SOPS + age. The age public key is in `.sops.yaml`.
-All `ansible/inventory/**/vault.yml` files are encrypted.
-
-```bash
-# Edit shared secrets
-just vault-edit
-
-# Edit per-host secrets
-sops ansible/inventory/host_vars/desktop/vault.yml
-```
-
-Fresh machines need the age identity before SOPS can decrypt:
-
-```bash
-install -Dm600 /path/to/keys.txt ~/.config/sops/age/keys.txt
-just bootstrap desktop
-```
-
-## Design philosophy
+## Design
 
 - **Ansible** → system state: packages, services, users, drivers
 - **Chezmoi** → user environment: shell, editor, app config
@@ -202,6 +154,8 @@ just bootstrap desktop
 - `debian.yml` / `archlinux.yml` → distro package names only, no logic
 - `host_vars/<host>/vars.yml` → per-machine overrides only
 
-https://github.com/shricodev/dotfiles/tree/f7814b58179c5ece4a59f4c0396c91cb30e75f3c  
-https://www.reddit.com/r/unixporn/comments/1qimvm8/kde_monochrome_in_the_night/
-https://www.reddit.com/r/unixporn/comments/1srpss0/kde_plasma_who_said_desktop_environments_cant_be/
+## References
+
+- [shricodev/dotfiles](https://github.com/shricodev/dotfiles/tree/f7814b58179c5ece4a59f4c0396c91cb30e75f3c)
+- [KDE monochrome in the night](https://www.reddit.com/r/unixporn/comments/1qimvm8/kde_monochrome_in_the_night/)
+- [KDE Plasma — who said DEs can't be beautiful](https://www.reddit.com/r/unixporn/comments/1srpss0/kde_plasma_who_said_desktop_environments_cant_be/)
