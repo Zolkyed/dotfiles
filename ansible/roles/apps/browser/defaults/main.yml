@@ -28,24 +28,43 @@ browser_extensions:
     update_url: https://clients2.google.com/service/update2/crx
 # Policy reference: brave://policy/
 browser_extra_policies:
+  # Startup
+  HideFirstRunExperience: true
+  RestoreOnStartup: 5
+
+  # Sign-in / sync
+  BrowserSignin: 0
+  SyncDisabled: true
+
+  # Search
   DefaultSearchProviderEnabled: true
   DefaultSearchProviderName: "Google"
   DefaultSearchProviderSearchURL: "https://www.google.com/search?q={searchTerms}"
   DefaultSearchProviderSuggestURL: "https://www.google.com/complete/search?output=chrome&q={searchTerms}"
-  RestoreOnStartup: 5
-  # Brave clutter
-  BraveRewardsDisabled: true
-  BraveWalletDisabled: true
-  BraveNewsDisabled: true
-  BraveTalkDisabled: true
+
+  # Brave features
+  BraveAdsEnabled: false
   BraveAIChatEnabled: false
+  BraveNewsDisabled: true
+  BraveRewardsDisabled: true
+  BraveTalkDisabled: true
+  BraveWalletDisabled: true
+  ShoppingListEnabled: false
+
   # Privacy / telemetry
   MetricsReportingEnabled: false
+  PasswordLeakDetectionEnabled: false
+
   # Autofill
-  PasswordManagerEnabled: false
   AutofillAddressEnabled: false
   AutofillCreditCardEnabled: false
+  PasswordManagerEnabled: false
+
+  # UI
+  ReadingListEnabled: false
+  ShowFullURLsInAddressBar: true
+  SidePanelEnabled: false
+
   # Misc
   BackgroundModeEnabled: false
   TranslateEnabled: false
-  SyncDisabled: true
