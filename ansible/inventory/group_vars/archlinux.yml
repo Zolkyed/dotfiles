@@ -98,7 +98,6 @@ distro_flatpaks: []
 
 aur_packages:
   - spotify
-  - vesktop-bin
   - proton-ge-custom-bin
   - heroic-games-launcher-bin
   - ventoy-bin

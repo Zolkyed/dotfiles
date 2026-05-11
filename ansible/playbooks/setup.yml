@@ -67,6 +67,9 @@
     - role: apps/browser
       tags: browser
       when: browser_enabled
+    - role: apps/discord
+      tags: discord
+      when: discord_enabled
     - role: apps/dev
       tags: dev
       when: dev_enabled

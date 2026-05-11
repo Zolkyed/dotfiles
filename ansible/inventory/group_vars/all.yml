@@ -39,6 +39,7 @@ rclone_enabled: true
 system_tools_enabled: true
 vscode_enabled: true
 gaming_enabled: false
+discord_enabled: true
 konsave_enabled: true
 xdg_enabled: true
 
@@ -47,7 +48,6 @@ xdg_enabled: true
 # ---------------------------------------------------------------------------
 # https://flathub.org/en
 shared_flatpaks:
-  - com.discordapp.Discord
   - com.spotify.Client
   - com.getpostman.Postman
   - net.portswigger.BurpSuite-Community
