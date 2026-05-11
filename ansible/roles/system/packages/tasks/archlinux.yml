@@ -9,3 +9,12 @@
       (system_tools_enabled | ternary(system_tools_packages | default([]), []))
     }}"
     state: present
+
+- name: Packages | Install AUR packages
+  kewlfft.aur.aur:
+    name: "{{ aur_packages }}"
+    use: makepkg
+    state: present
+  become: true
+  become_user: "{{ user_name }}"
+  when: aur_packages | length > 0

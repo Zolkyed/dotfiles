@@ -1,5 +1,6 @@
 ---
 # https://archlinux.org/packages/
+# https://aur.archlinux.org/packages
 # ---------------------------------------------------------------------------
 # User
 # ---------------------------------------------------------------------------
@@ -94,6 +95,13 @@ shell_packages:
   - zsh-completions
 
 distro_flatpaks: []
+
+aur_packages:
+  - spotify
+  - vesktop-bin
+  - proton-ge-custom-bin
+  - heroic-games-launcher-bin
+  - ventoy-bin
 
 dev_packages:
   - git
