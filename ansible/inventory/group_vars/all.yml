@@ -45,11 +45,12 @@ xdg_enabled: true
 # ---------------------------------------------------------------------------
 # Flatpak
 # ---------------------------------------------------------------------------
+# https://flathub.org/en
 shared_flatpaks:
   - com.discordapp.Discord
   - com.spotify.Client
   - com.getpostman.Postman
-  - com.burpsuite.BurpSuiteCommunity
+  - net.portswigger.BurpSuite-Community
 
 gaming_flatpaks:
   - com.heroicgameslauncher.hgl
