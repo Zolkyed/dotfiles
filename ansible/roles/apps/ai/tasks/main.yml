@@ -1,8 +1,8 @@
----
 - name: AI | Install global npm packages
   community.general.npm:
-    name: "{{ profiles.dev.npm | default([]) }}"
+    name: "{{ item }}"
     global: true
     state: present
   become: true
-  when: (profiles.dev.npm | default([])) | length > 0
+  loop: "{{ profiles.dev.npm | default([]) }}"
+  when: profiles.dev.npm is defined
