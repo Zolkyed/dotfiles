@@ -1,3 +1,1 @@
 ---
-docker_apt_keyring_dir: /etc/apt/keyrings
-docker_apt_keyring_path: "{{ docker_apt_keyring_dir }}/docker.asc"

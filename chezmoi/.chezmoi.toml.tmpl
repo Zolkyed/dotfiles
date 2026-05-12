@@ -1,13 +1,3 @@
-{{- $id := .chezmoi.osRelease.id -}}
-{{- $like := index .chezmoi.osRelease "idLike" | default "" -}}
-
-{{- $family := "unknown" -}}
-{{- if or (eq $id "debian") (eq $id "ubuntu") (contains "debian" $like) (contains "ubuntu" $like) -}}
-{{-   $family = "debian" -}}
-{{- else if or (eq $id "arch") (contains "arch" $like) -}}
-{{-   $family = "arch" -}}
-{{- end -}}
-
 encryption = "age"
 
 [age]
@@ -17,6 +7,4 @@ encryption = "age"
     command = "code"
     args    = ["--wait"]
 
-[data]
-    distro        = {{ $id | quote }}
-    distro_family = {{ $family | quote }}
+

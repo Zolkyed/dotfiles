@@ -9,20 +9,19 @@ user_shell: /bin/zsh
 # ---------------------------------------------------------------------------
 # Presets
 # ---------------------------------------------------------------------------
-active_preset: desktop
-
 presets:
   desktop:
-    bootloader_enabled: false
-    splashboot_enabled: false
-    bluetooth_enabled: true
     audio_enabled: true
-    nvidia_enabled: true
-    docker_enabled: true
-    virtualization_enabled: true
+    bluetooth_enabled: true
     vpn_enabled: true
     firewall_enabled: true
     fail2ban_enabled: true
+    nvidia_enabled: true
+    bootloader_enabled: false
+    splashboot_enabled: false
+    system_tools_enabled: true
+    docker_enabled: true
+    virtualization_enabled: true
     plasma_enabled: true
     hyprland_enabled: false
     niri_enabled: false
@@ -34,24 +33,22 @@ presets:
     media_enabled: true
     office_enabled: true
     rclone_enabled: true
-    system_tools_enabled: true
-    vscode_enabled: true
     gaming_enabled: true
-    discord_enabled: true
     konsave_enabled: true
     xdg_enabled: true
 
   laptop:
-    bootloader_enabled: false
-    splashboot_enabled: false
-    bluetooth_enabled: true
     audio_enabled: true
-    nvidia_enabled: false
-    docker_enabled: true
-    virtualization_enabled: true
+    bluetooth_enabled: true
     vpn_enabled: true
     firewall_enabled: true
     fail2ban_enabled: true
+    nvidia_enabled: false
+    bootloader_enabled: false
+    splashboot_enabled: false
+    system_tools_enabled: true
+    docker_enabled: true
+    virtualization_enabled: true
     plasma_enabled: true
     hyprland_enabled: false
     niri_enabled: false
@@ -63,38 +60,33 @@ presets:
     media_enabled: true
     office_enabled: true
     rclone_enabled: true
-    system_tools_enabled: true
-    vscode_enabled: true
     gaming_enabled: false
-    discord_enabled: true
     konsave_enabled: true
     xdg_enabled: true
 
   server:
-    bootloader_enabled: false
-    splashboot_enabled: false
-    bluetooth_enabled: false
     audio_enabled: false
-    nvidia_enabled: false
-    docker_enabled: true
-    virtualization_enabled: true
+    bluetooth_enabled: false
     vpn_enabled: true
     firewall_enabled: true
     fail2ban_enabled: true
+    nvidia_enabled: false
+    bootloader_enabled: false
+    splashboot_enabled: false
+    system_tools_enabled: false
+    docker_enabled: true
+    virtualization_enabled: true
     plasma_enabled: false
     hyprland_enabled: false
     niri_enabled: false
     browser_enabled: false
     dev_enabled: false
     flatpak_enabled: false
-    hayase_enabled: false
-    mihon_enabled: false
     media_enabled: false
+    gaming_enabled: false
     office_enabled: false
     rclone_enabled: false
-    system_tools_enabled: false
-    vscode_enabled: false
-    gaming_enabled: false
-    discord_enabled: false
+    hayase_enabled: false
+    mihon_enabled: false
     konsave_enabled: false
     xdg_enabled: false

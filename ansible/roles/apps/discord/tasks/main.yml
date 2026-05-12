@@ -1,4 +1,0 @@
----
-- name: "Discord | Run Debian tasks"
-  ansible.builtin.include_tasks: debian.yml
-  when: ansible_facts.os_family | lower == "debian"

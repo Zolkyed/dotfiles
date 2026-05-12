@@ -1,0 +1,8 @@
+---
+- name: AI | Install global npm packages
+  community.general.npm:
+    name: "{{ profiles.dev.npm | default([]) }}"
+    global: true
+    state: present
+  become: true
+  when: (profiles.dev.npm | default([])) | length > 0

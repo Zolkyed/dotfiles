@@ -1,6 +1,17 @@
 ---
-- name: "Nvidia | Run tasks for {{ ansible_facts.os_family }}"
-  ansible.builtin.include_tasks: "{{ ansible_facts.os_family | lower }}.yml"
+- name: Nvidia | Detect installed kernels
+  ansible.builtin.shell:
+    cmd: set -o pipefail && pacman -Qq | grep -E '^linux(-lts|-zen|-hardened|-rt|-rt-lts)?$'
+    executable: /bin/bash
+  register: nvidia_arch_kernels
+  changed_when: false
+  failed_when: false
+
+- name: Nvidia | Install kernel headers
+  community.general.pacman:
+    name: "{{ nvidia_arch_kernels.stdout_lines | map('regex_replace', '$', '-headers') | list }}"
+    state: present
+  when: nvidia_arch_kernels.stdout_lines | length > 0
 
 - name: Nvidia | Configure DRM modesetting
   ansible.builtin.copy:

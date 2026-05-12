@@ -8,23 +8,12 @@ just apply   # chezmoi apply --no-tty --force
 just diff    # chezmoi diff
 ```
 
-## Template variables
+## Built-in variables
 
-`.chezmoi.toml.tmpl` exposes these variables to all `.tmpl` files:
-
-| Variable | Type | Values |
-|---|---|---|
-| `{{ .hostname }}` | string | `desktop`, `laptop`, `server` |
-| `{{ .isDesktop }}` | bool | `true` on desktop host |
-| `{{ .isLaptop }}` | bool | `true` on laptop host |
-| `{{ .isServer }}` | bool | `true` on server host |
-| `{{ .isArch }}` | bool | `true` on Arch Linux |
-| `{{ .isDebian }}` | bool | `true` on Debian / Ubuntu |
-
-Usage example:
+Chezmoi provides `.chezmoi.hostname` for host-specific templates:
 
 ```
-{{ if not .isServer }}
+{{ if ne .chezmoi.hostname "server" }}
 # desktop/laptop-only config
 {{ end }}
 ```

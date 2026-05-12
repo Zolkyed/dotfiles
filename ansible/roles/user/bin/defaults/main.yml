@@ -2,12 +2,6 @@
 # Custom scripts deployed to ~/.local/bin
 # Add scripts to roles/user/bin/files/ and they will be installed automatically
 bin_dest: "{{ user_home }}/.local/bin"
-bin_konsave_links:
-  - konsave-list
-  - konsave-import
-  - konsave-export
-  - konsave-remove
-bin_konsave_keybinds_dest: "{{ user_home }}/.local/share/konsavectl/keybinds"
 
 # Home Assistant connection
 assistant_base_url: "https://home.mihon.org"

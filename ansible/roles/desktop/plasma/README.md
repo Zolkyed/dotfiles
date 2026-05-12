@@ -4,7 +4,7 @@ KDE Plasma desktop role — installs packages and deploys global keybinds.
 
 ## What this role does
 
-- Installs `plasma_packages` (defined in `group_vars/debian.yml` / `group_vars/archlinux.yml`)
+- Installs `plasma_packages` (defined in `group_vars/archlinux.yml`)
 - Deploys per-host KDE global shortcuts (`files/keybinds/<hostname>.ini` → `~/.config/kglobalshortcutsrc`)
 - Deploys mouse button rebinds and pointer settings (`files/kcminputrc` → `~/.config/kcminputrc`, desktop only)
 

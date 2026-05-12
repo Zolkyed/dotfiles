@@ -45,8 +45,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: Ubuntu 24.04
-            dockerfile: Dockerfile.ubuntu
           - name: Arch Linux
             dockerfile: Dockerfile.archlinux
     steps:

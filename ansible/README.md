@@ -1,6 +1,6 @@
 # Ansible
 
-Full machine provisioning for Debian and Arch Linux — 31 roles, one playbook.
+Full machine provisioning for Arch Linux.
 
 ## Usage
 
@@ -53,7 +53,7 @@ Each has `host_vars/<host>/vars.yml` (overrides) and `host_vars/<host>/vault.yml
 |---|---|---|
 | Feature flags, user settings, Flatpaks | `group_vars/all.yml` | Shared defaults; override per host |
 | Shared secrets | `group_vars/vault.yml` | SOPS-encrypted |
-| Package/service names | `group_vars/debian.yml`, `group_vars/archlinux.yml` | Distro-specific names only |
+| Package/service names | `group_vars/archlinux.yml` | Profile-based package data |
 | Host overrides (flags, monitors) | `host_vars/<host>/vars.yml` | Per-machine |
 | Host secrets (SSH keys) | `host_vars/<host>/vault.yml` | SOPS-encrypted |
 
@@ -93,21 +93,21 @@ Desktop configs (kwinrc, kdeglobals, panel layout, etc.) are managed by chezmoi.
 | Role | Tag | Purpose |
 |---|---|---|
 | `browser` | `browser` | Browser install + managed extension policy |
-| `dev` | `dev` | Dev tools, nvm, rustup, npm globals |
+| `ai` | `ai` | AI CLI tools (opencode-ai, codex, claude-code) |
 | `flatpak` | `flatpak` | Flathub remote + app installs |
 | `gaming` | `gaming` | Steam, Lutris, Wine, multilib/i386 |
-| `hayase` | `hayase` | Hayase anime sync (.deb or AppImage) |
+| `hayase` | `hayase` | Hayase anime sync (AppImage) |
 | `konsave` | `konsave` | KDE profile manager via pipx |
 | `mihon` | `mihon` | Mihon manga reader desktop entry |
 | `rclone` | `rclone` | rclone config for Google Drive |
-| `vscode` | `vscode` | VS Code native package |
+
 
 ### user/
 
 | Role | Tag | Purpose |
 |---|---|---|
 | `account` | `user` | User account, shell, groups |
-| `bin` | `bin` | Custom scripts + konsavectl aliases + homectl config |
+| `bin` | `bin` | Custom scripts + homectl config |
 | `dotfiles` | `dotfiles` | chezmoi install + `apply --force` |
 | `ssh_keys` | `ssh_keys` | Deploy SSH keys from SOPS vault |
 | `xdg` | `xdg` | Default browser, editor, media player, MIME handlers |
@@ -127,7 +127,4 @@ plasma_enabled:    true
 
 Override per machine in `host_vars/<host>/vars.yml`.
 
-## Supported distributions
 
-`setup.yml` asserts `os_family` is `Debian` or `Archlinux` at startup.
-Ubuntu is treated as Debian. Other derivatives are not supported.

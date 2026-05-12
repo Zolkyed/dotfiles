@@ -1,9 +1,3 @@
-{{- $bat := "bat" -}}
-{{- $fd  := "fd"  -}}
-{{- if eq .distro_family "debian" -}}
-{{-   $bat = "batcat" -}}
-{{-   $fd  = "fdfind" -}}
-{{- end -}}
 # ========================
 # Performance
 # ========================
@@ -62,8 +56,8 @@ alias -g .....='../../../..'
 # Aliases
 # ========================
 # Core tools
-alias cat='{{ $bat }} --paging=never'
-alias find='{{ $fd }}'
+alias cat='bat --paging=never'
+alias find='fd'
 alias ls='eza --icons'
 alias ll='eza -lah --icons --git'
 alias la='eza -a --icons'
@@ -111,8 +105,8 @@ alias zshrc='${EDITOR:-nvim} ~/.zshrc'
 # ========================
 export EDITOR='nvim'
 export VISUAL='nvim'
-export PAGER='{{ $bat }}'
-export MANPAGER="sh -c 'col -bx | {{ $bat }} -l man -p'"
+export PAGER='bat'
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export PATH="$HOME/.local/bin:$PATH"
 export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt"
 
@@ -199,12 +193,12 @@ source "$ZSH_PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 # FZF
 # ========================
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_COMMAND='{{ $fd }} --type f --hidden --follow --exclude .git'
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_C_COMMAND='{{ $fd }} --type d --hidden --follow --exclude .git'
+export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
 export FZF_DEFAULT_OPTS=$'
   --height 40% --layout=reverse --border
-  --preview "{{ $bat }} --style=numbers --color=always {}"
+  --preview "bat --style=numbers --color=always {}"
   --preview-window=right:50%
 '
 

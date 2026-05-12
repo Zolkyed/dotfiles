@@ -1,6 +1,6 @@
 # dotfiles
 
-Full machine provisioning and user environment for Debian and Arch Linux.
+Full machine provisioning and user environment for Arch Linux.
 
 ## Desktop
 
@@ -60,8 +60,8 @@ chezmoi edit ~/.zshrc   # edit a managed file in $EDITOR
 │   │   ├── hosts.yml              # remote inventory (SSH)
 │   │   ├── local.yml              # local inventory (no SSH)
 │   │   ├── group_vars/
-│   │   │   ├── all.yml            # feature flags, user settings, shared Flatpaks
-│   │   │   ├── debian.yml         # Debian package/service names
+│   │   │   ├── all.yml            # feature flags, presets
+
 │   │   │   ├── archlinux.yml      # Arch package/service names
 │   │   │   └── vault.yml          # shared secrets (SOPS-encrypted)
 │   │   └── host_vars/
@@ -92,20 +92,18 @@ chezmoi edit ~/.zshrc   # edit a managed file in $EDITOR
 │       │   └── plasma/            # KDE Plasma packages
 │       ├── apps/
 │       │   ├── browser/           # browser + managed extension policy
-│       │   ├── dev/               # dev tools, nvm, rustup
+│   │   ├── ai/                # AI CLI tools (opencode-ai, codex, claude-code)
 │       │   ├── flatpak/           # Flathub + app installs
 │       │   ├── gaming/            # Steam, Lutris, Wine
-│       │   ├── hayase/            # anime sync (.deb or AppImage)
+│   │   ├── hayase/            # anime sync (AppImage)
 │       │   ├── konsave/           # KDE profile manager
-│       │   ├── media/             # mpv, ffmpeg, yt-dlp, media tooling
-│       │   ├── mihon/             # manga reader desktop entry
-│       │   ├── rclone/            # Google Drive config
-│       │   └── vscode/            # VS Code native package
+│   │   ├── media/             # mpv, ffmpeg, yt-dlp, media tooling
+│   │   ├── mihon/             # manga reader desktop entry
+│   │   └── rclone/            # Google Drive config
 │       └── user/
 │           ├── account/           # user account, shell, groups
 │           ├── bin/               # custom scripts + homectl config
 │           ├── dotfiles/          # chezmoi install + apply
-│           ├── shell/             # zsh plugins, shell provisioning
 │           ├── ssh_keys/          # deploy keys from vault
 │           └── xdg/               # default apps + MIME handlers
 ├── chezmoi/                       # user dotfiles (applied by chezmoi)
@@ -130,8 +128,7 @@ chezmoi edit ~/.zshrc   # edit a managed file in $EDITOR
 │       ├── starship.toml          # → ~/.config/starship.toml
 │       └── tmux/                  # → ~/.config/tmux/
 ├── docker/
-│   ├── Dockerfile.ubuntu          # Ubuntu integration test image
-│   ├── Dockerfile.archlinux       # Arch Linux integration test image
+│   └── Dockerfile.archlinux       # Arch Linux integration test image
 │   └── .dockerignore
 ├── scripts/
 │   └── run_once_install-ansible.sh
@@ -151,7 +148,7 @@ chezmoi edit ~/.zshrc   # edit a managed file in $EDITOR
 - **Chezmoi** → user environment: shell, editor, app config
 - **SOPS + age** → secrets stay encrypted at rest in the repo
 - `all.yml` → single source for feature flags and shared defaults
-- `debian.yml` / `archlinux.yml` → distro package names only, no logic
+- `archlinux.yml` → profile-based package data
 - `host_vars/<host>/vars.yml` → per-machine overrides only
 monochrome for theme
 

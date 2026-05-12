@@ -1,6 +1,6 @@
 ---
 - name: Splashboot | Update initramfs
   ansible.builtin.command:
-    cmd: "{{ 'mkinitcpio -P' if ansible_facts.os_family | lower == 'archlinux' else 'update-initramfs -u' }}"
+    cmd: mkinitcpio -P
   changed_when: false
   listen: Splashboot | Update initramfs

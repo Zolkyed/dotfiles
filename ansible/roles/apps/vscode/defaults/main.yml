@@ -1,3 +1,0 @@
----
-vscode_apt_keyring_dir: /usr/share/keyrings
-vscode_apt_keyring_path: "{{ vscode_apt_keyring_dir }}/microsoft.asc"

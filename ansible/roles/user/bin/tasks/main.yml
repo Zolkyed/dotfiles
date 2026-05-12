@@ -16,31 +16,6 @@
     mode: "0755"
   loop: "{{ query('ansible.builtin.fileglob', role_path ~ '/files/*') }}"
 
-- name: Bin | Install konsave command aliases
-  ansible.builtin.file:
-    src: "{{ bin_dest }}/konsavectl"
-    dest: "{{ bin_dest }}/{{ item }}"
-    state: link
-    force: true
-  loop: "{{ bin_konsave_links }}"
-
-- name: Bin | Ensure konsavectl keybind directory exists
-  ansible.builtin.file:
-    path: "{{ bin_konsave_keybinds_dest }}"
-    state: directory
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
-    mode: "0755"
-
-- name: Bin | Install konsavectl KDE keybind overrides
-  ansible.builtin.copy:
-    src: "{{ item }}"
-    dest: "{{ bin_konsave_keybinds_dest }}/{{ item | basename }}"
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
-    mode: "0644"
-  loop: "{{ query('ansible.builtin.fileglob', role_path ~ '/keybinds/*') }}"
-
 - name: Bin | Ensure ~/.config/homectl exists
   ansible.builtin.file:
     path: "{{ user_home }}/.config/homectl"
