@@ -1,2 +1,0 @@
--- load the theme config
-require('neovim')
