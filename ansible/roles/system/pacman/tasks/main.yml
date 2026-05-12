@@ -1,0 +1,51 @@
+---
+- name: Pacman | Check enabled repositories
+  ansible.builtin.command:
+    cmd: pacman-conf --repo-list
+  register: pacman_repositories
+  changed_when: false
+
+- name: Pacman | Set ParallelDownloads
+  ansible.builtin.lineinfile:
+    path: /etc/pacman.conf
+    regexp: ^ParallelDownloads
+    line: ParallelDownloads = 5
+    insertafter: ^\[options\]
+  notify: Pacman | Update pacman cache
+
+- name: Pacman | Enable Color
+  ansible.builtin.lineinfile:
+    path: /etc/pacman.conf
+    regexp: ^Color
+    line: Color
+    insertafter: ^\[options\]
+  notify: Pacman | Update pacman cache
+
+- name: Pacman | Enable ILoveCandy
+  ansible.builtin.lineinfile:
+    path: /etc/pacman.conf
+    regexp: ^ILoveCandy
+    line: ILoveCandy
+    insertafter: ^\[options\]
+  notify: Pacman | Update pacman cache
+
+- name: Pacman | Enable VerbosePkgLists
+  ansible.builtin.lineinfile:
+    path: /etc/pacman.conf
+    regexp: ^VerbosePkgLists
+    line: VerbosePkgLists
+    insertafter: ^\[options\]
+  notify: Pacman | Update pacman cache
+
+- name: Pacman | Enable multilib repository
+  ansible.builtin.blockinfile:
+    path: /etc/pacman.conf
+    marker: "# {mark} ANSIBLE MANAGED MULTILIB"
+    block: |
+      [multilib]
+      Include = /etc/pacman.d/mirrorlist
+  notify: Pacman | Update pacman cache
+  when: "'multilib' not in pacman_repositories.stdout_lines"
+
+- name: Pacman | Flush handlers
+  ansible.builtin.meta: flush_handlers

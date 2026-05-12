@@ -39,8 +39,10 @@
     - role: system/sudoers
       tags: sudoers
 
-    # --- AUR  ---
-    - role: apps/aur
+    # --- Pacman / AUR  ---
+    - role: system/pacman
+      tags: pacman
+    - role: system/aur
       tags: aur
 
     # --- Packages  ---
@@ -68,9 +70,6 @@
     - role: apps/ai
       tags: ai
       when: dev_enabled
-    - role: apps/gaming
-      tags: gaming
-      when: gaming_enabled
     - role: apps/rclone
       tags: rclone
       when: rclone_enabled

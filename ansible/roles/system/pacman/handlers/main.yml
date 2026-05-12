@@ -1,4 +1,4 @@
 ---
-- name: Gaming | Update pacman cache
+- name: Pacman | Update pacman cache
   community.general.pacman:
     update_cache: true
