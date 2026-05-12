@@ -19,6 +19,11 @@
       become: false
       no_log: true
 
+    - name: Load profile data
+      tags: always
+      ansible.builtin.include_vars:
+        file: "{{ playbook_dir }}/../inventory/group_vars/archlinux.yml"
+
     - name: Apply preset flags
       tags: always
       ansible.builtin.set_fact:
