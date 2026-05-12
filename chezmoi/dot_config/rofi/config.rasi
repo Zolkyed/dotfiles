@@ -1,0 +1,20 @@
+configuration {
+    /* Matching and sorting */
+    matching: "fuzzy";
+    sort: true;
+    sorting-method: "fzf";
+    
+    /* Display settings */
+    modi: "drun,run,window";
+    show-icons: false;
+    icon-theme: "Papirus-Dark";
+    display-drun: "";
+    display-run: "";
+    display-window: "";
+    
+    /* Behavior */
+    drun-display-format: "{name}";
+    terminal: "kitty";  
+}
+
+@theme "dark"

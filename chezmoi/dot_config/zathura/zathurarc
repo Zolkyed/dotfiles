@@ -1,0 +1,75 @@
+# Black Metal (Gorgoroth) theme for Zathura
+# Based on Base16 theme by metalelf0
+
+# Background and foreground colors
+set default-bg "#000000"
+set default-fg "#c1c1c1"
+
+# Statusbar colors
+set statusbar-bg "#121212"
+set statusbar-fg "#c1c1c1"
+set statusbar-h-padding 10
+set statusbar-v-padding 5
+
+# Input bar colors
+set inputbar-bg "#222222"
+set inputbar-fg "#c1c1c1"
+
+# Notification colors
+set notification-bg "#121212"
+set notification-fg "#c1c1c1"
+set notification-error-bg "#5f8787"
+set notification-error-fg "#000000"
+set notification-warning-bg "#8c7f70"
+set notification-warning-fg "#000000"
+
+# Completion colors
+set completion-bg "#222222"
+set completion-fg "#c1c1c1"
+set completion-highlight-bg "#999999"
+set completion-highlight-fg "#000000"
+set completion-group-bg "#121212"
+set completion-group-fg "#888888"
+
+# Index colors
+set index-bg "#000000"
+set index-fg "#c1c1c1"
+set index-active-bg "#999999"
+set index-active-fg "#000000"
+
+# Recolor (dark mode for PDFs)
+set recolor true
+set recolor-lightcolor "#000000"
+set recolor-darkcolor "#c1c1c1"
+set recolor-keephue false
+set recolor-reverse-video true
+
+# Highlight search results
+set highlight-color "#9b8d7f"
+set highlight-active-color "#5f8787"
+
+# Performance and behavior
+set smooth-scroll true
+set scroll-step 50
+set zoom-step 10
+set page-padding 5
+
+# Window title
+set window-title-basename true
+set window-title-page true
+
+# Font
+set font "JetBrainsMono Nerd Font normal 10"
+
+# Adjust mode
+set adjust-open "best-fit"
+set pages-per-row 1
+set scroll-page-aware true
+set first-page-column 1:2
+
+# Additional Black Metal colors for enhanced experience
+set render-loading-bg "#000000"
+set render-loading-fg "#333333"
+
+# Selection colors
+set selection-clipboard "clipboard"

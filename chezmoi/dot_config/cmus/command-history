@@ -1,0 +1,33 @@
+colorscheme night
+colorscheme green-mono-88
+colorscheme zenburn
+colorscheme xterm-white
+colorscheme spotify
+colorscheme solarized-dark
+colorscheme nord
+colorscheme jellybeans
+colorscheme gruvbox
+colorscheme green
+colorscheme gray-88
+colorscheme dracula
+colorscheme default
+colorscheme cyan
+colorscheme amazon
+color
+add /home/archebus/Music/
+add 
+add Kaytranada Boiler Room_ Montreal.mp31
+shuffle
+n
+next
+player-play
+add Music/
+colorscheme catpuccin
+set colorscheme nord
+q
+qa!
+add ~/Music
+add
+d
+delete
+theme

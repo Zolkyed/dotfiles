@@ -59,6 +59,7 @@ profiles:
       - neovim
       - starship
       - yazi
+      - zathura
     aur:
       - ventoy-bin
 
@@ -69,6 +70,7 @@ profiles:
       - figlet
       - lolcat
       - fastfetch
+      - cava
 
   fonts:
     pacman:
@@ -281,6 +283,7 @@ profiles:
       - obs-studio
       - qbittorrent
       - discord
+      - cmus
     aur:
       - spotify
     flatpak:

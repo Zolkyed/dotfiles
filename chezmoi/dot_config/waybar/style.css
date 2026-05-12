@@ -1,0 +1,117 @@
+@define-color foreground #c1c1c1;
+@define-color foreground-inactive #7f8c8d;
+@define-color background #121212;
+@define-color background-alt #333333;
+
+/* Minimal color accents */
+@define-color vpn-connected #27ae60;
+@define-color vpn-disconnected #e74c3c;
+@define-color accent-blue #3498db;
+@define-color accent-orange #e67e22;
+@define-color accent-yellow #f39c12;
+
+* {
+    font-family: Mononoki Nerd Font;
+    font-size: 17px;
+    padding: 0;
+    margin: 0;
+}
+
+#waybar {
+    color: @foreground;
+    background-color: @background;
+    border: 2px solid @background-alt;
+}
+
+#workspaces button {
+    padding-left: 1em;
+    padding-right: 1.3em;
+}
+
+#workspaces button.empty {
+    color: @foreground-inactive;
+}
+
+#workspaces button.active {
+    background-color: @background-alt;
+    border-radius: 3px;
+}
+
+/* Base styling for most modules */
+#wireplumber,
+#bat,
+#tray,
+#usage,
+#cpu,
+#memory,
+#temperature,
+#network,
+#pulseaudio,
+#power,
+#net,
+#disk {
+    border-radius: 3px;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    margin-left: 0.5em;
+}
+
+/* VPN Styling */
+#custom-mullvad {
+    border-radius: 3px;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    margin-left: 0.5em;
+}
+
+#custom-mullvad.connected {
+    color: @vpn-connected;
+    font-weight: bold;
+}
+
+#custom-mullvad.disconnected {
+    color: @vpn-disconnected;
+}
+
+/* Updates - only shows when > 0 */
+#custom-updates {
+    border-radius: 3px;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    margin-left: 0.5em;
+    color: @accent-blue;
+}
+
+/* Disk space warnings */
+#disk {
+    border-radius: 3px;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    margin-left: 0.5em;
+}
+
+#disk.warning {
+    color: @accent-yellow;
+}
+
+#disk.critical {
+    color: @accent-orange;
+}
+
+/* Weather */
+#custom-weather {
+    border-radius: 3px;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    margin-left: 0.5em;
+}
+
+/* Network */
+#network {
+    margin-left: 0.5em;
+}
+
+/* Pulseaudio */
+#pulseaudio {
+    margin-left: 0.5em;
+}
