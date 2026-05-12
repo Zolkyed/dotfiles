@@ -22,7 +22,8 @@ RUN pacman -Syu --noconfirm --needed \
       git \
       sops \
       sudo \
-      zsh
+      zsh && \
+    rm -rf /var/cache/pacman/pkg/*
 
 RUN groupadd --gid ${GID} ${GROUP} && \
     useradd --uid ${UID} --gid ${GID} --create-home --shell /bin/bash ${USER} && \
@@ -53,5 +54,5 @@ RUN --mount=type=secret,id=sops_age_key \
         -i inventory/local.yml \
         playbooks/setup.yml \
         -l server \
-        --tags user,sudoers,packages,fonts,hayase,mihon,ai,ssh_keys,bin,dotfiles' && \
+        --tags user,sudoers,aur,packages,fonts,hayase,mihon,ai,ssh_keys,bin,dotfiles' && \
     rm -f /home/${USER}/.config/sops/age/keys.txt

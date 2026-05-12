@@ -1,0 +1,12 @@
+---
+- name: Aur | Install build prerequisites
+  community.general.pacman:
+    name:
+      - base-devel
+      - git
+    state: present
+
+- name: Install paru
+  kewlfft.aur.aur:
+    name: paru
+    use: makepkg

@@ -39,6 +39,10 @@
     - role: system/sudoers
       tags: sudoers
 
+    # --- AUR  ---
+    - role: apps/aur
+      tags: aur
+
     # --- Packages  ---
     - role: system/packages
       tags: packages
