@@ -10,3 +10,5 @@
   kewlfft.aur.aur:
     name: paru
     use: makepkg
+  become: true
+  become_user: "{{ user_name }}"
