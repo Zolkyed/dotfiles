@@ -1,0 +1,23 @@
+# Kanagawa Dragon theme for btop
+# Based on kanagawa.nvim dragon variant
+
+theme[bg] = "#181616"
+theme[fg] = "#c5c9c5"
+theme[main] = "#8ea4a2"
+theme[sub] = "#a6a69c"
+theme[selected] = "#2d4f67"
+theme[proc] = "#c4b28a"
+theme[process] = "#c4b28a"
+theme[core] = "#8ea4a2"
+theme[temp] = "#c4746e"
+theme[div_line] = "#1d1c19"
+theme[title] = "#c5c9c5"
+theme[hi] = "#e6c384"
+theme[box_border] = "#36353a"
+theme[cpu] = "#8ea4a2"
+theme[mem] = "#7fb4ca"
+theme[net] = "#b6927b"
+theme[disk] = "#8a9a7b"
+theme[proc_gui] = "#e46876"
+theme[proc_mem] = "#b98d7b"
+theme[proc_sel] = "#1d1c19"
