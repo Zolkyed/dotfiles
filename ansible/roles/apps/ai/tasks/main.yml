@@ -1,3 +1,4 @@
+---
 - name: AI | Install global npm packages
   community.general.npm:
     name: "{{ item }}"
