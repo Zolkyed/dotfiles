@@ -55,8 +55,10 @@ profiles:
       - procs
       - just
       - trash-cli
+      - helix
       - neovim
       - starship
+      - yazi
     aur:
       - ventoy-bin
 
