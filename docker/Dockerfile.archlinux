@@ -18,6 +18,7 @@ SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 RUN pacman -Syu --noconfirm --needed \
       age \
       ansible \
+      paru \
       sops \
       sudo \
       zsh
