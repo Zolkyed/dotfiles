@@ -5,4 +5,3 @@
     state: present
   become: true
   loop: "{{ profiles.dev.npm | default([]) }}"
-  when: profiles.dev.npm is defined

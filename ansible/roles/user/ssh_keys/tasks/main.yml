@@ -28,11 +28,3 @@
   loop: "{{ ssh_keys }}"
   when: item.public_key != ''
   no_log: true
-
-- name: SSH Keys | Set authorized keys
-  ansible.posix.authorized_key:
-    user: "{{ user_name }}"
-    key: "{{ item.public_key }}"
-    state: present
-  loop: "{{ ssh_keys }}"
-  when: item.public_key != ''

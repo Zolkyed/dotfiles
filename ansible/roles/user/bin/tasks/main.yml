@@ -16,6 +16,14 @@
     mode: "0755"
   loop: "{{ query('ansible.builtin.fileglob', role_path ~ '/files/*') }}"
 
+- name: Bin | Install konsave command aliases
+  ansible.builtin.file:
+    src: "{{ bin_dest }}/konsavectl"
+    dest: "{{ bin_dest }}/{{ item }}"
+    state: link
+    force: true
+  loop: "{{ bin_konsave_links }}"
+
 - name: Bin | Ensure ~/.config/homectl exists
   ansible.builtin.file:
     path: "{{ user_home }}/.config/homectl"

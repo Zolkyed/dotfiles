@@ -20,7 +20,7 @@ presets:
     vpn_enabled: true
     firewall_enabled: true
     fail2ban_enabled: true
-    nvidia_enabled: true
+    nvidia_enabled: false
     bootloader_enabled: false
     splashboot_enabled: false
     system_tools_enabled: true
