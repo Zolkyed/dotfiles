@@ -1,20 +1,8 @@
 configuration {
-    /* Matching and sorting */
-    matching: "fuzzy";
-    sort: true;
-    sorting-method: "fzf";
-    
-    /* Display settings */
-    modi: "drun,run,window";
-    show-icons: false;
-    icon-theme: "Papirus-Dark";
-    display-drun: "";
-    display-run: "";
-    display-window: "";
-    
-    /* Behavior */
-    drun-display-format: "{name}";
-    terminal: "kitty";  
-}
-
-@theme "dark"
+ modi: "window,drun";
+ font: "BlexMono Nerd Font 10";
+ combi-modi: "window,drun";
+ display-window: " ";
+ display-drun: " ";
+ }
+@theme "burzum"
