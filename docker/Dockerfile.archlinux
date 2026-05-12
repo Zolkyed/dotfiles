@@ -18,7 +18,8 @@ SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 RUN pacman -Syu --noconfirm --needed \
       age \
       ansible \
-      paru \
+      base-devel \
+      git \
       sops \
       sudo \
       zsh
@@ -27,6 +28,11 @@ RUN groupadd --gid ${GID} ${GROUP} && \
     useradd --uid ${UID} --gid ${GID} --create-home --shell /bin/bash ${USER} && \
     echo "${USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${USER} && \
     chmod 0440 /etc/sudoers.d/${USER}
+
+RUN sudo -u ${USER} sh -c ' \
+      git clone https://aur.archlinux.org/paru.git /tmp/paru && \
+      cd /tmp/paru && makepkg -si --noconfirm' && \
+    rm -rf /tmp/paru
 
 WORKDIR /home/${USER}/dotfiles
 COPY . /home/${USER}/dotfiles
