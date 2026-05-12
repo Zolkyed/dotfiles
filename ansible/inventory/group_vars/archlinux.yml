@@ -256,13 +256,15 @@ profiles:
     aur:
       - nvm
       - visual-studio-code-bin
+    flatpak:
+      - com.getpostman.Postman
+      - net.portswigger.BurpSuite-Community
+
+  ai:
     npm:
       - opencode-ai
       - "@openai/codex"
       - "@anthropic-ai/claude-code"
-    flatpak:
-      - com.getpostman.Postman
-      - net.portswigger.BurpSuite-Community
 
   flatpak:
     pacman:

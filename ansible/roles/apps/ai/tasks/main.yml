@@ -5,4 +5,4 @@
     global: true
     state: present
   become: true
-  loop: "{{ profiles.dev.npm | default([]) }}"
+  loop: "{{ profiles.ai.npm | default([]) }}"

@@ -69,7 +69,7 @@
       when: browser_enabled
     - role: apps/ai
       tags: ai
-      when: dev_enabled
+      when: ai_enabled
     - role: apps/rclone
       tags: rclone
       when: rclone_enabled

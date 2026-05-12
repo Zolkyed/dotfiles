@@ -36,6 +36,7 @@ presets:
     mihon_enabled: true
     media_enabled: true
     office_enabled: true
+    ai_enabled: true
     rclone_enabled: true
     gaming_enabled: true
     konsave_enabled: true
@@ -63,6 +64,7 @@ presets:
     mihon_enabled: true
     media_enabled: true
     office_enabled: true
+    ai_enabled: true
     rclone_enabled: true
     gaming_enabled: false
     konsave_enabled: true
@@ -89,6 +91,7 @@ presets:
     media_enabled: false
     gaming_enabled: false
     office_enabled: false
+    ai_enabled: false
     rclone_enabled: false
     hayase_enabled: false
     mihon_enabled: false
