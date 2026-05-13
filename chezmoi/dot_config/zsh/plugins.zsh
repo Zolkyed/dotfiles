@@ -22,10 +22,6 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#444444'
 [[ -f $ZSH_CUSTOM/plugins/fzf-tab/fzf-tab.plugin.zsh ]] &&
   source $ZSH_CUSTOM/plugins/fzf-tab/fzf-tab.plugin.zsh
 
-# Spaceship
-[[ -f /usr/share/zsh/themes/spaceship.zsh ]] &&
-  source /usr/share/zsh/themes/spaceship.zsh
-
 # Zoxide
 command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
 
