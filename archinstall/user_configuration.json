@@ -1,13 +1,21 @@
 {
-  "additional-repositories": "multilib",
+  "app_config": {
+    "audio_config": null,
+    "bluetooth_config": null,
+    "print_service_config": null
+  },
   "archinstall-language": "English",
-  "bootloader": "grub-install",
+  "auth_config": null,
   "bootloader_config": {
     "bootloader": "Grub",
     "removable": false,
     "uki": false
   },
+  "custom_commands": [],
   "disk_config": {
+    "btrfs_options": {
+      "snapshot_config": null
+    },
     "config_type": "default_layout",
     "device_modifications": [
       {
@@ -15,18 +23,20 @@
         "partitions": [
           {
             "btrfs": [],
+            "dev_path": null,
             "flags": [
-              "boot"
+              "boot",
+              "esp"
             ],
             "fs_type": "fat32",
+            "mount_options": [],
+            "mountpoint": "/boot",
+            "obj_id": "efi",
             "size": {
               "sector_size": null,
               "unit": "MiB",
               "value": 1024
             },
-            "mount_options": [],
-            "mountpoint": "/boot",
-            "obj_id": "efi",
             "start": {
               "sector_size": null,
               "unit": "MiB",
@@ -54,18 +64,19 @@
                 "name": "@log"
               }
             ],
+            "dev_path": null,
             "flags": [],
             "fs_type": "btrfs",
+            "mount_options": [
+              "compress=zstd"
+            ],
+            "mountpoint": null,
+            "obj_id": "root",
             "size": {
               "sector_size": null,
               "unit": "Percent",
               "value": 100
             },
-            "mount_options": [
-              "compress=zstd"
-            ],
-            "mountpoint": "/",
-            "obj_id": "root",
             "start": {
               "sector_size": null,
               "unit": "MiB",
@@ -83,22 +94,13 @@
   "kernels": [
     "linux"
   ],
-  "keyboard-language": "us",
   "locale_config": {
     "kb_layout": "us",
     "sys_enc": "UTF-8",
     "sys_lang": "en_US"
   },
-  "mirror-region": {
-    "Canada": {
-      "https://mirror.csclub.uwaterloo.ca/archlinux/$repo/os/$arch": true
-    },
-    "United States": {
-      "https://mirror.umd.edu/archlinux/$repo/os/$arch": true,
-      "https://mirrors.kernel.org/archlinux/$repo/os/$arch": true
-    }
-  },
   "mirror_config": {
+    "custom_repositories": [],
     "custom_servers": [
       {
         "url": "https://mirror.csclub.uwaterloo.ca/archlinux/$repo/os/$arch"
@@ -121,9 +123,7 @@
   "network_config": {
     "type": "nm"
   },
-  "no_pkg_lookups": false,
   "ntp": true,
-  "offline": false,
   "packages": [
     "age",
     "btrfs-progs",
@@ -137,8 +137,14 @@
     "sops",
     "sudo"
   ],
-  "parallel downloads": 0,
-  "sys-encoding": "utf-8",
-  "sys-language": "en_US",
-  "timezone": "America/Toronto"
+  "parallel_downloads": 0,
+  "profile_config": null,
+  "script": null,
+  "services": [],
+  "swap": {
+    "algorithm": "zstd",
+    "enabled": true
+  },
+  "timezone": "America/Toronto",
+  "version": "4.3"
 }
