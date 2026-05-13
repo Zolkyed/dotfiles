@@ -1,7 +1,75 @@
+[[ ~/.zshrc -nt ~/.zshrc.zwc ]] && zcompile ~/.zshrc
+
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="spaceship"
 
 source $HOME/.config/zsh/env.zsh
 source $HOME/.config/zsh/plugins.zsh
+
+# Completion
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*:descriptions' format '%F{yellow}-- %d --%f'
+zstyle ':completion::complete:*' use-cache on
+autoload -Uz compinit && compinit
+
 source $HOME/.config/zsh/functions.zsh
 source $HOME/.config/zsh/aliases.zsh
+
+# FZF
+[[ -f /usr/share/fzf/key-bindings.zsh ]] && source /usr/share/fzf/key-bindings.zsh
+[[ -f /usr/share/fzf/completion.zsh ]] && source /usr/share/fzf/completion.zsh
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
+export FZF_DEFAULT_OPTS="
+  --height 40% --layout=reverse --border
+  --preview 'bat --style=numbers --color=always {}'
+  --preview-window=right:50%
+"
+
+# Key Bindings
+bindkey -e
+bindkey '^[[A' history-search-backward
+bindkey '^[[B' history-search-forward
+bindkey '^[[1;5C' forward-word
+bindkey '^[[1;5D' backward-word
+
+# Syntax Highlighting (must be last)
+typeset -gA ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[comment]='fg=#555555'
+for key in alias suffix-alias global-alias function command precommand; do
+  ZSH_HIGHLIGHT_STYLES[$key]='fg=#d8d8d8'
+done
+for key in builtin reserved-word hashed-command; do
+  ZSH_HIGHLIGHT_STYLES[$key]='fg=#d8d8d8'
+done
+for key in commandseparator command-substitution-delimiter command-substitution-delimiter-unquoted \
+           process-substitution-delimiter back-quoted-argument-delimiter back-double-quoted-argument \
+           back-dollar-quoted-argument; do
+  ZSH_HIGHLIGHT_STYLES[$key]='fg=#888888'
+done
+for key in command-substitution-quoted command-substitution-delimiter-quoted single-quoted-argument \
+           double-quoted-argument rc-quote; do
+  ZSH_HIGHLIGHT_STYLES[$key]='fg=#f0f0f0'
+done
+for key in path path_prefix; do
+  ZSH_HIGHLIGHT_STYLES[$key]='fg=#d8d8d8,underline'
+done
+for key in globbing history-expansion redirection arg0 default cursor; do
+  ZSH_HIGHLIGHT_STYLES[$key]='fg=#d8d8d8'
+done
+ZSH_HIGHLIGHT_STYLES[single-quoted-argument-unclosed]='fg=#666666'
+ZSH_HIGHLIGHT_STYLES[double-quoted-argument-unclosed]='fg=#666666'
+ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument-unclosed]='fg=#666666'
+ZSH_HIGHLIGHT_STYLES[back-quoted-argument-unclosed]='fg=#666666'
+ZSH_HIGHLIGHT_STYLES[history-expansion]='fg=#bbbbbb'
+ZSH_HIGHLIGHT_STYLES[autodirectory]='fg=#bbbbbb,italic'
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=#aaaaaa'
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=#aaaaaa'
+ZSH_HIGHLIGHT_STYLES[back-quoted-argument]='fg=#cccccc'
+ZSH_HIGHLIGHT_STYLES[precommand]+=',italic'
+
+[[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] &&
+  source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
