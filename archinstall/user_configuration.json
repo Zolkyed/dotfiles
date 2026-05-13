@@ -1,6 +1,7 @@
 {
+  "additional-repositories": "multilib",
   "archinstall-language": "English",
-  "audio_config": null,
+  "bootloader": "grub-install",
   "bootloader_config": {
     "bootloader": "Grub",
     "removable": false,
@@ -82,10 +83,20 @@
   "kernels": [
     "linux"
   ],
+  "keyboard-language": "us",
   "locale_config": {
     "kb_layout": "us",
     "sys_enc": "UTF-8",
     "sys_lang": "en_US"
+  },
+  "mirror-region": {
+    "Canada": {
+      "https://mirror.csclub.uwaterloo.ca/archlinux/$repo/os/$arch": true
+    },
+    "United States": {
+      "https://mirror.umd.edu/archlinux/$repo/os/$arch": true,
+      "https://mirrors.kernel.org/archlinux/$repo/os/$arch": true
+    }
   },
   "mirror_config": {
     "custom_servers": [
@@ -127,5 +138,7 @@
     "sudo"
   ],
   "parallel downloads": 0,
+  "sys-encoding": "utf-8",
+  "sys-language": "en_US",
   "timezone": "America/Toronto"
 }
