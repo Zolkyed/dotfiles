@@ -1,8 +1,35 @@
 ---
-- name: AI | Install global npm packages
-  community.general.npm:
-    name: "{{ item }}"
-    global: true
-    state: present
+- name: AI | Ensure NVM directory exists
+  ansible.builtin.file:
+    path: "{{ user_home }}/.nvm"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0755"
+
+- name: AI | Install Node with NVM
+  ansible.builtin.shell:
+    cmd: |
+      . /usr/share/nvm/nvm.sh
+      nvm install {{ ai_node_version }}
+      node_version="$(nvm version {{ ai_node_version }})"
+      nvm alias default "$node_version"
+    executable: /bin/bash
   become: true
+  become_user: "{{ user_name }}"
+  environment:
+    NVM_DIR: "{{ user_home }}/.nvm"
+  changed_when: false
+
+- name: AI | Install global npm packages with NVM
+  ansible.builtin.shell:
+    cmd: |
+      . /usr/share/nvm/nvm.sh
+      npm list --global --depth=0 {{ item | quote }} >/dev/null 2>&1 ||
+        npm install --global {{ item | quote }}
+    executable: /bin/bash
+  become: true
+  become_user: "{{ user_name }}"
+  environment:
+    NVM_DIR: "{{ user_home }}/.nvm"
   loop: "{{ profiles.ai.npm | default([]) }}"

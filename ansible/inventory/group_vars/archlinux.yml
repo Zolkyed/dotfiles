@@ -225,8 +225,6 @@ profiles:
       - python
       - python-pip
       - python-pipx
-      - nodejs
-      - npm
       - rustup
       - jq
       - yq
