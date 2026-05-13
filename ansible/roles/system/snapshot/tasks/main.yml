@@ -1,0 +1,39 @@
+---
+- name: Snapshot | Install snapper and snap-pac
+  community.general.pacman:
+    name:
+      - snapper
+      - snap-pac
+    state: present
+
+- name: Snapshot | Create root snapper config
+  ansible.builtin.command:
+    cmd: snapper -c root create-config /
+    creates: /etc/snapper/configs/root
+
+- name: Snapshot | Configure snapper retention
+  ansible.builtin.lineinfile:
+    path: /etc/snapper/configs/root
+    regexp: "^{{ item.key }}"
+    line: "{{ item.key }}={{ item.value }}"
+  loop:
+    - { key: "TIMELINE_LIMIT_HOURLY", value: "{{ snapshot_timeline_limit.hourly }}" }
+    - { key: "TIMELINE_LIMIT_DAILY", value: "{{ snapshot_timeline_limit.daily }}" }
+    - { key: "TIMELINE_LIMIT_WEEKLY", value: "{{ snapshot_timeline_limit.weekly }}" }
+    - { key: "TIMELINE_LIMIT_MONTHLY", value: "{{ snapshot_timeline_limit.monthly }}" }
+    - { key: "CLEANUP_ALGORITHM", value: "{{ snapshot_cleanup_algorithm }}" }
+
+- name: Snapshot | Enable and start grub-btrfsd path unit
+  ansible.builtin.systemd_service:
+    name: grub-btrfsd.path
+    enabled: true
+    state: started
+
+- name: Snapshot | Enable and start snapper timers
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+  loop:
+    - snapper-timeline.timer
+    - snapper-cleanup.timer

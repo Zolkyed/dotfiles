@@ -21,6 +21,7 @@
       (fail2ban_enabled | ternary((profiles.fail2ban.pacman | default([])), [])) +
       (nvidia_enabled | ternary((profiles.nvidia.pacman | default([])), [])) +
       (bootloader_enabled | ternary((profiles.bootloader.pacman | default([])), [])) +
+      (snapshot_enabled | ternary((profiles.snapshot.pacman | default([])), [])) +
       (splashboot_enabled | ternary((profiles.splashboot.pacman | default([])), [])) +
       (system_tools_enabled | ternary((profiles.system_tools.pacman | default([])), [])) +
       (docker_enabled | ternary((profiles.docker.pacman | default([])), [])) +

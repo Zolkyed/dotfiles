@@ -21,7 +21,8 @@ presets:
     firewall_enabled: true
     fail2ban_enabled: true
     nvidia_enabled: false
-    bootloader_enabled: false
+    bootloader_enabled: true
+    snapshot_enabled: true
     splashboot_enabled: false
     system_tools_enabled: true
     docker_enabled: true
@@ -49,7 +50,8 @@ presets:
     firewall_enabled: true
     fail2ban_enabled: true
     nvidia_enabled: false
-    bootloader_enabled: false
+    bootloader_enabled: true
+    snapshot_enabled: true
     splashboot_enabled: false
     system_tools_enabled: true
     docker_enabled: true
@@ -77,7 +79,8 @@ presets:
     firewall_enabled: true
     fail2ban_enabled: true
     nvidia_enabled: false
-    bootloader_enabled: false
+    bootloader_enabled: true
+    snapshot_enabled: true
     splashboot_enabled: false
     system_tools_enabled: false
     docker_enabled: true

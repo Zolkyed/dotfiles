@@ -117,9 +117,13 @@
       when: fail2ban_enabled
 
     # --- Desktop  ---
-    - role: system/splashboot
-      tags: splashboot
-      when: splashboot_enabled
+    - role: system/snapshot
+      tags: snapshot
+      when: snapshot_enabled
     - role: system/bootloader
       tags: bootloader
       when: bootloader_enabled
+    - role: system/splashboot
+      tags: splashboot
+      when: splashboot_enabled
+

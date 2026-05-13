@@ -133,6 +133,12 @@ profiles:
       - grub
       - efibootmgr
 
+  snapshot:
+    pacman:
+      - snapper
+      - snap-pac
+      - grub-btrfs
+
   splashboot:
     pacman:
       - plymouth
