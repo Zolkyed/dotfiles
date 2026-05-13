@@ -18,6 +18,9 @@ export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt"
 
 setopt hist_verify auto_cd auto_pushd pushd_ignore_dups pushd_silent correct
 
+# Vague-themed LS_COLORS for colored completions
+[[ -f $HOME/.config/zsh/dircolors ]] && eval "$(dircolors $HOME/.config/zsh/dircolors)"
+
 # NVM lazy load
 export NVM_DIR="$HOME/.nvm"
 _nvm_load() {
