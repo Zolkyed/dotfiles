@@ -205,26 +205,11 @@ cleanup() {
 }
 trap cleanup EXIT
 
-disk_size="$(blockdev --getsize64 "$target_disk")"
-sector_size="$(blockdev --getss "$target_disk")"
-efi_start=1048576
-efi_size=1073741824
-root_start=$((efi_start + efi_size))
-root_size=$((disk_size - root_start))
-
-if (( root_size < 10737418240 )); then
-    echo "ERROR: Target disk is too small for this layout: $target_disk" >&2
-    exit 1
-fi
-
-python - "$config" "$tmp_config" "$host" "$target_disk" "$sector_size" "$root_start" "$root_size" <<'PY'
+python - "$config" "$tmp_config" "$host" "$target_disk" <<'PY'
 import json
 import sys
 
-src, dest, hostname, disk, sector_size, root_start, root_size = sys.argv[1:]
-sector_size = int(sector_size)
-root_start = int(root_start)
-root_size = int(root_size)
+src, dest, hostname, disk = sys.argv[1:]
 
 with open(src, encoding="utf-8") as fh:
     data = json.load(fh)
@@ -233,18 +218,10 @@ data["hostname"] = hostname
 
 mod = data["disk_config"]["device_modifications"][0]
 mod["device"] = disk
-mod["sector_size"] = {"unit": "B", "value": sector_size}
 
 for partition in mod["partitions"]:
-    partition["start"]["sector_size"]["value"] = sector_size
-    size = partition.pop("length", partition.get("size"))
-    if size is None:
-        raise KeyError(f"partition {partition.get('obj_id', '<unknown>')} missing size")
-    partition["size"] = size
-    partition["size"]["sector_size"]["value"] = sector_size
-    if partition["obj_id"] == "root":
-        partition["start"]["value"] = root_start
-        partition["size"]["value"] = root_size
+    if "length" in partition and "size" not in partition:
+        partition["size"] = partition.pop("length")
 
 with open(dest, "w", encoding="utf-8") as fh:
     json.dump(data, fh, indent=2)

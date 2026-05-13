@@ -1,7 +1,4 @@
 {
-  "additional-repositories": [
-    "multilib"
-  ],
   "archinstall-language": "English",
   "audio_config": null,
   "bootloader_config": {
@@ -18,28 +15,21 @@
           {
             "btrfs": [],
             "flags": [
-              "Boot",
-              "Esp"
+              "boot"
             ],
             "fs_type": "fat32",
             "size": {
-              "sector_size": {
-                "unit": "B",
-                "value": 512
-              },
-              "unit": "B",
-              "value": 1073741824
+              "sector_size": null,
+              "unit": "MiB",
+              "value": 1024
             },
             "mount_options": [],
             "mountpoint": "/boot",
             "obj_id": "efi",
             "start": {
-              "sector_size": {
-                "unit": "B",
-                "value": 512
-              },
-              "unit": "B",
-              "value": 1048576
+              "sector_size": null,
+              "unit": "MiB",
+              "value": 1
             },
             "status": "create",
             "type": "primary"
@@ -66,12 +56,9 @@
             "flags": [],
             "fs_type": "btrfs",
             "size": {
-              "sector_size": {
-                "unit": "B",
-                "value": 512
-              },
-              "unit": "B",
-              "value": 0
+              "sector_size": null,
+              "unit": "Percent",
+              "value": 100
             },
             "mount_options": [
               "compress=zstd"
@@ -79,12 +66,9 @@
             "mountpoint": "/",
             "obj_id": "root",
             "start": {
-              "sector_size": {
-                "unit": "B",
-                "value": 512
-              },
-              "unit": "B",
-              "value": 1074790400
+              "sector_size": null,
+              "unit": "MiB",
+              "value": 1025
             },
             "status": "create",
             "type": "primary"
@@ -104,20 +88,31 @@
     "sys_lang": "en_US"
   },
   "mirror_config": {
-    "custom_mirrors": [
-      "https://mirror.csclub.uwaterloo.ca/archlinux/$repo/os/$arch",
-      "https://mirror.umd.edu/archlinux/$repo/os/$arch",
-      "https://mirrors.kernel.org/archlinux/$repo/os/$arch"
+    "custom_servers": [
+      {
+        "url": "https://mirror.csclub.uwaterloo.ca/archlinux/$repo/os/$arch"
+      },
+      {
+        "url": "https://mirror.umd.edu/archlinux/$repo/os/$arch"
+      },
+      {
+        "url": "https://mirrors.kernel.org/archlinux/$repo/os/$arch"
+      }
     ],
     "mirror_regions": {
       "Canada": [],
       "United States": []
-    }
+    },
+    "optional_repositories": [
+      "multilib"
+    ]
   },
   "network_config": {
     "type": "nm"
   },
+  "no_pkg_lookups": false,
   "ntp": true,
+  "offline": false,
   "packages": [
     "age",
     "btrfs-progs",
@@ -131,5 +126,6 @@
     "sops",
     "sudo"
   ],
+  "parallel downloads": 0,
   "timezone": "America/Toronto"
 }
