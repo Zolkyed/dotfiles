@@ -41,7 +41,12 @@ enable_iso_ssh() {
         echo "==> Installed root authorized key and locked root password login."
     else
         echo "==> Set a temporary root password for SSH."
-        passwd
+        require_tty
+        if ! passwd </dev/tty; then
+            echo "ERROR: Failed to set temporary root password." >&2
+            echo "Use a stronger temporary password or rerun with ISO_SSH_PUBLIC_KEY set." >&2
+            exit 1
+        fi
         grep -q '^PermitRootLogin yes$' /etc/ssh/sshd_config ||
             printf '\nPermitRootLogin yes\n' >>/etc/ssh/sshd_config
     fi
