@@ -36,10 +36,11 @@ The easiest path is the interactive ISO installer:
 curl -fsSL https://raw.githubusercontent.com/Zolkyed/dotfiles/main/scripts/run_archinstall.sh | bash
 ```
 
-It installs live ISO tools, enables SSH so you can copy `keys.txt`, clones this
-repo, prompts for host, shows a numbered disk picker, and runs archinstall.
+It installs live ISO tools, clones this repo, prompts for host, shows a numbered
+physical disk picker, and runs archinstall. If `keys.txt` is missing, the script
+enables SSH so you can copy it from another machine.
 
-Copy your key from another machine when prompted:
+Copy your key from another machine when SSH is enabled:
 
 ```bash
 scp -O ~/.config/sops/age/keys.txt root@<iso-ip>:/root/.config/sops/age/keys.txt
@@ -53,11 +54,11 @@ Install only the tools needed to clone the repo and decrypt secrets:
 pacman -Sy git just sops age
 ```
 
-If you want to run the install remotely over SSH, enable temporary SSH in the
-live ISO:
+If you prefer key-only SSH, pass your public key:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Zolkyed/dotfiles/main/scripts/run_archinstall.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Zolkyed/dotfiles/main/scripts/run_archinstall.sh |
+    ISO_SSH_PUBLIC_KEY="$(cat ~/.ssh/id_ed25519.pub)" bash
 ```
 
 Then connect from another machine:
@@ -66,13 +67,9 @@ Then connect from another machine:
 ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@<iso-ip>
 ```
 
-If you prefer key-only SSH, pass your public key instead of using a temporary
-root password:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/Zolkyed/dotfiles/main/scripts/run_archinstall.sh |
-    ISO_SSH_PUBLIC_KEY="$(cat ~/.ssh/id_ed25519.pub)" bash
-```
+Without `ISO_SSH_PUBLIC_KEY`, the script prompts for a temporary root password
+for SSH. Use a strong temporary password; weak passwords can be rejected by the
+ISO password policy.
 
 Bring in the SOPS key. Example with a mounted USB drive:
 
@@ -103,10 +100,10 @@ sops --decrypt archinstall/user_credentials.json >/dev/null
 
 ### 4. Select Disk
 
-Use stable disk IDs:
+Show disks before selecting:
 
 ```bash
-ls -l /dev/disk/by-id/
+lsblk -dpo NAME,SIZE,MODEL,TRAN,SERIAL,TYPE
 ```
 
 Run archinstall:

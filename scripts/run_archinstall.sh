@@ -77,22 +77,34 @@ prompt_host() {
 
 select_disk() {
     local disks=()
+    local disk
     local selected_disk
+    local stable_disk
+    local selected_index
 
-    while IFS= read -r selected_disk; do
-        [[ -b "$selected_disk" ]] && disks+=("$selected_disk")
-    done < <(find /dev/disk/by-id -maxdepth 1 -type l ! -name '*-part*' | sort)
+    while IFS= read -r disk; do
+        [[ -b "$disk" ]] && disks+=("$disk")
+    done < <(lsblk -dnpo NAME,TYPE | awk '$2 == "disk" && $1 !~ "/dev/(loop|zram|ram)" { print $1 }' | sort)
 
     if (( ${#disks[@]} == 0 )); then
-        echo "ERROR: No disks found under /dev/disk/by-id." >&2
+        echo "ERROR: No target disks found." >&2
         exit 1
     fi
 
     echo "Target disks:" >&2
+    lsblk -dpo NAME,SIZE,MODEL,TRAN,SERIAL,TYPE >&2
+    echo >&2
+
     require_tty
     select selected_disk in "${disks[@]}"; do
         if [[ -n "${selected_disk:-}" ]]; then
-            printf '%s\n' "$selected_disk"
+            selected_index="${REPLY}"
+            stable_disk="$(find /dev/disk/by-id -maxdepth 1 -type l ! -name '*-part*' -samefile "$selected_disk" | sort | head -n 1)"
+            if [[ -z "$stable_disk" ]]; then
+                stable_disk="$selected_disk"
+            fi
+            echo "Selected disk ${selected_index}: ${stable_disk}" >&2
+            printf '%s\n' "$stable_disk"
             return
         fi
         echo "Invalid selection." >&2
