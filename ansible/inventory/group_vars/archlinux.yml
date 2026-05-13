@@ -28,8 +28,6 @@ profiles:
       - zsh-autosuggestions
       - zsh-syntax-highlighting
       - zsh-completions
-    aur:
-      - oh-my-zsh-git
 
   utility:
     pacman:
