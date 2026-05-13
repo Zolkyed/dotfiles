@@ -7,4 +7,7 @@ snapshot_timeline_limit:
   monthly: 3
 snapshot_cleanup_algorithm: "number"
 snapper_subvolumes:
-  - "/"
+  - path: "/"
+    config: root
+  - path: "/home"
+    config: home

@@ -1,0 +1,24 @@
+---
+- name: Snapshot | Reload systemd
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+  become: true
+
+- name: Snapshot | Enable grub-btrfsd
+  ansible.builtin.systemd_service:
+    name: grub-btrfsd
+    enabled: true
+    state: started
+    daemon_reload: true
+  become: true
+
+- name: Snapshot | Enable snapper timers
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+    daemon_reload: true
+  loop:
+    - snapper-timeline.timer
+    - snapper-cleanup.timer
+  become: true

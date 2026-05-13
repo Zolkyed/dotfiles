@@ -37,7 +37,6 @@ profiles:
       - vulkan-tools
       - fuse2
       - fuse3
-      - atuin
       - openssl
       - pamixer
       - xdg-utils
