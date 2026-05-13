@@ -1,6 +1,7 @@
 ---
 # https://archlinux.org/packages/
 # https://aur.archlinux.org/packages
+# https://flathub.org/en
 
 # ---------------------------------------------------------------------------
 # Profiles
@@ -60,6 +61,8 @@ profiles:
       - starship
       - yazi
       - zathura
+    flatpak:
+      - it.mijorus.gearlever
     aur:
       - ventoy-bin
 
