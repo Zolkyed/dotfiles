@@ -42,13 +42,7 @@
     path: "/etc/snapper/configs/{{ item[0].config }}"
     regexp: "^{{ item[1].key }}"
     line: "{{ item[1].key }}={{ item[1].value }}"
-  loop: "{{ snapper_subvolumes | product([
-    { 'key': 'TIMELINE_LIMIT_HOURLY', 'value': snapshot_timeline_limit.hourly },
-    { 'key': 'TIMELINE_LIMIT_DAILY', 'value': snapshot_timeline_limit.daily },
-    { 'key': 'TIMELINE_LIMIT_WEEKLY', 'value': snapshot_timeline_limit.weekly },
-    { 'key': 'TIMELINE_LIMIT_MONTHLY', 'value': snapshot_timeline_limit.monthly },
-    { 'key': 'CLEANUP_ALGORITHM', 'value': snapshot_cleanup_algorithm }
-  ]) }}"
+  loop: "{{ snapper_subvolumes | product([{'key': 'TIMELINE_LIMIT_HOURLY', 'value': snapshot_timeline_limit.hourly}, {'key': 'TIMELINE_LIMIT_DAILY', 'value': snapshot_timeline_limit.daily}, {'key': 'TIMELINE_LIMIT_WEEKLY', 'value': snapshot_timeline_limit.weekly}, {'key': 'TIMELINE_LIMIT_MONTHLY', 'value': snapshot_timeline_limit.monthly}, {'key': 'CLEANUP_ALGORITHM', 'value': snapshot_cleanup_algorithm}]) }}"
   become: true
   notify:
     - Snapshot | Enable snapper timers

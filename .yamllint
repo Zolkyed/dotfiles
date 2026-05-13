@@ -5,7 +5,7 @@ ignore: |
   ansible/inventory/host_vars/*/vault.yml
 rules:
   line-length:
-    max: 250
+    max: 200
     level: warning
   truthy:
     allowed-values: ["true", "false"]

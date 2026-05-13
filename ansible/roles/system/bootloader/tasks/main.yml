@@ -6,7 +6,7 @@
     owner: root
     group: root
     mode: "0755"
-    
+
 - name: Bootloader | Configure GRUB
   ansible.builtin.copy:
     dest: /etc/default/grub

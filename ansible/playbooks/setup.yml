@@ -126,4 +126,3 @@
     - role: system/splashboot
       tags: splashboot
       when: splashboot_enabled
-
