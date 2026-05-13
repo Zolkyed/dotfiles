@@ -22,7 +22,7 @@
               "Esp"
             ],
             "fs_type": "fat32",
-            "length": {
+            "size": {
               "sector_size": {
                 "unit": "B",
                 "value": 512
@@ -65,7 +65,7 @@
             ],
             "flags": [],
             "fs_type": "btrfs",
-            "length": {
+            "size": {
               "sector_size": {
                 "unit": "B",
                 "value": 512

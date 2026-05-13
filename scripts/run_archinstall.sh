@@ -237,10 +237,14 @@ mod["sector_size"] = {"unit": "B", "value": sector_size}
 
 for partition in mod["partitions"]:
     partition["start"]["sector_size"]["value"] = sector_size
-    partition["length"]["sector_size"]["value"] = sector_size
+    size = partition.pop("length", partition.get("size"))
+    if size is None:
+        raise KeyError(f"partition {partition.get('obj_id', '<unknown>')} missing size")
+    partition["size"] = size
+    partition["size"]["sector_size"]["value"] = sector_size
     if partition["obj_id"] == "root":
         partition["start"]["value"] = root_start
-        partition["length"]["value"] = root_size
+        partition["size"]["value"] = root_size
 
 with open(dest, "w", encoding="utf-8") as fh:
     json.dump(data, fh, indent=2)
