@@ -13,3 +13,11 @@
     state: present
   become: true
   become_user: "{{ user_name }}"
+
+- name: Aur | Configure paru
+  ansible.builtin.template:
+    src: paru.conf.j2
+    dest: /etc/paru.conf
+    owner: root
+    group: root
+    mode: "0644"

@@ -4,11 +4,17 @@
     daemon_reload: true
   become: true
 
+- name: Snapshot | Check stale /home/.snapshots
+  ansible.builtin.stat:
+    path: /home/.snapshots
+  register: snapshot_home_snapshots
+  become: true
+
 - name: Snapshot | Remove stale /home/.snapshots if needed
   ansible.builtin.command:
     cmd: btrfs subvolume delete /home/.snapshots
     creates: /etc/snapper/configs/home
-  failed_when: false
+  when: snapshot_home_snapshots.stat.exists
   become: true
 
 - name: Snapshot | Create snapper configs

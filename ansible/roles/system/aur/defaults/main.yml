@@ -1,0 +1,6 @@
+---
+paru_options:
+  - BottomUp
+  - SudoLoop
+  - CombinedUpgrade
+  - CleanAfter

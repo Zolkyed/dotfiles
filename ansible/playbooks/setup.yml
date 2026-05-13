@@ -72,12 +72,12 @@
     - role: system/snapshot
       tags: snapshot
       when: "'snapshot' in enabled_profiles"
-    - role: system/bootloader
-      tags: bootloader
-      when: "'bootloader' in enabled_profiles"
     - role: system/splashboot
       tags: splashboot
       when: "'splashboot' in enabled_profiles"
+    - role: system/bootloader
+      tags: bootloader
+      when: "'bootloader' in enabled_profiles"
 
     # --- Containers / virtualization ---
     - role: system/docker
