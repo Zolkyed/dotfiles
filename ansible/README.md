@@ -112,17 +112,24 @@ Desktop configs (kwinrc, kdeglobals, panel layout, etc.) are managed by chezmoi.
 | `ssh_keys` | `ssh_keys` | Deploy SSH keys from SOPS vault |
 | `xdg` | `xdg` | Default browser, editor, media player, MIME handlers |
 
-## Feature flags
+## Profiles
 
-All optional roles are gated in `group_vars/all.yml`:
+Optional packages and roles are selected in `group_vars/all.yml` with profile
+lists:
 
 ```yaml
-bluetooth_enabled: true
-docker_enabled:    true
-gaming_enabled:    false
-nvidia_enabled:    false
-plasma_enabled:    true
-# ...
+always_profiles:
+  - core
+  - shell
+  - utility
+
+presets:
+  desktop:
+    profiles:
+      - audio
+      - docker
+      - plasma
+      - gaming
 ```
 
-Override per machine in `host_vars/<host>/vars.yml`.
+Each host selects a preset in `host_vars/<host>/vars.yml`.

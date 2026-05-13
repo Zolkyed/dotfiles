@@ -13,87 +13,71 @@ user_groups:
 # ---------------------------------------------------------------------------
 # Presets
 # ---------------------------------------------------------------------------
+always_profiles:
+  - core
+  - shell
+  - utility
+  - fun
+  - fonts
+  - networking
+  - sshd
+
 presets:
   desktop:
-    audio_enabled: true
-    bluetooth_enabled: true
-    vpn_enabled: true
-    firewall_enabled: true
-    fail2ban_enabled: true
-    nvidia_enabled: false
-    bootloader_enabled: true
-    snapshot_enabled: true
-    splashboot_enabled: false
-    system_tools_enabled: true
-    docker_enabled: true
-    virtualization_enabled: true
-    plasma_enabled: true
-    hyprland_enabled: false
-    niri_enabled: false
-    browser_enabled: true
-    dev_enabled: true
-    flatpak_enabled: true
-    mihon_enabled: true
-    media_enabled: true
-    office_enabled: true
-    ai_enabled: true
-    rclone_enabled: true
-    gaming_enabled: true
-    konsave_enabled: true
-    xdg_enabled: true
+    profiles:
+      - audio
+      - bluetooth
+      - vpn
+      - firewall
+      - fail2ban
+      - bootloader
+      - snapshot
+      - system_tools
+      - docker
+      - virtualization
+      - plasma
+      - browser
+      - dev
+      - flatpak
+      - mihon
+      - media
+      - office
+      - ai
+      - rclone
+      - gaming
+      - konsave
+      - xdg
 
   laptop:
-    audio_enabled: true
-    bluetooth_enabled: true
-    vpn_enabled: true
-    firewall_enabled: true
-    fail2ban_enabled: true
-    nvidia_enabled: false
-    bootloader_enabled: true
-    snapshot_enabled: true
-    splashboot_enabled: false
-    system_tools_enabled: true
-    docker_enabled: true
-    virtualization_enabled: true
-    plasma_enabled: true
-    hyprland_enabled: false
-    niri_enabled: false
-    browser_enabled: true
-    dev_enabled: true
-    flatpak_enabled: true
-    mihon_enabled: true
-    media_enabled: true
-    office_enabled: true
-    ai_enabled: true
-    rclone_enabled: true
-    gaming_enabled: false
-    konsave_enabled: true
-    xdg_enabled: true
+    profiles:
+      - audio
+      - bluetooth
+      - vpn
+      - firewall
+      - fail2ban
+      - bootloader
+      - snapshot
+      - system_tools
+      - docker
+      - virtualization
+      - plasma
+      - browser
+      - dev
+      - flatpak
+      - mihon
+      - media
+      - office
+      - ai
+      - rclone
+      - konsave
+      - xdg
 
   server:
-    audio_enabled: false
-    bluetooth_enabled: false
-    vpn_enabled: true
-    firewall_enabled: true
-    fail2ban_enabled: true
-    nvidia_enabled: false
-    bootloader_enabled: true
-    snapshot_enabled: true
-    splashboot_enabled: false
-    system_tools_enabled: false
-    docker_enabled: true
-    virtualization_enabled: true
-    plasma_enabled: false
-    hyprland_enabled: false
-    niri_enabled: false
-    browser_enabled: false
-    dev_enabled: false
-    flatpak_enabled: false
-    media_enabled: false
-    gaming_enabled: false
-    office_enabled: false
-    ai_enabled: false
-    rclone_enabled: false
-    mihon_enabled: false
-    konsave_enabled: false
-    xdg_enabled: false
+    profiles:
+      - vpn
+      - firewall
+      - fail2ban
+      - bootloader
+      - snapshot
+      - docker
+      - virtualization

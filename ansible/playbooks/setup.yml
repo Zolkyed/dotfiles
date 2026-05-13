@@ -24,14 +24,14 @@
       ansible.builtin.include_vars:
         file: "{{ playbook_dir }}/../inventory/group_vars/archlinux.yml"
 
-    - name: Apply preset flags
+    - name: Build active profile lists
       tags: always
       ansible.builtin.set_fact:
-        "{{ item.key }}": "{{ item.value }}"
-      loop: "{{ presets[active_preset] | dict2items }}"
+        enabled_profiles: "{{ presets[active_preset].profiles | default([]) }}"
+        package_profiles: "{{ (always_profiles + (presets[active_preset].profiles | default([]))) | unique }}"
 
   roles:
-    # --- System  ---
+    # --- Base ---
     - role: system/sysctl
       tags: sysctl
     - role: user/account
@@ -39,90 +39,90 @@
     - role: system/sudoers
       tags: sudoers
 
-    # --- Pacman / AUR  ---
+    # --- Package managers / packages ---
     - role: system/pacman
       tags: pacman
     - role: system/aur
       tags: aur
-
-    # --- Packages  ---
     - role: system/packages
       tags: packages
+
+    # --- Core system services ---
+    - role: system/networking
+      tags: networking
+    - role: system/sshd
+      tags: sshd
+    - role: system/firewall
+      tags: firewall
+      when: "'firewall' in enabled_profiles"
+    - role: system/fail2ban
+      tags: fail2ban
+      when: "'fail2ban' in enabled_profiles"
+    - role: system/audio
+      tags: audio
+      when: "'audio' in enabled_profiles"
+    - role: system/bluetooth
+      tags: bluetooth
+      when: "'bluetooth' in enabled_profiles"
+
+    # --- Hardware / boot ---
+    - role: system/nvidia
+      tags: nvidia
+      when: "'nvidia' in enabled_profiles"
+    - role: system/snapshot
+      tags: snapshot
+      when: "'snapshot' in enabled_profiles"
+    - role: system/bootloader
+      tags: bootloader
+      when: "'bootloader' in enabled_profiles"
+    - role: system/splashboot
+      tags: splashboot
+      when: "'splashboot' in enabled_profiles"
+
+    # --- Containers / virtualization ---
+    - role: system/docker
+      tags: docker
+      when: "'docker' in enabled_profiles"
+    - role: system/virtualization
+      tags: virtualization
+      when: "'virtualization' in enabled_profiles"
+
+    # --- Desktop ---
     - role: system/fonts
       tags: fonts
     - role: desktop/plasma
       tags: plasma
-      when: plasma_enabled
+      when: "'plasma' in enabled_profiles"
+
+    # --- Apps ---
     - role: apps/flatpak
       tags: flatpak
-      when: flatpak_enabled
-
-    # --- Apps  ---
+      when: "'flatpak' in enabled_profiles"
     - role: apps/mihon
       tags: mihon
-      when: mihon_enabled
+      when: "'mihon' in enabled_profiles"
     - role: apps/browser
       tags: browser
-      when: browser_enabled
+      when: "'browser' in enabled_profiles"
     - role: apps/ai
       tags: ai
-      when: ai_enabled
+      when: "'ai' in enabled_profiles"
     - role: apps/rclone
       tags: rclone
-      when: rclone_enabled
+      when: "'rclone' in enabled_profiles"
     - role: apps/konsave
       tags: konsave
-      when: konsave_enabled
+      when: "'konsave' in enabled_profiles"
     - role: apps/appimage
       tags: appimage
 
-    # --- Containers / VMs ---
-    - role: system/nvidia
-      tags: nvidia
-      when: nvidia_enabled
-    - role: system/docker
-      tags: docker
-      when: docker_enabled
-    - role: system/virtualization
-      tags: virtualization
-      when: virtualization_enabled
-
-    # --- User / dotfiles  ---
+    # --- User config ---
     - role: user/ssh_keys
       tags: ssh_keys
     - role: user/bin
       tags: bin
     - role: user/xdg
       tags: xdg
-      when: xdg_enabled
+      when: "'xdg' in enabled_profiles"
     - role: user/dotfiles
       tags: dotfiles
-
-    # --- Network / security hardening ---
-    - role: system/networking
-      tags: networking
-    - role: system/audio
-      tags: audio
-      when: audio_enabled
-    - role: system/bluetooth
-      tags: bluetooth
-      when: bluetooth_enabled
-    - role: system/sshd
-      tags: sshd
-    - role: system/firewall
-      tags: firewall
-      when: firewall_enabled
-    - role: system/fail2ban
-      tags: fail2ban
-      when: fail2ban_enabled
-
-    # --- Desktop  ---
-    - role: system/snapshot
-      tags: snapshot
-      when: snapshot_enabled
-    - role: system/bootloader
-      tags: bootloader
-      when: bootloader_enabled
-    - role: system/splashboot
-      tags: splashboot
-      when: splashboot_enabled

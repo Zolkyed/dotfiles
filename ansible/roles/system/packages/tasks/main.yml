@@ -1,43 +1,18 @@
 ---
-- name: Packages | Install always-on packages
+- name: Packages | Install pacman packages
   community.general.pacman:
-    name: "{{ (profiles.core.pacman | default([])) +
-      (profiles.shell.pacman | default([])) +
-      (profiles.utility.pacman | default([])) +
-      (profiles.fun.pacman | default([])) +
-      (profiles.fonts.pacman | default([])) +
-      (profiles.networking.pacman | default([])) +
-      (profiles.sshd.pacman | default([]))
-    }}"
+    name: "{{ pacman_packages }}"
     state: present
-
-- name: Packages | Install conditional packages
-  community.general.pacman:
-    name: "{{
-      (audio_enabled | ternary((profiles.audio.pacman | default([])), [])) +
-      (bluetooth_enabled | ternary((profiles.bluetooth.pacman | default([])), [])) +
-      (vpn_enabled | ternary((profiles.vpn.pacman | default([])), [])) +
-      (firewall_enabled | ternary((profiles.firewall.pacman | default([])), [])) +
-      (fail2ban_enabled | ternary((profiles.fail2ban.pacman | default([])), [])) +
-      (nvidia_enabled | ternary((profiles.nvidia.pacman | default([])), [])) +
-      (bootloader_enabled | ternary((profiles.bootloader.pacman | default([])), [])) +
-      (snapshot_enabled | ternary((profiles.snapshot.pacman | default([])), [])) +
-      (splashboot_enabled | ternary((profiles.splashboot.pacman | default([])), [])) +
-      (system_tools_enabled | ternary((profiles.system_tools.pacman | default([])), [])) +
-      (docker_enabled | ternary((profiles.docker.pacman | default([])), [])) +
-      (virtualization_enabled | ternary((profiles.virtualization_kvm.pacman | default([])), [])) +
-      (plasma_enabled | ternary((profiles.plasma.pacman | default([])), [])) +
-      (((hyprland_enabled | bool) or (niri_enabled | bool)) | ternary((profiles.wayland_common.pacman | default([])), [])) +
-      (hyprland_enabled | ternary((profiles.hyprland.pacman | default([])), [])) +
-      (niri_enabled | ternary((profiles.niri.pacman | default([])), [])) +
-      (dev_enabled | ternary((profiles.dev.pacman | default([])), [])) +
-      (media_enabled | ternary((profiles.media.pacman | default([])), [])) +
-      (gaming_enabled | ternary((profiles.gaming.pacman | default([])), [])) +
-      (office_enabled | ternary((profiles.office.pacman | default([])), [])) +
-      (flatpak_enabled | ternary((profiles.flatpak.pacman | default([])), [])) +
-      (rclone_enabled | ternary((profiles.rclone.pacman | default([])), []))
-    }}"
-    state: present
+  when: pacman_packages | length > 0
+  vars:
+    pacman_packages: >-
+      {{
+        package_profiles
+        | map('extract', profiles)
+        | map(attribute='pacman', default=[])
+        | flatten
+        | unique
+      }}
 
 - name: Packages | Install AUR packages
   kewlfft.aur.aur:
@@ -48,11 +23,11 @@
   become_user: "{{ user_name }}"
   when: aur_packages | length > 0
   vars:
-    aur_packages: "{{
-      (profiles.utility.aur | default([])) +
-      (nvidia_enabled | ternary((profiles.nvidia.aur | default([])), [])) +
-      (browser_enabled | ternary((profiles.browser.aur | default([])), [])) +
-      (dev_enabled | ternary((profiles.dev.aur | default([])), [])) +
-      (media_enabled | ternary((profiles.media.aur | default([])), [])) +
-      (gaming_enabled | ternary((profiles.gaming.aur | default([])), []))
-    }}"
+    aur_packages: >-
+      {{
+        package_profiles
+        | map('extract', profiles)
+        | map(attribute='aur', default=[])
+        | flatten
+        | unique
+      }}
