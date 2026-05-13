@@ -81,6 +81,10 @@ profiles:
       - noto-fonts-emoji
       - ttf-dejavu
       - ttf-liberation
+      - ttf-roboto
+      - inter-font
+      - ttf-jetbrains-mono
+      - ttf-cascadia-code
       - gnu-free-fonts
 
   # -----------------------------------------------------------------------
