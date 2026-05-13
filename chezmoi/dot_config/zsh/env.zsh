@@ -16,13 +16,7 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
 export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt"
 
-export HISTSIZE=10000
-export SAVEHIST=10000
-export HISTFILE="$HOME/.zsh_history"
-
-setopt hist_ignore_all_dups hist_ignore_space hist_reduce_blanks hist_verify
-setopt share_history extended_history
-setopt auto_cd auto_pushd pushd_ignore_dups pushd_silent correct
+setopt hist_verify auto_cd auto_pushd pushd_ignore_dups pushd_silent correct
 
 # NVM lazy load
 export NVM_DIR="$HOME/.nvm"

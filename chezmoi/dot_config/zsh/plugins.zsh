@@ -14,7 +14,6 @@ fi
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 ZSH_AUTOSUGGEST_USE_ASYNC=true
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#444444'
 [[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] &&
   source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
