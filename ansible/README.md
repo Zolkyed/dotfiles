@@ -67,6 +67,7 @@ Each has `host_vars/<host>/vars.yml` (overrides) and `host_vars/<host>/vault.yml
 | `sudoers` | `sudoers` | Passwordless sudo drop-in |
 | `packages` | `packages` | Core, utility, media, office, fun packages |
 | `fonts` | `fonts` | Distro fonts + Nerd Fonts from GitHub releases |
+| `audio` | `audio` | PipeWire/WirePlumber user services |
 | `bluetooth` | `bluetooth` | bluez + blueman |
 | `docker` | `docker` | Docker CE + compose/buildx plugin |
 | `fail2ban` | `fail2ban` | jail.local for sshd |
@@ -75,7 +76,7 @@ Each has `host_vars/<host>/vars.yml` (overrides) and `host_vars/<host>/vault.yml
 | `nvidia` | `nvidia` | NVIDIA DRM modesetting |
 | `splashboot` | `splashboot` | Plymouth theme + initramfs |
 | `sshd` | `sshd` | sshd hardening (root login, pubkey, port) |
-| `virtualization` | `virtualization` | KVM/QEMU or VirtualBox |
+| `virtualization` | `virtualization` | KVM/QEMU via libvirt |
 | `vpn` | `vpn` | WireGuard + OpenVPN |
 
 ### desktop/
@@ -96,7 +97,6 @@ Desktop configs (kwinrc, kdeglobals, panel layout, etc.) are managed by chezmoi.
 | `ai` | `ai` | AI CLI tools (opencode-ai, codex, claude-code) |
 | `flatpak` | `flatpak` | Flathub remote + app installs |
 | `gaming` | `gaming` | Steam, Lutris, Wine, multilib/i386 |
-| `hayase` | `hayase` | Hayase anime sync (AppImage) |
 | `konsave` | `konsave` | KDE profile manager via pipx |
 | `mihon` | `mihon` | Mihon manga reader desktop entry |
 | `rclone` | `rclone` | rclone config for Google Drive |
@@ -126,5 +126,3 @@ plasma_enabled:    true
 ```
 
 Override per machine in `host_vars/<host>/vars.yml`.
-
-

@@ -14,7 +14,7 @@ profiles:
     pacman:
       - curl
       - wget
-      - vim
+      - neovim
       - htop
       - unzip
       - rsync
@@ -37,7 +37,6 @@ profiles:
       - vulkan-tools
       - fuse2
       - fuse3
-      - openssl
       - pamixer
       - xdg-utils
       - plocate
@@ -56,14 +55,11 @@ profiles:
       - just
       - trash-cli
       - helix
-      - neovim
       - starship
       - yazi
       - zathura
     flatpak:
       - it.mijorus.gearlever
-    aur:
-      - ventoy-bin
 
   fun:
     pacman:
@@ -77,7 +73,6 @@ profiles:
   fonts:
     pacman:
       - noto-fonts
-      - noto-fonts-cjk
       - noto-fonts-emoji
       - ttf-dejavu
       - ttf-liberation
@@ -85,7 +80,6 @@ profiles:
       - inter-font
       - ttf-jetbrains-mono
       - ttf-cascadia-code
-      - gnu-free-fonts
 
   # -----------------------------------------------------------------------
   # System
@@ -110,8 +104,6 @@ profiles:
   vpn:
     pacman:
       - wireguard-tools
-      - openvpn
-      - networkmanager-openvpn
 
   firewall:
     pacman:
@@ -124,8 +116,6 @@ profiles:
   sshd:
     pacman:
       - openssh
-    service:
-      - sshd
 
   nvidia:
     pacman:
@@ -162,8 +152,6 @@ profiles:
       - docker
       - docker-compose
       - docker-buildx
-    group:
-      - docker
 
   virtualization_kvm:
     pacman:
@@ -172,16 +160,6 @@ profiles:
       - virt-install
       - virt-manager
       - edk2-ovmf
-    service:
-      - libvirtd
-    group:
-      - libvirt
-      - kvm
-
-  virtualization_virtualbox:
-    pacman:
-      - virtualbox
-      - virtualbox-host-modules-arch
 
   # -----------------------------------------------------------------------
   # Desktop / WM
@@ -206,38 +184,32 @@ profiles:
       - kcalc
       - ark
 
+  wayland_common:
+    pacman:
+      - waybar
+      - rofi
+      - wl-clipboard
+      - grim
+      - slurp
+      - brightnessctl
+      - playerctl
+      - network-manager-applet
+      - swaylock
+      - swayidle
+
   hyprland:
     pacman:
       - hyprland
       - xdg-desktop-portal-hyprland
-      - waybar
-      - rofi
-      - wl-clipboard
-      - grim
-      - slurp
-      - brightnessctl
-      - playerctl
-      - network-manager-applet
-      - swaylock
-      - swayidle
       - hyprpaper
 
   niri:
     pacman:
-      - xdg-desktop-portal-wlr
-      - waybar
-      - rofi
-      - mako
-      - swaylock
-      - swayidle
-      - wl-clipboard
-      - grim
-      - slurp
-      - brightnessctl
-      - playerctl
-      - network-manager-applet
-    aur:
       - niri
+      - xdg-desktop-portal-kde
+      - xwayland-satellite
+      - mako
+      - swaybg
 
   # -----------------------------------------------------------------------
   # Applications
@@ -295,11 +267,9 @@ profiles:
       - obs-studio
       - qbittorrent
       - discord
-      - cmus
     aur:
+      - hayase-desktop-bin
       - spotify
-    flatpak:
-      - com.spotify.Client
 
   gaming:
     pacman:
@@ -316,7 +286,6 @@ profiles:
       - proton-ge-custom-bin
       - heroic-games-launcher-bin
     flatpak:
-      - com.heroicgameslauncher.hgl
       - net.pcsx2.PCSX2
       - net.davidotek.pupgui2
 

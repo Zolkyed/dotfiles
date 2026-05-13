@@ -6,9 +6,10 @@
       - git
     state: present
 
-- name: Install paru
+- name: Aur | Install paru
   kewlfft.aur.aur:
     name: paru
     use: makepkg
+    state: present
   become: true
   become_user: "{{ user_name }}"

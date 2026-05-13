@@ -25,8 +25,9 @@
       (splashboot_enabled | ternary((profiles.splashboot.pacman | default([])), [])) +
       (system_tools_enabled | ternary((profiles.system_tools.pacman | default([])), [])) +
       (docker_enabled | ternary((profiles.docker.pacman | default([])), [])) +
-      (virtualization_enabled | ternary((profiles.virtualization_kvm.pacman | default([])) + (profiles.virtualization_virtualbox.pacman | default([])), [])) +
+      (virtualization_enabled | ternary((profiles.virtualization_kvm.pacman | default([])), [])) +
       (plasma_enabled | ternary((profiles.plasma.pacman | default([])), [])) +
+      (((hyprland_enabled | bool) or (niri_enabled | bool)) | ternary((profiles.wayland_common.pacman | default([])), [])) +
       (hyprland_enabled | ternary((profiles.hyprland.pacman | default([])), [])) +
       (niri_enabled | ternary((profiles.niri.pacman | default([])), [])) +
       (dev_enabled | ternary((profiles.dev.pacman | default([])), [])) +
@@ -40,9 +41,18 @@
 
 - name: Packages | Install AUR packages
   kewlfft.aur.aur:
-    name: "{{ profiles | dict2items | map(attribute='value') | map(attribute='aur', default=[]) | flatten }}"
+    name: "{{ aur_packages }}"
     use: paru
     state: present
   become: true
   become_user: "{{ user_name }}"
-  when: profiles | dict2items | map(attribute='value') | map(attribute='aur', default=[]) | flatten | length > 0
+  when: aur_packages | length > 0
+  vars:
+    aur_packages: "{{
+      (profiles.utility.aur | default([])) +
+      (nvidia_enabled | ternary((profiles.nvidia.aur | default([])), [])) +
+      (browser_enabled | ternary((profiles.browser.aur | default([])), [])) +
+      (dev_enabled | ternary((profiles.dev.aur | default([])), [])) +
+      (media_enabled | ternary((profiles.media.aur | default([])), [])) +
+      (gaming_enabled | ternary((profiles.gaming.aur | default([])), []))
+    }}"

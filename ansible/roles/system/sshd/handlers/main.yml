@@ -1,5 +1,5 @@
 ---
 - name: SSHD | Restart sshd
   ansible.builtin.systemd:
-    name: "{{ (profiles.sshd.service | default([])) | first }}"
+    name: sshd
     state: restarted

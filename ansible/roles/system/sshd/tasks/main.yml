@@ -64,9 +64,8 @@
     cmd: sshd -t
   changed_when: false
 
-- name: SSHD | Enable and start services
+- name: SSHD | Enable and start service
   ansible.builtin.systemd:
-    name: "{{ item }}"
+    name: sshd
     enabled: true
     state: started
-  loop: "{{ profiles.sshd.service | default([]) }}"

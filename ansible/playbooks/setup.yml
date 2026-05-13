@@ -58,9 +58,6 @@
       when: flatpak_enabled
 
     # --- Apps  ---
-    - role: apps/hayase
-      tags: hayase
-      when: hayase_enabled
     - role: apps/mihon
       tags: mihon
       when: mihon_enabled
@@ -104,6 +101,9 @@
     # --- Network / security hardening ---
     - role: system/networking
       tags: networking
+    - role: system/audio
+      tags: audio
+      when: audio_enabled
     - role: system/bluetooth
       tags: bluetooth
       when: bluetooth_enabled

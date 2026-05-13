@@ -33,7 +33,6 @@ presets:
     browser_enabled: true
     dev_enabled: true
     flatpak_enabled: true
-    hayase_enabled: true
     mihon_enabled: true
     media_enabled: true
     office_enabled: true
@@ -62,7 +61,6 @@ presets:
     browser_enabled: true
     dev_enabled: true
     flatpak_enabled: true
-    hayase_enabled: true
     mihon_enabled: true
     media_enabled: true
     office_enabled: true
@@ -96,7 +94,6 @@ presets:
     office_enabled: false
     ai_enabled: false
     rclone_enabled: false
-    hayase_enabled: false
     mihon_enabled: false
     konsave_enabled: false
     xdg_enabled: false

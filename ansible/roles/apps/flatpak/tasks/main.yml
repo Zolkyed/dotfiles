@@ -12,12 +12,13 @@
     state: present
     remote: flathub
   vars:
-    flatpak_apps: >-
-      {{
-        profiles | dict2items
-        | map(attribute='value')
-        | map(attribute='flatpak', default=[])
-        | flatten
-      }}
+    flatpak_apps: "{{
+      (profiles.utility.flatpak | default([])) +
+      (browser_enabled | ternary((profiles.browser.flatpak | default([])), [])) +
+      (dev_enabled | ternary((profiles.dev.flatpak | default([])), [])) +
+      (media_enabled | ternary((profiles.media.flatpak | default([])), [])) +
+      (gaming_enabled | ternary((profiles.gaming.flatpak | default([])), [])) +
+      (office_enabled | ternary((profiles.office.flatpak | default([])), []))
+    }}"
   when:
     - flatpak_apps | length > 0

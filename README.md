@@ -72,6 +72,7 @@ chezmoi edit ~/.zshrc   # edit a managed file in $EDITOR
 │   │   └── setup.yml              # single playbook, tag-controlled
 │   └── roles/
 │       ├── system/
+│       │   ├── audio/             # PipeWire/WirePlumber services
 │       │   ├── bluetooth/         # bluez + blueman
 │       │   ├── docker/            # Docker CE + compose/buildx
 │       │   ├── fail2ban/          # sshd jail
@@ -84,7 +85,7 @@ chezmoi edit ~/.zshrc   # edit a managed file in $EDITOR
 │       │   ├── sshd/              # sshd hardening
 │       │   ├── sudoers/           # passwordless sudo drop-in
 │       │   ├── sysctl/            # hostname, kernel parameters
-│       │   ├── virtualization/    # KVM/QEMU or VirtualBox
+│       │   ├── virtualization/    # KVM/QEMU via libvirt
 │       │   └── vpn/               # WireGuard + OpenVPN
 │       ├── desktop/
 │       │   ├── hyprland/          # Hyprland packages
@@ -95,7 +96,6 @@ chezmoi edit ~/.zshrc   # edit a managed file in $EDITOR
 │   │   ├── ai/                # AI CLI tools (opencode-ai, codex, claude-code)
 │       │   ├── flatpak/           # Flathub + app installs
 │       │   ├── gaming/            # Steam, Lutris, Wine
-│   │   ├── hayase/            # anime sync (AppImage)
 │       │   ├── konsave/           # KDE profile manager
 │   │   ├── media/             # mpv, ffmpeg, yt-dlp, media tooling
 │   │   ├── mihon/             # manga reader desktop entry

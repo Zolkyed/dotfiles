@@ -1,24 +1,7 @@
 ---
-- name: Snapshot | Install snapper and snap-pac
-  community.general.pacman:
-    name:
-      - snapper
-      - snap-pac
-    state: present
-  become: true
-  notify:
-    - Snapshot | Reload systemd
-    - Snapshot | Enable grub-btrfsd
-    - Snapshot | Enable snapper timers
-
-- name: Snapshot | Ensure .snapshots directories exist
-  ansible.builtin.file:
-    path: "{{ item.path }}/.snapshots"
-    state: directory
-    owner: root
-    group: root
-    mode: '0755'
-  loop: "{{ snapper_subvolumes }}"
+- name: Snapshot | Reload systemd
+  ansible.builtin.systemd_service:
+    daemon_reload: true
   become: true
 
 - name: Snapshot | Remove stale /home/.snapshots if needed
@@ -34,15 +17,50 @@
     creates: "/etc/snapper/configs/{{ item.config }}"
   loop: "{{ snapper_subvolumes }}"
   become: true
-  notify:
-    - Snapshot | Enable snapper timers
+
+- name: Snapshot | Ensure .snapshots directories exist
+  ansible.builtin.file:
+    path: "{{ item.path }}/.snapshots"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  loop: "{{ snapper_subvolumes }}"
+  become: true
 
 - name: Snapshot | Configure snapper retention
   ansible.builtin.lineinfile:
     path: "/etc/snapper/configs/{{ item[0].config }}"
     regexp: "^{{ item[1].key }}"
     line: "{{ item[1].key }}={{ item[1].value }}"
-  loop: "{{ snapper_subvolumes | product([{'key': 'TIMELINE_LIMIT_HOURLY', 'value': snapshot_timeline_limit.hourly}, {'key': 'TIMELINE_LIMIT_DAILY', 'value': snapshot_timeline_limit.daily}, {'key': 'TIMELINE_LIMIT_WEEKLY', 'value': snapshot_timeline_limit.weekly}, {'key': 'TIMELINE_LIMIT_MONTHLY', 'value': snapshot_timeline_limit.monthly}, {'key': 'CLEANUP_ALGORITHM', 'value': snapshot_cleanup_algorithm}]) }}"
+  loop: "{{ snapper_subvolumes | product(snapper_retention_settings) }}"
   become: true
-  notify:
-    - Snapshot | Enable snapper timers
+  vars:
+    snapper_retention_settings:
+      - key: TIMELINE_LIMIT_HOURLY
+        value: "{{ snapshot_timeline_limit.hourly }}"
+      - key: TIMELINE_LIMIT_DAILY
+        value: "{{ snapshot_timeline_limit.daily }}"
+      - key: TIMELINE_LIMIT_WEEKLY
+        value: "{{ snapshot_timeline_limit.weekly }}"
+      - key: TIMELINE_LIMIT_MONTHLY
+        value: "{{ snapshot_timeline_limit.monthly }}"
+      - key: CLEANUP_ALGORITHM
+        value: "{{ snapshot_cleanup_algorithm }}"
+
+- name: Snapshot | Enable and start grub-btrfsd
+  ansible.builtin.systemd_service:
+    name: grub-btrfsd
+    enabled: true
+    state: started
+  become: true
+
+- name: Snapshot | Enable and start snapper timers
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+  loop:
+    - snapper-timeline.timer
+    - snapper-cleanup.timer
+  become: true

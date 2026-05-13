@@ -1,4 +1,9 @@
 ---
+- name: Plasma | Enable and start SDDM
+  ansible.builtin.systemd:
+    name: sddm
+    enabled: true
+    state: started
 
 - name: Plasma | Deploy KDE keybinds
   ansible.builtin.copy:

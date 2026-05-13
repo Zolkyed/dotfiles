@@ -2,7 +2,8 @@
 - name: Docker | Add user to docker group
   ansible.builtin.user:
     name: "{{ user_name }}"
-    groups: "{{ profiles.docker.group | default([]) }}"
+    groups:
+      - docker
     append: true
 
 - name: Docker | Enable and start service
