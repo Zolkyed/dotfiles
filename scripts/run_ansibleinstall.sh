@@ -5,21 +5,6 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # ---------------------------------------------------------------------------
-# Update package cache + install Ansible, age, sops
-# ---------------------------------------------------------------------------
-echo "==> Updating package cache..."
-sudo pacman -Syu --noconfirm
-
-echo "==> Installing Ansible, age, and sops..."
-sudo pacman -S --needed --noconfirm ansible age sops
-
-# ---------------------------------------------------------------------------
-# Ansible collections
-# ---------------------------------------------------------------------------
-echo "==> Installing Ansible collections..."
-ansible-galaxy collection install -r "${SCRIPT_DIR}/../ansible/requirements.yml"
-
-# ---------------------------------------------------------------------------
 # Passwordless sudo
 # ---------------------------------------------------------------------------
 install_passwordless_sudo() {
@@ -43,6 +28,21 @@ install_passwordless_sudo() {
 }
 
 install_passwordless_sudo
+
+# ---------------------------------------------------------------------------
+# Update package cache + install Ansible, age, sops
+# ---------------------------------------------------------------------------
+echo "==> Updating package cache..."
+sudo pacman -Syu --noconfirm
+
+echo "==> Installing Ansible, age, and sops..."
+sudo pacman -S --needed --noconfirm ansible age sops
+
+# ---------------------------------------------------------------------------
+# Ansible collections
+# ---------------------------------------------------------------------------
+echo "==> Installing Ansible collections..."
+ansible-galaxy collection install -r "${SCRIPT_DIR}/../ansible/requirements.yml"
 
 # ---------------------------------------------------------------------------
 # Run playbook

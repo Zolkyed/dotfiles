@@ -1,0 +1,135 @@
+{
+  "additional-repositories": [
+    "multilib"
+  ],
+  "archinstall-language": "English",
+  "audio_config": null,
+  "bootloader_config": {
+    "bootloader": "Grub",
+    "removable": false,
+    "uki": false
+  },
+  "disk_config": {
+    "config_type": "default_layout",
+    "device_modifications": [
+      {
+        "device": "__ARCHINSTALL_DISK__",
+        "partitions": [
+          {
+            "btrfs": [],
+            "flags": [
+              "Boot",
+              "Esp"
+            ],
+            "fs_type": "fat32",
+            "length": {
+              "sector_size": {
+                "unit": "B",
+                "value": 512
+              },
+              "unit": "B",
+              "value": 1073741824
+            },
+            "mount_options": [],
+            "mountpoint": "/boot",
+            "obj_id": "efi",
+            "start": {
+              "sector_size": {
+                "unit": "B",
+                "value": 512
+              },
+              "unit": "B",
+              "value": 1048576
+            },
+            "status": "create",
+            "type": "primary"
+          },
+          {
+            "btrfs": [
+              {
+                "mountpoint": "/",
+                "name": "@"
+              },
+              {
+                "mountpoint": "/home",
+                "name": "@home"
+              },
+              {
+                "mountpoint": "/var/cache/pacman/pkg",
+                "name": "@pkg"
+              },
+              {
+                "mountpoint": "/var/log",
+                "name": "@log"
+              }
+            ],
+            "flags": [],
+            "fs_type": "btrfs",
+            "length": {
+              "sector_size": {
+                "unit": "B",
+                "value": 512
+              },
+              "unit": "B",
+              "value": 0
+            },
+            "mount_options": [
+              "compress=zstd"
+            ],
+            "mountpoint": "/",
+            "obj_id": "root",
+            "start": {
+              "sector_size": {
+                "unit": "B",
+                "value": 512
+              },
+              "unit": "B",
+              "value": 1074790400
+            },
+            "status": "create",
+            "type": "primary"
+          }
+        ],
+        "wipe": true
+      }
+    ]
+  },
+  "hostname": "archlinux",
+  "kernels": [
+    "linux"
+  ],
+  "locale_config": {
+    "kb_layout": "us",
+    "sys_enc": "UTF-8",
+    "sys_lang": "en_US"
+  },
+  "mirror_config": {
+    "custom_mirrors": [
+      "https://mirror.csclub.uwaterloo.ca/archlinux/$repo/os/$arch",
+      "https://mirror.umd.edu/archlinux/$repo/os/$arch",
+      "https://mirrors.kernel.org/archlinux/$repo/os/$arch"
+    ],
+    "mirror_regions": {
+      "Canada": [],
+      "United States": []
+    }
+  },
+  "network_config": {
+    "type": "nm"
+  },
+  "ntp": true,
+  "packages": [
+    "age",
+    "btrfs-progs",
+    "curl",
+    "efibootmgr",
+    "git",
+    "grub",
+    "just",
+    "networkmanager",
+    "openssh",
+    "sops",
+    "sudo"
+  ],
+  "timezone": "America/Toronto"
+}

@@ -131,7 +131,9 @@ chezmoi edit ~/.zshrc   # edit a managed file in $EDITOR
 │   └── Dockerfile.archlinux       # Arch Linux integration test image
 │   └── .dockerignore
 ├── scripts/
-│   └── run_once_install-ansible.sh
+│   ├── run_ansibleinstall.sh      # post-install Ansible entrypoint
+│   ├── run_archinstall.sh         # Arch ISO installer entrypoint
+│   └── vault.sh                   # SOPS vault helpers
 ├── .github/
 │   ├── dependabot.yml             # Docker + GitHub Actions auto-updates
 │   └── workflows/ci.yml           # lint + integration tests

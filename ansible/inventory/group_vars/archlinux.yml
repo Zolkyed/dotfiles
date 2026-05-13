@@ -206,7 +206,6 @@ profiles:
   niri:
     pacman:
       - niri
-      - xdg-desktop-portal-kde
       - xwayland-satellite
       - mako
       - swaybg

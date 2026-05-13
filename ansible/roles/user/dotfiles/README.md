@@ -7,7 +7,7 @@ Installs chezmoi and keeps the home directory in sync with the dotfiles Git repo
 **Initial setup**
 - Creates `~/.local/bin` and `~/.config`.
 - Installs chezmoi.
-- Clones the dotfiles repo to `~/.local/share/chezmoi`.
+- Clones the dotfiles repo to `~/.local/share/dotfiles`.
 - Applies dotfiles to the home directory.
 
 **Subsequent runs**

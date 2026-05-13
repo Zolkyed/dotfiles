@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Encrypt or decrypt all SOPS vault files in the repo.
+# Encrypt or decrypt all SOPS secret files in the repo.
 # Usage: ./scripts/vault.sh encrypt
 #        ./scripts/vault.sh decrypt
 set -euo pipefail
@@ -15,6 +15,7 @@ VAULT_FILES=(
   "ansible/inventory/host_vars/desktop/vault.yml"
   "ansible/inventory/host_vars/laptop/vault.yml"
   "ansible/inventory/host_vars/server/vault.yml"
+  "archinstall/user_credentials.json"
 )
 
 if [[ $# -ne 1 || ( "$1" != "encrypt" && "$1" != "decrypt" ) ]]; then

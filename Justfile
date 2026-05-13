@@ -25,7 +25,10 @@ check host="desktop":
     cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{PLAYBOOK}} --check --diff -l {{host}}
 
 bootstrap host="desktop":
-    bash scripts/run_once_install-ansible.sh {{host}}
+    bash scripts/run_ansibleinstall.sh {{host}}
+
+archinstall host="desktop" disk="":
+    bash scripts/run_archinstall.sh {{host}} {{disk}}
 
 # ─── Lint / CI ──────────────────────────────────────────────────────────
 
