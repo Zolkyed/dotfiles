@@ -12,7 +12,7 @@ Full machine provisioning and user environment for Arch Linux.
 git clone https://github.com/Zolkyed/dotfiles ~/dotfiles
 cd ~/dotfiles
 
-just bootstrap desktop
+just ansibleinstall desktop
 ```
 
 ## Commands

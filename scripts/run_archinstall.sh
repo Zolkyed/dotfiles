@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Run archinstall with this repo's per-host JSON files.
+# Run archinstall with this repo's shared JSON install inputs.
 set -euo pipefail
 
 if [[ -n "${BASH_SOURCE[0]:-}" ]]; then

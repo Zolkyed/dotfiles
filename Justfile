@@ -24,7 +24,7 @@ run-local host="desktop":
 check host="desktop":
     cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{PLAYBOOK}} --check --diff -l {{host}}
 
-bootstrap host="desktop":
+ansibleinstall host="desktop":
     bash scripts/run_ansibleinstall.sh {{host}}
 
 archinstall host="desktop" disk="":

@@ -6,7 +6,7 @@ Full machine provisioning for Arch Linux.
 
 ```bash
 # Bootstrap a machine from scratch
-just bootstrap desktop
+just ansibleinstall desktop
 
 # Remote (SSH)
 just run desktop

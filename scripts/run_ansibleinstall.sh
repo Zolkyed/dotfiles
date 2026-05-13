@@ -54,7 +54,7 @@ target_host="${BOOTSTRAP_HOST:-${1:-}}"
 case "$target_host" in
     desktop | laptop | server) ;;
     *)
-        echo "ERROR: Specify a bootstrap host: desktop, laptop, or server." >&2
+        echo "ERROR: Specify an Ansible install host: desktop, laptop, or server." >&2
         echo "Usage: $0 [desktop|laptop|server]" >&2
         exit 1
         ;;
