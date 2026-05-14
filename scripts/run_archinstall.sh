@@ -215,7 +215,6 @@ with open(src, encoding="utf-8") as fh:
     data = json.load(fh)
 
 data["hostname"] = hostname
-data["harddrives"] = [disk]
 
 mod = data["disk_config"]["device_modifications"][0]
 mod["device"] = disk

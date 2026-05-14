@@ -1,60 +1,68 @@
 {
   "app_config": {
     "audio_config": null,
-    "bluetooth_config": null,
+    "bluetooth_config": {
+      "enabled": false
+    },
     "print_service_config": null
-  },
-  "archinstall-language": "English",
-  "auth_config": null,
+    },
+    "archinstall-language": "English",
+    "auth_config": {},
   "bootloader_config": {
     "bootloader": "Grub",
     "removable": false,
-    "uki": false
-  },
-  "custom_commands": [],
-  "disk_config": {
-    "btrfs_options": {
-      "snapshot_config": null
+        "uki": false
     },
-    "config_type": "default_layout",
-    "device_modifications": [
-      {
-        "device": "__ARCHINSTALL_DISK__",
-        "partitions": [
-          {
-            "btrfs": [],
-            "dev_path": null,
-            "flags": [
-              "boot",
-              "esp"
-            ],
-            "fs_type": "fat32",
-            "mount_options": [],
-            "mountpoint": "/boot",
-            "obj_id": "efi",
-            "size": {
-              "sector_size": null,
-              "unit": "MiB",
-              "value": 1024
-            },
-            "start": {
-              "sector_size": null,
-              "unit": "MiB",
-              "value": 1
-            },
-            "status": "create",
-            "type": "primary"
-          },
-          {
-            "btrfs": [
-              {
-                "mountpoint": "/",
-                "name": "@"
-              },
-              {
-                "mountpoint": "/home",
-                "name": "@home"
-              },
+    "custom_commands": [],
+    "disk_config": {
+        "btrfs_options": {
+            "snapshot_config": null
+        },
+        "config_type": "default_layout",
+        "device_modifications": [
+            {
+                "device": "__ARCHINSTALL_DISK__",
+                "partitions": [
+                    {
+                        "btrfs": [],
+                        "dev_path": null,
+                        "flags": [
+                            "boot",
+                            "esp"
+                        ],
+                        "fs_type": "fat32",
+                        "mount_options": [],
+                        "mountpoint": "/boot",
+                        "obj_id": "c54dab58-cb1b-4ecf-bf89-d6a8f8233434",
+                        "size": {
+                            "sector_size": {
+                                "unit": "B",
+                                "value": 512
+                            },
+                            "unit": "GiB",
+                            "value": 1
+                        },
+                        "start": {
+                            "sector_size": {
+                                "unit": "B",
+                                "value": 512
+                            },
+                            "unit": "MiB",
+                            "value": 1
+                        },
+                        "status": "create",
+                        "type": "primary"
+                    },
+                    {
+                        "btrfs": [
+                            {
+                                "mountpoint": "/",
+                                "name": "@"
+                            },
+                            {
+                                "mountpoint": "/home",
+                                "name": "@home"
+                            },
               {
                 "mountpoint": "/var/cache/pacman/pkg",
                 "name": "@pkg"
@@ -63,88 +71,100 @@
                 "mountpoint": "/var/log",
                 "name": "@log"
               }
-            ],
-            "dev_path": null,
-            "flags": [],
-            "fs_type": "btrfs",
-            "mount_options": [
-              "compress=zstd"
-            ],
-            "mountpoint": null,
-            "obj_id": "root",
-            "size": {
-              "sector_size": null,
-              "unit": "Percent",
-              "value": 100
-            },
-            "start": {
-              "sector_size": null,
-              "unit": "MiB",
-              "value": 1025
-            },
-            "status": "create",
-            "type": "primary"
-          }
-        ],
-        "wipe": true
-      }
-    ]
-  },
-  "hostname": "archlinux",
-  "kernels": [
-    "linux"
-  ],
-  "locale_config": {
-    "kb_layout": "us",
-    "sys_enc": "UTF-8",
-    "sys_lang": "en_US"
-  },
-  "mirror_config": {
-    "custom_repositories": [],
-    "custom_servers": [
-      {
-        "url": "https://mirror.csclub.uwaterloo.ca/archlinux/$repo/os/$arch"
-      },
-      {
-        "url": "https://mirror.umd.edu/archlinux/$repo/os/$arch"
-      },
-      {
-        "url": "https://mirrors.kernel.org/archlinux/$repo/os/$arch"
-      }
-    ],
-    "mirror_regions": {
-      "Canada": [],
-      "United States": []
+                        ],
+                        "dev_path": null,
+                        "flags": [],
+                        "fs_type": "btrfs",
+                        "mount_options": [
+                            "compress=zstd"
+                        ],
+                        "mountpoint": null,
+                        "obj_id": "421782dc-aab1-441d-9f71-626b25847d11",
+                        "size": {
+                            "sector_size": {
+                                "unit": "B",
+                                "value": 512
+                            },
+                            "unit": "Percent",
+                            "value": 100
+                        },
+                        "start": {
+                            "sector_size": {
+                                "unit": "B",
+                                "value": 512
+                            },
+                            "unit": "B",
+                            "value": 1074790400
+                        },
+                        "status": "create",
+                        "type": "primary"
+                    }
+                ],
+                "wipe": true
+            }
+        ]
     },
-    "optional_repositories": [
-      "multilib"
-    ]
-  },
-  "network_config": {
-    "type": "nm"
-  },
-  "ntp": true,
-  "packages": [
-    "age",
-    "btrfs-progs",
-    "curl",
-    "efibootmgr",
-    "git",
-    "grub",
-    "just",
-    "networkmanager",
-    "openssh",
-    "sops",
-    "sudo"
-  ],
-  "parallel_downloads": 0,
-  "profile_config": null,
-  "script": null,
-  "services": [],
-  "swap": {
-    "algorithm": "zstd",
-    "enabled": true
-  },
-  "timezone": "America/Toronto",
-  "version": "4.3"
+    "hostname": "archlinux",
+    "kernels": [
+        "linux"
+    ],
+    "locale_config": {
+        "kb_layout": "us",
+        "sys_enc": "UTF-8",
+        "sys_lang": "en_US.UTF-8"
+    },
+    "mirror_config": {
+        "custom_repositories": [],
+        "custom_servers": [],
+        "mirror_regions": {
+            "Canada": [
+                "https://mirror.csclub.uwaterloo.ca/archlinux/$repo/os/$arch"
+            ],
+            "United States": [
+                "https://mirror.umd.edu/archlinux/$repo/os/$arch",
+                "https://mirrors.kernel.org/archlinux/$repo/os/$arch"
+            ]
+        },
+        "optional_repositories": [
+            "multilib"
+        ]
+    },
+    "network_config": {
+        "type": "nm"
+    },
+    "ntp": true,
+    "packages": [
+        "age",
+        "btrfs-progs",
+        "curl",
+        "efibootmgr",
+        "git",
+        "grub",
+        "just",
+        "networkmanager",
+        "openssh",
+        "sops",
+        "sudo"
+    ],
+    "pacman_config": {
+        "color": true,
+        "parallel_downloads": 5
+    },
+    "profile_config": {
+        "gfx_driver": null,
+        "greeter": null,
+        "profile": {
+            "custom_settings": {},
+            "details": [],
+            "main": "Minimal"
+        }
+    },
+    "script": null,
+    "services": [],
+    "swap": {
+        "algorithm": "zstd",
+        "enabled": true
+    },
+    "timezone": "America/Toronto",
+    "version": "4.3"
 }
