@@ -114,25 +114,21 @@ import json, os, subprocess, sys, uuid
 src, dest, disk = sys.argv[1:]
 real_disk = os.path.realpath(disk)
 
-def blk(flag):
-    return int(subprocess.run(["blockdev", flag, real_disk],
-        capture_output=True, text=True, check=True).stdout.strip())
+disk_bytes = int(subprocess.run(["blockdev", "--getsize64", real_disk],
+    capture_output=True, text=True, check=True).stdout.strip())
 
-MiB          = 1024 ** 2
-disk_bytes   = blk("--getsize64")
-logical_sec  = blk("--getss")
-boot_start   = 1    * MiB
-boot_size    = 1024 * MiB          # 1 GiB
-root_start   = boot_start + boot_size
-# backup GPT = 33 logical sectors; align the partition end down to MiB
-root_end     = (disk_bytes - 33 * logical_sec) // MiB * MiB
-root_size    = root_end - root_start
+MiB            = 1024 ** 2
+boot_start_mib = 1
+boot_size_mib  = 1024                            # 1 GiB
+root_start_mib = boot_start_mib + boot_size_mib  # 1025 MiB
+disk_mib       = disk_bytes // MiB
+root_size_mib  = disk_mib - root_start_mib - 1   # 1 MiB gap keeps us clear of backup GPT
 
-if root_size <= 0:
+if root_size_mib <= 0:
     raise SystemExit(f"disk too small: {real_disk}")
 
-def part_size(value):
-    return {"value": value, "unit": "B", "sector_size": {"value": logical_sec, "unit": "B"}}
+def sz(value, unit="MiB"):
+    return {"value": value, "unit": unit, "sector_size": {"value": 512, "unit": "B"}}
 
 with open(src, encoding="utf-8") as fh:
     data = json.load(fh)
@@ -149,16 +145,16 @@ data["disk_config"] = {
                 "type": "primary", "status": "create",
                 "fs_type": "fat32", "flags": ["boot", "esp"],
                 "mountpoint": "/boot", "mount_options": [], "btrfs": [], "dev_path": None,
-                "start": part_size(boot_start),
-                "size":  part_size(boot_size),
+                "start": sz(boot_start_mib),
+                "size":  sz(boot_size_mib),
             },
             {
                 "obj_id": str(uuid.uuid4()),
                 "type": "primary", "status": "create",
                 "fs_type": "btrfs", "flags": [],
                 "mountpoint": None, "mount_options": ["compress=zstd"], "dev_path": None,
-                "start": part_size(root_start),
-                "size":  part_size(root_size),
+                "start": sz(root_start_mib),
+                "size":  sz(root_size_mib),
                 "btrfs": [
                     {"name": "@",     "mountpoint": "/"},
                     {"name": "@home", "mountpoint": "/home"},
