@@ -1,3 +1,4 @@
+---
 name: CI
 
 on:
@@ -13,8 +14,7 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
-    # This allows the overall pipeline to pass even if linting fails
-    continue-on-error: true 
+    continue-on-error: true
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -44,7 +44,6 @@ jobs:
   integration:
     name: Integration (${{ matrix.name }})
     runs-on: ubuntu-latest
-    # No 'needs: lint' means this starts immediately
     strategy:
       fail-fast: false
       matrix:
@@ -64,9 +63,8 @@ jobs:
           context: .
           file: docker/${{ matrix.dockerfile }}
           push: false
-          load: true 
+          load: true
           secrets: |
             "sops_age_key=${{ secrets.SOPS_AGE_KEY }}"
-          # This caches your heavy 'pacman -Syu' layers between runs
           cache-from: type=gha
           cache-to: type=gha,mode=max
