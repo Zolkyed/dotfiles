@@ -265,7 +265,8 @@ profiles:
       - discord
     aur:
       - hayase-desktop-bin
-      - spotify
+    flatpak:
+      - com.spotify.Client
 
   gaming:
     pacman:
