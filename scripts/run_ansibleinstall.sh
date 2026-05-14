@@ -29,7 +29,7 @@ fi
 # ---------------------------------------------------------------------------
 install_passwordless_sudo() {
     local bootstrap_user="${BOOTSTRAP_USER:-${SUDO_USER:-$USER}}"
-    local sudoers_file="/etc/sudoers.d/dotfiles-nopasswd"
+    local sudoers_file="/etc/sudoers.d/99-dotfiles-nopasswd"
     local visudo
     local tmp
 

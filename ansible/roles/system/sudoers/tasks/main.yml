@@ -1,7 +1,7 @@
 ---
 - name: Sudoers | Allow user passwordless sudo
   ansible.builtin.copy:
-    dest: /etc/sudoers.d/dotfiles-nopasswd
+    dest: /etc/sudoers.d/99-dotfiles-nopasswd
     content: "{{ sudoers_user }} ALL=(ALL:ALL) NOPASSWD: ALL\n"
     owner: root
     group: root
@@ -9,8 +9,17 @@
     validate: "visudo -cf %s"
   when: sudoers_nopasswd
 
-- name: Sudoers | Remove passwordless sudo when disabled
+- name: Sudoers | Remove legacy passwordless sudo drop-in
   ansible.builtin.file:
     path: /etc/sudoers.d/dotfiles-nopasswd
     state: absent
+  when: sudoers_nopasswd
+
+- name: Sudoers | Remove passwordless sudo when disabled
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/sudoers.d/99-dotfiles-nopasswd
+    - /etc/sudoers.d/dotfiles-nopasswd
   when: not sudoers_nopasswd
