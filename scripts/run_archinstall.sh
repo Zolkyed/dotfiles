@@ -126,7 +126,10 @@ if parts:
         capture_output=True, text=True, check=True).stdout.strip())
     sector_bytes = int(subprocess.run(["blockdev", "--getpbsz", real_disk],
         capture_output=True, text=True, check=True).stdout.strip())
+    logical_sector_bytes = int(subprocess.run(["blockdev", "--getss", real_disk],
+        capture_output=True, text=True, check=True).stdout.strip())
     align_bytes = 1024**2
+    gpt_tail_bytes = 34 * logical_sector_bytes
     unit_map = {"B": 1, "MiB": 1024**2, "GiB": 1024**3, "TiB": 1024**4}
 
     def bytes_from(value):
@@ -153,7 +156,8 @@ if parts:
 
     last = parts[-1]
     start_bytes = bytes_from(last["start"])
-    remaining = align_down(disk_bytes - start_bytes)
+    usable_end = align_down(disk_bytes - gpt_tail_bytes)
+    remaining = usable_end - start_bytes
     if remaining <= 0:
         raise SystemExit(f"target disk is too small for configured partition start: {real_disk}")
     last["size"] = {"sector_size": {"unit": "B", "value": sector_bytes}, "unit": "B", "value": remaining}
