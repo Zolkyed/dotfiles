@@ -15,46 +15,12 @@ else
     RUNNING_FROM_REPO=0
 fi
 REPO_URL="${REPO_URL:-https://github.com/Zolkyed/dotfiles.git}"
-SOPS_AGE_KEY_FILE="${SOPS_AGE_KEY_FILE:-$HOME/.config/sops/age/keys.txt}"
-export SOPS_AGE_KEY_FILE
 
 require_tty() {
     if [[ ! -r /dev/tty ]]; then
         echo "ERROR: Interactive mode needs a TTY." >&2
         exit 1
     fi
-}
-
-enable_iso_ssh() {
-    if [[ "${EUID}" -ne 0 ]]; then
-        echo "ERROR: ISO SSH setup must run as root." >&2
-        exit 1
-    fi
-
-    pacman -Sy --needed --noconfirm openssh
-    install -d -m 0700 /root/.ssh
-
-    if [[ -n "${ISO_SSH_PUBLIC_KEY:-}" ]]; then
-        printf '%s\n' "$ISO_SSH_PUBLIC_KEY" >>/root/.ssh/authorized_keys
-        chmod 0600 /root/.ssh/authorized_keys
-        passwd -l root >/dev/null
-        echo "==> Installed root authorized key and locked root password login."
-    else
-        echo "==> Set a temporary root password for SSH."
-        require_tty
-        if ! passwd </dev/tty; then
-            echo "ERROR: Failed to set temporary root password." >&2
-            echo "Use a stronger temporary password or rerun with ISO_SSH_PUBLIC_KEY set." >&2
-            exit 1
-        fi
-        grep -q '^PermitRootLogin yes$' /etc/ssh/sshd_config ||
-            printf '\nPermitRootLogin yes\n' >>/etc/ssh/sshd_config
-    fi
-
-    systemctl enable --now sshd
-    echo "==> SSH enabled. Connect with:"
-    echo "    ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@<ip>"
-    ip -brief address
 }
 
 prompt_host() {
@@ -113,7 +79,7 @@ select_disk() {
 
 install_iso_tools() {
     if [[ "${EUID}" -eq 0 ]] && command -v pacman >/dev/null 2>&1; then
-        pacman -Sy --needed --noconfirm git just sops age openssh
+        pacman -Sy --needed --noconfirm git just openssh
     fi
 }
 
@@ -133,20 +99,6 @@ fi
 
 if [[ $# -eq 0 ]]; then
     install_iso_tools
-
-    if [[ ! -f "$SOPS_AGE_KEY_FILE" ]]; then
-        enable_iso_ssh
-        echo
-        echo "Copy your SOPS key from another machine:"
-        echo "  scp -O ~/.config/sops/age/keys.txt root@<iso-ip>:/root/.config/sops/age/keys.txt"
-        echo
-        mkdir -p "$(dirname "$SOPS_AGE_KEY_FILE")"
-        while [[ ! -f "$SOPS_AGE_KEY_FILE" ]]; do
-            require_tty
-            read -r -p "Press Enter after keys.txt has been copied to ${SOPS_AGE_KEY_FILE}..." </dev/tty
-        done
-        chmod 600 "$SOPS_AGE_KEY_FILE"
-    fi
 
     host="$(prompt_host)"
     target_disk="$(select_disk)"
@@ -187,21 +139,13 @@ if [[ ! -f "$config" ]]; then
 fi
 
 if [[ ! -f "$creds" ]]; then
-    echo "ERROR: Missing SOPS-encrypted credentials: $creds" >&2
-    exit 1
-fi
-
-if [[ ! -f "$SOPS_AGE_KEY_FILE" ]]; then
-    echo "ERROR: Missing SOPS age key: $SOPS_AGE_KEY_FILE" >&2
-    echo "Copy keys.txt there or set SOPS_AGE_KEY_FILE before running." >&2
+    echo "ERROR: Missing credentials: $creds" >&2
     exit 1
 fi
 
 tmp_config="$(mktemp)"
-tmp_creds="$(mktemp)"
 cleanup() {
     rm -f "$tmp_config"
-    rm -f "$tmp_creds"
 }
 trap cleanup EXIT
 
@@ -228,8 +172,6 @@ with open(dest, "w", encoding="utf-8") as fh:
     fh.write("\n")
 PY
 
-sops --decrypt "$creds" >"$tmp_creds"
-
 echo "==> Running archinstall for ${host}"
 echo "    target disk: ${target_disk}"
 echo "    THIS WILL WIPE THE TARGET DISK"
@@ -246,4 +188,4 @@ elif [[ "${ARCHINSTALL_CONFIRM_WIPE:-}" != "1" ]]; then
     exit 1
 fi
 
-archinstall --config "$tmp_config" --creds "$tmp_creds"
+archinstall --config "$tmp_config" --creds "$creds"

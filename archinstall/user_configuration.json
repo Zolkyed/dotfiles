@@ -1,16 +1,5 @@
 {
-    "app_config": {},
     "archinstall-language": "English",
-    "auth_config": {
-        "root_pwd": "",
-        "users": [
-            {
-                "username": "charl",
-                "!password": "$6$PFDesCcJpkvqj5lN$/Sze1cgbtnJhB5k1p4IfqyjZuSUjZrUSMVDdA3OMGSvfIzrAWHSCDhjFzjCQDuHEuJeSURUSWsyt9XDuqaVJz0",
-                "sudo": true
-            }
-        ]
-    },
     "bootloader_config": {
         "bootloader": "Grub",
         "removable": true,
@@ -284,7 +273,6 @@
     },
     "ntp": true,
     "packages": [
-        "age",
         "btrfs-progs",
         "curl",
         "efibootmgr",
@@ -293,7 +281,6 @@
         "just",
         "networkmanager",
         "openssh",
-        "sops",
         "sudo"
     ],
     "pacman_config": {
@@ -315,6 +302,5 @@
         "algorithm": "zstd",
         "enabled": true
     },
-    "timezone": "America/Toronto",
-    "version": "4.3"
+    "timezone": "America/Toronto"
 }
