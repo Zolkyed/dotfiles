@@ -183,6 +183,7 @@ profiles:
       - spectacle
       - kcalc
       - ark
+      - kdeconnect
 
   wayland_common:
     pacman:
