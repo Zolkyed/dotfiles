@@ -38,6 +38,8 @@
     },
     "profile_config": {
         "profile": {
+            "custom_settings": {},
+            "details": [],
             "main": "Minimal"
         }
     },

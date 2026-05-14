@@ -182,5 +182,5 @@ if [[ "$confirm" != "WIPE" ]]; then
     exit 1
 fi
 
-archinstall --config "$tmp_config" --creds "$creds"
+archinstall --config "$tmp_config" --creds "$creds" --silent
 echo "==> Done. Reboot, then clone this repo and run './scripts/run_ansibleinstall.sh <desktop|laptop|server>'"
