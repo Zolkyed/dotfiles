@@ -87,7 +87,6 @@ profiles:
     pacman:
       - alsa-utils
       - pipewire
-      - pipewire-jack
       - wireplumber
       - pipewire-pulse
       - pipewire-alsa
