@@ -1,3 +1,1 @@
-ansible-core
-ansible-lint
-yamllint
+yamllint>=1.38.0
