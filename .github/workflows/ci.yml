@@ -81,5 +81,3 @@ jobs:
           cache-to: type=gha,mode=max
           secrets: |
             sops_age_key=${{ secrets.SOPS_AGE_KEY }}
-        env:
-          SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
