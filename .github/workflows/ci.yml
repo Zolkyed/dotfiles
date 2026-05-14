@@ -48,6 +48,8 @@ jobs:
 
       - name: Run ansible-lint
         run: ansible-lint -c ansible/.ansible-lint.yml ansible
+        env:
+          ANSIBLE_CONFIG: ./ansible/ansible.cfg
 
   integration:
     name: Integration (${{ matrix.name }})
