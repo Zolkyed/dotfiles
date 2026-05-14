@@ -1,3 +1,4 @@
+---
 name: CI
 
 on:
@@ -6,10 +7,6 @@ on:
     branches:
       - main
 
-concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
-
 permissions:
   contents: read
 
@@ -17,66 +14,48 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
 
-      - name: Setup Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.12"
-
-      - name: Install tools
-        run: |
-          set -euo pipefail
-          pip install \
-            yamllint>=1.38.0 \
-            ansible-core==2.16.* \
-            ansible-lint==26.4.0 \
-            shellcheck-py
-
       - name: Run yamllint
-        run: yamllint -c .yamllint ansible .github
+        run: |
+          pip install --break-system-packages yamllint==1.35.1
+          yamllint -c .yamllint ansible .github
 
       - name: Run shellcheck
-        run: shellcheck scripts/*.sh || true
+        run: shellcheck scripts/*.sh
 
       - name: Install Ansible collections
-        run: |
-          ansible-galaxy collection install \
-            -r ansible/requirements.yml \
-            -p ~/.ansible/collections
+        run: ansible-galaxy collection install -r ansible/requirements.yml
+        env:
+          ANSIBLE_LOCAL_TEMP: /tmp/ansible-local
+          ANSIBLE_REMOTE_TEMP: /tmp/ansible-remote
 
       - name: Run ansible-lint
-        run: ansible-lint ansible
+        uses: ansible/ansible-lint@v26.4.0
+        with:
+          working_directory: ansible
 
   integration:
     name: Integration (${{ matrix.name }})
     runs-on: ubuntu-latest
     needs: lint
-
     strategy:
       fail-fast: false
       matrix:
         include:
           - name: Arch Linux
             dockerfile: Dockerfile.archlinux
-
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: actions/checkout@v6
 
       - name: Build and run
         env:
           SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
         run: |
-          set -euo pipefail
           docker build \
-            --progress=plain \
             --secret id=sops_age_key,env=SOPS_AGE_KEY \
             -f docker/${{ matrix.dockerfile }} \
             .
