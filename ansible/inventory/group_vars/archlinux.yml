@@ -177,7 +177,6 @@ profiles:
       - breeze-gtk
       - discover
       - dolphin
-      - konsole
       - spectacle
       - kcalc
       - ark
