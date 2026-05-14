@@ -35,6 +35,7 @@ jobs:
           ansible --version
           ansible-lint --version
           yamllint --version
+          shellcheck --version
 
       - name: Install Ansible collections
         run: ansible-galaxy collection install -r ansible/requirements.yml
