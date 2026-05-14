@@ -35,7 +35,6 @@ profiles:
       - ncdu
       - ripgrep
       - vulkan-tools
-      - fuse2
       - fuse3
       - pamixer
       - xdg-utils
@@ -104,6 +103,7 @@ profiles:
   networking:
     pacman:
       - networkmanager
+      - iwd
 
   vpn:
     pacman:
@@ -142,11 +142,6 @@ profiles:
   splashboot:
     pacman:
       - plymouth
-
-  system_tools:
-    pacman:
-      - gparted
-      - timeshift
 
   # -----------------------------------------------------------------------
   # Virtualization / Containers

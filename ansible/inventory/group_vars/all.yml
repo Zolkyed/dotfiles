@@ -32,7 +32,6 @@ presets:
       - fail2ban
       - bootloader
       - snapshot
-      - system_tools
       - docker
       - virtualization
       - plasma
@@ -57,7 +56,6 @@ presets:
       - fail2ban
       - bootloader
       - snapshot
-      - system_tools
       - docker
       - virtualization
       - plasma
