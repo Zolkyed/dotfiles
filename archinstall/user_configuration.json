@@ -272,12 +272,14 @@
     "ntp": true,
     "packages": [
         "btrfs-progs",
+        "age",
         "curl",
         "efibootmgr",
         "git",
         "grub",
         "networkmanager",
         "openssh",
+        "sops",
         "sudo"
     ],
     "pacman_config": {
@@ -294,7 +296,10 @@
         }
     },
     "script": null,
-    "services": [],
+    "services": [
+        "NetworkManager.service",
+        "sshd.service"
+    ],
     "swap": {
         "algorithm": "zstd",
         "enabled": true

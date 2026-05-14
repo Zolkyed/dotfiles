@@ -225,7 +225,7 @@ profiles:
       - python
       - python-pip
       - python-pipx
-      - rustup
+      - rust
       - jq
       - yq
       - httpie
