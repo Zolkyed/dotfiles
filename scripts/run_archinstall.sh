@@ -117,6 +117,15 @@ install_iso_tools() {
     fi
 }
 
+# After archinstall runs, copy the SOPS key into the installed system
+post_install_copy_key() {
+    local installed_root="/mnt"
+    local dest="${installed_root}/root/.config/sops/age/keys.txt"
+    mkdir -p "$(dirname "$dest")"
+    install -m 0600 "$SOPS_AGE_KEY_FILE" "$dest"
+    echo "==> SOPS age key copied to installed system."
+}
+
 if [[ "$RUNNING_FROM_REPO" -eq 0 ]]; then
     install_iso_tools
 
@@ -280,3 +289,4 @@ elif [[ "${ARCHINSTALL_CONFIRM_WIPE:-}" != "1" ]]; then
 fi
 
 archinstall --config "$tmp_config" --creds "$tmp_creds" --silent
+post_install_copy_key
