@@ -11,6 +11,11 @@
     append: true
     state: present
 
+- name: User | Set root shell
+  ansible.builtin.user:
+    name: root
+    shell: "{{ user_shell }}"
+
 - name: User | Ensure user home directory exists
   ansible.builtin.file:
     path: "{{ user_home }}"
