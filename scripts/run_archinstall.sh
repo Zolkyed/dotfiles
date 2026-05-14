@@ -144,12 +144,12 @@ if parts:
     for part in parts:
         for key in ("start", "size"):
             if key in part and "sector_size" in part[key]:
-                part[key]["sector_size"] = {"unit": "B", "value": sector_bytes}
+                part[key]["sector_size"] = {"unit": "B", "value": logical_sector_bytes}
 
     for prev, current in zip(parts, parts[1:]):
         prev_end = bytes_from(prev["start"]) + bytes_from(prev["size"])
         current["start"] = {
-            "sector_size": {"unit": "B", "value": sector_bytes},
+            "sector_size": {"unit": "B", "value": logical_sector_bytes},
             "unit": "B",
             "value": align_up(prev_end),
         }
@@ -160,7 +160,7 @@ if parts:
     remaining = usable_end - start_bytes
     if remaining <= 0:
         raise SystemExit(f"target disk is too small for configured partition start: {real_disk}")
-    last["size"] = {"sector_size": {"unit": "B", "value": sector_bytes}, "unit": "B", "value": remaining}
+    last["size"] = {"sector_size": {"unit": "B", "value": logical_sector_bytes}, "unit": "B", "value": remaining}
 
 with open(dest, "w", encoding="utf-8") as fh:
     json.dump(data, fh, indent=2)
