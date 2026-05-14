@@ -128,6 +128,7 @@ if root_size_mib <= 0:
     raise SystemExit(f"disk too small: {real_disk}")
 
 def sz(value, unit="MiB"):
+    # sector_size is required by archinstall's Size schema even when unit is MiB
     return {"value": value, "unit": unit, "sector_size": {"value": 512, "unit": "B"}}
 
 with open(src, encoding="utf-8") as fh:
@@ -182,5 +183,5 @@ if [[ "$confirm" != "WIPE" ]]; then
     exit 1
 fi
 
-archinstall --config "$tmp_config" --creds "$creds" --silent
+archinstall --config "$tmp_config" --creds "$creds" --silent  # remove --silent to see the install log
 echo "==> Done. Reboot, then clone this repo and run './scripts/run_ansibleinstall.sh <desktop|laptop|server>'"
