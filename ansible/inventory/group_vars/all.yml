@@ -30,6 +30,7 @@ presets:
       - vpn
       - firewall
       - fail2ban
+      - nvidia
       - bootloader
       - snapshot
       - docker

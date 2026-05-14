@@ -1,4 +1,37 @@
 ---
+- name: Nvidia | Detect NVIDIA display adapters
+  ansible.builtin.shell:
+    cmd: "set -o pipefail && lspci -Dnn -d 10de: | grep -Ei 'VGA|3D|Display'"
+    executable: /bin/bash
+  register: nvidia_display_adapters
+  changed_when: false
+  failed_when: false
+
+- name: Nvidia | Require supported NVIDIA display adapter
+  ansible.builtin.assert:
+    that:
+      - nvidia_display_adapters.stdout_lines | length > 0
+      - nvidia_display_adapters.stdout is not search(nvidia_unsupported_legacy_device_regex)
+    fail_msg: >-
+      No supported NVIDIA display adapter was detected, or the detected adapter
+      needs an older legacy branch not managed by this role.
+
+- name: Nvidia | Select driver branch
+  ansible.builtin.set_fact:
+    nvidia_effective_driver_branch: >-
+      {{
+        nvidia_driver_branch if nvidia_driver_branch != 'auto'
+        else ('580xx' if nvidia_display_adapters.stdout is search(nvidia_580xx_device_regex)
+        else ('current' if nvidia_display_adapters.stdout is search(nvidia_current_device_regex)
+        else 'unsupported'))
+      }}
+
+- name: Nvidia | Validate driver branch
+  ansible.builtin.assert:
+    that:
+      - nvidia_effective_driver_branch in nvidia_driver_packages
+    fail_msg: "Unsupported NVIDIA driver branch: {{ nvidia_effective_driver_branch }}"
+
 - name: Nvidia | Detect installed kernels
   ansible.builtin.shell:
     cmd: set -o pipefail && pacman -Qq | grep -E '^linux(-lts|-zen|-hardened|-rt|-rt-lts)?$'
@@ -12,6 +45,24 @@
     name: "{{ nvidia_arch_kernels.stdout_lines | map('regex_replace', '$', '-headers') | list }}"
     state: present
   when: nvidia_arch_kernels.stdout_lines | length > 0
+
+- name: Nvidia | Install pacman driver packages
+  community.general.pacman:
+    name: "{{ nvidia_driver_packages[nvidia_effective_driver_branch].pacman }}"
+    state: present
+    extra_args: "{{ nvidia_driver_extra_args }}"
+  when: nvidia_driver_packages[nvidia_effective_driver_branch].pacman | length > 0
+  notify: Nvidia | Rebuild initramfs
+
+- name: Nvidia | Install AUR driver packages
+  kewlfft.aur.aur:
+    name: "{{ nvidia_driver_packages[nvidia_effective_driver_branch].aur }}"
+    use: paru
+    state: present
+    extra_args: "{{ nvidia_driver_extra_args }}"
+  become: false
+  when: nvidia_driver_packages[nvidia_effective_driver_branch].aur | length > 0
+  notify: Nvidia | Rebuild initramfs
 
 - name: Nvidia | Configure DRM modesetting
   ansible.builtin.copy:

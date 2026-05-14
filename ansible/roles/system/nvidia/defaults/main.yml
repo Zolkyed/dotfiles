@@ -1,0 +1,29 @@
+---
+nvidia_driver_branch: auto
+
+nvidia_580xx_device_regex: '\b(GM|GP)[0-9]+'
+nvidia_current_device_regex: '\b(TU|GA|AD|GB)[0-9]+'
+nvidia_unsupported_legacy_device_regex: '\b(G8|G9|GT2|GF|GK)[0-9]+'
+
+nvidia_driver_packages:
+  current:
+    pacman:
+      - nvidia-open-dkms
+      - nvidia-utils
+      - lib32-nvidia-utils
+      - nvidia-settings
+      - opencl-nvidia
+      - lib32-opencl-nvidia
+    aur: []
+
+  580xx:
+    pacman: []
+    aur:
+      - nvidia-580xx-dkms
+      - nvidia-580xx-utils
+      - lib32-nvidia-580xx-utils
+      - nvidia-580xx-settings
+      - opencl-nvidia-580xx
+      - lib32-opencl-nvidia-580xx
+
+nvidia_driver_extra_args: --ask 4
