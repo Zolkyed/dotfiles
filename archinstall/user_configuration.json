@@ -273,6 +273,7 @@
     },
     "ntp": true,
     "packages": [
+        "age",
         "btrfs-progs",
         "curl",
         "efibootmgr",
@@ -281,6 +282,7 @@
         "just",
         "networkmanager",
         "openssh",
+        "sops",
         "sudo"
     ],
     "pacman_config": {
@@ -302,5 +304,6 @@
         "algorithm": "zstd",
         "enabled": true
     },
-    "timezone": "America/Toronto"
+    "timezone": "America/Toronto",
+    "version": "4.3"
 }
