@@ -13,6 +13,12 @@
         "sys_enc": "UTF-8",
         "sys_lang": "en_US.UTF-8"
     },
+    "mirror_config": {
+        "mirror_regions": {
+            "Canada": [],
+            "United States": []
+        }
+    },
     "network_config": {
         "type": "nm"
     },
