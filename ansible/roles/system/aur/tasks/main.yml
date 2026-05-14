@@ -21,10 +21,3 @@
     owner: root
     group: root
     mode: "0644"
-
-- name: Aur | Verify passwordless sudo for AUR helper
-  ansible.builtin.command:
-    cmd: sudo -n true
-  become: true
-  become_user: "{{ user_name }}"
-  changed_when: false
