@@ -1,135 +1,80 @@
 # Ansible
 
-Full machine provisioning for Arch Linux.
-
-## Usage
+Arch Linux provisioning.
 
 ```bash
-# Bootstrap a machine from scratch
-just ansibleinstall desktop
-
-# Remote (SSH)
-just run desktop
-just run laptop
-
-# Local (no SSH)
-just run-local desktop
-
-# Dry-run
-just check desktop
-
-# Lint + syntax check
-just ci
-```
-
-Or run ansible-playbook directly:
-
-```bash
-cd ansible
-
-# Remote
-ansible-playbook playbooks/setup.yml -l desktop
-
-# Local
-ansible-playbook -i inventory/local.yml playbooks/setup.yml -l desktop
-
-# Dry-run
-ansible-playbook -i inventory/local.yml playbooks/setup.yml --check --diff -l desktop
+just ansibleinstall <host>   # full bootstrap
+just run <host>              # remote
+just run-local <host>        # local
+just check <host>            # dry-run
 ```
 
 ## Inventory
 
-| File | Connection | Use case |
-|---|---|---|
-| `inventory/hosts.yml` | SSH | Target machines by hostname |
-| `inventory/local.yml` | Local | Run on the current machine without SSH |
+| File | Connection |
+|---|---|
+| `inventory/hosts.yml` | SSH |
+| `inventory/local.yml` | Local |
 
 Hosts: `desktop`, `laptop`, `server`.
-Each has `host_vars/<host>/vars.yml` (overrides) and `host_vars/<host>/vault.yml` (secrets).
 
-## Variables
+## Vars
 
-| Variable | File | Notes |
-|---|---|---|
-| Feature flags, user settings, Flatpaks | `group_vars/all.yml` | Shared defaults; override per host |
-| Shared secrets | `group_vars/vault.yml` | SOPS-encrypted |
-| Package/service names | `group_vars/archlinux.yml` | Profile-based package data |
-| Host overrides (flags, monitors) | `host_vars/<host>/vars.yml` | Per-machine |
-| Host secrets (SSH keys) | `host_vars/<host>/vault.yml` | SOPS-encrypted |
+| File | Contents |
+|---|---|
+| `group_vars/all.yml` | user, presets, feature flags |
+| `group_vars/archlinux.yml` | profile package/service names |
+| `group_vars/vault.yml` | shared secrets (SOPS) |
+| `host_vars/<host>/vars.yml` | active preset |
+| `host_vars/<host>/vault.yml` | SSH keys (SOPS) |
 
 ## Roles
 
-### system/
-
-| Role | Tag | Purpose |
-|---|---|---|
-| `sysctl` | `sysctl` | Hostname, kernel parameters |
-| `sudoers` | `sudoers` | Passwordless sudo drop-in |
-| `packages` | `packages` | Core, utility, media, office, fun packages |
-| `fonts` | `fonts` | Distro fonts + Nerd Fonts from GitHub releases |
-| `audio` | `audio` | PipeWire/WirePlumber user services |
-| `bluetooth` | `bluetooth` | bluez + blueman |
-| `docker` | `docker` | Docker CE + compose/buildx plugin |
-| `fail2ban` | `fail2ban` | jail.local for sshd |
-| `firewall` | `firewall` | ufw allow/deny rules |
-| `networking` | `networking` | NetworkManager + systemd-resolved |
-| `nvidia` | `nvidia` | NVIDIA DRM modesetting |
-| `splashboot` | `splashboot` | Plymouth theme + initramfs |
-| `sshd` | `sshd` | sshd hardening (root login, pubkey, port) |
-| `virtualization` | `virtualization` | KVM/QEMU via libvirt |
-| `vpn` | `vpn` | WireGuard + OpenVPN |
-
-### desktop/
-
-| Role | Tag | Purpose |
-|---|---|---|
-| `plasma` | `plasma` | KDE Plasma packages + global keybinds |
-| `hyprland` | `hyprland` | Hyprland packages |
-| `niri` | `niri` | Niri packages |
-
-Desktop configs (kwinrc, kdeglobals, panel layout, etc.) are managed by chezmoi.
-
-### apps/
-
-| Role | Tag | Purpose |
-|---|---|---|
-| `browser` | `browser` | Browser install + managed extension policy |
-| `ai` | `ai` | AI CLI tools (opencode-ai, codex, claude-code) |
-| `flatpak` | `flatpak` | Flathub remote + app installs |
-| `gaming` | `gaming` | Steam, Lutris, Wine, multilib/i386 |
-| `konsave` | `konsave` | KDE profile manager via pipx |
-| `mihon` | `mihon` | Mihon manga reader desktop entry |
-| `rclone` | `rclone` | rclone config for Google Drive |
-
-
-### user/
-
-| Role | Tag | Purpose |
-|---|---|---|
-| `account` | `user` | User account, shell, groups |
-| `bin` | `bin` | Custom scripts + homectl config |
-| `dotfiles` | `dotfiles` | chezmoi install + `apply --force` |
-| `ssh_keys` | `ssh_keys` | Deploy SSH keys from SOPS vault |
-| `xdg` | `xdg` | Default browser, editor, media player, MIME handlers |
+| Role | Tag | When | Purpose |
+|---|---|---|---|
+| `system/sysctl` | sysctl | always | hostname, kernel params |
+| `system/sudoers` | sudoers | always | passwordless sudo |
+| `system/pacman` | pacman | always | pacman.conf |
+| `system/aur` | aur | always | paru install + config |
+| `system/packages` | packages | always | bulk package install |
+| `system/networking` | networking | always | NetworkManager + resolved |
+| `system/sshd` | sshd | always | host keys, hardening |
+| `system/fonts` | fonts | always | Nerd Fonts |
+| `system/firewall` | firewall | profile | UFW |
+| `system/fail2ban` | fail2ban | profile | SSH jail |
+| `system/audio` | audio | profile | PipeWire |
+| `system/bluetooth` | bluetooth | profile | bluez |
+| `system/nvidia` | nvidia | profile | drivers + modesetting |
+| `system/docker` | docker | profile | Docker CE |
+| `system/virtualization` | virt | profile | libvirt |
+| `system/bootloader` | bootloader | profile | GRUB |
+| `system/snapshot` | snapshot | profile | Snapper + grub-btrfs |
+| `system/splashboot` | splashboot | profile | Plymouth |
+| `desktop/plasma` | plasma | profile | SDDM, keybinds |
+| `apps/appimage` | appimage | always | ~/Applications |
+| `apps/browser` | browser | profile | Brave + policies |
+| `apps/flatpak` | flatpak | profile | Flathub + apps |
+| `apps/ai` | ai | profile | opencode-ai, codex, claude-code |
+| `apps/mihon` | mihon | profile | manga desktop entry |
+| `apps/rclone` | rclone | profile | Google Drive |
+| `apps/konsave` | konsave | profile | KDE profile manager |
+| `user/account` | user | always | user creation |
+| `user/ssh_keys` | ssh_keys | always | deploy SSH keys |
+| `user/bin` | bin | always | custom scripts |
+| `user/dotfiles` | dotfiles | always | chezmoi |
+| `user/xdg` | xdg | profile | default apps |
 
 ## Profiles
 
-Optional packages and roles are selected in `group_vars/all.yml` with profile
-lists:
+Profiles can enable a role or just add packages:
+
+- Roles with `profile` in "When" only run if their profile is in `enabled_profiles`.
+- Package-only profiles (core, shell, dev, media, gaming, office, vpn) have no role — `system/packages` installs their packages from `archlinux.yml`.
 
 ```yaml
-always_profiles:
-  - core
-  - shell
-  - utility
-
+# all.yml
+always_profiles: [core, shell, utility, networking, sshd]
 presets:
   desktop:
-    profiles:
-      - audio
-      - docker
-      - plasma
-      - gaming
+    profiles: [audio, nvidia, plasma, browser, gaming]
 ```
-
-Each host selects a preset in `host_vars/<host>/vars.yml`.
