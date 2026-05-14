@@ -109,14 +109,62 @@ cleanup() { rm -f "$tmp_config"; }
 trap cleanup EXIT
 
 python - "$config" "$tmp_config" "$target_disk" <<'PY'
-import json, os, sys
+import json, os, subprocess, sys
 
 src, dest, disk = sys.argv[1:]
+real_disk = os.path.realpath(disk)
 
 with open(src, encoding="utf-8") as fh:
     data = json.load(fh)
 
-data["disk_config"]["device_modifications"][0]["device"] = os.path.realpath(disk)
+mod = data["disk_config"]["device_modifications"][0]
+mod["device"] = real_disk
+
+parts = mod["partitions"]
+if parts:
+    disk_bytes = int(subprocess.run(["blockdev", "--getsize64", real_disk],
+        capture_output=True, text=True, check=True).stdout.strip())
+    sector_bytes = int(subprocess.run(["blockdev", "--getss", real_disk],
+        capture_output=True, text=True, check=True).stdout.strip())
+    align_bytes = 1024**2
+    gpt_tail_bytes = 34 * sector_bytes
+    unit_map = {"B": 1, "sectors": sector_bytes, "MiB": 1024**2, "GiB": 1024**3, "TiB": 1024**4}
+
+    def bytes_from(value):
+        return value["value"] * unit_map.get(value.get("unit", "B"), 1)
+
+    def align_up(value):
+        return ((value + align_bytes - 1) // align_bytes) * align_bytes
+
+    def align_down(value):
+        return (value // align_bytes) * align_bytes
+
+    for part in parts:
+        if "size" in part and "length" not in part:
+            part["length"] = part.pop("size")
+        for key in ("start", "length"):
+            if key in part and "sector_size" in part[key]:
+                part[key]["sector_size"] = {"unit": "B", "value": sector_bytes}
+
+    for prev, current in zip(parts, parts[1:]):
+        prev_end = bytes_from(prev["start"]) + bytes_from(prev["length"])
+        current["start"] = {
+            "sector_size": {"unit": "B", "value": sector_bytes},
+            "unit": "B",
+            "value": align_up(prev_end),
+        }
+
+    last = parts[-1]
+    start_bytes = bytes_from(last["start"])
+    usable_end = align_down(disk_bytes - gpt_tail_bytes)
+    remaining = usable_end - start_bytes
+    if remaining <= 0:
+        raise SystemExit(f"target disk is too small for configured partition start: {real_disk}")
+    last["length"] = {
+        "sector_size": {"unit": "B", "value": sector_bytes},
+        "unit": "B",
+        "value": remaining,
+    }
 
 with open(dest, "w", encoding="utf-8") as fh:
     json.dump(data, fh, indent=2)

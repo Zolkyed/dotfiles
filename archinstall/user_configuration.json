@@ -26,7 +26,7 @@
                         "mount_options": [],
                         "mountpoint": "/boot",
                         "obj_id": "c54dab58-cb1b-4ecf-bf89-d6a8f8233434",
-                        "size": {
+                        "length": {
                             "sector_size": {
                                 "unit": "B",
                                 "value": 512
@@ -72,7 +72,7 @@
                         ],
                         "mountpoint": null,
                         "obj_id": "421782dc-aab1-441d-9f71-626b25847d11",
-                        "size": {
+                        "length": {
                             "sector_size": {
                                 "unit": "B",
                                 "value": 512
