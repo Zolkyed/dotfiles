@@ -272,14 +272,12 @@
     "ntp": true,
     "packages": [
         "btrfs-progs",
-        "age",
         "curl",
         "efibootmgr",
         "git",
         "grub",
         "networkmanager",
         "openssh",
-        "sops",
         "sudo"
     ],
     "pacman_config": {

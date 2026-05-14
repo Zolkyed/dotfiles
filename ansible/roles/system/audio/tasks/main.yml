@@ -1,4 +1,10 @@
 ---
+- name: Audio | Enable and start realtime scheduling service
+  ansible.builtin.systemd:
+    name: rtkit-daemon
+    enabled: true
+    state: started
+
 - name: Audio | Enable PipeWire socket globally
   ansible.builtin.systemd:
     name: pipewire.socket

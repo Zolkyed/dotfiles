@@ -1,4 +1,12 @@
 ---
+- name: Bluetooth | Auto-enable adapters
+  ansible.builtin.lineinfile:
+    path: /etc/bluetooth/main.conf
+    regexp: "^#?AutoEnable="
+    line: "AutoEnable=true"
+    insertafter: "^\\[Policy\\]"
+  notify: Bluetooth | Restart bluetooth
+
 - name: Bluetooth | Enable and start bluetooth service
   ansible.builtin.systemd:
     name: bluetooth

@@ -8,6 +8,22 @@ SOPS_AGE_KEY_FILE="${SOPS_AGE_KEY_FILE:-$HOME/.config/sops/age/keys.txt}"
 export SOPS_AGE_KEY_FILE
 AGE_KEY_ENCRYPTED="${REPO_DIR}/secrets/age_key.age"
 
+target_host="${BOOTSTRAP_HOST:-${1:-}}"
+case "$target_host" in
+    desktop | laptop | server) ;;
+    *)
+        echo "ERROR: Specify an Ansible install host: desktop, laptop, or server." >&2
+        echo "Usage: $0 [desktop|laptop|server]" >&2
+        exit 1
+        ;;
+esac
+
+if [[ "${EUID}" -eq 0 && -z "${BOOTSTRAP_USER:-}" ]]; then
+    echo "ERROR: Run this as the installed user, not root." >&2
+    echo "If you really need root bootstrap, set BOOTSTRAP_USER and SOPS_AGE_KEY_FILE explicitly." >&2
+    exit 1
+fi
+
 # ---------------------------------------------------------------------------
 # Passwordless sudo
 # ---------------------------------------------------------------------------
@@ -56,7 +72,7 @@ decrypt_age_key() {
     fi
     if [[ ! -f "$AGE_KEY_ENCRYPTED" ]]; then
         echo "ERROR: No age key at ${SOPS_AGE_KEY_FILE} and no encrypted key at ${AGE_KEY_ENCRYPTED}" >&2
-        echo "Run 'just encrypt-age-key' on a machine that has your key, then commit the result." >&2
+        echo "Encrypt your age key to ${AGE_KEY_ENCRYPTED} on a machine that has it, then commit the result." >&2
         exit 1
     fi
     mkdir -p "$(dirname "$SOPS_AGE_KEY_FILE")"
@@ -83,16 +99,6 @@ ansible-galaxy collection install -r "${REPO_DIR}/ansible/requirements.yml"
 # ---------------------------------------------------------------------------
 echo "==> Running Ansible playbook..."
 cd "${REPO_DIR}/ansible"
-
-target_host="${BOOTSTRAP_HOST:-${1:-}}"
-case "$target_host" in
-    desktop | laptop | server) ;;
-    *)
-        echo "ERROR: Specify an Ansible install host: desktop, laptop, or server." >&2
-        echo "Usage: $0 [desktop|laptop|server]" >&2
-        exit 1
-        ;;
-esac
 
 ansible-playbook -i inventory/local.yml playbooks/setup.yml -l "$target_host"
 echo "==> Setup complete."

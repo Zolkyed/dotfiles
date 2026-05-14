@@ -86,10 +86,14 @@ profiles:
   # -----------------------------------------------------------------------
   audio:
     pacman:
+      - alsa-utils
       - pipewire
+      - pipewire-jack
       - wireplumber
       - pipewire-pulse
       - pipewire-alsa
+      - rtkit
+      - sof-firmware
 
   bluetooth:
     pacman:
