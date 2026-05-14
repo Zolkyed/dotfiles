@@ -9,6 +9,11 @@
     validate: "visudo -cf %s"
   when: sudoers_nopasswd
 
+- name: Sudoers | Remove archinstall-generated sudo drop-in
+  ansible.builtin.file:
+    path: "/etc/sudoers.d/00_{{ sudoers_user }}"
+    state: absent
+
 - name: Sudoers | Remove passwordless sudo when disabled
   ansible.builtin.file:
     path: /etc/sudoers.d/99-dotfiles-nopasswd

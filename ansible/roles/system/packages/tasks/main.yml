@@ -20,9 +20,6 @@
     use: paru
     state: present
   become: false
-  become_user: "{{ user_name }}"
-  become_method: ansible.builtin.su
-  become_exe: runuser
   when: aur_packages | length > 0
   vars:
     aur_packages: >-
