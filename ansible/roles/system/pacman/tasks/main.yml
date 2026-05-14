@@ -45,7 +45,9 @@
       [multilib]
       Include = /etc/pacman.d/mirrorlist
   notify: Pacman | Update pacman cache
-  when: "'multilib' not in pacman_repositories.stdout_lines"
+  when:
+    - pacman_enable_multilib
+    - "'multilib' not in pacman_repositories.stdout_lines"
 
 - name: Pacman | Flush handlers
   ansible.builtin.meta: flush_handlers

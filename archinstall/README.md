@@ -36,8 +36,8 @@ The easiest path is the interactive ISO installer:
 curl -fsSL https://raw.githubusercontent.com/Zolkyed/dotfiles/main/scripts/run_archinstall.sh | bash
 ```
 
-It installs live ISO tools, clones this repo, prompts for host, shows a numbered
-physical disk picker, and runs archinstall. If `keys.txt` is missing, the script
+It installs live ISO tools, clones this repo, shows a numbered physical disk
+picker, and runs archinstall. If `keys.txt` is missing, the script
 enables SSH so you can copy it from another machine.
 
 Copy your key from another machine when SSH is enabled:
@@ -51,7 +51,7 @@ Manual setup uses the same pieces:
 Install only the tools needed to clone the repo and decrypt secrets:
 
 ```bash
-pacman -Sy git just sops age
+pacman -Sy git
 ```
 
 If you prefer key-only SSH, pass your public key:
@@ -109,7 +109,7 @@ lsblk -dpo NAME,SIZE,MODEL,TRAN,SERIAL,TYPE
 Run archinstall:
 
 ```bash
-just archinstall desktop /dev/disk/by-id/your-disk
+./scripts/run_archinstall.sh /dev/disk/by-id/your-disk
 ```
 
 The selected disk is wiped.
@@ -167,11 +167,12 @@ $EDITOR archinstall/user_credentials.json
 sops --encrypt --in-place archinstall/user_credentials.json
 ```
 
-The script renders a temporary config for the selected host and disk, then runs
-archinstall. Hostname comes from the selected host: `desktop`, `laptop`, or
-`server`.
+The script renders a temporary config for the selected disk, then runs
+archinstall. Hostname and machine profile remain owned by Ansible after first
+boot. Choose `desktop`, `laptop`, or `server` only when running
+`./scripts/run_ansibleinstall.sh <host>`.
 
 Do not put the full workstation package list in archinstall JSON. Use only the
 minimal packages needed to boot and run bootstrap tooling, such as `git`,
-`curl`, `sudo`, and `networkmanager`. Snapper creates and manages `.snapshots`
-later through Ansible.
+`curl`, `sudo`, and `networkmanager`. Secrets tooling, workstation packages,
+services, Snapper, and dotfiles are managed after first boot through Ansible.

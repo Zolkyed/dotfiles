@@ -66,10 +66,22 @@ select_disk() {
     done </dev/tty
 }
 
-if [[ $# -eq 0 ]]; then
+target_disk="${ARCHINSTALL_DISK:-}"
+
+case $# in
+    0)
+        ;;
+    1)
+        target_disk="$1"
+        ;;
+    *)
+        echo "Usage: $0 [target-disk]" >&2
+        exit 1
+        ;;
+esac
+
+if [[ -z "$target_disk" ]]; then
     target_disk="$(select_disk)"
-else
-    target_disk="${ARCHINSTALL_DISK:-${1:-}}"
 fi
 
 if [[ -z "$target_disk" ]]; then
@@ -115,12 +127,14 @@ if parts:
     sector_bytes = int(subprocess.run(["blockdev", "--getpbsz", real_disk],
         capture_output=True, text=True, check=True).stdout.strip())
     last = parts[-1]
-    if last.get("size", {}).get("value", 0) == 0:
-        start_val = last["start"]["value"]
-        unit_map = {"B": 1, "MiB": 1024**2, "GiB": 1024**3, "TiB": 1024**4}
-        remaining = (disk_bytes - start_val * unit_map.get(last["start"].get("unit", "B"), 1))
-        remaining = (remaining // sector_bytes) * sector_bytes
-        last["size"] = {"sector_size": {"unit": "B", "value": sector_bytes}, "unit": "B", "value": remaining}
+    start_val = last["start"]["value"]
+    unit_map = {"B": 1, "MiB": 1024**2, "GiB": 1024**3, "TiB": 1024**4}
+    start_bytes = start_val * unit_map.get(last["start"].get("unit", "B"), 1)
+    remaining = (disk_bytes - start_bytes)
+    if remaining <= 0:
+        raise SystemExit(f"target disk is too small for configured partition start: {real_disk}")
+    remaining = (remaining // sector_bytes) * sector_bytes
+    last["size"] = {"sector_size": {"unit": "B", "value": sector_bytes}, "unit": "B", "value": remaining}
 
 with open(dest, "w", encoding="utf-8") as fh:
     json.dump(data, fh, indent=2)
@@ -139,4 +153,4 @@ if [[ "$confirm" != "WIPE" ]]; then
 fi
 
 archinstall --config "$tmp_config" --creds "$creds" --silent
-echo "==> Done. Reboot, then clone this repo and run 'just ansibleinstall <host>'"
+echo "==> Done. Reboot, then clone this repo and run './scripts/run_ansibleinstall.sh <desktop|laptop|server>'"

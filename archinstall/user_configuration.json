@@ -78,7 +78,7 @@
                                 "value": 512
                             },
                             "unit": "B",
-                            "value": 511033999360
+                            "value": 0
                         },
                         "start": {
                             "sector_size": {
@@ -264,25 +264,20 @@
                 "https://mirrors.logal.dev/archlinux/$repo/os/$arch"
             ]
         },
-        "optional_repositories": [
-            "multilib"
-        ]
+        "optional_repositories": []
     },
     "network_config": {
         "type": "nm"
     },
     "ntp": true,
     "packages": [
-        "age",
         "btrfs-progs",
         "curl",
         "efibootmgr",
         "git",
         "grub",
-        "just",
         "networkmanager",
         "openssh",
-        "sops",
         "sudo"
     ],
     "pacman_config": {
