@@ -16,12 +16,22 @@
     mode: "0755"
 
 - name: Mihon | Download icon
-  ansible.builtin.get_url:
-    url: "{{ mihon_icon_url }}"
-    dest: "{{ mihon_icon_dest }}"
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
-    mode: "0644"
+  block:
+    - name: Mihon | Download icon from URL
+      ansible.builtin.get_url:
+        url: "{{ mihon_icon_url }}"
+        dest: "{{ mihon_icon_dest }}"
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+        mode: "0644"
+  rescue:
+    - name: Mihon | Fall back to local icon
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/assets/mihon.png"
+        dest: "{{ mihon_icon_dest }}"
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+        mode: "0644"
 
 - name: Mihon | Deploy desktop entry
   ansible.builtin.copy:
