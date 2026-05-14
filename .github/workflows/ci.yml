@@ -59,4 +59,3 @@ jobs:
             --secret id=sops_age_key,env=SOPS_AGE_KEY \
             -f docker/${{ matrix.dockerfile }} \
             .
-            
