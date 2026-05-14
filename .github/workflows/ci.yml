@@ -31,7 +31,7 @@ jobs:
         run: |
           set -euo pipefail
           pip install \
-            yamllint==1.35.1 \
+            yamllint>=1.38.0 \
             ansible-core==2.16.* \
             ansible-lint==26.4.0 \
             shellcheck-py
