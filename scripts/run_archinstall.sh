@@ -128,7 +128,7 @@ if root_size_mib <= 0:
     raise SystemExit(f"disk too small: {real_disk}")
 
 def sz(value, unit="MiB"):
-    return {"value": value, "unit": unit}
+    return {"value": value, "unit": unit, "sector_size": {"value": 512, "unit": "B"}}
 
 with open(src, encoding="utf-8") as fh:
     data = json.load(fh)
