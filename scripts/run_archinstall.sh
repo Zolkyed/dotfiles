@@ -109,7 +109,7 @@ cleanup() { rm -f "$tmp_config"; }
 trap cleanup EXIT
 
 python - "$config" "$tmp_config" "$target_disk" <<'PY'
-import json, os, subprocess, sys
+import json, os, sys, uuid
 
 src, dest, disk = sys.argv[1:]
 real_disk = os.path.realpath(disk)
@@ -117,68 +117,39 @@ real_disk = os.path.realpath(disk)
 with open(src, encoding="utf-8") as fh:
     data = json.load(fh)
 
-mod = data["disk_config"]["device_modifications"][0]
-mod["device"] = real_disk
-
-parts = mod["partitions"]
-if parts:
-    disk_bytes = int(subprocess.run(["blockdev", "--getsize64", real_disk],
-        capture_output=True, text=True, check=True).stdout.strip())
-    sector_bytes = int(subprocess.run(["blockdev", "--getss", real_disk],
-        capture_output=True, text=True, check=True).stdout.strip())
-    align_bytes = 1024**2
-    gpt_tail_bytes = 34 * sector_bytes
-    unit_map = {"B": 1, "sectors": sector_bytes, "MiB": 1024**2, "GiB": 1024**3, "TiB": 1024**4}
-
-    def bytes_from(value):
-        if value.get("unit") == "rest":
-            return 0
-        return value["value"] * unit_map.get(value.get("unit", "B"), 1)
-
-    def align_up(value):
-        return ((value + align_bytes - 1) // align_bytes) * align_bytes
-
-    def align_down(value):
-        return (value // align_bytes) * align_bytes
-
-    def size(value, total_size=None):
-        result = {
-            "sector_size": {
-                "sector_size": None,
-                "total_size": None,
-                "unit": "B",
-                "value": sector_bytes,
+ss = {"unit": "B", "value": 512}
+data["disk_config"] = {
+    "config_type": "default_layout",
+    "btrfs_options": {"snapshot_config": None},
+    "device_modifications": [{
+        "device": real_disk,
+        "wipe": True,
+        "partitions": [
+            {
+                "obj_id": str(uuid.uuid4()),
+                "type": "primary", "status": "create",
+                "fs_type": "fat32", "flags": ["boot", "esp"],
+                "mountpoint": "/boot", "mount_options": [], "btrfs": [], "dev_path": None,
+                "start": {"value": 1,    "unit": "MiB", "sector_size": ss},
+                "size":  {"value": 1,    "unit": "GiB", "sector_size": ss},
             },
-            "total_size": None,
-            "unit": "B",
-            "value": value,
-        }
-        if total_size is not None:
-            result["total_size"] = size(total_size)
-        return result
-
-    current_start = align_bytes
-    for index, part in enumerate(parts):
-        if "size" in part and "length" not in part:
-            part["length"] = part.pop("size")
-
-        current_start = align_up(current_start)
-        part["start"] = size(current_start, disk_bytes)
-
-        requested_length = part.get("length", {"unit": "rest", "value": 1})
-        if requested_length.get("unit") == "rest":
-            if index != len(parts) - 1:
-                raise SystemExit("only the final partition may use length unit 'rest'")
-            usable_end = align_down(disk_bytes - gpt_tail_bytes)
-            length = usable_end - current_start
-        else:
-            length = align_down(bytes_from(requested_length))
-
-        if length <= 0:
-            raise SystemExit(f"partition {index + 1} has invalid length on {real_disk}")
-
-        part["length"] = size(length)
-        current_start += length
+            {
+                "obj_id": str(uuid.uuid4()),
+                "type": "primary", "status": "create",
+                "fs_type": "btrfs", "flags": [],
+                "mountpoint": None, "mount_options": ["compress=zstd"], "dev_path": None,
+                "start": {"value": 1025, "unit": "MiB", "sector_size": ss},
+                "size":  {"value": 0,    "unit": "B",   "sector_size": ss},
+                "btrfs": [
+                    {"name": "@",     "mountpoint": "/"},
+                    {"name": "@home", "mountpoint": "/home"},
+                    {"name": "@log",  "mountpoint": "/var/log"},
+                    {"name": "@pkg",  "mountpoint": "/var/cache/pacman/pkg"},
+                ],
+            },
+        ],
+    }],
+}
 
 with open(dest, "w", encoding="utf-8") as fh:
     json.dump(data, fh, indent=2)
