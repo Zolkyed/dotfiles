@@ -17,6 +17,7 @@ fi
 REPO_URL="${REPO_URL:-https://github.com/Zolkyed/dotfiles.git}"
 SOPS_AGE_KEY_FILE="${SOPS_AGE_KEY_FILE:-$HOME/.config/sops/age/keys.txt}"
 export SOPS_AGE_KEY_FILE
+AGE_KEY_ENCRYPTED="${REPO_DIR}/secrets/age_key.age"
 
 require_tty() {
     if [[ ! -r /dev/tty ]]; then
@@ -117,13 +118,43 @@ install_iso_tools() {
     fi
 }
 
-# After archinstall runs, copy the SOPS key into the installed system
+# Decrypt the passphrase-protected age key from the repo
+decrypt_age_key() {
+    if [[ -f "$SOPS_AGE_KEY_FILE" ]]; then
+        return
+    fi
+    if [[ ! -f "$AGE_KEY_ENCRYPTED" ]]; then
+        echo "ERROR: No age key at ${SOPS_AGE_KEY_FILE} and no encrypted key at ${AGE_KEY_ENCRYPTED}" >&2
+        echo "Run 'just encrypt-age-key' on a machine that has your key, then commit the result." >&2
+        return 1
+    fi
+    mkdir -p "$(dirname "$SOPS_AGE_KEY_FILE")"
+    if ! age -d -o "$SOPS_AGE_KEY_FILE" "$AGE_KEY_ENCRYPTED" 2>/dev/null; then
+        rm -f "$SOPS_AGE_KEY_FILE"
+        echo "ERROR: Failed to decrypt age key. Wrong passphrase?" >&2
+        return 1
+    fi
+    chmod 600 "$SOPS_AGE_KEY_FILE"
+    echo "==> Age key decrypted to ${SOPS_AGE_KEY_FILE}"
+}
+
+# After archinstall runs, copy the SOPS key into the installed user's home
 post_install_copy_key() {
     local installed_root="/mnt"
-    local dest="${installed_root}/root/.config/sops/age/keys.txt"
+    local user_home
+    user_home="$(find "${installed_root}/home" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | head -1)"
+    if [[ -z "$user_home" ]]; then
+        echo "ERROR: No user home found under ${installed_root}/home" >&2
+        return 1
+    fi
+    local dest="${user_home}/.config/sops/age/keys.txt"
     mkdir -p "$(dirname "$dest")"
     install -m 0600 "$SOPS_AGE_KEY_FILE" "$dest"
-    echo "==> SOPS age key copied to installed system."
+    local uid gid
+    uid="$(stat -c '%u' "$user_home")"
+    gid="$(stat -c '%g' "$user_home")"
+    chown "${uid}:${gid}" "$dest"
+    echo "==> SOPS age key copied to ${dest}"
 }
 
 if [[ "$RUNNING_FROM_REPO" -eq 0 ]]; then
@@ -142,20 +173,7 @@ fi
 
 if [[ $# -eq 0 ]]; then
     install_iso_tools
-
-    if [[ ! -f "$SOPS_AGE_KEY_FILE" ]]; then
-        enable_iso_ssh
-        echo
-        echo "Copy your SOPS key from another machine:"
-        echo "  scp -O ~/.config/sops/age/keys.txt root@<iso-ip>:/root/.config/sops/age/keys.txt"
-        echo
-        mkdir -p "$(dirname "$SOPS_AGE_KEY_FILE")"
-        while [[ ! -f "$SOPS_AGE_KEY_FILE" ]]; do
-            require_tty
-            read -r -p "Press Enter after keys.txt has been copied to ${SOPS_AGE_KEY_FILE}..." </dev/tty
-        done
-        chmod 600 "$SOPS_AGE_KEY_FILE"
-    fi
+    decrypt_age_key || enable_iso_ssh
 
     host="$(prompt_host)"
     target_disk="$(select_disk)"
@@ -201,9 +219,12 @@ if [[ ! -f "$creds" ]]; then
 fi
 
 if [[ ! -f "$SOPS_AGE_KEY_FILE" ]]; then
-    echo "ERROR: Missing SOPS age key: $SOPS_AGE_KEY_FILE" >&2
-    echo "Copy keys.txt there or set SOPS_AGE_KEY_FILE before running." >&2
-    exit 1
+    if [[ ! -f "$AGE_KEY_ENCRYPTED" ]]; then
+        echo "ERROR: Missing SOPS age key: $SOPS_AGE_KEY_FILE" >&2
+        echo "Set SOPS_AGE_KEY_FILE, or commit an encrypted key to ${AGE_KEY_ENCRYPTED}" >&2
+        exit 1
+    fi
+    decrypt_age_key
 fi
 
 tmp_config="$(mktemp)"

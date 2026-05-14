@@ -44,6 +44,16 @@ ci:
     just syntax
     just lint
 
+# ─── Age key ────────────────────────────────────────────────────────────
+
+AGE_KEY_ENCRYPTED := "secrets/age_key.age"
+
+encrypt-age-key:
+    mkdir -p secrets
+    age -p -o {{AGE_KEY_ENCRYPTED}} ~/.config/sops/age/keys.txt
+    @echo "==> Age key encrypted to {{AGE_KEY_ENCRYPTED}}"
+    @echo "    Commit it: git add {{AGE_KEY_ENCRYPTED}} && git commit"
+
 # ─── Vault ──────────────────────────────────────────────────────────────
 
 vault-edit:

@@ -3,6 +3,10 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
+SOPS_AGE_KEY_FILE="${SOPS_AGE_KEY_FILE:-$HOME/.config/sops/age/keys.txt}"
+export SOPS_AGE_KEY_FILE
+AGE_KEY_ENCRYPTED="${REPO_DIR}/secrets/age_key.age"
 
 # ---------------------------------------------------------------------------
 # Passwordless sudo
@@ -10,10 +14,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 install_passwordless_sudo() {
     local bootstrap_user="${BOOTSTRAP_USER:-${SUDO_USER:-$USER}}"
     local sudoers_file="/etc/sudoers.d/dotfiles-nopasswd"
-    local visudo tmp
+    local visudo
+    local tmp
 
     visudo="$(command -v visudo)" || { echo "ERROR: visudo not found" >&2; exit 1; }
-    echo "    granting passwordless sudo to: ${bootstrap_user}"
+    echo "==> Granting passwordless sudo to: ${bootstrap_user}"
 
     tmp="$(mktemp)"
     printf '%s ALL=(ALL:ALL) NOPASSWD: ALL\n' "$bootstrap_user" >"$tmp"
@@ -27,28 +32,57 @@ install_passwordless_sudo() {
     rm -f "$tmp"
 }
 
+# ---------------------------------------------------------------------------
+# Step 1: Passwordless sudo
+# ---------------------------------------------------------------------------
 install_passwordless_sudo
 
 # ---------------------------------------------------------------------------
-# Update package cache + install Ansible, age, sops
+# Step 2: Update package cache + install age, sops, Ansible
 # ---------------------------------------------------------------------------
 echo "==> Updating package cache..."
-sudo pacman -Syu --noconfirm
+# -Sy only: avoid a full system upgrade mid-bootstrap
+sudo pacman -Sy --noconfirm
 
-echo "==> Installing Ansible, age, and sops..."
-sudo pacman -S --needed --noconfirm ansible age sops
+echo "==> Installing age, sops, and Ansible..."
+sudo pacman -S --needed --noconfirm age sops ansible
 
 # ---------------------------------------------------------------------------
-# Ansible collections
+# Step 3: Decrypt age key (age is now guaranteed to be installed)
+# ---------------------------------------------------------------------------
+decrypt_age_key() {
+    if [[ -f "$SOPS_AGE_KEY_FILE" ]]; then
+        return
+    fi
+    if [[ ! -f "$AGE_KEY_ENCRYPTED" ]]; then
+        echo "ERROR: No age key at ${SOPS_AGE_KEY_FILE} and no encrypted key at ${AGE_KEY_ENCRYPTED}" >&2
+        echo "Run 'just encrypt-age-key' on a machine that has your key, then commit the result." >&2
+        exit 1
+    fi
+    mkdir -p "$(dirname "$SOPS_AGE_KEY_FILE")"
+    # stderr suppressed intentionally; failure is caught and reported below
+    if ! age -d -o "$SOPS_AGE_KEY_FILE" "$AGE_KEY_ENCRYPTED" 2>/dev/null; then
+        rm -f "$SOPS_AGE_KEY_FILE"
+        echo "ERROR: Failed to decrypt age key. Wrong passphrase?" >&2
+        exit 1
+    fi
+    chmod 600 "$SOPS_AGE_KEY_FILE"
+    echo "==> Age key decrypted to ${SOPS_AGE_KEY_FILE}"
+}
+
+decrypt_age_key
+
+# ---------------------------------------------------------------------------
+# Step 4: Ansible collections
 # ---------------------------------------------------------------------------
 echo "==> Installing Ansible collections..."
-ansible-galaxy collection install -r "${SCRIPT_DIR}/../ansible/requirements.yml"
+ansible-galaxy collection install -r "${REPO_DIR}/ansible/requirements.yml"
 
 # ---------------------------------------------------------------------------
-# Run playbook
+# Step 5: Run playbook
 # ---------------------------------------------------------------------------
 echo "==> Running Ansible playbook..."
-cd "${SCRIPT_DIR}/../ansible"
+cd "${REPO_DIR}/ansible"
 
 target_host="${BOOTSTRAP_HOST:-${1:-}}"
 case "$target_host" in
