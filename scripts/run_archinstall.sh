@@ -131,6 +131,8 @@ if parts:
     unit_map = {"B": 1, "sectors": sector_bytes, "MiB": 1024**2, "GiB": 1024**3, "TiB": 1024**4}
 
     def bytes_from(value):
+        if value.get("unit") == "rest":
+            return 0
         return value["value"] * unit_map.get(value.get("unit", "B"), 1)
 
     def align_up(value):
@@ -139,32 +141,44 @@ if parts:
     def align_down(value):
         return (value // align_bytes) * align_bytes
 
-    for part in parts:
+    def size(value, total_size=None):
+        result = {
+            "sector_size": {
+                "sector_size": None,
+                "total_size": None,
+                "unit": "B",
+                "value": sector_bytes,
+            },
+            "total_size": None,
+            "unit": "B",
+            "value": value,
+        }
+        if total_size is not None:
+            result["total_size"] = size(total_size)
+        return result
+
+    current_start = align_bytes
+    for index, part in enumerate(parts):
         if "size" in part and "length" not in part:
             part["length"] = part.pop("size")
-        for key in ("start", "length"):
-            if key in part and "sector_size" in part[key]:
-                part[key]["sector_size"] = {"unit": "B", "value": sector_bytes}
 
-    for prev, current in zip(parts, parts[1:]):
-        prev_end = bytes_from(prev["start"]) + bytes_from(prev["length"])
-        current["start"] = {
-            "sector_size": {"unit": "B", "value": sector_bytes},
-            "unit": "B",
-            "value": align_up(prev_end),
-        }
+        current_start = align_up(current_start)
+        part["start"] = size(current_start, disk_bytes)
 
-    last = parts[-1]
-    start_bytes = bytes_from(last["start"])
-    usable_end = align_down(disk_bytes - gpt_tail_bytes)
-    remaining = usable_end - start_bytes
-    if remaining <= 0:
-        raise SystemExit(f"target disk is too small for configured partition start: {real_disk}")
-    last["length"] = {
-        "sector_size": {"unit": "B", "value": sector_bytes},
-        "unit": "B",
-        "value": remaining,
-    }
+        requested_length = part.get("length", {"unit": "rest", "value": 1})
+        if requested_length.get("unit") == "rest":
+            if index != len(parts) - 1:
+                raise SystemExit("only the final partition may use length unit 'rest'")
+            usable_end = align_down(disk_bytes - gpt_tail_bytes)
+            length = usable_end - current_start
+        else:
+            length = align_down(bytes_from(requested_length))
+
+        if length <= 0:
+            raise SystemExit(f"partition {index + 1} has invalid length on {real_disk}")
+
+        part["length"] = size(length)
+        current_start += length
 
 with open(dest, "w", encoding="utf-8") as fh:
     json.dump(data, fh, indent=2)
