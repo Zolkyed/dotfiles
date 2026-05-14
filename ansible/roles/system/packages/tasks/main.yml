@@ -3,6 +3,12 @@
   community.general.pacman:
     name: "{{ pacman_packages }}"
     state: present
+    extra_args: >-
+      {{
+        '--ask 4'
+        if pacman_packages | intersect(packages_pacman_conflict_resolvers) | length > 0
+        else omit
+      }}
   when: pacman_packages | length > 0
   vars:
     pacman_packages: >-

@@ -90,6 +90,7 @@ profiles:
       - wireplumber
       - pipewire-pulse
       - pipewire-alsa
+      - pipewire-jack
       - rtkit
       - sof-firmware
 
