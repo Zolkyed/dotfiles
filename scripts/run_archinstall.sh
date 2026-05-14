@@ -207,6 +207,7 @@ trap cleanup EXIT
 
 python - "$config" "$tmp_config" "$host" "$target_disk" <<'PY'
 import json
+import os
 import subprocess
 import sys
 
@@ -218,7 +219,7 @@ with open(src, encoding="utf-8") as fh:
 data["hostname"] = hostname
 
 mod = data["disk_config"]["device_modifications"][0]
-mod["device"] = disk
+mod["device"] = os.path.realpath(disk)
 
 for partition in mod["partitions"]:
     if "length" in partition and "size" not in partition:
