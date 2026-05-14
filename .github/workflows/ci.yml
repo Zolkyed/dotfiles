@@ -20,7 +20,7 @@ jobs:
 
       - name: Run yamllint
         run: |
-          pip install --break-system-packages yamllint==1.35.1
+          pip install --break-system-packages yamllint
           yamllint -c .yamllint ansible .github
 
       - name: Run shellcheck
