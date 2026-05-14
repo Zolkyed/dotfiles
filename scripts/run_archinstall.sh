@@ -126,14 +126,36 @@ if parts:
         capture_output=True, text=True, check=True).stdout.strip())
     sector_bytes = int(subprocess.run(["blockdev", "--getpbsz", real_disk],
         capture_output=True, text=True, check=True).stdout.strip())
-    last = parts[-1]
-    start_val = last["start"]["value"]
+    align_bytes = 1024**2
     unit_map = {"B": 1, "MiB": 1024**2, "GiB": 1024**3, "TiB": 1024**4}
-    start_bytes = start_val * unit_map.get(last["start"].get("unit", "B"), 1)
-    remaining = (disk_bytes - start_bytes)
+
+    def bytes_from(value):
+        return value["value"] * unit_map.get(value.get("unit", "B"), 1)
+
+    def align_up(value):
+        return ((value + align_bytes - 1) // align_bytes) * align_bytes
+
+    def align_down(value):
+        return (value // align_bytes) * align_bytes
+
+    for part in parts:
+        for key in ("start", "size"):
+            if key in part and "sector_size" in part[key]:
+                part[key]["sector_size"] = {"unit": "B", "value": sector_bytes}
+
+    for prev, current in zip(parts, parts[1:]):
+        prev_end = bytes_from(prev["start"]) + bytes_from(prev["size"])
+        current["start"] = {
+            "sector_size": {"unit": "B", "value": sector_bytes},
+            "unit": "B",
+            "value": align_up(prev_end),
+        }
+
+    last = parts[-1]
+    start_bytes = bytes_from(last["start"])
+    remaining = align_down(disk_bytes - start_bytes)
     if remaining <= 0:
         raise SystemExit(f"target disk is too small for configured partition start: {real_disk}")
-    remaining = (remaining // sector_bytes) * sector_bytes
     last["size"] = {"sector_size": {"unit": "B", "value": sector_bytes}, "unit": "B", "value": remaining}
 
 with open(dest, "w", encoding="utf-8") as fh:

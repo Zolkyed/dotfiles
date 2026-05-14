@@ -85,8 +85,8 @@
                                 "unit": "B",
                                 "value": 512
                             },
-                            "unit": "B",
-                            "value": 1074790400
+                            "unit": "MiB",
+                            "value": 1025
                         },
                         "status": "create",
                         "type": "primary"
