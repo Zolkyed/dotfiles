@@ -27,8 +27,8 @@ check host="desktop":
 ansibleinstall host="desktop":
     bash scripts/run_ansibleinstall.sh {{host}}
 
-archinstall host="desktop" disk="":
-    bash scripts/run_archinstall.sh {{host}} {{disk}}
+archinstall disk="":
+    bash scripts/run_archinstall.sh {{disk}}
 
 # ─── Lint / CI ──────────────────────────────────────────────────────────
 
