@@ -1,3 +1,5 @@
 ---
 packages_pacman_conflict_resolvers:
   - pipewire-jack
+
+packages_aur_conflict_resolvers: []

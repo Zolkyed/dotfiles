@@ -25,6 +25,12 @@
     name: "{{ aur_packages }}"
     use: paru
     state: present
+    extra_args: >-
+      {{
+        '--ask 4'
+        if aur_packages | intersect(packages_aur_conflict_resolvers) | length > 0
+        else omit
+      }}
   become: false
   when: aur_packages | length > 0
   vars:
