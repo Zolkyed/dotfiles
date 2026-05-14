@@ -271,6 +271,7 @@ with open(dest, "w", encoding="utf-8") as fh:
 PY
 
 sops --decrypt "$creds" >"$tmp_creds"
+echo "==> Decrypted credentials:" && python -m json.tool "$tmp_creds"
 
 echo "==> Running archinstall for ${host}"
 echo "    target disk: ${target_disk}"
