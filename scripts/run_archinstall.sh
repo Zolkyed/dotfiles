@@ -219,7 +219,8 @@ with open(src, encoding="utf-8") as fh:
 data["hostname"] = hostname
 
 mod = data["disk_config"]["device_modifications"][0]
-mod["device"] = os.path.realpath(disk)
+real_disk = os.path.realpath(disk)
+mod["device"] = real_disk
 
 for partition in mod["partitions"]:
     if "length" in partition and "size" not in partition:
@@ -229,26 +230,30 @@ parts = mod["partitions"]
 if parts:
     disk_bytes = int(
         subprocess.run(
-            ["blockdev", "--getsize64", disk],
+            ["blockdev", "--getsize64", real_disk],
+            capture_output=True, text=True, check=True,
+        ).stdout.strip()
+    )
+    sector_bytes = int(
+        subprocess.run(
+            ["blockdev", "--getpbsz", real_disk],
             capture_output=True, text=True, check=True,
         ).stdout.strip()
     )
     last = parts[-1]
-    if last.get("size", {}).get("value", 1) > 0:
+    size_val = last.get("size", {}).get("value", 0)
+    if size_val == 0:  # 0 or missing means "fill remaining"
         start_unit = last["start"].get("unit", "B")
-        start_val = last["start"]["value"]
-        if start_unit == "B":
-            start_bytes = start_val
-        elif start_unit == "MiB":
-            start_bytes = start_val * 1024 * 1024
-        elif start_unit == "GiB":
-            start_bytes = start_val * 1024 * 1024 * 1024
-        else:
-            start_bytes = start_val
+        start_val  = last["start"]["value"]
+        unit_map = {"B": 1, "MiB": 1024**2, "GiB": 1024**3, "TiB": 1024**4}
+        start_bytes = start_val * unit_map.get(start_unit, 1)
+        remaining = disk_bytes - start_bytes
+        # Align down to physical sector boundary
+        remaining = (remaining // sector_bytes) * sector_bytes
         last["size"] = {
-            "sector_size": {"unit": "B", "value": 512},
+            "sector_size": {"unit": "B", "value": sector_bytes},
             "unit": "B",
-            "value": disk_bytes - start_bytes,
+            "value": remaining,
         }
 
 with open(dest, "w", encoding="utf-8") as fh:
