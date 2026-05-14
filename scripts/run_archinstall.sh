@@ -109,15 +109,34 @@ cleanup() { rm -f "$tmp_config"; }
 trap cleanup EXIT
 
 python - "$config" "$tmp_config" "$target_disk" <<'PY'
-import json, os, sys, uuid
+import json, os, subprocess, sys, uuid
 
 src, dest, disk = sys.argv[1:]
 real_disk = os.path.realpath(disk)
 
+def blk(flag):
+    return int(subprocess.run(["blockdev", flag, real_disk],
+        capture_output=True, text=True, check=True).stdout.strip())
+
+MiB          = 1024 ** 2
+disk_bytes   = blk("--getsize64")
+logical_sec  = blk("--getss")
+boot_start   = 1    * MiB
+boot_size    = 1024 * MiB          # 1 GiB
+root_start   = boot_start + boot_size
+# backup GPT = 33 logical sectors; align the partition end down to MiB
+root_end     = (disk_bytes - 33 * logical_sec) // MiB * MiB
+root_size    = root_end - root_start
+
+if root_size <= 0:
+    raise SystemExit(f"disk too small: {real_disk}")
+
+def part_size(value):
+    return {"value": value, "unit": "B", "sector_size": {"value": logical_sec, "unit": "B"}}
+
 with open(src, encoding="utf-8") as fh:
     data = json.load(fh)
 
-ss = {"unit": "B", "value": 512}
 data["disk_config"] = {
     "config_type": "default_layout",
     "btrfs_options": {"snapshot_config": None},
@@ -130,16 +149,16 @@ data["disk_config"] = {
                 "type": "primary", "status": "create",
                 "fs_type": "fat32", "flags": ["boot", "esp"],
                 "mountpoint": "/boot", "mount_options": [], "btrfs": [], "dev_path": None,
-                "start": {"value": 1,    "unit": "MiB", "sector_size": ss},
-                "size":  {"value": 1,    "unit": "GiB", "sector_size": ss},
+                "start": part_size(boot_start),
+                "size":  part_size(boot_size),
             },
             {
                 "obj_id": str(uuid.uuid4()),
                 "type": "primary", "status": "create",
                 "fs_type": "btrfs", "flags": [],
                 "mountpoint": None, "mount_options": ["compress=zstd"], "dev_path": None,
-                "start": {"value": 1025, "unit": "MiB", "sector_size": ss},
-                "size":  {"value": 0,    "unit": "B",   "sector_size": ss},
+                "start": part_size(root_start),
+                "size":  part_size(root_size),
                 "btrfs": [
                     {"name": "@",     "mountpoint": "/"},
                     {"name": "@home", "mountpoint": "/home"},
