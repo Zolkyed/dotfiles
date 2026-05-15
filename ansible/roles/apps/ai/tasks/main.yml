@@ -33,3 +33,5 @@
   environment:
     NVM_DIR: "{{ user_home }}/.nvm"
   loop: "{{ profiles.ai.npm | default([]) }}"
+  register: npm_install
+  changed_when: npm_install.stdout != ""

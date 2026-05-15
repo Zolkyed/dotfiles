@@ -2,27 +2,23 @@
 - name: Snapshot | Reload systemd
   ansible.builtin.systemd_service:
     daemon_reload: true
-  become: true
 
 - name: Snapshot | Check stale /home/.snapshots
   ansible.builtin.stat:
     path: /home/.snapshots
   register: snapshot_home_snapshots
-  become: true
 
 - name: Snapshot | Remove stale /home/.snapshots if needed
   ansible.builtin.command:
     cmd: btrfs subvolume delete /home/.snapshots
     creates: /etc/snapper/configs/home
   when: snapshot_home_snapshots.stat.exists
-  become: true
 
 - name: Snapshot | Create snapper configs
   ansible.builtin.command:
     cmd: "snapper -c {{ item.config }} create-config {{ item.path }}"
     creates: "/etc/snapper/configs/{{ item.config }}"
   loop: "{{ snapper_subvolumes }}"
-  become: true
 
 - name: Snapshot | Ensure .snapshots directories exist
   ansible.builtin.file:
@@ -32,7 +28,6 @@
     group: root
     mode: "0755"
   loop: "{{ snapper_subvolumes }}"
-  become: true
 
 - name: Snapshot | Configure snapper retention
   ansible.builtin.lineinfile:
@@ -40,7 +35,6 @@
     regexp: "^{{ item[1].key }}"
     line: "{{ item[1].key }}={{ item[1].value }}"
   loop: "{{ snapper_subvolumes | product(snapper_retention_settings) }}"
-  become: true
   vars:
     snapper_retention_settings:
       - key: TIMELINE_LIMIT_HOURLY
@@ -59,7 +53,6 @@
     name: grub-btrfsd
     enabled: true
     state: started
-  become: true
 
 - name: Snapshot | Enable and start snapper timers
   ansible.builtin.systemd_service:
@@ -69,4 +62,3 @@
   loop:
     - snapper-timeline.timer
     - snapper-cleanup.timer
-  become: true

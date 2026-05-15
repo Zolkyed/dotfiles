@@ -51,3 +51,8 @@
 
 - name: Pacman | Flush handlers
   ansible.builtin.meta: flush_handlers
+
+- name: Pacman | Full system upgrade
+  community.general.pacman:
+    update_cache: true
+    upgrade: true

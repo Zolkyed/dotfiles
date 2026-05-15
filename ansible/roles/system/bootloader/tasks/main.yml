@@ -7,6 +7,12 @@
     group: root
     mode: "0755"
 
+- name: Bootloader | Install GRUB to EFI
+  ansible.builtin.command:
+    cmd: grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB --recheck
+    creates: /boot/grub/x86_64-efi/core.efi
+  notify: Bootloader | Update grub
+
 - name: Bootloader | Configure GRUB
   ansible.builtin.copy:
     dest: /etc/default/grub
