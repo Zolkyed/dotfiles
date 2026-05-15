@@ -1,51 +1,48 @@
 # Archinstall
 
-ISO installer inputs. Keep minimal — Ansible owns the real config.
+ISO installer inputs.
 
-## Workflow
+The script clones the repo if not already present, generates a disk config with
+dynamic partition sizing, and runs `archinstall --config --creds --silent`.
 
-**1. Prepare SOPS key** — `~/.config/sops/age/keys.txt`
-
-**2. Boot ISO** and run:
+## Usage
 
 ```bash
+# Interactive disk picker
 curl -fsSL https://raw.githubusercontent.com/Zolkyed/dotfiles/main/scripts/run_archinstall.sh | bash
+
+# Or specify disk directly
+curl -fsSL ... | bash -s /dev/disk/by-id/your-disk
+
+# Or with env vars
+ARCHINSTALL_DISK=/dev/nvme0n1 bash scripts/run_archinstall.sh
 ```
 
-Without a SOPS key, SSH is enabled so you can copy it from another machine:
+The script prompts for `WIPE` confirmation before touching the disk.
+
+## Password hash
+
+`user_credentials.json` needs a password hash. Generate one:
 
 ```bash
-scp -O ~/.config/sops/age/keys.txt root@<iso-ip>:/root/.config/sops/age/keys.txt
+python -c "import crypt; print(crypt.crypt('your-password'))"
 ```
 
-Or pass a public key:
+Or create a temporary credentials file with `archinstall --dry-run` and copy the hash.
+
+## Partition layout
+
+- GRUB, 1 GiB EFI at `/boot`, rest is Btrfs
+- Subvolumes: `@` `/`, `@home` `/home`, `@log` `/var/log`, `@pkg` `/var/cache/pacman/pkg`
+- Sizing adapts to disk size
+
+## Post-install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Zolkyed/dotfiles/main/scripts/run_archinstall.sh |
-    ISO_SSH_PUBLIC_KEY="$(cat ~/.ssh/id_ed25519.pub)" bash
-```
-
-**3. Select disk** — `./scripts/run_archinstall.sh /dev/disk/by-id/your-disk`
-
-The selected disk is wiped.
-
-**4. Reboot** into the installed system.
-
-**5. Restore SOPS key** in the installed system.
-
-**6. Bootstrap:**
-
-```bash
-git clone https://github.com/Zolkyed/dotfiles.git ~/dotfiles
-cd ~/dotfiles
+git clone https://github.com/Zolkyed/dotfiles.git
+cd dotfiles
 ./scripts/run_ansibleinstall.sh desktop
 ```
 
-## Layout
-
-- GRUB, 1 GiB EFI at `/boot`, Btrfs for the rest
-- Subvolumes: `/`, `/home`, `/var/cache/pacman/pkg`, `/var/log`
-- CA/US mirrors
-
-Generate config with `archinstall --dry-run`, copy from `/var/log/archinstall/`.
-Encrypt credentials with `sops --encrypt --in-place archinstall/user_credentials.json`.
+This grants passwordless sudo, installs age/sops/ansible, decrypts the age key
+from `secrets/age_key.age` or `~/.config/sops/age/keys.txt`, and runs the playbook.
