@@ -50,3 +50,18 @@
       changed_when: false
       when: "'pacman-contrib' in ansible_facts.packages"
       tags: cleanup
+
+    - name: Update | Find pacnew files
+      ansible.builtin.find:
+        paths: /etc
+        patterns: "*.pacnew"
+        recurse: true
+      register: update_pacnew_files
+      changed_when: false
+      tags: cleanup
+
+    - name: Update | Report pacnew files
+      ansible.builtin.debug:
+        msg: "{{ update_pacnew_files.files | map(attribute='path') | list }}"
+      when: update_pacnew_files.matched > 0
+      tags: cleanup
