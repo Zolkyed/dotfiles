@@ -40,12 +40,9 @@
       - nvidia_effective_driver_branch in nvidia_driver_packages
     fail_msg: "Unsupported NVIDIA driver branch: {{ nvidia_effective_driver_branch }}"
 
-- name: Nvidia | Detect installed kernels
-  ansible.builtin.command:
-    cmd: pacman -Qq
-  register: nvidia_installed_packages
-  changed_when: false
-  failed_when: false
+- name: Nvidia | Collect installed packages
+  ansible.builtin.package_facts:
+    manager: pacman
 
 - name: Nvidia | Install kernel headers
   community.general.pacman:
@@ -55,7 +52,7 @@
   vars:
     nvidia_arch_kernels: >-
       {{
-        nvidia_installed_packages.stdout_lines
+        ansible_facts.packages.keys()
         | select('match', '^linux(-lts|-zen|-hardened|-rt|-rt-lts)?$')
         | list
       }}
