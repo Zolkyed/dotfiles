@@ -27,6 +27,7 @@ presets:
   desktop:
     profiles:
       - audio
+      - avahi
       - bluetooth
       - vpn
       - firewall
@@ -54,6 +55,7 @@ presets:
   laptop:
     profiles:
       - audio
+      - avahi
       - bluetooth
       - vpn
       - firewall

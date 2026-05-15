@@ -6,6 +6,8 @@ Arch Linux provisioning.
 just ansibleinstall <host>   # full bootstrap
 just run <host>              # remote
 just run-local <host>        # local
+just update <host>           # remote system update
+just update-local <host>     # local system update
 just check <host>            # dry-run
 ```
 
@@ -48,6 +50,7 @@ Hosts: `desktop`, `laptop`, `server`.
 | `system/firewall` | firewall | profile | UFW |
 | `system/fail2ban` | fail2ban | profile | SSH jail |
 | `system/audio` | audio | profile | PipeWire |
+| `system/avahi` | avahi | profile | mDNS / .local hostname resolution |
 | `system/bluetooth` | bluetooth | profile | bluez |
 | `system/nvidia` | nvidia | profile | drivers + modesetting |
 | `system/docker` | docker | profile | Docker CE |
@@ -82,3 +85,10 @@ presets:
   desktop:
     profiles: [audio, nvidia, plasma, browser, gaming]
 ```
+
+## Playbooks
+
+| Playbook | Purpose |
+|---|---|
+| `playbooks/setup.yml` | One-time provisioning and desired state: users, package manager config, package presence, services, apps, and dotfiles. |
+| `playbooks/update.yml` | Recurring updates: mirror refresh, keyring update, pacman upgrade, AUR upgrade, Flatpak update, and cache cleanup. |

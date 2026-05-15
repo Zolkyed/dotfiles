@@ -73,6 +73,9 @@
     - role: system/bluetooth
       tags: bluetooth
       when: "'bluetooth' in enabled_profiles"
+    - role: system/avahi
+      tags: avahi
+      when: "'avahi' in enabled_profiles"
 
     # --- Hardware / boot ---
     - role: system/microcode

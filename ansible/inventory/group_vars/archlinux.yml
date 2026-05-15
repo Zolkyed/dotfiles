@@ -102,6 +102,11 @@ profiles:
       - rtkit
       - sof-firmware
 
+  avahi:
+    pacman:
+      - avahi
+      - nss-mdns
+
   bluetooth:
     pacman:
       - bluez

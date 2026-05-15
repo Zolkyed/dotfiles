@@ -1,0 +1,52 @@
+---
+- name: System update
+  hosts: all
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Update | Refresh mirrorlist
+      ansible.builtin.systemd_service:
+        name: reflector.service
+        state: restarted
+      tags: mirrors
+
+    - name: Update | Update keyring
+      community.general.pacman:
+        name: archlinux-keyring
+        state: latest
+        update_cache: true
+      tags: pacman
+
+    - name: Update | Upgrade pacman packages
+      community.general.pacman:
+        update_cache: false
+        upgrade: true
+      tags: pacman
+
+    - name: Update | Upgrade AUR packages
+      kewlfft.aur.aur:
+        upgrade: true
+        use: paru
+      become: false
+      tags: aur
+
+    - name: Update | Collect installed packages
+      ansible.builtin.package_facts:
+        manager: pacman
+      tags: always
+
+    - name: Update | Upgrade flatpak packages
+      ansible.builtin.command:
+        cmd: flatpak update --noninteractive
+      register: flatpak_update
+      changed_when: "'Nothing to do' not in flatpak_update.stdout"
+      when: "'flatpak' in ansible_facts.packages"
+      tags: flatpak
+
+    - name: Update | Clean package cache
+      ansible.builtin.command:
+        cmd: paccache -rk2
+      changed_when: false
+      when: "'pacman-contrib' in ansible_facts.packages"
+      tags: cleanup

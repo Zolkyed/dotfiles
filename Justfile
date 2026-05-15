@@ -2,6 +2,7 @@ set shell := ["bash", "-cu"]
 
 ANSIBLE_DIR := "ansible"
 PLAYBOOK    := "playbooks/setup.yml"
+UPDATE_PLAYBOOK := "playbooks/update.yml"
 VAULT_FILE  := "ansible/inventory/group_vars/vault.yml"
 
 # ─── Dev environment ────────────────────────────────────────────────────
@@ -24,18 +25,25 @@ run-local host="desktop":
 check host="desktop":
     cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{PLAYBOOK}} --check --diff -l {{host}}
 
+update host="desktop":
+    cd {{ANSIBLE_DIR}} && ansible-playbook {{UPDATE_PLAYBOOK}} -l {{host}} -v
+
+update-local host="desktop":
+    cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{UPDATE_PLAYBOOK}} -l {{host}} -v
+
 ansibleinstall host="desktop":
     bash scripts/run_ansibleinstall.sh {{host}}
 
 # ─── Lint / CI ──────────────────────────────────────────────────────────
 
 lint:
-    cd {{ANSIBLE_DIR}} && export ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote && if [[ -x ../.venv/bin/ansible-lint ]]; then ../.venv/bin/ansible-lint {{PLAYBOOK}}; else ansible-lint {{PLAYBOOK}}; fi
+    cd {{ANSIBLE_DIR}} && export ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote && if [[ -x ../.venv/bin/ansible-lint ]]; then ../.venv/bin/ansible-lint {{PLAYBOOK}} {{UPDATE_PLAYBOOK}}; else ansible-lint {{PLAYBOOK}} {{UPDATE_PLAYBOOK}}; fi
     if [[ -x .venv/bin/yamllint ]]; then .venv/bin/yamllint -c .yamllint {{ANSIBLE_DIR}} .github; else yamllint -c .yamllint {{ANSIBLE_DIR}} .github; fi
     if [[ -x .venv/bin/shellcheck ]]; then .venv/bin/shellcheck scripts/*.sh; else shellcheck scripts/*.sh; fi
 
 syntax:
     cd {{ANSIBLE_DIR}} && ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-playbook {{PLAYBOOK}} --syntax-check
+    cd {{ANSIBLE_DIR}} && ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-playbook {{UPDATE_PLAYBOOK}} --syntax-check
 
 ci:
     just syntax
