@@ -56,9 +56,8 @@ install_passwordless_sudo
 # ---------------------------------------------------------------------------
 # Step 2: Update package cache + install age, sops, Ansible
 # ---------------------------------------------------------------------------
-echo "==> Updating package cache..."
-# -Sy only: avoid a full system upgrade mid-bootstrap
-sudo pacman -Sy --noconfirm
+echo "==> Upgrading system..."
+sudo pacman -Syu --noconfirm
 
 echo "==> Installing age, sops, and Ansible..."
 sudo pacman -S --needed --noconfirm age sops ansible
