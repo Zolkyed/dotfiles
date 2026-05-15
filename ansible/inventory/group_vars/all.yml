@@ -32,7 +32,7 @@ presets:
       - fail2ban
       - nvidia
       - bootloader
-      - snapshot
+      - snapper
       - docker
       - virtualization
       - plasma
@@ -56,7 +56,7 @@ presets:
       - firewall
       - fail2ban
       - bootloader
-      - snapshot
+      - snapper
       - docker
       - virtualization
       - plasma
@@ -77,6 +77,6 @@ presets:
       - firewall
       - fail2ban
       - bootloader
-      - snapshot
+      - snapper
       - docker
       - virtualization

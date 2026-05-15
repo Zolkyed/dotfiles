@@ -130,7 +130,7 @@ profiles:
       - grub
       - efibootmgr
 
-  snapshot:
+  snapper:
     pacman:
       - snapper
       - snap-pac

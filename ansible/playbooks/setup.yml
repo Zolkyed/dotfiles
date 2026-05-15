@@ -69,9 +69,9 @@
     - role: system/nvidia
       tags: nvidia
       when: "'nvidia' in enabled_profiles"
-    - role: system/snapshot
-      tags: snapshot
-      when: "'snapshot' in enabled_profiles"
+    - role: system/snapper
+      tags: snapper
+      when: "'snapper' in enabled_profiles"
     - role: system/splashboot
       tags: splashboot
       when: "'splashboot' in enabled_profiles"
