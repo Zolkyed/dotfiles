@@ -65,7 +65,7 @@
   changed_when: false
 
 - name: SSHD | Enable and start service
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: sshd
     enabled: true
     state: started

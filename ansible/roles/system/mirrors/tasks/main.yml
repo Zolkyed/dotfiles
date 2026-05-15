@@ -14,7 +14,7 @@
   notify: Mirrors | Refresh mirrorlist
 
 - name: Mirrors | Enable reflector timer
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: reflector.timer
     enabled: true
     state: started

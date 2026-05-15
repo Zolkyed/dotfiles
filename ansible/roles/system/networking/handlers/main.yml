@@ -1,5 +1,5 @@
 ---
 - name: Networking | Restart systemd-resolved
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: systemd-resolved
     state: restarted

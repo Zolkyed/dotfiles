@@ -9,13 +9,13 @@
   notify: Networking | Restart systemd-resolved
 
 - name: Networking | Enable and start systemd-resolved
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: systemd-resolved
     enabled: true
     state: started
 
 - name: Networking | Enable and start NetworkManager
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: NetworkManager
     enabled: true
     state: started
@@ -26,3 +26,5 @@
     dest: /etc/resolv.conf
     state: link
     force: true
+    owner: root
+    group: root

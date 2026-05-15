@@ -1,13 +1,13 @@
 ---
 - name: Maintenance | Enable fstrim timer
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: fstrim.timer
     enabled: true
     state: started
   when: maintenance_enable_fstrim
 
 - name: Maintenance | Enable btrfs scrub timers
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: >-
       btrfs-scrub@{{
         '-'
@@ -26,7 +26,7 @@
       | length > 0
 
 - name: Maintenance | Enable pkgfile update timer
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: pkgfile-update.timer
     enabled: true
     state: started

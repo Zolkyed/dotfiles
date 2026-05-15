@@ -9,7 +9,7 @@
   notify: Fail2ban | Restart fail2ban
 
 - name: Fail2ban | Enable and start service
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: fail2ban
     enabled: true
     state: started

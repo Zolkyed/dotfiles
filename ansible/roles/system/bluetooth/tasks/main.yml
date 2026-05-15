@@ -12,7 +12,7 @@
   notify: Bluetooth | Restart bluetooth
 
 - name: Bluetooth | Enable and start bluetooth service
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: bluetooth
     enabled: true
     state: started
