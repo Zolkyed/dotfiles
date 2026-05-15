@@ -124,7 +124,7 @@
     - role: apps/konsave
       tags: konsave
       when: "'konsave' in enabled_profiles"
-    
+
     # --- User config ---
     - role: user/ssh_keys
       tags: ssh_keys

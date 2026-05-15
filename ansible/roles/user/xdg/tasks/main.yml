@@ -6,17 +6,17 @@
   become_user: "{{ user_name }}"
   changed_when: false
 
-- name: XDG | Ensure user config directory exists
+- name: XDG | Create Applications directory
   ansible.builtin.file:
-    path: "{{ user_home }}/.config"
+    path: "{{ user_home }}/Applications"
     state: directory
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
     mode: "0755"
 
-- name: XDG | Create Applications directory
+- name: XDG | Ensure user config directory exists
   ansible.builtin.file:
-    path: "{{ user_home }}/Applications"
+    path: "{{ user_home }}/.config"
     state: directory
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
