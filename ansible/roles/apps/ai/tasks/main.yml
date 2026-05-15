@@ -19,20 +19,19 @@
   environment:
     NVM_DIR: "{{ user_home }}/.nvm"
   register: node_install
-  changed_when: "'already installed' not in node_install.stdout"
+  changed_when: "'already installed' not in node_install.stdout and 'already installed' not in node_install.stderr"
 
-- name: AI | Get NVM npm path
+- name: AI | Get NVM node path
   ansible.builtin.shell:
     cmd: |
       source /usr/share/nvm/nvm.sh
-      nvm use default >/dev/null
-      which npm
+      nvm which default
     executable: /bin/bash
   become: true
   become_user: "{{ user_name }}"
   environment:
     NVM_DIR: "{{ user_home }}/.nvm"
-  register: nvm_npm_path
+  register: nvm_node_path
   changed_when: false
 
 - name: AI | Install global npm packages
@@ -40,7 +39,7 @@
     name: "{{ item }}"
     global: true
     state: present
-    executable: "{{ nvm_npm_path.stdout }}"
+    executable: "{{ nvm_node_path.stdout | dirname }}/npm"
   become: true
   become_user: "{{ user_name }}"
   loop: "{{ profiles.ai.npm | default([]) }}"
