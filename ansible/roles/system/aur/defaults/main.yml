@@ -1,6 +1,4 @@
 ---
-aur_helper_package: paru
-
 paru_options:
   - BottomUp
   - SudoLoop

@@ -1,7 +1,7 @@
 ---
-- name: Aur | Install AUR helper
+- name: Aur | Install paru
   kewlfft.aur.aur:
-    name: "{{ aur_helper_package }}"
+    name: paru
     use: makepkg
     state: present
   become: true
