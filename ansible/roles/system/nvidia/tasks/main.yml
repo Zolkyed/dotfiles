@@ -24,22 +24,27 @@
       No supported NVIDIA display adapter was detected, or the detected adapter
       needs an older legacy branch not managed by this role.
 
-- name: Nvidia | Select driver branch
+- name: Nvidia | Set driver branch (manual)
   ansible.builtin.set_fact:
-    nvidia_effective_driver_branch: >-
-      {{
-        nvidia_driver_branch if nvidia_driver_branch != 'auto'
-        else ('500xx' if nvidia_500xx_device_regex and nvidia_display_adapters | join('\n') is search(nvidia_500xx_device_regex)
-        else ('580xx' if nvidia_display_adapters | join('\n') is search(nvidia_580xx_device_regex)
-        else ('current' if nvidia_display_adapters | join('\n') is search(nvidia_current_device_regex)
-        else 'unsupported')))
-      }}
+    nvidia_effective_driver_branch: "{{ nvidia_driver_branch }}"
+  when: nvidia_driver_branch != 'auto'
+
+- name: Nvidia | Set driver branch (auto-detect)
+  ansible.builtin.set_fact:
+    nvidia_effective_driver_branch: "{{ item }}"
+  loop: "{{ nvidia_driver_branch_order }}"
+  when:
+    - nvidia_driver_branch == 'auto'
+    - nvidia_effective_driver_branch is not defined
+    - nvidia_driver_packages[item].device_regex | length > 0
+    - nvidia_display_adapters | join('\n') is search(nvidia_driver_packages[item].device_regex)
 
 - name: Nvidia | Validate driver branch
   ansible.builtin.assert:
     that:
+      - nvidia_effective_driver_branch is defined
       - nvidia_effective_driver_branch in nvidia_driver_packages
-    fail_msg: "Unsupported NVIDIA driver branch: {{ nvidia_effective_driver_branch }}"
+    fail_msg: "Unsupported NVIDIA driver branch: {{ nvidia_effective_driver_branch | default('none detected') }}"
 
 - name: Nvidia | Collect installed packages
   ansible.builtin.package_facts:
@@ -61,6 +66,7 @@
   community.general.pacman:
     name: "{{ nvidia_conflicting_packages }}"
     state: absent
+    extra_args: --noconfirm --nodeps
   when: nvidia_conflicting_packages | length > 0
   notify: Nvidia | Rebuild initramfs
 

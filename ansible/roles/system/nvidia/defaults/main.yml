@@ -1,13 +1,16 @@
 ---
 nvidia_driver_branch: auto
 
-nvidia_500xx_device_regex: ''
-nvidia_580xx_device_regex: '\b(GM|GP)[0-9]+'
-nvidia_current_device_regex: '\b(TU|GA|AD|GB)[0-9]+'
 nvidia_unsupported_legacy_device_regex: '\b(G8|G9|GT2|GF|GK)[0-9]+'
+
+# Checked in order; first match wins. Branches with no device_regex require manual override.
+nvidia_driver_branch_order:
+  - 580xx
+  - current
 
 nvidia_driver_packages:
   current:
+    device_regex: '\b(TU|GA|AD|GB)[0-9]+'
     pacman:
       - nvidia-open-dkms
       - nvidia-utils
@@ -18,6 +21,7 @@ nvidia_driver_packages:
     aur: []
 
   500xx:
+    device_regex: ''
     pacman: []
     aur:
       - nvidia-500xx-dkms
@@ -28,6 +32,7 @@ nvidia_driver_packages:
       - lib32-opencl-nvidia-500xx
 
   580xx:
+    device_regex: '\b(GM|GP)[0-9]+'
     pacman: []
     aur:
       - nvidia-580xx-dkms
