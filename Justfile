@@ -27,14 +27,14 @@ run-local host="desktop":
 check host="desktop":
     cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{PLAYBOOK}} --check --diff -l {{host}}
 
-update host="desktop":
+update:
+    cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{UPDATE_PLAYBOOK}} -v
+
+update-remote host="desktop":
     cd {{ANSIBLE_DIR}} && ansible-playbook {{UPDATE_PLAYBOOK}} -l {{host}} -v
 
-update-local host="desktop":
-    cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{UPDATE_PLAYBOOK}} -l {{host}} -v
-
-dotfiles host="desktop":
-    cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{DOTFILES_PLAYBOOK}} -l {{host}}
+dotfiles:
+    cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{DOTFILES_PLAYBOOK}}
 
 maintenance host="desktop":
     cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{MAINTENANCE_PLAYBOOK}} -l {{host}} -v
