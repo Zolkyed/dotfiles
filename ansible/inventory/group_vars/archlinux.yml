@@ -63,6 +63,7 @@ profiles:
       - yazi
       - zathura
       - pacman-contrib
+      - lsof
     flatpak:
       - it.mijorus.gearlever
 
@@ -182,12 +183,12 @@ profiles:
       - kcalc
       - ark
       - kdeconnect
+      - wl-clipboard
 
   wayland_common:
     pacman:
       - waybar
       - rofi
-      - wl-clipboard
       - grim
       - slurp
       - brightnessctl

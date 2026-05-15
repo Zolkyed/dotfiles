@@ -1,7 +1,6 @@
 plugins=(
   git
   sudo
-  z
   extract
   colored-man-pages
 )
@@ -9,6 +8,10 @@ plugins=(
 if [[ -f $ZSH/oh-my-zsh.sh ]]; then
   source $ZSH/oh-my-zsh.sh
 fi
+
+# Syntax highlighting (must be sourced last)
+[[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] &&
+  source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Auto-suggestions
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
