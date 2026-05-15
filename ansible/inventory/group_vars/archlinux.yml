@@ -233,7 +233,7 @@ profiles:
       - cmake
     aur:
       - visual-studio-code-bin
-      - volta
+      - volta-bin
     flatpak:
       - com.getpostman.Postman
       - net.portswigger.BurpSuite-Community
