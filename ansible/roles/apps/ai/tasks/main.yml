@@ -1,35 +1,21 @@
 ---
-- name: AI | Ensure NVM directory exists
-  ansible.builtin.file:
-    path: "{{ user_home }}/.nvm"
-    state: directory
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
-    mode: "0755"
-
-- name: AI | Install Node LTS with NVM
-  ansible.builtin.shell:
-    cmd: |
-      . /usr/share/nvm/nvm.sh
-      nvm install --lts
-      nvm alias default lts/*
-    executable: /bin/bash
+- name: AI | Install Node LTS with volta
+  ansible.builtin.command:
+    cmd: volta install node@lts
   become: true
   become_user: "{{ user_name }}"
   environment:
-    NVM_DIR: "{{ user_home }}/.nvm"
-  register: node_install
-  changed_when: "'already installed' not in node_install.stdout and 'already installed' not in node_install.stderr"
+    VOLTA_HOME: "{{ user_home }}/.volta"
+    PATH: "{{ user_home }}/.volta/bin:{{ ansible_env.PATH }}"
+  changed_when: false
 
-- name: AI | Install global npm packages with NVM
-  ansible.builtin.shell:
-    cmd: |
-      . /usr/share/nvm/nvm.sh
-      npm list --global --depth=0 {{ item | quote }} >/dev/null 2>&1 ||
-        npm install --global {{ item | quote }}
-    executable: /bin/bash
+- name: AI | Install global npm tools with volta
+  ansible.builtin.command:
+    cmd: volta install {{ item }}
   become: true
   become_user: "{{ user_name }}"
   environment:
-    NVM_DIR: "{{ user_home }}/.nvm"
+    VOLTA_HOME: "{{ user_home }}/.volta"
+    PATH: "{{ user_home }}/.volta/bin:{{ ansible_env.PATH }}"
   loop: "{{ profiles.ai.npm | default([]) }}"
+  changed_when: false

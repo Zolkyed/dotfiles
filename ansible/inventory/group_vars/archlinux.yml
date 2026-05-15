@@ -99,7 +99,6 @@ profiles:
     pacman:
       - bluez
       - bluez-utils
-      - blueman
 
   networking:
     pacman:
@@ -233,8 +232,8 @@ profiles:
       - gdb
       - cmake
     aur:
-      - nvm
       - visual-studio-code-bin
+      - volta
     flatpak:
       - com.getpostman.Postman
       - net.portswigger.BurpSuite-Community

@@ -21,14 +21,6 @@ setopt hist_verify auto_cd auto_pushd pushd_ignore_dups pushd_silent correct
 # Vague-themed LS_COLORS for colored completions
 [[ -f $HOME/.config/zsh/dircolors ]] && eval "$(dircolors $HOME/.config/zsh/dircolors)"
 
-# NVM lazy load
-export NVM_DIR="$HOME/.nvm"
-_nvm_load() {
-  unset -f nvm node npm npx
-  [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
-  [[ -s "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"
-}
-nvm()  { _nvm_load; nvm  "$@"; }
-node() { _nvm_load; node "$@"; }
-npm()  { _nvm_load; npm  "$@"; }
-npx()  { _nvm_load; npx  "$@"; }
+# Volta (Node version manager)
+export VOLTA_HOME="$HOME/.volta"
+path=("$VOLTA_HOME/bin" $path)
