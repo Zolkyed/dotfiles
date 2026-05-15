@@ -33,6 +33,10 @@
       }}
   become: false
   when: aur_packages | length > 0
+  register: packages_aur_install
+  until: packages_aur_install is succeeded
+  retries: "{{ packages_aur_install_retries }}"
+  delay: "{{ packages_aur_install_delay }}"
   vars:
     aur_packages: >-
       {{

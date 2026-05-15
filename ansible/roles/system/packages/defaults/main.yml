@@ -3,3 +3,6 @@ packages_pacman_conflict_resolvers:
   - pipewire-jack
 
 packages_aur_conflict_resolvers: []
+
+packages_aur_install_retries: 3
+packages_aur_install_delay: 5
