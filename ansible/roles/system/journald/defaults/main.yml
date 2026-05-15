@@ -1,0 +1,5 @@
+---
+journald_system_max_use: 1G
+journald_runtime_max_use: 512M
+journald_max_retention_sec: 1month
+journald_compress: true

@@ -48,6 +48,8 @@
       tags: packages
 
     # --- Core system services ---
+    - role: system/journald
+      tags: journald
     - role: system/networking
       tags: networking
     - role: system/sshd

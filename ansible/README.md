@@ -37,6 +37,7 @@ Hosts: `desktop`, `laptop`, `server`.
 | `system/pacman` | pacman | always | pacman.conf |
 | `system/aur` | aur | always | paru install + config |
 | `system/packages` | packages | always | bulk package install |
+| `system/journald` | journald | always | journal retention |
 | `system/networking` | networking | always | NetworkManager + resolved |
 | `system/sshd` | sshd | always | host keys, hardening |
 | `system/fonts` | fonts | always | Nerd Fonts |
