@@ -19,7 +19,7 @@
   loop: "{{ maintenance_btrfs_scrub_mounts }}"
   when:
     - maintenance_enable_btrfs_scrub
-    - ansible_mounts
+    - ansible_facts['mounts']
       | selectattr('mount', 'equalto', item)
       | selectattr('fstype', 'equalto', 'btrfs')
       | list
