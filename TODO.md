@@ -24,5 +24,6 @@ future changes: just run server
 5. run_ansibleinstall.sh still mutates sudo before Ansible owns sudoers. It works, but bootstrap vs desired-state
   overlap is slightly messy.
 
-
 6. inject_facts_as_vars = false must support this new format
+
+7. AI hooks to test code locally
