@@ -6,15 +6,21 @@
     state: started
   when: maintenance_enable_fstrim
 
-- name: Maintenance | Enable btrfs scrub timer
+- name: Maintenance | Enable btrfs scrub timers
   ansible.builtin.systemd:
-    name: "{{ maintenance_btrfs_scrub_timer }}"
+    name: >-
+      btrfs-scrub@{{
+        '-'
+        if item == '/'
+        else item | regex_replace('^/', '') | regex_replace('/', '-')
+      }}.timer
     enabled: true
     state: started
+  loop: "{{ maintenance_btrfs_scrub_mounts }}"
   when:
     - maintenance_enable_btrfs_scrub
     - ansible_mounts
-      | selectattr('mount', 'equalto', '/')
+      | selectattr('mount', 'equalto', item)
       | selectattr('fstype', 'equalto', 'btrfs')
       | list
       | length > 0
