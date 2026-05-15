@@ -45,6 +45,13 @@ syntax:
     cd {{ANSIBLE_DIR}} && ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-playbook {{PLAYBOOK}} --syntax-check
     cd {{ANSIBLE_DIR}} && ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-playbook {{UPDATE_PLAYBOOK}} --syntax-check
 
+integration:
+    docker build \
+      --secret id=sops_age_key,src=${HOME}/.config/sops/age/keys.txt \
+      -f docker/Dockerfile.archlinux \
+      -t dotfiles-test \
+      .
+
 ci:
     just syntax
     just lint
