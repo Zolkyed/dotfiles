@@ -1,6 +1,7 @@
 ---
 nvidia_driver_branch: auto
 
+nvidia_500xx_device_regex: ''
 nvidia_580xx_device_regex: '\b(GM|GP)[0-9]+'
 nvidia_current_device_regex: '\b(TU|GA|AD|GB)[0-9]+'
 nvidia_unsupported_legacy_device_regex: '\b(G8|G9|GT2|GF|GK)[0-9]+'
@@ -15,6 +16,16 @@ nvidia_driver_packages:
       - opencl-nvidia
       - lib32-opencl-nvidia
     aur: []
+
+  500xx:
+    pacman: []
+    aur:
+      - nvidia-500xx-dkms
+      - nvidia-500xx-utils
+      - lib32-nvidia-500xx-utils
+      - nvidia-500xx-settings
+      - opencl-nvidia-500xx
+      - lib32-opencl-nvidia-500xx
 
   580xx:
     pacman: []
