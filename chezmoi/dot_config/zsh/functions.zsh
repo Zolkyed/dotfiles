@@ -1,6 +1,6 @@
 # Find files by name
 ff() {
-  find . -iname "*$1*" 2>/dev/null
+  command find . -iname "*$1*" 2>/dev/null
 }
 
 # Find text inside files (requires ripgrep)

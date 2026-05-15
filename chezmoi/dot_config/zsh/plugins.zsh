@@ -9,10 +9,6 @@ if [[ -f $ZSH/oh-my-zsh.sh ]]; then
   source $ZSH/oh-my-zsh.sh
 fi
 
-# Syntax highlighting (must be sourced last)
-[[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] &&
-  source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
 # Auto-suggestions
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
@@ -27,4 +23,6 @@ ZSH_AUTOSUGGEST_USE_ASYNC=true
 # Zoxide
 command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
 
-
+# Syntax highlighting must be sourced last
+[[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] &&
+  source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

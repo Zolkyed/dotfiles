@@ -8,9 +8,6 @@ ZSH_THEME="spaceship"
 [[ -f $HOME/.config/zsh/functions.zsh ]] && source $HOME/.config/zsh/functions.zsh
 [[ -f $HOME/.config/zsh/plugins.zsh ]] && source $HOME/.config/zsh/plugins.zsh
 
-# Completion
-autoload -Uz compinit && compinit
-
 # Colored tab completions (Vague theme)
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' menu select
