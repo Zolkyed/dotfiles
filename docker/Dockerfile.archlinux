@@ -16,7 +16,9 @@ ENV ANSIBLE_LOCAL_TEMP=/tmp/ansible-local \
 
 SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 
-RUN pacman -Syu --noconfirm --needed \
+RUN printf 'Server = https://geo.mirror.pkgbuild.com/$repo/os/$arch\n' > /etc/pacman.d/mirrorlist && \
+    sed -i '/^\[options\]/a DisableDownloadTimeout' /etc/pacman.conf && \
+    pacman -Syu --noconfirm --needed --disable-download-timeout \
       age \
       ansible \
       base-devel \
@@ -53,10 +55,6 @@ RUN --mount=type=secret,id=sops_age_key \
         -i inventory/local.yml \
         playbooks/setup.yml \
         -l server \
-        --tags always,user,sudoers,aur,packages,fonts,ssh_keys,bin,dotfiles && \
-      ansible-playbook \
-        -i inventory/local.yml \
-        playbooks/update.yml \
-        -l server \
-        --skip-tags mirrors' && \
+        --extra-vars "{\"active_preset\":\"docker\",\"presets\":{\"docker\":{\"profiles\":[]}}}" \
+        --tags always,user,sudoers,aur,packages,fonts,ssh_keys,bin,dotfiles' && \
     rm -f /home/${USER}/.config/sops/age/keys.txt
