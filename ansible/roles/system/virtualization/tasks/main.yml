@@ -1,11 +1,11 @@
 ---
-- name: Enable and start libvirt service
+- name: Virtualization | Enable and start libvirt service
   ansible.builtin.systemd:
     name: libvirtd
     enabled: true
     state: started
 
-- name: Add user to virtualization groups
+- name: Virtualization | Add user to virtualization groups
   ansible.builtin.user:
     name: "{{ user_name }}"
     groups:
