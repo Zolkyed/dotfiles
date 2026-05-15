@@ -56,7 +56,6 @@ Hosts: `desktop`, `laptop`, `server`.
 | `system/snapper` | snapper | profile | Snapper + grub-btrfs |
 | `system/splashboot` | splashboot | profile | Plymouth |
 | `desktop/plasma` | plasma | profile | SDDM, keybinds |
-| `apps/appimage` | appimage | always | ~/Applications |
 | `apps/browser` | browser | profile | Brave + policies |
 | `apps/flatpak` | flatpak | profile | Flathub + apps |
 | `apps/ai` | ai | profile | opencode-ai, codex, claude-code |
