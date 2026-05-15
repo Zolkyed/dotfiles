@@ -1,53 +1,38 @@
 ---
-- name: Pacman | Check enabled repositories
-  ansible.builtin.command:
-    cmd: pacman-conf --repo-list
-  register: pacman_repositories
-  changed_when: false
-
-- name: Pacman | Set ParallelDownloads
+- name: Pacman | Configure options
   ansible.builtin.lineinfile:
     path: /etc/pacman.conf
-    regexp: ^ParallelDownloads
-    line: ParallelDownloads = 5
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
     insertafter: ^\[options\]
+    owner: root
+    group: root
+    mode: "0644"
+  loop:
+    - regexp: '^#?\s*ParallelDownloads\s*='
+      line: ParallelDownloads = 5
+    - regexp: '^#?Color$'
+      line: Color
+    - regexp: '^#?ILoveCandy$'
+      line: ILoveCandy
+    - regexp: '^#?VerbosePkgLists$'
+      line: VerbosePkgLists
+  loop_control:
+    label: "{{ item.line }}"
   notify: Pacman | Update pacman cache
 
-- name: Pacman | Enable Color
-  ansible.builtin.lineinfile:
-    path: /etc/pacman.conf
-    regexp: ^Color
-    line: Color
-    insertafter: ^\[options\]
-  notify: Pacman | Update pacman cache
-
-- name: Pacman | Enable ILoveCandy
-  ansible.builtin.lineinfile:
-    path: /etc/pacman.conf
-    regexp: ^ILoveCandy
-    line: ILoveCandy
-    insertafter: ^\[options\]
-  notify: Pacman | Update pacman cache
-
-- name: Pacman | Enable VerbosePkgLists
-  ansible.builtin.lineinfile:
-    path: /etc/pacman.conf
-    regexp: ^VerbosePkgLists
-    line: VerbosePkgLists
-    insertafter: ^\[options\]
-  notify: Pacman | Update pacman cache
-
-- name: Pacman | Enable multilib repository
+- name: Pacman | Configure multilib repository
   ansible.builtin.blockinfile:
     path: /etc/pacman.conf
     marker: "# {mark} ANSIBLE MANAGED MULTILIB"
     block: |
       [multilib]
       Include = /etc/pacman.d/mirrorlist
+    state: "{{ 'present' if pacman_enable_multilib else 'absent' }}"
+    owner: root
+    group: root
+    mode: "0644"
   notify: Pacman | Update pacman cache
-  when:
-    - pacman_enable_multilib
-    - "'multilib' not in pacman_repositories.stdout_lines"
 
 - name: Pacman | Flush handlers
   ansible.builtin.meta: flush_handlers
