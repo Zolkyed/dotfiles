@@ -1,5 +1,5 @@
 ---
-chezmoi_bin: "{{ user_home }}/.local/bin/chezmoi"
+chezmoi_bin: /usr/bin/chezmoi
 dotfiles_repo_dir: "{{ user_home }}/.local/share/dotfiles"
 chezmoi_source_dir: "{{ dotfiles_repo_dir }}/chezmoi"
 dotfiles_repo: "https://github.com/Zolkyed/dotfiles.git"

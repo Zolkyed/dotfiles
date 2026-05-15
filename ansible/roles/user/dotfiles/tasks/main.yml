@@ -19,11 +19,6 @@
   become: true
   become_user: "{{ user_name }}"
   block:
-    - name: Dotfiles | Install chezmoi
-      ansible.builtin.shell:
-        cmd: sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "{{ user_home }}/.local/bin"
-        creates: "{{ chezmoi_bin }}"
-
     - name: Dotfiles | Check if dotfiles repo is initialized
       ansible.builtin.stat:
         path: "{{ dotfiles_repo_dir }}/.git"

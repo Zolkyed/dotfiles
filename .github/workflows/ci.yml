@@ -77,7 +77,8 @@ jobs:
           file: docker/${{ matrix.dockerfile }}
           push: false
           load: true
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          provenance: false
+          cache-from: type=gha,scope=${{ matrix.dockerfile }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.dockerfile }}
           secrets: |
             sops_age_key=${{ secrets.SOPS_AGE_KEY }}
