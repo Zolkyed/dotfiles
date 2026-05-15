@@ -23,6 +23,7 @@
         "type": "nm"
     },
     "packages": [
+        "base-devel",
         "btrfs-progs",
         "curl",
         "efibootmgr",
