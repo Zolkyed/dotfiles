@@ -66,7 +66,7 @@
   community.general.pacman:
     name: "{{ nvidia_conflicting_packages }}"
     state: absent
-    extra_args: --noconfirm --nodeps
+    extra_args: --noconfirm --nodeps --nodeps
   when: nvidia_conflicting_packages | length > 0
   notify: Nvidia | Rebuild initramfs
 
