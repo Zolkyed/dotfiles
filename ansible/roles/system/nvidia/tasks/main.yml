@@ -31,13 +31,13 @@
 
 - name: Nvidia | Set driver branch (auto-detect)
   ansible.builtin.set_fact:
-    nvidia_effective_driver_branch: "{{ item }}"
-  loop: "{{ nvidia_driver_branch_order }}"
+    nvidia_effective_driver_branch: "{{ item.key }}"
+  loop: "{{ nvidia_driver_packages | dict2items }}"
   when:
     - nvidia_driver_branch == 'auto'
     - nvidia_effective_driver_branch is not defined
-    - nvidia_driver_packages[item].device_regex | length > 0
-    - nvidia_display_adapters | join('\n') is search(nvidia_driver_packages[item].device_regex)
+    - item.value.device_regex | default('') | length > 0
+    - nvidia_display_adapters | join('\n') is search(item.value.device_regex | default(''))
 
 - name: Nvidia | Validate driver branch
   ansible.builtin.assert:
@@ -55,10 +55,10 @@
     nvidia_conflicting_packages: >-
       {{
         nvidia_driver_packages.values()
-        | map(attribute='pacman') | flatten
-        | union(nvidia_driver_packages.values() | map(attribute='aur') | flatten)
-        | difference(nvidia_driver_packages[nvidia_effective_driver_branch].pacman)
-        | difference(nvidia_driver_packages[nvidia_effective_driver_branch].aur)
+        | map(attribute='pacman', default=[]) | flatten
+        | union(nvidia_driver_packages.values() | map(attribute='aur', default=[]) | flatten)
+        | difference(nvidia_driver_packages[nvidia_effective_driver_branch].pacman | default([]))
+        | difference(nvidia_driver_packages[nvidia_effective_driver_branch].aur | default([]))
         | intersect(ansible_facts.packages.keys() | list)
       }}
 
@@ -85,20 +85,20 @@
 
 - name: Nvidia | Install pacman driver packages
   community.general.pacman:
-    name: "{{ nvidia_driver_packages[nvidia_effective_driver_branch].pacman }}"
+    name: "{{ nvidia_driver_packages[nvidia_effective_driver_branch].pacman | default([]) }}"
     state: present
-    extra_args: "{{ nvidia_driver_extra_args }}"
-  when: nvidia_driver_packages[nvidia_effective_driver_branch].pacman | length > 0
+    extra_args: --noconfirm
+  when: nvidia_driver_packages[nvidia_effective_driver_branch].pacman | default([]) | length > 0
   notify: Nvidia | Rebuild initramfs
 
 - name: Nvidia | Install AUR driver packages
   kewlfft.aur.aur:
-    name: "{{ nvidia_driver_packages[nvidia_effective_driver_branch].aur }}"
+    name: "{{ nvidia_driver_packages[nvidia_effective_driver_branch].aur | default([]) }}"
     use: paru
     state: present
-    extra_args: "{{ nvidia_driver_extra_args }}"
+    extra_args: --noconfirm
   become: false
-  when: nvidia_driver_packages[nvidia_effective_driver_branch].aur | length > 0
+  when: nvidia_driver_packages[nvidia_effective_driver_branch].aur | default([]) | length > 0
   notify: Nvidia | Rebuild initramfs
 
 - name: Nvidia | Configure DRM modesetting

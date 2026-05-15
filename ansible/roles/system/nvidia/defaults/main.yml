@@ -1,14 +1,32 @@
 ---
+# Override auto-detection by setting the branch for your GPU:
+#   580xx -> GTX 900 series (Maxwell), GTX 1000 series (Pascal) e.g. GTX 950, 1060, 1080
+#   500xx -> RTX 5000 series (Blackwell) e.g. RTX 5070, 5080, 5090
+#   current -> RTX 2000/3000/4000 series (Turing/Ampere/Ada) e.g. RTX 2080, 3080, 4090
 nvidia_driver_branch: auto
 
 nvidia_unsupported_legacy_device_regex: '\b(G8|G9|GT2|GF|GK)[0-9]+'
 
-# Checked in order; first match wins. Branches with no device_regex require manual override.
-nvidia_driver_branch_order:
-  - 580xx
-  - current
-
 nvidia_driver_packages:
+  580xx:
+    device_regex: '\b(GM|GP)[0-9]+'
+    aur:
+      - nvidia-580xx-dkms
+      - nvidia-580xx-utils
+      - lib32-nvidia-580xx-utils
+      - nvidia-580xx-settings
+      - opencl-nvidia-580xx
+      - lib32-opencl-nvidia-580xx
+
+  500xx:
+    aur:
+      - nvidia-500xx-dkms
+      - nvidia-500xx-utils
+      - lib32-nvidia-500xx-utils
+      - nvidia-500xx-settings
+      - opencl-nvidia-500xx
+      - lib32-opencl-nvidia-500xx
+
   current:
     device_regex: '\b(TU|GA|AD|GB)[0-9]+'
     pacman:
@@ -18,28 +36,3 @@ nvidia_driver_packages:
       - nvidia-settings
       - opencl-nvidia
       - lib32-opencl-nvidia
-    aur: []
-
-  500xx:
-    device_regex: ''
-    pacman: []
-    aur:
-      - nvidia-500xx-dkms
-      - nvidia-500xx-utils
-      - lib32-nvidia-500xx-utils
-      - nvidia-500xx-settings
-      - opencl-nvidia-500xx
-      - lib32-opencl-nvidia-500xx
-
-  580xx:
-    device_regex: '\b(GM|GP)[0-9]+'
-    pacman: []
-    aur:
-      - nvidia-580xx-dkms
-      - nvidia-580xx-utils
-      - lib32-nvidia-580xx-utils
-      - nvidia-580xx-settings
-      - opencl-nvidia-580xx
-      - lib32-opencl-nvidia-580xx
-
-nvidia_driver_extra_args: --noconfirm
