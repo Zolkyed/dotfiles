@@ -1,17 +1,25 @@
 ---
 - name: Nvidia | Detect NVIDIA display adapters
-  ansible.builtin.shell:
-    cmd: "set -o pipefail && lspci -Dnn -d 10de: | grep -Ei 'VGA|3D|Display'"
-    executable: /bin/bash
-  register: nvidia_display_adapters
+  ansible.builtin.command:
+    cmd: "lspci -Dnn -d 10de:"
+  register: nvidia_lspci_devices
   changed_when: false
   failed_when: false
+
+- name: Nvidia | Filter NVIDIA display adapters
+  ansible.builtin.set_fact:
+    nvidia_display_adapters: >-
+      {{
+        nvidia_lspci_devices.stdout_lines
+        | select('search', 'VGA|3D|Display')
+        | list
+      }}
 
 - name: Nvidia | Require supported NVIDIA display adapter
   ansible.builtin.assert:
     that:
-      - nvidia_display_adapters.stdout_lines | length > 0
-      - nvidia_display_adapters.stdout is not search(nvidia_unsupported_legacy_device_regex)
+      - nvidia_display_adapters | length > 0
+      - nvidia_display_adapters | join('\n') is not search(nvidia_unsupported_legacy_device_regex)
     fail_msg: >-
       No supported NVIDIA display adapter was detected, or the detected adapter
       needs an older legacy branch not managed by this role.
@@ -21,8 +29,8 @@
     nvidia_effective_driver_branch: >-
       {{
         nvidia_driver_branch if nvidia_driver_branch != 'auto'
-        else ('580xx' if nvidia_display_adapters.stdout is search(nvidia_580xx_device_regex)
-        else ('current' if nvidia_display_adapters.stdout is search(nvidia_current_device_regex)
+        else ('580xx' if nvidia_display_adapters | join('\n') is search(nvidia_580xx_device_regex)
+        else ('current' if nvidia_display_adapters | join('\n') is search(nvidia_current_device_regex)
         else 'unsupported'))
       }}
 
@@ -33,18 +41,24 @@
     fail_msg: "Unsupported NVIDIA driver branch: {{ nvidia_effective_driver_branch }}"
 
 - name: Nvidia | Detect installed kernels
-  ansible.builtin.shell:
-    cmd: set -o pipefail && pacman -Qq | grep -E '^linux(-lts|-zen|-hardened|-rt|-rt-lts)?$'
-    executable: /bin/bash
-  register: nvidia_arch_kernels
+  ansible.builtin.command:
+    cmd: pacman -Qq
+  register: nvidia_installed_packages
   changed_when: false
   failed_when: false
 
 - name: Nvidia | Install kernel headers
   community.general.pacman:
-    name: "{{ nvidia_arch_kernels.stdout_lines | map('regex_replace', '$', '-headers') | list }}"
+    name: "{{ nvidia_arch_kernels | map('regex_replace', '$', '-headers') | list }}"
     state: present
-  when: nvidia_arch_kernels.stdout_lines | length > 0
+  when: nvidia_arch_kernels | length > 0
+  vars:
+    nvidia_arch_kernels: >-
+      {{
+        nvidia_installed_packages.stdout_lines
+        | select('match', '^linux(-lts|-zen|-hardened|-rt|-rt-lts)?$')
+        | list
+      }}
 
 - name: Nvidia | Install pacman driver packages
   community.general.pacman:
