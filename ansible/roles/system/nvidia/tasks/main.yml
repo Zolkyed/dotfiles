@@ -1,4 +1,9 @@
 ---
+- name: Nvidia | Ensure pciutils is installed
+  community.general.pacman:
+    name: pciutils
+    state: present
+
 - name: Nvidia | Detect NVIDIA display adapters
   ansible.builtin.command:
     cmd: "lspci -Dnn -d 10de:"
@@ -68,6 +73,7 @@
   community.general.pacman:
     name: "{{ nvidia_conflicting_packages }}"
     state: absent
+    # -dd skips "required by" checks — safe here since the replacement is installed immediately after
     extra_args: --noconfirm --nodeps --nodeps
   when: nvidia_conflicting_packages | length > 0
   notify: Nvidia | Rebuild initramfs
@@ -110,4 +116,21 @@
     owner: root
     group: root
     mode: "0644"
+  notify: Nvidia | Rebuild initramfs
+
+- name: Nvidia | Configure mkinitcpio modules for proprietary driver
+  ansible.builtin.copy:
+    dest: /etc/mkinitcpio.conf.d/nvidia.conf
+    content: "MODULES+=({{ nvidia_driver_packages[nvidia_effective_driver_branch].mkinitcpio_modules | join(' ') }})\n"
+    owner: root
+    group: root
+    mode: "0644"
+  when: nvidia_driver_packages[nvidia_effective_driver_branch].mkinitcpio_modules | default([]) | length > 0
+  notify: Nvidia | Rebuild initramfs
+
+- name: Nvidia | Remove mkinitcpio modules config for open driver
+  ansible.builtin.file:
+    path: /etc/mkinitcpio.conf.d/nvidia.conf
+    state: absent
+  when: nvidia_driver_packages[nvidia_effective_driver_branch].mkinitcpio_modules | default([]) | length == 0
   notify: Nvidia | Rebuild initramfs

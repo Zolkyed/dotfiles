@@ -10,6 +10,11 @@ nvidia_unsupported_legacy_device_regex: '\b(G8|G9|GT2|GF|GK)[0-9]+'
 nvidia_driver_packages:
   580xx:
     device_regex: '\b(GM|GP)[0-9]+'
+    mkinitcpio_modules:
+      - nvidia
+      - nvidia_modeset
+      - nvidia_uvm
+      - nvidia_drm
     aur:
       - nvidia-580xx-dkms
       - nvidia-580xx-utils
@@ -19,6 +24,11 @@ nvidia_driver_packages:
       - lib32-opencl-nvidia-580xx
 
   500xx:
+    mkinitcpio_modules:
+      - nvidia
+      - nvidia_modeset
+      - nvidia_uvm
+      - nvidia_drm
     aur:
       - nvidia-500xx-dkms
       - nvidia-500xx-utils
