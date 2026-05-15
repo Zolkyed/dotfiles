@@ -7,12 +7,12 @@
     group: "{{ user_name }}"
     mode: "0755"
 
-- name: AI | Install Node with NVM
+- name: AI | Install Node LTS with NVM
   ansible.builtin.shell:
     cmd: |
-      source /usr/share/nvm/nvm.sh
-      nvm install {{ ai_node_version }}
-      nvm alias default "$(nvm version {{ ai_node_version }})"
+      . /usr/share/nvm/nvm.sh
+      nvm install --lts
+      nvm alias default lts/*
     executable: /bin/bash
   become: true
   become_user: "{{ user_name }}"
@@ -21,25 +21,15 @@
   register: node_install
   changed_when: "'already installed' not in node_install.stdout and 'already installed' not in node_install.stderr"
 
-- name: AI | Get NVM node path
+- name: AI | Install global npm packages with NVM
   ansible.builtin.shell:
     cmd: |
-      source /usr/share/nvm/nvm.sh
-      nvm which default
+      . /usr/share/nvm/nvm.sh
+      npm list --global --depth=0 {{ item | quote }} >/dev/null 2>&1 ||
+        npm install --global {{ item | quote }}
     executable: /bin/bash
   become: true
   become_user: "{{ user_name }}"
   environment:
     NVM_DIR: "{{ user_home }}/.nvm"
-  register: nvm_node_path
-  changed_when: false
-
-- name: AI | Install global npm packages
-  community.general.npm:
-    name: "{{ item }}"
-    global: true
-    state: present
-    executable: "{{ nvm_node_path.stdout | dirname }}/npm"
-  become: true
-  become_user: "{{ user_name }}"
   loop: "{{ profiles.ai.npm | default([]) }}"
