@@ -46,9 +46,9 @@ Hosts: `desktop`, `laptop`, `server`.
 | `system/bluetooth` | bluetooth | profile | bluez |
 | `system/nvidia` | nvidia | profile | drivers + modesetting |
 | `system/docker` | docker | profile | Docker CE |
-| `system/virtualization` | virt | profile | libvirt |
+| `system/virtualization` | virtualization | profile | libvirt |
 | `system/bootloader` | bootloader | profile | GRUB |
-| `system/snapshot` | snapshot | profile | Snapper + grub-btrfs |
+| `system/snapper` | snapper | profile | Snapper + grub-btrfs |
 | `system/splashboot` | splashboot | profile | Plymouth |
 | `desktop/plasma` | plasma | profile | SDDM, keybinds |
 | `apps/appimage` | appimage | always | ~/Applications |
