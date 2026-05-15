@@ -1,3 +1,6 @@
 ---
 sysctl_hostname: "{{ inventory_hostname }}"
-sysctl_settings: {}
+sysctl_settings:
+  vm.swappiness: 10
+  fs.inotify.max_user_watches: 524288
+  fs.inotify.max_user_instances: 512

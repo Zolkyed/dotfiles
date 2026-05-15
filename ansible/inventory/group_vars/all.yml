@@ -47,6 +47,7 @@ presets:
       - gaming
       - konsave
       - xdg
+      - splashboot
 
   laptop:
     profiles:
@@ -70,6 +71,7 @@ presets:
       - rclone
       - konsave
       - xdg
+      - splashboot
 
   server:
     profiles:

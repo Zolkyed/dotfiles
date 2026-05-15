@@ -56,3 +56,30 @@
   community.general.pacman:
     update_cache: true
     upgrade: true
+
+- name: Pacman | Ensure hooks directory exists
+  ansible.builtin.file:
+    path: /etc/pacman.d/hooks
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Pacman | Deploy paccache cleanup hook
+  ansible.builtin.copy:
+    dest: /etc/pacman.d/hooks/paccache.hook
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      [Trigger]
+      Operation = Upgrade
+      Operation = Install
+      Operation = Remove
+      Type = Package
+      Target = *
+
+      [Action]
+      Description = Cleaning pacman cache (keeping last 2 versions)...
+      When = PostTransaction
+      Exec = /usr/bin/paccache -rk2

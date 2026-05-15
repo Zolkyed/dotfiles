@@ -37,6 +37,10 @@
   loop: "{{ snapper_subvolumes | product(snapper_retention_settings) }}"
   vars:
     snapper_retention_settings:
+      - key: TIMELINE_CREATE
+        value: "yes"
+      - key: ALLOW_USERS
+        value: "{{ user_name }}"
       - key: TIMELINE_LIMIT_HOURLY
         value: "{{ snapper_timeline_limit.hourly }}"
       - key: TIMELINE_LIMIT_DAILY

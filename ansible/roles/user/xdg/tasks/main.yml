@@ -1,4 +1,11 @@
 ---
+- name: XDG | Create standard user directories
+  ansible.builtin.command:
+    cmd: xdg-user-dirs-update
+  become: true
+  become_user: "{{ user_name }}"
+  changed_when: false
+
 - name: XDG | Ensure user config directory exists
   ansible.builtin.file:
     path: "{{ user_home }}/.config"

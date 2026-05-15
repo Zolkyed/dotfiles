@@ -30,7 +30,7 @@ alias gb='git branch'
 # Pacman
 alias update='sudo pacman -Syu'
 alias in='sudo pacman -S'
-alias rm='sudo pacman -Rns'
+alias pacrem='sudo pacman -Rns'
 alias search='pacman -Ss'
 
 # Safety

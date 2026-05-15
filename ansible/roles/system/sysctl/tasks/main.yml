@@ -3,6 +3,12 @@
   ansible.builtin.hostname:
     name: "{{ sysctl_hostname }}"
 
+- name: Sysctl | Enable systemd-oomd
+  ansible.builtin.systemd_service:
+    name: systemd-oomd
+    enabled: true
+    state: started
+
 - name: Sysctl | Apply kernel parameters
   ansible.posix.sysctl:
     name: "{{ item.key }}"
