@@ -33,6 +33,8 @@
   ansible.builtin.set_fact:
     nvidia_effective_driver_branch: "{{ item.key }}"
   loop: "{{ nvidia_driver_packages | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
   when:
     - nvidia_driver_branch == 'auto'
     - nvidia_effective_driver_branch is not defined
