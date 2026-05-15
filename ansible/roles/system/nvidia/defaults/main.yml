@@ -37,4 +37,4 @@ nvidia_driver_packages:
       - opencl-nvidia-580xx
       - lib32-opencl-nvidia-580xx
 
-nvidia_driver_extra_args: --ask 4
+nvidia_driver_extra_args: --noconfirm

@@ -45,9 +45,9 @@
   ansible.builtin.package_facts:
     manager: pacman
 
-- name: Nvidia | Remove packages conflicting with selected branch
-  community.general.pacman:
-    name: >-
+- name: Nvidia | Compute conflicting packages
+  ansible.builtin.set_fact:
+    nvidia_conflicting_packages: >-
       {{
         nvidia_driver_packages.values()
         | map(attribute='pacman') | flatten
@@ -56,17 +56,12 @@
         | difference(nvidia_driver_packages[nvidia_effective_driver_branch].aur)
         | intersect(ansible_facts.packages.keys() | list)
       }}
+
+- name: Nvidia | Remove conflicting packages
+  community.general.pacman:
+    name: "{{ nvidia_conflicting_packages }}"
     state: absent
-  vars:
-    installed_packages: "{{ ansible_facts.packages.keys() | list }}"
-  when: >-
-    nvidia_driver_packages.values()
-    | map(attribute='pacman') | flatten
-    | union(nvidia_driver_packages.values() | map(attribute='aur') | flatten)
-    | difference(nvidia_driver_packages[nvidia_effective_driver_branch].pacman)
-    | difference(nvidia_driver_packages[nvidia_effective_driver_branch].aur)
-    | intersect(ansible_facts.packages.keys() | list)
-    | length > 0
+  when: nvidia_conflicting_packages | length > 0
   notify: Nvidia | Rebuild initramfs
 
 - name: Nvidia | Install kernel headers
