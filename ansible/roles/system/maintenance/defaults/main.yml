@@ -1,0 +1,7 @@
+---
+maintenance_enable_fstrim: true
+maintenance_enable_btrfs_scrub: true
+maintenance_btrfs_scrub_timer: btrfs-scrub@-.timer
+maintenance_btrfs_scrub_extra_mounts:
+  - home
+maintenance_enable_pkgfile_update: true

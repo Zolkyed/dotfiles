@@ -1,0 +1,8 @@
+---
+mirrors_reflector_country:
+  - Canada
+  - United States
+mirrors_reflector_protocol:
+  - https
+mirrors_reflector_latest: 20
+mirrors_reflector_sort: rate

@@ -34,13 +34,17 @@ Hosts: `desktop`, `laptop`, `server`.
 |---|---|---|---|
 | `system/sysctl` | sysctl | always | hostname, kernel params |
 | `system/sudoers` | sudoers | always | passwordless sudo |
+| `system/mirrors` | mirrors | always | reflector mirror updates |
 | `system/pacman` | pacman | always | pacman.conf |
 | `system/aur` | aur | always | paru install + config |
 | `system/packages` | packages | always | bulk package install |
 | `system/journald` | journald | always | journal retention |
 | `system/networking` | networking | always | NetworkManager + resolved |
 | `system/sshd` | sshd | always | host keys, hardening |
+| `system/maintenance` | maintenance | always | fstrim, btrfs scrub, pkgfile |
 | `system/fonts` | fonts | always | Nerd Fonts |
+| `system/microcode` | microcode | always | CPU microcode |
+| `system/firmware` | firmware | profile | fwupd refresh timer |
 | `system/firewall` | firewall | profile | UFW |
 | `system/fail2ban` | fail2ban | profile | SSH jail |
 | `system/audio` | audio | profile | PipeWire |

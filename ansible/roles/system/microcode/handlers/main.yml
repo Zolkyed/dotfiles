@@ -1,0 +1,7 @@
+---
+- name: Microcode | Update grub
+  ansible.builtin.command:
+    cmd: grub-mkconfig -o /boot/grub/grub.cfg
+  when:
+    - microcode_update_grub
+    - "'bootloader' in enabled_profiles"

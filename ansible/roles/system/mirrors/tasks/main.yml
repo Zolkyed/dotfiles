@@ -1,0 +1,24 @@
+---
+- name: Mirrors | Install reflector
+  community.general.pacman:
+    name: reflector
+    state: present
+
+- name: Mirrors | Configure reflector
+  ansible.builtin.template:
+    src: reflector.conf.j2
+    dest: /etc/xdg/reflector/reflector.conf
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Mirrors | Refresh mirrorlist
+  ansible.builtin.systemd:
+    name: reflector.service
+    state: started
+
+- name: Mirrors | Enable reflector timer
+  ansible.builtin.systemd:
+    name: reflector.timer
+    enabled: true
+    state: started

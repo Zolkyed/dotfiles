@@ -1,0 +1,27 @@
+---
+- name: Maintenance | Enable fstrim timer
+  ansible.builtin.systemd:
+    name: fstrim.timer
+    enabled: true
+    state: started
+  when: maintenance_enable_fstrim
+
+- name: Maintenance | Enable btrfs scrub timer
+  ansible.builtin.systemd:
+    name: "{{ maintenance_btrfs_scrub_timer }}"
+    enabled: true
+    state: started
+  when:
+    - maintenance_enable_btrfs_scrub
+    - ansible_mounts
+      | selectattr('mount', 'equalto', '/')
+      | selectattr('fstype', 'equalto', 'btrfs')
+      | list
+      | length > 0
+
+- name: Maintenance | Enable pkgfile update timer
+  ansible.builtin.systemd:
+    name: pkgfile-update.timer
+    enabled: true
+    state: started
+  when: maintenance_enable_pkgfile_update

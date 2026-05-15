@@ -52,6 +52,12 @@
 - name: Pacman | Flush handlers
   ansible.builtin.meta: flush_handlers
 
+- name: Pacman | Update Arch Linux keyring
+  community.general.pacman:
+    name: archlinux-keyring
+    state: latest
+    update_cache: true
+
 - name: Pacman | Full system upgrade
   community.general.pacman:
     update_cache: true

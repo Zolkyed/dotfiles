@@ -21,6 +21,7 @@ always_profiles:
   - fonts
   - networking
   - sshd
+  - maintenance
 
 presets:
   desktop:
@@ -30,6 +31,7 @@ presets:
       - vpn
       - firewall
       - fail2ban
+      - firmware
       - nvidia
       - bootloader
       - snapper
@@ -56,6 +58,7 @@ presets:
       - vpn
       - firewall
       - fail2ban
+      - firmware
       - bootloader
       - snapper
       - docker

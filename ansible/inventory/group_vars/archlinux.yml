@@ -126,6 +126,15 @@ profiles:
     pacman:
       - openssh
 
+  maintenance:
+    pacman:
+      - btrfs-progs
+      - pkgfile
+
+  firmware:
+    pacman:
+      - fwupd
+
   nvidia:
     pacman: []
 

@@ -1,0 +1,9 @@
+--save /etc/pacman.d/mirrorlist
+{% for country in mirrors_reflector_country %}
+--country "{{ country }}"
+{% endfor %}
+{% for protocol in mirrors_reflector_protocol %}
+--protocol {{ protocol }}
+{% endfor %}
+--latest {{ mirrors_reflector_latest }}
+--sort {{ mirrors_reflector_sort }}

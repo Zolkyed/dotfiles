@@ -40,6 +40,8 @@
       tags: sudoers
 
     # --- Package managers / packages ---
+    - role: system/mirrors
+      tags: mirrors
     - role: system/pacman
       tags: pacman
     - role: system/aur
@@ -54,6 +56,11 @@
       tags: networking
     - role: system/sshd
       tags: sshd
+    - role: system/maintenance
+      tags: maintenance
+    - role: system/firmware
+      tags: firmware
+      when: "'firmware' in enabled_profiles"
     - role: system/firewall
       tags: firewall
       when: "'firewall' in enabled_profiles"
@@ -68,6 +75,8 @@
       when: "'bluetooth' in enabled_profiles"
 
     # --- Hardware / boot ---
+    - role: system/microcode
+      tags: microcode
     - role: system/nvidia
       tags: nvidia
       when: "'nvidia' in enabled_profiles"

@@ -1,0 +1,6 @@
+---
+- name: Firmware | Enable fwupd refresh timer
+  ansible.builtin.systemd:
+    name: fwupd-refresh.timer
+    enabled: true
+    state: started
