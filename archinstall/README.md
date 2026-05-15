@@ -18,7 +18,7 @@ curl -fsSL ... | bash -s /dev/disk/by-id/your-disk
 ARCHINSTALL_DISK=/dev/nvme0n1 bash scripts/run_archinstall.sh
 ```
 
-The script prompts for `WIPE` confirmation before touching the disk.
+Archinstall prompts for destructive disk confirmation before touching the disk.
 
 ## Password hash
 
@@ -37,6 +37,13 @@ Or create a temporary credentials file with `archinstall --dry-run` and copy the
 - Sizing adapts to disk size
 
 ## Post-install
+
+On a laptop, connect Wi-Fi before cloning the repo:
+
+```bash
+nmcli dev wifi list
+nmcli dev wifi connect "SSID" password "PASSWORD"
+```
 
 ```bash
 git clone https://github.com/Zolkyed/dotfiles.git
