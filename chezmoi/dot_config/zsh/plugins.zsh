@@ -18,11 +18,10 @@ ZSH_AUTOSUGGEST_USE_ASYNC=true
   source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # fzf-tab
-[[ -f $ZSH_CUSTOM/plugins/fzf-tab/fzf-tab.plugin.zsh ]] &&
-  source $ZSH_CUSTOM/plugins/fzf-tab/fzf-tab.plugin.zsh
+[[ -f /usr/share/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh ]] &&
+  source /usr/share/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
 
 # Zoxide
 command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
 
-# Atuin
-command -v atuin &>/dev/null && eval "$(atuin init zsh)"
+

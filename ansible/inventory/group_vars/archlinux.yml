@@ -30,6 +30,9 @@ profiles:
       - zsh-autosuggestions
       - zsh-syntax-highlighting
       - zsh-completions
+    aur:
+      - oh-my-zsh-git
+      - fzf-tab
 
   utility:
     pacman:
