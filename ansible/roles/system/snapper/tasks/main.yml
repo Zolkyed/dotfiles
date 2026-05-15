@@ -1,8 +1,4 @@
 ---
-- name: Snapper | Reload systemd
-  ansible.builtin.systemd:
-    daemon_reload: true
-
 - name: Snapper | Check stale /home/.snapshots
   ansible.builtin.stat:
     path: /home/.snapshots
@@ -51,6 +47,10 @@
         value: "{{ snapper_timeline_limit.monthly }}"
       - key: CLEANUP_ALGORITHM
         value: "{{ snapper_cleanup_algorithm }}"
+
+- name: Snapper | Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
 
 - name: Snapper | Enable and start grub-btrfsd
   ansible.builtin.systemd:

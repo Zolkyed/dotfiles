@@ -2,4 +2,5 @@
 - name: Microcode | Update grub
   ansible.builtin.command:
     cmd: grub-mkconfig -o /boot/grub/grub.cfg
+  changed_when: false
   when: microcode_update_grub

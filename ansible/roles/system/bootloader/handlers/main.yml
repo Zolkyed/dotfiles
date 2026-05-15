@@ -3,4 +3,4 @@
   ansible.builtin.command:
     cmd: grub-mkconfig -o /boot/grub/grub.cfg
   become: true
-  listen: Bootloader | Update grub
+  changed_when: false

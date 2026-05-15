@@ -1,0 +1,5 @@
+---
+- name: Mirrors | Refresh mirrorlist
+  ansible.builtin.systemd:
+    name: reflector.service
+    state: restarted

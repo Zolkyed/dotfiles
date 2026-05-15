@@ -11,11 +11,7 @@
     owner: root
     group: root
     mode: "0644"
-
-- name: Mirrors | Refresh mirrorlist
-  ansible.builtin.systemd:
-    name: reflector.service
-    state: started
+  notify: Mirrors | Refresh mirrorlist
 
 - name: Mirrors | Enable reflector timer
   ansible.builtin.systemd:
