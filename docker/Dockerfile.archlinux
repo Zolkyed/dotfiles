@@ -53,6 +53,10 @@ RUN --mount=type=secret,id=sops_age_key \
         -i inventory/local.yml \
         playbooks/setup.yml \
         -l server \
-        --extra-vars "{\"active_preset\":\"docker\",\"presets\":{\"docker\":{\"profiles\":[]}}}" \
-        --tags always,user,sudoers,aur,packages,fonts,ssh_keys,bin,dotfiles' && \
+        --tags always,user,sudoers,aur,packages,fonts,ssh_keys,bin,dotfiles && \
+      ansible-playbook \
+        -i inventory/local.yml \
+        playbooks/update.yml \
+        -l server \
+        --skip-tags mirrors' && \
     rm -f /home/${USER}/.config/sops/age/keys.txt
