@@ -20,3 +20,6 @@ future changes: just run server
 3. Fix SSH KEYS and link to github to be able to clone via SSH
 
 4. Gitlab and github remote distinction
+
+5. run_ansibleinstall.sh still mutates sudo before Ansible owns sudoers. It works, but bootstrap vs desired-state
+  overlap is slightly messy.
