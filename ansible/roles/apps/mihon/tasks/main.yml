@@ -27,7 +27,7 @@
   rescue:
     - name: Mihon | Fall back to local icon
       ansible.builtin.copy:
-        src: "{{ playbook_dir }}/assets/mihon.png"
+        src: "{{ mihon_icon_fallback_src }}"
         dest: "{{ mihon_icon_dest }}"
         owner: "{{ user_name }}"
         group: "{{ user_name }}"
