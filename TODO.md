@@ -25,3 +25,13 @@ future changes: just run server
 6. inject_facts_as_vars = false must support this new format
 
 7. AI hooks to test code locally
+
+8. Unecessary complexity multilib for pacman must look at rest of the code later..
+
+9. Not a fan of distribution of the font between default and groups vars....
+
+10. Handlers either all sudo or none sudo ....
+
+11. Fix docker
+
+12. ...
