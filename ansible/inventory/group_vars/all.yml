@@ -61,6 +61,7 @@ presets:
       - firewall
       - fail2ban
       - firmware
+      - amd_gpu
       - bootloader
       - snapper
       - docker

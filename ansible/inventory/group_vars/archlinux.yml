@@ -310,3 +310,20 @@ profiles:
   rclone:
     pacman:
       - rclone
+
+  # -----------------------------------------------------------------------
+  # Graphics Drivers
+  # -----------------------------------------------------------------------
+  amd_gpu:
+    pacman:
+      - vulkan-radeon
+      - libva-mesa-driver
+      - lib32-vulkan-radeon
+      - lib32-mesa
+
+  intel_gpu:
+    pacman:
+      - vulkan-intel
+      - intel-media-driver
+      - lib32-vulkan-intel
+      - lib32-mesa
