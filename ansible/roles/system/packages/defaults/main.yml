@@ -4,5 +4,8 @@ packages_pacman_conflict_resolvers:
 
 packages_aur_conflict_resolvers: []
 
+packages_pacman_install_retries: 3
+packages_pacman_install_delay: 5
+
 packages_aur_install_retries: 3
 packages_aur_install_delay: 5

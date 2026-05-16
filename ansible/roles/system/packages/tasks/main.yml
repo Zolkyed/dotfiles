@@ -10,6 +10,10 @@
         else omit
       }}
   when: pacman_packages | length > 0
+  register: packages_pacman_install
+  until: packages_pacman_install is succeeded
+  retries: "{{ packages_pacman_install_retries }}"
+  delay: "{{ packages_pacman_install_delay }}"
   vars:
     pacman_packages: >-
       {{
