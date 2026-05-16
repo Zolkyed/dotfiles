@@ -1,6 +1,7 @@
 ---
-- block:
-    - name: VSCode | Install extensions
+- name: VSCode | Install extensions
+  block:
+    - name: VSCode | Run extensions installer
       ansible.builtin.include_role:
         name: gantsign.visual-studio-code-extensions
       vars:
