@@ -1,12 +1,10 @@
 ---
-- name: Avahi | Add mDNS to nsswitch hosts resolution
-  ansible.builtin.replace:
+- name: Avahi | Ensure mDNS is in hosts resolution
+  ansible.builtin.lineinfile:
     path: /etc/nsswitch.conf
-    regexp: '^(hosts:(?:(?!mdns_minimal).)*?)(\bresolve\b|\bdns\b)'
-    replace: '\1mdns_minimal [NOTFOUND=return] \2'
-    owner: root
-    group: root
-    mode: "0644"
+    regexp: '^hosts:'
+    line: 'hosts: files mdns_minimal [NOTFOUND=return] resolve [!UNAVAIL=return] dns'
+    backup: true
 
 - name: Avahi | Enable and start avahi-daemon
   ansible.builtin.systemd_service:

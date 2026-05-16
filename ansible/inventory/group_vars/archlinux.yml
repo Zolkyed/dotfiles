@@ -3,9 +3,6 @@
 # https://aur.archlinux.org/packages
 # https://flathub.org/en
 
-# ---------------------------------------------------------------------------
-# Profiles
-# ---------------------------------------------------------------------------
 profiles:
   # -----------------------------------------------------------------------
   # Core
@@ -32,6 +29,7 @@ profiles:
       - zsh-autosuggestions
       - zsh-syntax-highlighting
       - zsh-completions
+      - starship
     aur:
       - oh-my-zsh-git
       - fzf-tab
@@ -42,7 +40,6 @@ profiles:
       - ripgrep
       - vulkan-tools
       - fuse3
-      - pamixer
       - xdg-utils
       - plocate
       - psmisc
@@ -60,9 +57,7 @@ profiles:
       - just
       - trash-cli
       - helix
-      - starship
       - yazi
-      - zathura
       - pacman-contrib
       - lsof
     flatpak:
@@ -101,6 +96,7 @@ profiles:
       - pipewire-jack
       - rtkit
       - sof-firmware
+      - pamixer
 
   avahi:
     pacman:
@@ -161,7 +157,7 @@ profiles:
       - plymouth
 
   # -----------------------------------------------------------------------
-  # Virtualization / Containers
+  # Virtualization
   # -----------------------------------------------------------------------
   docker:
     pacman:
@@ -180,7 +176,7 @@ profiles:
       - dmidecode
 
   # -----------------------------------------------------------------------
-  # Desktop / WM
+  # Desktop
   # -----------------------------------------------------------------------
   plasma:
     pacman:
@@ -237,7 +233,6 @@ profiles:
 
   dev:
     pacman:
-      - git
       - pkgconf
       - python
       - python-pip
@@ -309,6 +304,7 @@ profiles:
     pacman:
       - libreoffice-fresh
       - thunderbird
+      - zathura
 
   rclone:
     pacman:
