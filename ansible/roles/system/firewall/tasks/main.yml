@@ -16,7 +16,7 @@
     proto: tcp
   loop: "{{ firewall_allow_ports }}"
 
-- name: Firewall | Enable and start ufw
+- name: Firewall | Apply ufw ruleset
   community.general.ufw:
     state: enabled
 

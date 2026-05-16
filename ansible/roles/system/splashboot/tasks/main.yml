@@ -28,7 +28,6 @@
     path: /etc/mkinitcpio.conf
     regexp: '^(HOOKS=.*\budev\b)(?! plymouth)'
     replace: '\1 plymouth'
-    backup: false
   notify: Splashboot | Update initramfs
 
 - name: Splashboot | Merge GRUB splash options
