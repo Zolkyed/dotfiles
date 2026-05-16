@@ -1,0 +1,14 @@
+---
+- block:
+    - name: VSCode | Install extensions
+      ansible.builtin.include_role:
+        name: gantsign.visual-studio-code-extensions
+      vars:
+        users:
+          - username: "{{ user_name }}"
+            visual_studio_code_extensions: "{{ vscode_extensions }}"
+            visual_studio_code_extensions_absent: "{{ vscode_extensions_absent }}"
+  rescue:
+    - name: VSCode | Skip on signature errors
+      ansible.builtin.debug:
+        msg: "Skipping VS Code extensions due to installer/signature errors."

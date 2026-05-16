@@ -127,6 +127,9 @@
     - role: apps/konsave
       tags: konsave
       when: "'konsave' in enabled_profiles"
+    - role: apps/vscode
+      tags: vscode
+      when: "'dev' in enabled_profiles"
 
     # --- User config ---
     - role: user/ssh_keys

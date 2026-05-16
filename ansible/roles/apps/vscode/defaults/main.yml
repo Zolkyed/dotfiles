@@ -1,0 +1,18 @@
+---
+vscode_extensions:
+  - redhat.ansible
+  - ms-vscode.cpptools
+  - johnpapa.vscode-peacock
+  - hediet.vscode-drawio
+  - eamodio.gitlens
+  - oderwat.indent-rainbow
+  - wholroyd.jinja
+  - ms-python.python
+  - ms-pyright.pyright
+  - charliermarsh.ruff
+  - timonwong.shellcheck
+  - simonsiefke.svg-preview
+  - tomrijndorp.find-it-faster
+
+vscode_extensions_absent:
+  - vsciot-vscode.vscode-arduino

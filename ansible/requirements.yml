@@ -4,3 +4,6 @@ collections:
   - name: ansible.posix       # authorized_key, mount, sysctl
   - name: community.sops      # load_vars from SOPS-encrypted vault
   - name: kewlfft.aur         # Arch AUR package installer
+
+roles:
+  - name: gantsign.visual-studio-code-extensions
