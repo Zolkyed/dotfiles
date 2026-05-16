@@ -1,22 +1,11 @@
 ---
 # Override auto-detection by setting the branch for your GPU:
-#   580xx -> GTX 950, GTX 960, GTX 970, GTX 980, GTX 1050, GTX 1060, GTX 1070, GTX 1080
-#   500xx -> RTX 5070, RTX 5080, RTX 5090
-#   current -> RTX 2060, RTX 2080, RTX 3060, RTX 3080, RTX 3090, RTX 4070, RTX 4080, RTX 4090
+#   580xx -> GTX 900 series (Maxwell), GTX 1000 series (Pascal) e.g. GTX 950, 1060, 1080
+#   500xx -> RTX 5000 series (Blackwell) e.g. RTX 5070, 5080, 5090
+#   current -> RTX 2000/3000/4000 series (Turing/Ampere/Ada) e.g. RTX 2080, 3080, 4090
 nvidia_driver_branch: auto
 
-# Adding support for a new GPU:
-#   1. Find the chip prefix: run 'lspci -Dnn -d 10de:' and look for the chip code e.g. GB203, GC102
-#      The prefix is the letters before the number: GB203 -> GB
-#   2. Find the AUR packages: run 'paru -Ss nvidia | grep <branch>' e.g. 'paru -Ss nvidia | grep 700xx'
-#   3. Add a new entry to nvidia_driver_packages below with the chip prefix and AUR packages
-
-nvidia_unsupported_chip_prefixes:
-  - G8
-  - G9
-  - GT2
-  - GF
-  - GK
+nvidia_unsupported_legacy_device_regex: '\b(G8|G9|GT2|GF|GK)[0-9]+'
 
 nvidia_proprietary_mkinitcpio_modules:
   - nvidia
@@ -26,9 +15,7 @@ nvidia_proprietary_mkinitcpio_modules:
 
 nvidia_driver_packages:
   580xx:
-    chip_prefixes:
-      - GM
-      - GP
+    device_regex: '\b(GM|GP)[0-9]+'
     mkinitcpio_modules: "{{ nvidia_proprietary_mkinitcpio_modules }}"
     aur:
       - nvidia-580xx-dkms
@@ -39,8 +26,7 @@ nvidia_driver_packages:
       - lib32-opencl-nvidia-580xx
 
   500xx:
-    chip_prefixes:
-      - GB
+    device_regex: '\b(GB)[0-9]+'
     mkinitcpio_modules: "{{ nvidia_proprietary_mkinitcpio_modules }}"
     aur:
       - nvidia-500xx-dkms
@@ -51,10 +37,7 @@ nvidia_driver_packages:
       - lib32-opencl-nvidia-500xx
 
   current:
-    chip_prefixes:
-      - TU
-      - GA
-      - AD
+    device_regex: '\b(TU|GA|AD)[0-9]+'
     pacman:
       - nvidia-open-dkms
       - nvidia-utils

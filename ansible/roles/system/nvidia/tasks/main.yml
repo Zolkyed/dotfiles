@@ -24,7 +24,7 @@
   ansible.builtin.assert:
     that:
       - nvidia_display_adapters | length > 0
-      - nvidia_display_adapters | join('\n') is not search('\b(' + nvidia_unsupported_chip_prefixes | join('|') + ')[0-9]+')
+      - nvidia_display_adapters | join('\n') is not search(nvidia_unsupported_legacy_device_regex)
     fail_msg: >-
       No supported NVIDIA display adapter was detected, or the detected adapter
       needs an older legacy branch not managed by this role.
@@ -43,8 +43,8 @@
   when:
     - nvidia_driver_branch == 'auto'
     - nvidia_effective_driver_branch is not defined
-    - item.value.chip_prefixes | default([]) | length > 0
-    - nvidia_display_adapters | join('\n') is search('\b(' + item.value.chip_prefixes | join('|') + ')[0-9]+')
+    - item.value.device_regex | default('') | length > 0
+    - nvidia_display_adapters | join('\n') is search(item.value.device_regex | default(''))
 
 - name: Nvidia | Validate driver branch
   ansible.builtin.assert:
