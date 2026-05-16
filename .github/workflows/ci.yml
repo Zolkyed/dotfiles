@@ -42,9 +42,7 @@ jobs:
           shellcheck --version
 
       - name: Install Ansible Galaxy requirements
-        run: |
-          ansible-galaxy collection install -r ansible/requirements.yml
-          ansible-galaxy role install -r ansible/requirements.yml
+        run: ansible-galaxy collection install -r ansible/requirements.yml
 
       - name: Run yamllint
         run: yamllint -c .yamllint ansible .github

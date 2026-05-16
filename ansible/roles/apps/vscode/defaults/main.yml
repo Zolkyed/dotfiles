@@ -13,6 +13,3 @@ vscode_extensions:
   - timonwong.shellcheck
   - simonsiefke.svg-preview
   - tomrijndorp.find-it-faster
-
-vscode_extensions_absent:
-  - vsciot-vscode.vscode-arduino
