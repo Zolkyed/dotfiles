@@ -154,6 +154,7 @@ profiles:
       - snapper
       - snap-pac
       - grub-btrfs
+      - inotify-tools
 
   splashboot:
     pacman:
@@ -175,6 +176,8 @@ profiles:
       - virt-install
       - virt-manager
       - edk2-ovmf
+      - dnsmasq
+      - dmidecode
 
   # -----------------------------------------------------------------------
   # Desktop / WM

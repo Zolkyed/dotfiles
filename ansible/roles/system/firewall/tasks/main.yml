@@ -19,3 +19,9 @@
 - name: Firewall | Enable and start ufw
   community.general.ufw:
     state: enabled
+
+- name: Firewall | Enable and start ufw service
+  ansible.builtin.systemd_service:
+    name: ufw
+    enabled: true
+    state: started
