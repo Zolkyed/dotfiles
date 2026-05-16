@@ -1,8 +1,20 @@
 ---
-# Override auto-detection by setting the branch for your GPU:
-#   580xx -> GTX 900 series (Maxwell), GTX 1000 series (Pascal) e.g. GTX 950, 1060, 1080
-#   500xx -> RTX 5000 series (Blackwell) e.g. RTX 5070, 5080, 5090
-#   current -> RTX 2000/3000/4000 series (Turing/Ampere/Ada) e.g. RTX 2080, 3080, 4090
+# How to find your GPU chip code:
+#   Run: lspci -Dnn -d 10de:
+#   Example output: 0000:01:00.0 VGA compatible controller [0300]: NVIDIA Corporation GP104 [GeForce GTX 1080] [10de:1b80]
+#   The chip code is the part before the bracketed name -> GP104
+#   The letters before the digits are the prefix  -> GP  (matches 580xx branch)
+#
+# Override auto-detection by setting nvidia_driver_branch to the right branch for your GPU:
+#   580xx -> GTX 900 series (Maxwell), GTX 1000 series (Pascal) e.g. GTX 950, 1060, 1080  (GM/GP prefix)
+#   500xx -> RTX 5000 series (Blackwell) e.g. RTX 5070, 5080, 5090                         (GB prefix)
+#   current -> RTX 2000/3000/4000 series (Turing/Ampere/Ada) e.g. RTX 2080, 3080, 4090    (TU/GA/AD prefix)
+#
+# To add a new branch:
+#   1. Run lspci -Dnn -d 10de: and note the chip code e.g. GC102
+#   2. Extract the prefix (letters only): GC102 -> GC
+#   3. Add a new entry below with device_regex: '\b(GC)[0-9]+'
+#   4. Find AUR packages: paru -Ss nvidia | grep <branch-name>
 nvidia_driver_branch: auto
 
 nvidia_unsupported_legacy_device_regex: '\b(G8|G9|GT2|GF|GK)[0-9]+'
