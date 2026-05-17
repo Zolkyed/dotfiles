@@ -1,5 +1,6 @@
 ---
 fonts_pacman_packages:
+  - fontconfig
   - noto-fonts
   - noto-fonts-emoji
   - ttf-dejavu

@@ -34,7 +34,7 @@
     - name: Merge detected features
       tags: always
       ansible.builtin.set_fact:
-        enabled_features: "{{ (enabled_features + auto_detected_features) | unique }}"
+        enabled_features: "{{ (enabled_features + (auto_detected_features | default([]))) | unique }}"
 
   roles:
     # --- Base ---
