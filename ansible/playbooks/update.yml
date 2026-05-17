@@ -37,10 +37,8 @@
       tags: always
 
     - name: Update | Upgrade flatpak packages
-      ansible.builtin.command:
-        cmd: flatpak update --noninteractive
-      register: flatpak_update
-      changed_when: "'Nothing to do' not in flatpak_update.stdout"
+      community.general.flatpak:
+        state: latest
       when: "'flatpak' in ansible_facts.packages"
       tags: flatpak
 

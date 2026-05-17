@@ -33,12 +33,12 @@ just diff            # chezmoi diff
 ```
 .
 ├── ansible/                    # provisioning
-│   ├── playbooks/setup.yml     # single playbook
+│   ├── playbooks/              # setup, update, maintenance, dotfiles
 │   ├── inventory/
 │   │   ├── hosts.yml           # SSH inventory
 │   │   ├── local.yml           # local inventory
 │   │   └── {group,host}_vars/  # config + secrets
-│   └── roles/{system,desktop,apps,user}/
+│   └── roles/{apps,desktop,lib,system,user}/
 ├── archinstall/                 # ISO installer config
 ├── assets/                     # icons, wallpapers
 ├── chezmoi/                    # user dotfiles
@@ -58,13 +58,14 @@ just diff            # chezmoi diff
 - **`group_vars/all.yml`** → user defaults and host feature presets
 - **role defaults** → package, service, and app lists for each role
 - **`host_vars/<host>/vars.yml`** → active preset selection
+- **auto-detect** → GPU features (`nvidia_gpu`, `amd_gpu`, `intel_gpu`) are detected from `lspci` at runtime
 
 ## Host presets
 
-| Host | Profiles |
+| Host | Features |
 |---|---|
-| desktop | audio, avahi, bluetooth, vpn, firewall, fail2ban, firmware, nvidia_gpu, bootloader, snapper, docker, virtualization, plasma, browser, dev, flatpak, mihon, media, office, ai, rclone, gaming, xdg, splashboot |
-| laptop | audio, avahi, bluetooth, vpn, firewall, fail2ban, firmware, amd_gpu, bootloader, snapper, docker, virtualization, plasma, browser, dev, flatpak, mihon, media, office, ai, rclone, xdg, splashboot |
+| desktop | audio, avahi, bluetooth, vpn, firewall, fail2ban, firmware, bootloader, snapper, docker, virtualization, plasma, browser, dev, flatpak, mihon, media, office, ai, rclone, gaming, xdg, plymouth, tools |
+| laptop | audio, avahi, bluetooth, vpn, firewall, fail2ban, firmware, bootloader, snapper, docker, virtualization, plasma, browser, dev, flatpak, mihon, media, office, ai, rclone, xdg, plymouth, tools |
 | server | vpn, firewall, fail2ban, bootloader, snapper, docker, virtualization |
 
 ## References

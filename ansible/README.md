@@ -46,7 +46,9 @@ active_preset: desktop
 # group_vars/all.yml
 presets:
   desktop:
-    features: [audio, nvidia_gpu, plasma, browser, gaming, ...]
+    features: [audio, plasma, browser, gaming, ...]
+
+# GPU features (nvidia_gpu, amd_gpu, intel_gpu) are auto-detected from lspci
 ```
 
 ## Roles

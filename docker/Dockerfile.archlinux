@@ -19,11 +19,8 @@ SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 RUN pacman -Syu --noconfirm --needed \
       age \
       ansible \
-      base-devel \
-      git \
       sops \
-      sudo \
-      zsh && \
+      sudo && \
     rm -rf /var/cache/pacman/pkg/*
 
 RUN groupadd --gid ${GID} ${GROUP} && \
@@ -40,37 +37,39 @@ RUN sudo -u ${USER} ansible-galaxy collection install \
 RUN --mount=type=secret,id=sops_age_key \
     install -d -m 700 -o ${USER} -g ${GROUP} /home/${USER}/.config/sops/age && \
     install -m 600 -o ${USER} -g ${GROUP} \
-      /run/secrets/sops_age_key /home/${USER}/.config/sops/age/keys.txt && \
-    sudo -u ${USER} sh -lc ' \
-      export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt" && \
-      export ANSIBLE_CONFIG="$HOME/dotfiles/ansible/ansible.cfg" && \
-      cd "$HOME/dotfiles/ansible" && \
-      sops -d inventory/group_vars/vault.yml >/dev/null && \
-      sops -d inventory/host_vars/server/vault.yml >/dev/null && \
-      ansible-playbook -i inventory/local.yml playbooks/setup.yml --syntax-check && \
-      ansible-playbook -i inventory/local.yml playbooks/update.yml --syntax-check && \
+      /run/secrets/sops_age_key /home/${USER}/.config/sops/age/keys.txt
+
+RUN --mount=type=secret,id=sops_age_key \
+    sudo -u ${USER} sh -lc '
+      export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt"
+      export ANSIBLE_CONFIG="$HOME/dotfiles/ansible/ansible.cfg"
+      cd "$HOME/dotfiles/ansible"
+
+      # Verify vaults are decryptable
+      sops -d inventory/group_vars/vault.yml >/dev/null
+      sops -d inventory/host_vars/server/vault.yml >/dev/null
+
+      # Syntax checks
+      ansible-playbook -i inventory/local.yml playbooks/setup.yml --syntax-check
+      ansible-playbook -i inventory/local.yml playbooks/update.yml --syntax-check
+      ansible-playbook -i inventory/local.yml playbooks/maintenance.yml --syntax-check
+      ansible-playbook -i inventory/local.yml playbooks/dotfiles.yml --syntax-check
+
+      # Server preset — check always-on + user roles
       ansible-playbook \
         -i inventory/local.yml \
         playbooks/setup.yml \
         -l server \
         --check \
-        --tags always,user,sudoers,ssh_keys,bin && \
+        --tags always,user,sudo,ssh_keys,bin
+
+      # Laptop preset — check always-on + container-safe feature roles
       ansible-playbook \
         -i inventory/local.yml \
-        playbooks/update.yml \
-        --syntax-check && \
-      ansible-playbook \
-        -i inventory/local.yml \
-        playbooks/maintenance.yml \
-        --syntax-check && \
-      ansible-playbook \
-        -i inventory/local.yml \
-        playbooks/dotfiles.yml \
-        --syntax-check && \
-      ansible-playbook \
-        -i inventory/local.yml \
-        playbooks/update.yml \
-        -l server \
-        --syntax-check \
-        --skip-tags mirrors' && \
-    rm -f /home/${USER}/.config/sops/age/keys.txt
+        playbooks/setup.yml \
+        -l laptop \
+        --check \
+        --tags always,base,shell,audio,bluetooth
+    '
+
+RUN rm -f /home/${USER}/.config/sops/age/keys.txt
