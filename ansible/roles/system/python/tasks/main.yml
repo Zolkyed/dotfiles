@@ -1,0 +1,16 @@
+---
+- name: Python | Install pip packages
+  ansible.builtin.pip:
+    name: "{{ pip_packages }}"
+    extra_args: --user
+  become: false
+  when: pip_packages | length > 0
+  vars:
+    pip_packages: >-
+      {{
+        package_profiles
+        | map('extract', profiles)
+        | map(attribute='pip', default=[])
+        | flatten
+        | unique
+      }}

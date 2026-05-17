@@ -144,6 +144,8 @@ profiles:
     pacman:
       - grub
       - efibootmgr
+    aur:
+      - grub-hook
 
   snapper:
     pacman:
@@ -281,6 +283,9 @@ profiles:
       - hayase-desktop-bin
     flatpak:
       - com.spotify.Client
+    pip:
+      - guessit
+      - requests
 
   gaming:
     pacman:

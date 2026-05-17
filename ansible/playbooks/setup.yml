@@ -48,6 +48,8 @@
       tags: aur
     - role: system/packages
       tags: packages
+    - role: system/python
+      tags: python
 
     # --- Core system services ---
     - role: system/journald
