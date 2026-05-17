@@ -58,6 +58,8 @@
       tags: journald
     - role: system/networking
       tags: networking
+    - role: system/ntp
+      tags: ntp
     - role: system/sshd
       tags: sshd
     - role: system/maintenance

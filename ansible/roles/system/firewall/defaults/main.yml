@@ -1,6 +1,10 @@
 ---
 firewall_allow_ports:
   - "{{ sshd_port }}"
+  - 1714:1764
+
+firewall_allow_ports_udp:
+  - 1714:1764
 
 firewall_default_incoming: deny
 firewall_default_outgoing: allow

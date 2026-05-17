@@ -30,9 +30,9 @@ profiles:
       - zsh-autosuggestions
       - zsh-syntax-highlighting
       - zsh-completions
-      - starship
     aur:
       - oh-my-zsh-git
+      - spaceship-prompt
       - fzf-tab
 
   utility:
@@ -189,6 +189,7 @@ profiles:
       - plasma-desktop
       - sddm
       - sddm-kcm
+      - xdg-desktop-portal
       - xdg-desktop-portal-kde
       - plasma-pa
       - plasma-nm
@@ -199,6 +200,9 @@ profiles:
       - breeze-gtk
       - discover
       - dolphin
+      - gvfs
+      - gvfs-mtp
+      - gvfs-smb
       - spectacle
       - kcalc
       - ark
@@ -296,11 +300,14 @@ profiles:
       - steam
       - lutris
       - gamemode
+      - lib32-gamemode
       - mangohud
       - goverlay
       - wine
       - winetricks
       - protontricks
+      - vkd3d
+      - lib32-vkd3d
       - retroarch
     aur:
       - proton-ge-custom-bin
