@@ -101,7 +101,7 @@ presets:
 | `apps/mihon` | mihon | `mihon` | Manga reader desktop entry |
 | `apps/browser` | browser | `browser` | Brave + managed policies |
 | `apps/rclone` | rclone | `rclone` | Google Drive sync |
-| `apps/node` | node | `dev` or `ai` | Node.js via Volta |
+| `apps/node` | node | `node` or `ai` dependency | Node.js via Volta |
 | `apps/dev` | dev | `dev` | Dev tools (python, rust, gcc, …) |
 | `apps/vscode` | vscode | `dev` | VS Code + extensions |
 | `apps/media` | media | `media` | Media apps + konsave |

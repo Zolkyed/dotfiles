@@ -143,7 +143,7 @@
       when: "'rclone' in enabled_features"
     - role: apps/node
       tags: node
-      when: "'dev' in enabled_features or 'ai' in enabled_features"
+      when: "'node' in enabled_features"
     - role: apps/dev
       tags: dev
       when: "'dev' in enabled_features"

@@ -1,12 +1,11 @@
 ---
-- name: Flatpak | Install
+- name: Flatpak | Install runtime
   ansible.builtin.include_role:
     name: system/install
     tasks_from: packages
   vars:
     install_label: Flatpak
     install_pacman_packages: "{{ flatpak_pacman_packages }}"
-    install_flatpak_packages: "{{ flatpak_flatpak_packages }}"
 
 - name: Flatpak | Add remotes
   community.general.flatpak_remote:
@@ -14,3 +13,11 @@
     flatpakrepo_url: "{{ item.url }}"
     state: present
   loop: "{{ flatpak_remotes }}"
+
+- name: Flatpak | Install apps
+  ansible.builtin.include_role:
+    name: system/install
+    tasks_from: packages
+  vars:
+    install_label: Flatpak
+    install_flatpak_packages: "{{ flatpak_flatpak_packages }}"

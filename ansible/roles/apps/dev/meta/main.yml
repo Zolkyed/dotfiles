@@ -1,4 +1,3 @@
 ---
 dependencies:
   - role: apps/flatpak
-  - role: apps/node
