@@ -15,6 +15,7 @@ profiles:
       - neovim
       - htop
       - unzip
+      - zip
       - rsync
       - kitty
       - base-devel
@@ -56,6 +57,7 @@ profiles:
       - procs
       - just
       - trash-cli
+      - tree
       - helix
       - yazi
       - pacman-contrib
@@ -82,6 +84,7 @@ profiles:
       - inter-font
       - ttf-jetbrains-mono
       - ttf-cascadia-code
+      - ttf-font-awesome
 
   # -----------------------------------------------------------------------
   # System
@@ -251,6 +254,7 @@ profiles:
       - gcc
       - gdb
       - cmake
+      - ninja
     aur:
       - visual-studio-code-bin
       - volta-bin
