@@ -116,12 +116,13 @@ presets:
 | Role | Purpose |
 |---|---|
 | `lib/install` | Shared package install tasks (pacman, AUR, flatpak, pipx). Called via `include_role tasks_from: packages`. |
+| `lib/detect` | Shared hardware detection. Called from `pre_tasks` to auto-enable GPU features based on `lspci`. |
 
 ## Playbooks
 
 | Playbook | Purpose |
 |---|---|
-| `playbooks/setup.yml` | One-time provisioning: users, package manager, packages, services, apps, dotfiles. |
+| `playbooks/setup.yml` | One-time provisioning: users, package manager, base system, hardware detection, services, apps, dotfiles. |
 | `playbooks/update.yml` | Recurring updates: mirrors, keyring, pacman/AUR/flatpak upgrades, cache cleanup. |
 | `playbooks/dotfiles.yml` | Apply chezmoi dotfiles only. |
 | `playbooks/maintenance.yml` | Housekeeping: orphan removal, journal vacuum, docker/snapper/paru cleanup. |
