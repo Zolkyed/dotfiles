@@ -135,6 +135,7 @@ profiles:
     pacman:
       - btrfs-progs
       - pkgfile
+      - dosfstools
 
   firmware:
     pacman:
