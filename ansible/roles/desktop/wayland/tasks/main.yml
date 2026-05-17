@@ -1,0 +1,8 @@
+---
+- name: Wayland | Install
+  ansible.builtin.include_role:
+    name: system/install
+    tasks_from: packages
+  vars:
+    install_label: Wayland
+    install_pacman_packages: "{{ wayland_pacman_packages }}"

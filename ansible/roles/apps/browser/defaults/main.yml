@@ -1,4 +1,7 @@
 ---
+browser_aur_packages:
+  - brave-bin
+
 browser_policy_dir: /etc/brave/policies/managed
 browser_policy_file: zz-browser-policy.json
 browser_extensions:

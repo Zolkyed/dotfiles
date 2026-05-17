@@ -1,4 +1,12 @@
 ---
+- name: Plasma | Install
+  ansible.builtin.include_role:
+    name: system/install
+    tasks_from: packages
+  vars:
+    install_label: Plasma
+    install_pacman_packages: "{{ plasma_pacman_packages }}"
+
 - name: Plasma | Enable SDDM for next boot
   ansible.builtin.systemd_service:
     name: sddm

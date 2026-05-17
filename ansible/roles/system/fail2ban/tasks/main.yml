@@ -1,4 +1,12 @@
 ---
+- name: Fail2ban | Install
+  ansible.builtin.include_role:
+    name: system/install
+    tasks_from: packages
+  vars:
+    install_label: Fail2ban
+    install_pacman_packages: "{{ fail2ban_pacman_packages }}"
+
 - name: Fail2ban | Deploy jail.local
   ansible.builtin.template:
     src: jail.local.j2

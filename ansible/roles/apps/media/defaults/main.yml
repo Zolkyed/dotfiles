@@ -1,0 +1,22 @@
+---
+media_pacman_packages:
+  - mpv
+  - ffmpeg
+  - ffmpegthumbnailer
+  - yt-dlp
+  - gimp
+  - pavucontrol
+  - obs-studio
+  - qbittorrent
+  - discord
+  - python-guessit
+  - python-requests
+
+media_aur_packages:
+  - hayase-desktop-bin
+
+media_flatpak_packages:
+  - com.spotify.Client
+
+media_pipx_packages:
+  - konsave

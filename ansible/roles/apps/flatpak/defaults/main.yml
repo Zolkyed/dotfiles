@@ -1,4 +1,10 @@
 ---
+flatpak_pacman_packages:
+  - flatpak
+
 flatpak_remotes:
   - name: flathub
     url: https://dl.flathub.org/repo/flathub.flatpakrepo
+
+flatpak_flatpak_packages:
+  - it.mijorus.gearlever

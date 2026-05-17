@@ -1,4 +1,12 @@
 ---
+- name: Snapper | Install
+  ansible.builtin.include_role:
+    name: system/install
+    tasks_from: packages
+  vars:
+    install_label: Snapper
+    install_pacman_packages: "{{ snapper_pacman_packages }}"
+
 - name: Snapper | Check stale /home/.snapshots
   ansible.builtin.stat:
     path: /home/.snapshots

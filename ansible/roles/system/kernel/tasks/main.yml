@@ -1,0 +1,19 @@
+---
+- name: Kernel | Enable systemd-oomd
+  ansible.builtin.systemd_service:
+    name: systemd-oomd
+    enabled: true
+    state: started
+
+- name: Kernel | Apply kernel parameters
+  ansible.posix.sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    sysctl_file: "{{ kernel_sysctl_file }}"
+    state: present
+    sysctl_set: true
+    reload: true
+  loop: "{{ kernel_sysctl_settings | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+  when: kernel_sysctl_settings | length > 0

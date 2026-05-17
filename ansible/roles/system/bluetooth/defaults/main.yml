@@ -1,0 +1,4 @@
+---
+bluetooth_pacman_packages:
+  - bluez
+  - bluez-utils

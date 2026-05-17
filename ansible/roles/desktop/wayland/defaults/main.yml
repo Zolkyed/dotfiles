@@ -1,0 +1,11 @@
+---
+wayland_pacman_packages:
+  - waybar
+  - rofi
+  - grim
+  - slurp
+  - brightnessctl
+  - playerctl
+  - network-manager-applet
+  - swaylock
+  - swayidle

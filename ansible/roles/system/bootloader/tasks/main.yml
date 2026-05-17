@@ -1,4 +1,13 @@
 ---
+- name: Bootloader | Install
+  ansible.builtin.include_role:
+    name: system/install
+    tasks_from: packages
+  vars:
+    install_label: Bootloader
+    install_pacman_packages: "{{ bootloader_pacman_packages }}"
+    install_aur_packages: "{{ bootloader_aur_packages }}"
+
 - name: Bootloader | Ensure /boot/grub exists
   ansible.builtin.file:
     path: /boot/grub

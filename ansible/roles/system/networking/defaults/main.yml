@@ -1,4 +1,9 @@
 ---
+networking_hostname: "{{ inventory_hostname }}"
+
+networking_pacman_packages:
+  - networkmanager
+
 networking_dns_servers:
   - "1.1.1.1"
   - "9.9.9.9"

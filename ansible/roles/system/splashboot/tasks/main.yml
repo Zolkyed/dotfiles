@@ -1,4 +1,12 @@
 ---
+- name: Splashboot | Install
+  ansible.builtin.include_role:
+    name: system/install
+    tasks_from: packages
+  vars:
+    install_label: Splashboot
+    install_pacman_packages: "{{ splashboot_pacman_packages }}"
+
 - name: Splashboot | Check available Plymouth themes
   ansible.builtin.command:
     cmd: plymouth-set-default-theme --list

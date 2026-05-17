@@ -1,4 +1,12 @@
 ---
+- name: Rclone | Install
+  ansible.builtin.include_role:
+    name: system/install
+    tasks_from: packages
+  vars:
+    install_label: Rclone
+    install_pacman_packages: "{{ rclone_pacman_packages }}"
+
 - name: Rclone | Ensure config directory exists
   ansible.builtin.file:
     path: "{{ user_home }}/.config/rclone"

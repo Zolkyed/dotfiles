@@ -1,4 +1,12 @@
 ---
+- name: Firewall | Install
+  ansible.builtin.include_role:
+    name: system/install
+    tasks_from: packages
+  vars:
+    install_label: Firewall
+    install_pacman_packages: "{{ firewall_pacman_packages }}"
+
 - name: Firewall | Set default incoming policy
   community.general.ufw:
     direction: incoming

@@ -1,0 +1,9 @@
+---
+- name: Dev | Install
+  ansible.builtin.include_role:
+    name: system/install
+    tasks_from: packages
+  vars:
+    install_label: Dev
+    install_pacman_packages: "{{ dev_pacman_packages }}"
+    install_flatpak_packages: "{{ dev_flatpak_packages }}"

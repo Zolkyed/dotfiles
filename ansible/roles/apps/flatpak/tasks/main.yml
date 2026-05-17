@@ -1,23 +1,16 @@
 ---
+- name: Flatpak | Install
+  ansible.builtin.include_role:
+    name: system/install
+    tasks_from: packages
+  vars:
+    install_label: Flatpak
+    install_pacman_packages: "{{ flatpak_pacman_packages }}"
+    install_flatpak_packages: "{{ flatpak_flatpak_packages }}"
+
 - name: Flatpak | Add remotes
   community.general.flatpak_remote:
     name: "{{ item.name }}"
     flatpakrepo_url: "{{ item.url }}"
     state: present
   loop: "{{ flatpak_remotes }}"
-
-- name: Flatpak | Install apps
-  community.general.flatpak:
-    name: "{{ flatpak_apps }}"
-    state: present
-    remote: flathub
-  when: flatpak_apps | length > 0
-  vars:
-    flatpak_apps: >-
-      {{
-        package_profiles
-        | map('extract', profiles)
-        | map(attribute='flatpak', default=[])
-        | flatten
-        | unique
-      }}

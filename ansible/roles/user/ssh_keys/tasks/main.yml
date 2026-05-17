@@ -14,7 +14,7 @@
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
     mode: "0600"
-  loop: "{{ ssh_keys }}"
+  loop: "{{ ssh_keys_list }}"
   when: item.private_key != ''
   no_log: true
 
@@ -25,6 +25,6 @@
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
     mode: "0644"
-  loop: "{{ ssh_keys }}"
+  loop: "{{ ssh_keys_list }}"
   when: item.public_key != ''
   no_log: true

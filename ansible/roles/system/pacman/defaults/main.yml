@@ -1,6 +1,2 @@
 ---
-pacman_multilib_profiles:
-  - gaming
-  - nvidia_gpu
-
-pacman_enable_multilib: "{{ enabled_profiles | default([]) | intersect(pacman_multilib_profiles) | length > 0 }}"
+pacman_enable_multilib: true

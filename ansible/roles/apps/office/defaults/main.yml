@@ -1,0 +1,5 @@
+---
+office_pacman_packages:
+  - libreoffice-fresh
+  - thunderbird
+  - zathura

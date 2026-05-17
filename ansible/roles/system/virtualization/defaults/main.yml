@@ -1,0 +1,9 @@
+---
+virtualization_pacman_packages:
+  - qemu-full
+  - libvirt
+  - virt-install
+  - virt-manager
+  - edk2-ovmf
+  - dnsmasq
+  - dmidecode

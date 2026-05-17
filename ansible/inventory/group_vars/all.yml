@@ -11,24 +11,14 @@ user_groups:
   - video
 
 # ---------------------------------------------------------------------------
-# Defaults
+# Presets
 # ---------------------------------------------------------------------------
-always_profiles:
-  - core
-  - shell
-  - utility
-  - fun
-  - fonts
-  - networking
-  - sshd
-  - maintenance
-
 presets:
   # ---------------------------------------------------------------------------
   # DESKTOP
   # ---------------------------------------------------------------------------
   desktop:
-    profiles:
+    features:
       - audio
       - avahi
       - bluetooth
@@ -51,7 +41,6 @@ presets:
       - ai
       - rclone
       - gaming
-      - konsave
       - xdg
       - splashboot
 
@@ -59,7 +48,7 @@ presets:
   # LAPTOP
   # ---------------------------------------------------------------------------
   laptop:
-    profiles:
+    features:
       - audio
       - avahi
       - bluetooth
@@ -81,7 +70,6 @@ presets:
       - office
       - ai
       - rclone
-      - konsave
       - xdg
       - splashboot
 
@@ -89,7 +77,7 @@ presets:
   # SERVER
   # ---------------------------------------------------------------------------
   server:
-    profiles:
+    features:
       - vpn
       - firewall
       - fail2ban

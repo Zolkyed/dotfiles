@@ -1,9 +1,9 @@
 ---
-- name: User | Collect existing groups
+- name: Account | Collect existing groups
   ansible.builtin.getent:
     database: group
 
-- name: User | Ensure user exists with correct groups
+- name: Account | Ensure user exists with correct groups
   ansible.builtin.user:
     name: "{{ user_name }}"
     shell: "{{ user_shell }}"
@@ -11,12 +11,12 @@
     append: true
     state: present
 
-- name: User | Set root shell
+- name: Account | Set root shell
   ansible.builtin.user:
     name: root
     shell: "{{ user_shell }}"
 
-- name: User | Ensure user home directory exists
+- name: Account | Ensure user home directory exists
   ansible.builtin.file:
     path: "{{ user_home }}"
     state: directory

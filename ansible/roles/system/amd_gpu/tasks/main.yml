@@ -1,0 +1,8 @@
+---
+- name: AMD GPU | Install
+  ansible.builtin.include_role:
+    name: system/install
+    tasks_from: packages
+  vars:
+    install_label: AMD GPU
+    install_pacman_packages: "{{ amd_gpu_pacman_packages }}"

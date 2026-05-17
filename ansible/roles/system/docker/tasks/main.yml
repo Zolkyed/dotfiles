@@ -1,4 +1,12 @@
 ---
+- name: Docker | Install
+  ansible.builtin.include_role:
+    name: system/install
+    tasks_from: packages
+  vars:
+    install_label: Docker
+    install_pacman_packages: "{{ docker_pacman_packages }}"
+
 - name: Docker | Add user to docker group
   ansible.builtin.user:
     name: "{{ user_name }}"

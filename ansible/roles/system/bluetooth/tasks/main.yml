@@ -1,4 +1,12 @@
 ---
+- name: Bluetooth | Install
+  ansible.builtin.include_role:
+    name: system/install
+    tasks_from: packages
+  vars:
+    install_label: Bluetooth
+    install_pacman_packages: "{{ bluetooth_pacman_packages }}"
+
 - name: Bluetooth | Auto-enable adapters
   community.general.ini_file:
     path: /etc/bluetooth/main.conf

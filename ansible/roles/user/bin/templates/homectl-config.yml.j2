@@ -1,4 +1,4 @@
 assistant_base_url: "{{ assistant_base_url }}"
 assistant_entity_id_fan: "{{ assistant_entity_id_fan }}"
-webhook_url: "{{ vault_webhook_url }}"
-assistant_token: "{{ vault_ha_token }}"
+webhook_url: "{{ ansible_facts['vault_webhook_url'] }}"
+assistant_token: "{{ ansible_facts['vault_ha_token'] }}"

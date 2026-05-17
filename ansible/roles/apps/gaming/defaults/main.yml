@@ -1,0 +1,22 @@
+---
+gaming_pacman_packages:
+  - steam
+  - lutris
+  - gamemode
+  - lib32-gamemode
+  - mangohud
+  - goverlay
+  - wine
+  - winetricks
+  - protontricks
+  - vkd3d
+  - lib32-vkd3d
+  - retroarch
+
+gaming_aur_packages:
+  - proton-ge-custom-bin
+  - heroic-games-launcher-bin
+
+gaming_flatpak_packages:
+  - net.pcsx2.PCSX2
+  - net.davidotek.pupgui2

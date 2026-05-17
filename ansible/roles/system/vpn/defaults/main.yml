@@ -1,0 +1,3 @@
+---
+vpn_pacman_packages:
+  - wireguard-tools

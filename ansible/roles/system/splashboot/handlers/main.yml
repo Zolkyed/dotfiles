@@ -3,4 +3,3 @@
   ansible.builtin.command:
     cmd: mkinitcpio -P
   changed_when: false
-  listen: Splashboot | Update initramfs

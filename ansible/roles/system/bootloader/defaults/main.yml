@@ -1,4 +1,11 @@
 ---
+bootloader_pacman_packages:
+  - grub
+  - efibootmgr
+
+bootloader_aur_packages:
+  - grub-hook
+
 bootloader_grub_timeout: 1
 bootloader_grub_timeout_style: hidden
 bootloader_grub_cmdline_linux_default: "quiet"

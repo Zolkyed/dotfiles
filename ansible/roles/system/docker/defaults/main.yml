@@ -1,0 +1,5 @@
+---
+docker_pacman_packages:
+  - docker
+  - docker-compose
+  - docker-buildx

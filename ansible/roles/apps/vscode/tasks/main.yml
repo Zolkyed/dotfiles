@@ -1,4 +1,12 @@
 ---
+- name: VSCode | Install
+  ansible.builtin.include_role:
+    name: system/install
+    tasks_from: packages
+  vars:
+    install_label: VSCode
+    install_aur_packages: "{{ vscode_aur_packages }}"
+
 - name: VSCode | Install extensions
   ansible.builtin.command:
     argv:

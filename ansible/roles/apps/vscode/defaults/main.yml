@@ -1,4 +1,7 @@
 ---
+vscode_aur_packages:
+  - visual-studio-code-bin
+
 vscode_extensions:
   - redhat.ansible
   - ms-vscode.cpptools

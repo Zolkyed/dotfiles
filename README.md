@@ -17,9 +17,11 @@ just ansibleinstall desktop
 ```bash
 just setup-dev       # create .venv with linters
 just run <host>      # run playbook via SSH
-just run-local <host># run playbook locally
+just run-local <host> # run playbook locally
 just check <host>    # dry-run
 just lint            # yamllint + shellcheck + ansible-lint
+just syntax          # Ansible syntax checks
+just integration     # build the Arch Linux Docker smoke-test image
 just vault-edit      # edit SOPS vault
 just vault-view      # view SOPS vault
 just apply           # chezmoi apply
@@ -53,17 +55,17 @@ just diff            # chezmoi diff
 - **Ansible** → packages, services, users, boot config
 - **Chezmoi** → shell, editor, terminal, theme
 - **SOPS + age** → secrets encrypted at rest
-- **`all.yml`** → presets + shared defaults
-- **`archlinux.yml`** → profile-based package data
-- **`host_vars/<host>/vars.yml`** → per-machine overrides
+- **`group_vars/all.yml`** → user defaults and host feature presets
+- **role defaults** → package, service, and app lists for each role
+- **`host_vars/<host>/vars.yml`** → active preset selection
 
 ## Host presets
 
 | Host | Profiles |
 |---|---|
-| desktop | audio, bluetooth, nvidia, plasma, browser, dev, flatpak, media, office, gaming, ai, docker, virtualization, ... |
-| laptop | same as desktop |
-| server | vpn, firewall, bootloader, docker, virtualization |
+| desktop | audio, avahi, bluetooth, vpn, firewall, fail2ban, firmware, nvidia_gpu, bootloader, snapper, docker, virtualization, plasma, browser, dev, flatpak, mihon, media, office, ai, rclone, gaming, xdg, splashboot |
+| laptop | audio, avahi, bluetooth, vpn, firewall, fail2ban, firmware, amd_gpu, bootloader, snapper, docker, virtualization, plasma, browser, dev, flatpak, mihon, media, office, ai, rclone, xdg, splashboot |
+| server | vpn, firewall, fail2ban, bootloader, snapper, docker, virtualization |
 
 ## References
 

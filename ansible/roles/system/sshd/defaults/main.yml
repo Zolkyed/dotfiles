@@ -1,6 +1,9 @@
 ---
-sshd_host_ed25519_private_key: "{{ vault_ssh_host_ed25519_private_key | default('') }}"
-sshd_host_ed25519_public_key: "{{ vault_ssh_host_ed25519_public_key | default('') }}"
+sshd_pacman_packages:
+  - openssh
+
+sshd_host_ed25519_private_key: "{{ ansible_facts['vault_ssh_host_ed25519_private_key'] | default('') }}"
+sshd_host_ed25519_public_key: "{{ ansible_facts['vault_ssh_host_ed25519_public_key'] | default('') }}"
 sshd_port: 22
 sshd_permit_root_login: "no"
 sshd_password_authentication: "no"

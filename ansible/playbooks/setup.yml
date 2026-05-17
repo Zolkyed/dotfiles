@@ -9,6 +9,7 @@
       tags: always
       community.sops.load_vars:
         file: "{{ playbook_dir }}/../inventory/group_vars/vault.yml"
+        return_method: facts-only
       become: false
       no_log: true
 
@@ -16,44 +17,37 @@
       tags: always
       community.sops.load_vars:
         file: "{{ playbook_dir }}/../inventory/host_vars/{{ inventory_hostname }}/vault.yml"
+        return_method: facts-only
       become: false
       no_log: true
 
-    - name: Load profile data
-      tags: always
-      ansible.builtin.include_vars:
-        file: "{{ playbook_dir }}/../inventory/group_vars/archlinux.yml"
-
-    - name: Build active profile lists
+    - name: Build active feature list
       tags: always
       ansible.builtin.set_fact:
-        enabled_profiles: "{{ presets[active_preset].profiles | default([]) }}"
-        package_profiles: "{{ (always_profiles + (presets[active_preset].profiles | default([]))) | unique }}"
+        enabled_features: "{{ presets[active_preset].features | default([]) }}"
 
   roles:
     # --- Base ---
-    - role: system/sysctl
-      tags: sysctl
+    - role: system/kernel
+      tags: kernel
     - role: user/account
       tags: user
     - role: system/sudoers
       tags: sudoers
 
-    # --- Package managers / packages ---
+    # --- Package managers ---
     - role: system/mirrors
       tags: mirrors
     - role: system/pacman
       tags: pacman
     - role: system/aur
       tags: aur
-    - role: system/packages
-      tags: packages
-    - role: system/pipx
-      tags: pipx
-    - role: system/npm
-      tags: npm
 
-    # --- Core system services ---
+    # --- Always-on system ---
+    - role: system/core
+      tags: core
+    - role: user/shell
+      tags: shell
     - role: system/journald
       tags: journald
     - role: system/networking
@@ -64,73 +58,110 @@
       tags: sshd
     - role: system/maintenance
       tags: maintenance
-    - role: system/firmware
-      tags: firmware
-      when: "'firmware' in enabled_profiles"
-    - role: system/firewall
-      tags: firewall
-      when: "'firewall' in enabled_profiles"
-    - role: system/fail2ban
-      tags: fail2ban
-      when: "'fail2ban' in enabled_profiles"
-    - role: system/audio
-      tags: audio
-      when: "'audio' in enabled_profiles"
-    - role: system/bluetooth
-      tags: bluetooth
-      when: "'bluetooth' in enabled_profiles"
-    - role: system/avahi
-      tags: avahi
-      when: "'avahi' in enabled_profiles"
-
-    # --- Hardware / boot ---
+    - role: system/fonts
+      tags: fonts
     - role: system/microcode
       tags: microcode
-    - role: system/nvidia
-      tags: nvidia
-      when: "'nvidia_gpu' in enabled_profiles"
+
+    # --- Optional system ---
+    - role: system/vpn
+      tags: vpn
+      when: "'vpn' in enabled_features"
+    - role: system/firmware
+      tags: firmware
+      when: "'firmware' in enabled_features"
+    - role: system/firewall
+      tags: firewall
+      when: "'firewall' in enabled_features"
+    - role: system/fail2ban
+      tags: fail2ban
+      when: "'fail2ban' in enabled_features"
+    - role: system/audio
+      tags: audio
+      when: "'audio' in enabled_features"
+    - role: system/bluetooth
+      tags: bluetooth
+      when: "'bluetooth' in enabled_features"
+    - role: system/avahi
+      tags: avahi
+      when: "'avahi' in enabled_features"
+
+    # --- Hardware / boot ---
+    - role: system/nvidia_gpu
+      tags: nvidia_gpu
+      when: "'nvidia_gpu' in enabled_features"
+    - role: system/amd_gpu
+      tags: amd_gpu
+      when: "'amd_gpu' in enabled_features"
+    - role: system/intel_gpu
+      tags: intel_gpu
+      when: "'intel_gpu' in enabled_features"
     - role: system/snapper
       tags: snapper
-      when: "'snapper' in enabled_profiles"
+      when: "'snapper' in enabled_features"
     - role: system/splashboot
       tags: splashboot
-      when: "'splashboot' in enabled_profiles"
+      when: "'splashboot' in enabled_features"
     - role: system/bootloader
       tags: bootloader
-      when: "'bootloader' in enabled_profiles"
+      when: "'bootloader' in enabled_features"
 
     # --- Containers / virtualization ---
     - role: system/docker
       tags: docker
-      when: "'docker' in enabled_profiles"
+      when: "'docker' in enabled_features"
     - role: system/virtualization
       tags: virtualization
-      when: "'virtualization' in enabled_profiles"
+      when: "'virtualization' in enabled_features"
 
-    # --- Desktop ---
-    - role: system/fonts
-      tags: fonts
+    # --- Desktop environments ---
     - role: desktop/plasma
       tags: plasma
-      when: "'plasma' in enabled_profiles"
+      when: "'plasma' in enabled_features"
+    - role: desktop/wayland
+      tags: wayland
+      when: "'wayland_common' in enabled_features"
+    - role: desktop/hyprland
+      tags: hyprland
+      when: "'hyprland' in enabled_features"
+    - role: desktop/niri
+      tags: niri
+      when: "'niri' in enabled_features"
 
     # --- Apps ---
     - role: apps/flatpak
       tags: flatpak
-      when: "'flatpak' in enabled_profiles"
+      when: "'flatpak' in enabled_features"
     - role: apps/mihon
       tags: mihon
-      when: "'mihon' in enabled_profiles"
+      when: "'mihon' in enabled_features"
     - role: apps/browser
       tags: browser
-      when: "'browser' in enabled_profiles"
+      when: "'browser' in enabled_features"
     - role: apps/rclone
       tags: rclone
-      when: "'rclone' in enabled_profiles"
+      when: "'rclone' in enabled_features"
+    - role: apps/node
+      tags: node
+      when: "'dev' in enabled_features or 'ai' in enabled_features"
+    - role: apps/dev
+      tags: dev
+      when: "'dev' in enabled_features"
     - role: apps/vscode
       tags: vscode
-      when: "'dev' in enabled_profiles"
-
+      when: "'dev' in enabled_features"
+    - role: apps/media
+      tags: media
+      when: "'media' in enabled_features"
+    - role: apps/office
+      tags: office
+      when: "'office' in enabled_features"
+    - role: apps/gaming
+      tags: gaming
+      when: "'gaming' in enabled_features"
+    - role: apps/ai
+      tags: ai
+      when: "'ai' in enabled_features"
     # --- User config ---
     - role: user/ssh_keys
       tags: ssh_keys
@@ -138,6 +169,6 @@
       tags: bin
     - role: user/xdg
       tags: xdg
-      when: "'xdg' in enabled_profiles"
+      when: "'xdg' in enabled_features"
     - role: user/dotfiles
       tags: dotfiles

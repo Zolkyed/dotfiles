@@ -1,0 +1,11 @@
+---
+shell_pacman_packages:
+  - zsh
+  - zsh-autosuggestions
+  - zsh-syntax-highlighting
+  - zsh-completions
+
+shell_aur_packages:
+  - oh-my-zsh-git
+  - spaceship-prompt
+  - fzf-tab

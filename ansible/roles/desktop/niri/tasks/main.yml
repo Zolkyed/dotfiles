@@ -1,0 +1,8 @@
+---
+- name: Niri | Install
+  ansible.builtin.include_role:
+    name: system/install
+    tasks_from: packages
+  vars:
+    install_label: Niri
+    install_pacman_packages: "{{ niri_pacman_packages }}"

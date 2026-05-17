@@ -1,4 +1,7 @@
 ---
+firewall_pacman_packages:
+  - ufw
+
 firewall_allow_ports:
   - "{{ sshd_port }}"
   - 1714:1764

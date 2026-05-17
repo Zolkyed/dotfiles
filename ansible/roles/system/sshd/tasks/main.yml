@@ -1,4 +1,12 @@
 ---
+- name: SSHD | Install
+  ansible.builtin.include_role:
+    name: system/install
+    tasks_from: packages
+  vars:
+    install_label: SSHD
+    install_pacman_packages: "{{ sshd_pacman_packages }}"
+
 - name: SSHD | Validate vaulted ssh host key pair when partially set
   ansible.builtin.assert:
     that:

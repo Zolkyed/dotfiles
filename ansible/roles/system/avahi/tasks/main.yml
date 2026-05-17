@@ -1,4 +1,12 @@
 ---
+- name: Avahi | Install
+  ansible.builtin.include_role:
+    name: system/install
+    tasks_from: packages
+  vars:
+    install_label: Avahi
+    install_pacman_packages: "{{ avahi_pacman_packages }}"
+
 - name: Avahi | Ensure mDNS is in hosts resolution
   ansible.builtin.lineinfile:
     path: /etc/nsswitch.conf

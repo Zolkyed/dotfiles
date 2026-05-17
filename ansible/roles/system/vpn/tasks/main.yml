@@ -1,0 +1,8 @@
+---
+- name: VPN | Install
+  ansible.builtin.include_role:
+    name: system/install
+    tasks_from: packages
+  vars:
+    install_label: VPN
+    install_pacman_packages: "{{ vpn_pacman_packages }}"

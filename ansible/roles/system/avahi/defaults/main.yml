@@ -1,0 +1,4 @@
+---
+avahi_pacman_packages:
+  - avahi
+  - nss-mdns

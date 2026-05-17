@@ -1,5 +1,5 @@
 ---
-- name: Aur | Install paru
+- name: AUR | Install paru
   kewlfft.aur.aur:
     name: paru
     use: makepkg
@@ -7,7 +7,7 @@
   become: true
   become_user: "{{ user_name }}"
 
-- name: Aur | Configure paru
+- name: AUR | Configure paru
   ansible.builtin.template:
     src: paru.conf.j2
     dest: /etc/paru.conf

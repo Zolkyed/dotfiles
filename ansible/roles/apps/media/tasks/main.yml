@@ -1,0 +1,11 @@
+---
+- name: Media | Install
+  ansible.builtin.include_role:
+    name: system/install
+    tasks_from: packages
+  vars:
+    install_label: Media
+    install_pacman_packages: "{{ media_pacman_packages }}"
+    install_aur_packages: "{{ media_aur_packages }}"
+    install_flatpak_packages: "{{ media_flatpak_packages }}"
+    install_pipx_packages: "{{ media_pipx_packages }}"

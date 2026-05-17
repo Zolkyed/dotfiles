@@ -1,4 +1,12 @@
 ---
+- name: Fonts | Install
+  ansible.builtin.include_role:
+    name: system/install
+    tasks_from: packages
+  vars:
+    install_label: Fonts
+    install_pacman_packages: "{{ fonts_pacman_packages }}"
+
 - name: Fonts | Enable LCD filter
   ansible.builtin.file:
     src: /usr/share/fontconfig/conf.avail/11-lcdfilter-default.conf

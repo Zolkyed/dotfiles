@@ -1,0 +1,11 @@
+---
+audio_pacman_packages:
+  - alsa-utils
+  - pipewire
+  - wireplumber
+  - pipewire-pulse
+  - pipewire-alsa
+  - pipewire-jack
+  - rtkit
+  - sof-firmware
+  - pamixer

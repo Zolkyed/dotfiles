@@ -1,4 +1,15 @@
 ---
+fonts_pacman_packages:
+  - noto-fonts
+  - noto-fonts-emoji
+  - ttf-dejavu
+  - ttf-liberation
+  - ttf-roboto
+  - inter-font
+  - ttf-jetbrains-mono
+  - ttf-cascadia-code
+  - ttf-font-awesome
+
 fonts_nerd:
   version: "3.4.0"
   families:

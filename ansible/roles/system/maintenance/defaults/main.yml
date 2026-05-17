@@ -1,4 +1,9 @@
 ---
+maintenance_pacman_packages:
+  - btrfs-progs
+  - pkgfile
+  - dosfstools
+
 maintenance_enable_fstrim: true
 maintenance_enable_btrfs_scrub: true
 maintenance_btrfs_scrub_mounts:

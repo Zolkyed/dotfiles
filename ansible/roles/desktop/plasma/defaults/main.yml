@@ -1,0 +1,24 @@
+---
+plasma_pacman_packages:
+  - plasma-desktop
+  - sddm
+  - sddm-kcm
+  - xdg-desktop-portal
+  - xdg-desktop-portal-kde
+  - plasma-pa
+  - plasma-nm
+  - kscreen
+  - powerdevil
+  - bluedevil
+  - plasma-systemmonitor
+  - breeze-gtk
+  - discover
+  - dolphin
+  - gvfs
+  - gvfs-mtp
+  - gvfs-smb
+  - spectacle
+  - kcalc
+  - ark
+  - kdeconnect
+  - wl-clipboard

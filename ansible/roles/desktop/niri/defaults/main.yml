@@ -1,0 +1,6 @@
+---
+niri_pacman_packages:
+  - niri
+  - xwayland-satellite
+  - mako
+  - swaybg

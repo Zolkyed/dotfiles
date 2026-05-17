@@ -1,4 +1,16 @@
 ---
+- name: Networking | Set hostname
+  ansible.builtin.hostname:
+    name: "{{ networking_hostname }}"
+
+- name: Networking | Install
+  ansible.builtin.include_role:
+    name: system/install
+    tasks_from: packages
+  vars:
+    install_label: Networking
+    install_pacman_packages: "{{ networking_pacman_packages }}"
+
 - name: Networking | Deploy systemd-resolved configuration
   ansible.builtin.template:
     src: resolved.conf.j2

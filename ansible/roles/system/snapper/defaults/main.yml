@@ -1,4 +1,10 @@
 ---
+snapper_pacman_packages:
+  - snapper
+  - snap-pac
+  - grub-btrfs
+  - inotify-tools
+
 snapper_timeline_limit:
   hourly: 6
   daily: 7

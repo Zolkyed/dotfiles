@@ -1,0 +1,50 @@
+---
+core_pacman_packages:
+  # essentials
+  - chezmoi
+  - curl
+  - wget
+  - neovim
+  - htop
+  - unzip
+  - zip
+  - rsync
+  - kitty
+  - base-devel
+  - man-db
+  - man-pages
+  - pciutils
+  - xdg-user-dirs
+  # cli utilities
+  - ncdu
+  - ripgrep
+  - vulkan-tools
+  - fuse3
+  - xdg-utils
+  - plocate
+  - psmisc
+  - github-cli
+  - tmux
+  - eza
+  - bat
+  - fd
+  - zoxide
+  - fzf
+  - lazygit
+  - git-delta
+  - duf
+  - procs
+  - just
+  - trash-cli
+  - tree
+  - helix
+  - yazi
+  - pacman-contrib
+  - lsof
+  # fun / info
+  - cowsay
+  - cmatrix
+  - figlet
+  - lolcat
+  - fastfetch
+  - cava

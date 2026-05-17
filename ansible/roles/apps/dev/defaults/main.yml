@@ -1,0 +1,23 @@
+---
+dev_pacman_packages:
+  - pkgconf
+  - python
+  - python-pip
+  - python-pipx
+  - rust
+  - jq
+  - yq
+  - httpie
+  - ansible-lint
+  - yamllint
+  - shellcheck
+  - pre-commit
+  - python-playwright
+  - gcc
+  - gdb
+  - cmake
+  - ninja
+
+dev_flatpak_packages:
+  - com.getpostman.Postman
+  - net.portswigger.BurpSuite-Community

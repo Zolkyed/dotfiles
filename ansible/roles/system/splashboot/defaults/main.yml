@@ -1,4 +1,7 @@
 ---
+splashboot_pacman_packages:
+  - plymouth
+
 splashboot_theme: spinner
 splashboot_grub_options:
   - quiet
