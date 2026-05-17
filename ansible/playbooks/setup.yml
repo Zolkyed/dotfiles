@@ -88,7 +88,7 @@
       tags: microcode
     - role: system/nvidia
       tags: nvidia
-      when: "'nvidia' in enabled_profiles"
+      when: "'nvidia_gpu' in enabled_profiles"
     - role: system/snapper
       tags: snapper
       when: "'snapper' in enabled_profiles"
