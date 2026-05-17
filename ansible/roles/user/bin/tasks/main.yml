@@ -1,12 +1,4 @@
 ---
-- name: Bin | Ensure ~/.local/bin exists
-  ansible.builtin.file:
-    path: "{{ bin_dest }}"
-    state: directory
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
-    mode: "0755"
-
 - name: Bin | Install custom scripts to ~/.local/bin
   ansible.builtin.copy:
     src: "{{ item }}"

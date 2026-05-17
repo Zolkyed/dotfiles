@@ -14,14 +14,6 @@
     group: "{{ user_name }}"
     mode: "0755"
 
-- name: XDG | Ensure user config directory exists
-  ansible.builtin.file:
-    path: "{{ user_home }}/.config"
-    state: directory
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
-    mode: "0755"
-
 - name: XDG | Deploy mimeapps.list
   ansible.builtin.template:
     src: mimeapps.list.j2
