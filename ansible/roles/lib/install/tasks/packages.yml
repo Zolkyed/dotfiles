@@ -20,12 +20,6 @@
     remote: flathub
   when: install_flatpak_packages | default([]) | length > 0
 
-- name: "Install pipx runtime | {{ install_label }}"
-  community.general.pacman:
-    name: python-pipx
-    state: present
-  when: install_pipx_packages | default([]) | length > 0
-
 - name: "Install pipx packages | {{ install_label }}"
   community.general.pipx:
     name: "{{ item }}"
@@ -35,3 +29,13 @@
   become_user: "{{ user_name }}"
   loop: "{{ install_pipx_packages | default([]) }}"
   when: install_pipx_packages | default([]) | length > 0
+
+- name: "Install npm global packages | {{ install_label }}"
+  community.general.npm:
+    name: "{{ item }}"
+    global: true
+    state: present
+  become: true
+  become_user: "{{ user_name }}"
+  loop: "{{ install_npm_packages | default([]) }}"
+  when: install_npm_packages | default([]) | length > 0
