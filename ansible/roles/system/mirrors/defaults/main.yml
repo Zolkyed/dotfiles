@@ -1,4 +1,7 @@
 ---
+mirrors_pacman_packages:
+  - reflector
+
 mirrors_reflector_country:
   - Canada
   - United States

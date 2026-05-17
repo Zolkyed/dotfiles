@@ -1,8 +1,11 @@
 ---
-- name: Mirrors | Install reflector
-  community.general.pacman:
-    name: reflector
-    state: present
+- name: Mirrors | Install
+  ansible.builtin.include_role:
+    name: lib/install
+    tasks_from: packages
+  vars:
+    install_label: Mirrors
+    install_pacman_packages: "{{ mirrors_pacman_packages }}"
 
 - name: Mirrors | Configure reflector
   ansible.builtin.template:
