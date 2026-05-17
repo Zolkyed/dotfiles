@@ -1,5 +1,5 @@
 ---
-ai_npm_packages:
+ai_volta_packages:
   - opencode-ai
   - "@openai/codex"
   - "@anthropic-ai/claude-code"

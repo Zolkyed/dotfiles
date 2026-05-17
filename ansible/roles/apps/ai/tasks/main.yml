@@ -7,5 +7,6 @@
   environment:
     VOLTA_HOME: "{{ user_home }}/.volta"
     PATH: "{{ user_home }}/.volta/bin:{{ ansible_facts.env.PATH }}"
-  loop: "{{ ai_npm_packages }}"
-  changed_when: false
+  loop: "{{ ai_volta_packages }}"
+  register: volta_result
+  changed_when: "'installed' in volta_result.stdout"
