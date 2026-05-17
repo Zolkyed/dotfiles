@@ -1,0 +1,20 @@
+---
+base_pacman_packages:
+  - curl
+  - wget
+  - unzip
+  - zip
+  - rsync
+  - base-devel
+  - man-db
+  - man-pages
+  - pciutils
+  - xdg-user-dirs
+  - fuse3
+  - xdg-utils
+  - plocate
+  - psmisc
+  - lsof
+  - pacman-contrib
+  - chezmoi
+  - vulkan-tools

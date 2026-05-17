@@ -1,0 +1,21 @@
+---
+- name: Sudo | Allow user passwordless sudo
+  ansible.builtin.copy:
+    dest: /etc/sudoers.d/99-nopasswd
+    content: "{{ sudo_user }} ALL=(ALL:ALL) NOPASSWD: ALL\n"
+    owner: root
+    group: root
+    mode: "0440"
+    validate: "visudo -cf %s"
+  when: sudo_nopasswd
+
+- name: Sudo | Remove archinstall-generated sudo
+  ansible.builtin.file:
+    path: "/etc/sudoers.d/00_{{ sudo_user }}"
+    state: absent
+
+- name: Sudo | Remove passwordless sudo when disabled
+  ansible.builtin.file:
+    path: /etc/sudoers.d/99-nopasswd
+    state: absent
+  when: not sudo_nopasswd

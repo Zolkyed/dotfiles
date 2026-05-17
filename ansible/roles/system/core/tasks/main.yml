@@ -1,8 +1,0 @@
----
-- name: Core | Install
-  ansible.builtin.include_role:
-    name: system/install
-    tasks_from: packages
-  vars:
-    install_label: Core
-    install_pacman_packages: "{{ core_pacman_packages }}"

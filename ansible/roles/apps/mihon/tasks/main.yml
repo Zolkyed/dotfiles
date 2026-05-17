@@ -34,17 +34,9 @@
         mode: "0644"
 
 - name: Mihon | Deploy desktop entry
-  ansible.builtin.copy:
+  ansible.builtin.template:
+    src: mihon.desktop.j2
     dest: "{{ mihon_desktop_dest }}"
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
     mode: "0644"
-    content: |
-      [Desktop Entry]
-      Name=Mihon
-      Exec={{ mihon_browser }} --app={{ mihon_url }}
-      Terminal=false
-      Type=Application
-      Categories=Internet;
-      StartupWMClass={{ mihon_wm_class }}
-      Icon={{ mihon_icon_dest }}

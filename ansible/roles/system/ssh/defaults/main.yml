@@ -1,0 +1,21 @@
+---
+ssh_pacman_packages:
+  - openssh
+
+ssh_host_ed25519_private_key: "{{ ansible_facts['vault_ssh_host_ed25519_private_key'] | default('') }}"
+ssh_host_ed25519_public_key: "{{ ansible_facts['vault_ssh_host_ed25519_public_key'] | default('') }}"
+ssh_port: 22
+ssh_permit_root_login: "no"
+ssh_password_authentication: "no"
+ssh_pubkey_authentication: "yes"
+ssh_x11_forwarding: "no"
+ssh_allow_tcp_forwarding: "no"
+
+ssh_banner_enabled: true
+ssh_banner_text: |
+  -----------------------------------------------------
+    System: {{ ansible_facts.hostname }}
+    Distro: {{ ansible_facts.distribution }} {{ ansible_facts.distribution_version }}
+    Kernel: {{ ansible_facts.kernel }}
+    Uptime: {{ (ansible_facts.uptime_seconds | default(0) | int / 86400) | int }} days
+  -----------------------------------------------------

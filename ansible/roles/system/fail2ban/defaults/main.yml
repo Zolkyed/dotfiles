@@ -5,4 +5,4 @@ fail2ban_pacman_packages:
 fail2ban_bantime: 3600
 fail2ban_findtime: 600
 fail2ban_maxretry: 5
-fail2ban_sshd_port: "{{ sshd_port }}"
+fail2ban_sshd_port: "{{ ssh_port }}"

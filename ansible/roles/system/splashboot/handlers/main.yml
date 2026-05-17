@@ -1,5 +1,0 @@
----
-- name: Splashboot | Update initramfs
-  ansible.builtin.command:
-    cmd: mkinitcpio -P
-  changed_when: false

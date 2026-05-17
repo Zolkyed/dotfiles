@@ -1,0 +1,8 @@
+---
+- name: Base | Install
+  ansible.builtin.include_role:
+    name: lib/install
+    tasks_from: packages
+  vars:
+    install_label: Base
+    install_pacman_packages: "{{ base_pacman_packages }}"

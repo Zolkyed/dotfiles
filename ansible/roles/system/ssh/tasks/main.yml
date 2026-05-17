@@ -1,0 +1,83 @@
+---
+- name: SSH | Install
+  ansible.builtin.include_role:
+    name: lib/install
+    tasks_from: packages
+  vars:
+    install_label: SSH
+    install_pacman_packages: "{{ ssh_pacman_packages }}"
+
+- name: SSH | Validate vaulted ssh host key pair when partially set
+  ansible.builtin.assert:
+    that:
+      - ssh_host_ed25519_private_key != ''
+      - ssh_host_ed25519_public_key != ''
+    fail_msg: "SSH host key vault vars must either both be set or both be empty."
+  when: ssh_host_ed25519_private_key != '' or ssh_host_ed25519_public_key != ''
+
+- name: SSH | Deploy vaulted ssh host private key
+  ansible.builtin.copy:
+    content: "{{ ssh_host_ed25519_private_key }}"
+    dest: /etc/ssh/ssh_host_ed25519_key
+    owner: root
+    group: root
+    mode: "0600"
+  when: ssh_host_ed25519_private_key != ''
+  no_log: true
+  notify: SSH | Restart sshd
+
+- name: SSH | Deploy vaulted ssh host public key
+  ansible.builtin.copy:
+    content: "{{ ssh_host_ed25519_public_key }}"
+    dest: /etc/ssh/ssh_host_ed25519_key.pub
+    owner: root
+    group: root
+    mode: "0644"
+  when: ssh_host_ed25519_public_key != ''
+  notify: SSH | Restart sshd
+
+- name: SSH | Generate ssh host keys when not vaulted
+  ansible.builtin.command:
+    cmd: ssh-keygen -A
+    creates: /etc/ssh/ssh_host_ed25519_key
+  when:
+    - ssh_host_ed25519_private_key == ''
+    - ssh_host_ed25519_public_key == ''
+
+- name: SSH | Ensure sshd_config.d directory exists
+  ansible.builtin.file:
+    path: /etc/ssh/sshd_config.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: SSH | Deploy banner
+  ansible.builtin.copy:
+    dest: /etc/ssh/banner
+    owner: root
+    group: root
+    mode: "0644"
+    content: "{{ ssh_banner_text }}\n"
+  when: ssh_banner_enabled
+  notify: SSH | Restart sshd
+
+- name: SSH | Harden sshd configuration
+  ansible.builtin.template:
+    src: sshd-99-hardened.conf.j2
+    dest: /etc/ssh/sshd_config.d/99-hardened.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: SSH | Restart sshd
+
+- name: SSH | Validate sshd configuration
+  ansible.builtin.command:
+    cmd: sshd -t
+  changed_when: false
+
+- name: SSH | Enable and start service
+  ansible.builtin.systemd_service:
+    name: sshd
+    enabled: true
+    state: started

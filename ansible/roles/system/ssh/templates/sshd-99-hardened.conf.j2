@@ -1,0 +1,9 @@
+PermitRootLogin {{ ssh_permit_root_login }}
+PasswordAuthentication {{ ssh_password_authentication }}
+PubkeyAuthentication {{ ssh_pubkey_authentication }}
+Port {{ ssh_port }}
+X11Forwarding {{ ssh_x11_forwarding }}
+AllowTcpForwarding {{ ssh_allow_tcp_forwarding }}
+{% if ssh_banner_enabled %}
+Banner /etc/ssh/banner
+{% endif %}

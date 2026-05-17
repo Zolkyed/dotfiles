@@ -1,0 +1,8 @@
+---
+plymouth_pacman_packages:
+  - plymouth
+
+plymouth_theme: spinner
+plymouth_grub_options:
+  - quiet
+  - splash

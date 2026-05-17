@@ -1,3 +1,0 @@
----
-sudoers_nopasswd: true
-sudoers_user: "{{ user_name }}"

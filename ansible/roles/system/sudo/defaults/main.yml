@@ -1,0 +1,3 @@
+---
+sudo_nopasswd: true
+sudo_user: "{{ user_name }}"

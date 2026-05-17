@@ -1,7 +1,7 @@
 ---
 - name: Bootloader | Install
   ansible.builtin.include_role:
-    name: system/install
+    name: lib/install
     tasks_from: packages
   vars:
     install_label: Bootloader
@@ -23,18 +23,10 @@
   notify: Bootloader | Update grub
 
 - name: Bootloader | Configure GRUB
-  ansible.builtin.copy:
+  ansible.builtin.template:
+    src: grub.default.j2
     dest: /etc/default/grub
     owner: root
     group: root
     mode: "0644"
-    content: |
-      GRUB_DEFAULT=0
-      GRUB_TIMEOUT={{ bootloader_grub_timeout }}
-      GRUB_TIMEOUT_STYLE={{ bootloader_grub_timeout_style }}
-      GRUB_DISTRIBUTOR="{{ ansible_facts.distribution }}"
-      GRUB_CMDLINE_LINUX_DEFAULT="{{ system_grub_cmdline_linux_default | default(bootloader_grub_cmdline_linux_default) }}"
-      GRUB_CMDLINE_LINUX=""
-      GRUB_GFXMODE={{ bootloader_grub_gfxmode }}
-      GRUB_DISABLE_OS_PROBER={{ bootloader_grub_disable_os_prober | lower }}
   notify: Bootloader | Update grub

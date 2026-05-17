@@ -1,0 +1,51 @@
+---
+- name: Plymouth | Install
+  ansible.builtin.include_role:
+    name: lib/install
+    tasks_from: packages
+  vars:
+    install_label: Plymouth
+    install_pacman_packages: "{{ plymouth_pacman_packages }}"
+
+- name: Plymouth | Check available Plymouth themes
+  ansible.builtin.command:
+    cmd: plymouth-set-default-theme --list
+  register: plymouth_themes
+  changed_when: false
+  failed_when: false
+
+- name: Plymouth | Check current Plymouth theme
+  ansible.builtin.command:
+    cmd: plymouth-set-default-theme
+  register: plymouth_current_theme
+  changed_when: false
+  failed_when: false
+
+- name: Plymouth | Set Plymouth theme
+  ansible.builtin.command:
+    cmd: "plymouth-set-default-theme {{ plymouth_theme }}"
+  changed_when: true
+  notify: Plymouth | Update initramfs
+  when:
+    - plymouth_themes.rc == 0
+    - plymouth_theme in plymouth_themes.stdout_lines
+    - plymouth_current_theme.stdout != plymouth_theme
+
+- name: Plymouth | Add plymouth hook to mkinitcpio
+  ansible.builtin.replace:
+    path: /etc/mkinitcpio.conf
+    regexp: '^(HOOKS=.*\budev\b)(?! plymouth)'
+    replace: '\1 plymouth'
+  notify: Plymouth | Update initramfs
+
+- name: Plymouth | Merge GRUB splash options
+  ansible.builtin.set_fact:
+    system_grub_cmdline_linux_default: >-
+      {{
+        (
+          (system_grub_cmdline_linux_default | default('')).split()
+          + (plymouth_grub_options | default([]))
+        )
+        | unique
+        | join(' ')
+      }}

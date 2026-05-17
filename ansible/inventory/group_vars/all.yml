@@ -42,7 +42,8 @@ presets:
       - rclone
       - gaming
       - xdg
-      - splashboot
+      - plymouth
+      - tools
 
   # ---------------------------------------------------------------------------
   # LAPTOP
@@ -71,7 +72,8 @@ presets:
       - ai
       - rclone
       - xdg
-      - splashboot
+      - plymouth
+      - tools
 
   # ---------------------------------------------------------------------------
   # SERVER

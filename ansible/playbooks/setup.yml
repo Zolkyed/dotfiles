@@ -26,14 +26,22 @@
       ansible.builtin.set_fact:
         enabled_features: "{{ presets[active_preset].features | default([]) }}"
 
+    - name: Auto-detect hardware features
+      tags: always
+      ansible.builtin.include_role:
+        name: lib/detect
+
+    - name: Merge detected features
+      tags: always
+      ansible.builtin.set_fact:
+        enabled_features: "{{ (enabled_features + auto_detected_features) | unique }}"
+
   roles:
     # --- Base ---
-    - role: system/kernel
-      tags: kernel
     - role: user/account
       tags: user
-    - role: system/sudoers
-      tags: sudoers
+    - role: system/sudo
+      tags: sudo
 
     # --- Package managers ---
     - role: system/mirrors
@@ -44,8 +52,8 @@
       tags: aur
 
     # --- Always-on system ---
-    - role: system/core
-      tags: core
+    - role: system/base
+      tags: base
     - role: user/shell
       tags: shell
     - role: system/journald
@@ -54,14 +62,14 @@
       tags: networking
     - role: system/ntp
       tags: ntp
-    - role: system/sshd
-      tags: sshd
+    - role: system/ssh
+      tags: ssh
     - role: system/maintenance
       tags: maintenance
+    - role: system/kernel
+      tags: kernel
     - role: system/fonts
       tags: fonts
-    - role: system/microcode
-      tags: microcode
 
     # --- Optional system ---
     - role: system/vpn
@@ -87,6 +95,8 @@
       when: "'avahi' in enabled_features"
 
     # --- Hardware / boot ---
+    - role: system/microcode
+      tags: microcode
     - role: system/nvidia_gpu
       tags: nvidia_gpu
       when: "'nvidia_gpu' in enabled_features"
@@ -99,9 +109,9 @@
     - role: system/snapper
       tags: snapper
       when: "'snapper' in enabled_features"
-    - role: system/splashboot
-      tags: splashboot
-      when: "'splashboot' in enabled_features"
+    - role: system/plymouth
+      tags: plymouth
+      when: "'plymouth' in enabled_features"
     - role: system/bootloader
       tags: bootloader
       when: "'bootloader' in enabled_features"
@@ -120,7 +130,7 @@
       when: "'plasma' in enabled_features"
     - role: desktop/wayland
       tags: wayland
-      when: "'wayland_common' in enabled_features"
+      when: "'wayland' in enabled_features"
     - role: desktop/hyprland
       tags: hyprland
       when: "'hyprland' in enabled_features"
@@ -162,6 +172,9 @@
     - role: apps/ai
       tags: ai
       when: "'ai' in enabled_features"
+    - role: apps/tools
+      tags: tools
+      when: "'tools' in enabled_features"
     # --- User config ---
     - role: user/ssh_keys
       tags: ssh_keys

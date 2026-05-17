@@ -1,0 +1,8 @@
+GRUB_DEFAULT=0
+GRUB_TIMEOUT={{ bootloader_grub_timeout }}
+GRUB_TIMEOUT_STYLE={{ bootloader_grub_timeout_style }}
+GRUB_DISTRIBUTOR="{{ ansible_facts.distribution }}"
+GRUB_CMDLINE_LINUX_DEFAULT="{{ system_grub_cmdline_linux_default | default(bootloader_grub_cmdline_linux_default) }}"
+GRUB_CMDLINE_LINUX=""
+GRUB_GFXMODE={{ bootloader_grub_gfxmode }}
+GRUB_DISABLE_OS_PROBER={{ bootloader_grub_disable_os_prober | lower }}

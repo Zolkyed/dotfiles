@@ -1,0 +1,8 @@
+---
+- name: Tools | Install
+  ansible.builtin.include_role:
+    name: lib/install
+    tasks_from: packages
+  vars:
+    install_label: Tools
+    install_pacman_packages: "{{ tools_pacman_packages }}"

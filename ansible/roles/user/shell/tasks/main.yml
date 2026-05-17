@@ -1,7 +1,7 @@
 ---
 - name: Shell | Install
   ansible.builtin.include_role:
-    name: system/install
+    name: lib/install
     tasks_from: packages
   vars:
     install_label: Shell

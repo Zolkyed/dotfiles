@@ -1,0 +1,33 @@
+---
+tools_pacman_packages:
+  # cli utilities
+  - ripgrep
+  - eza
+  - bat
+  - fd
+  - zoxide
+  - fzf
+  - lazygit
+  - git-delta
+  - duf
+  - procs
+  - just
+  - trash-cli
+  - tree
+  - ncdu
+  - tmux
+  - github-cli
+  - yazi
+  # editors
+  - neovim
+  - helix
+  - kitty
+  # monitoring
+  - htop
+  - fastfetch
+  - cava
+  # fun
+  - cowsay
+  - cmatrix
+  - figlet
+  - lolcat
