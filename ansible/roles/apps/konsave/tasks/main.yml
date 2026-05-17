@@ -1,8 +1,0 @@
----
-- name: Konsave | Install via pipx
-  community.general.pipx:
-    name: konsave
-    state: present
-    executable: "{{ konsave_pipx_executable }}"
-  become: true
-  become_user: "{{ user_name }}"

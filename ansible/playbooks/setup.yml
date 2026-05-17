@@ -48,8 +48,10 @@
       tags: aur
     - role: system/packages
       tags: packages
-    - role: system/python
-      tags: python
+    - role: system/pipx
+      tags: pipx
+    - role: system/npm
+      tags: npm
 
     # --- Core system services ---
     - role: system/journald
@@ -120,15 +122,9 @@
     - role: apps/browser
       tags: browser
       when: "'browser' in enabled_profiles"
-    - role: apps/ai
-      tags: ai
-      when: "'ai' in enabled_profiles"
     - role: apps/rclone
       tags: rclone
       when: "'rclone' in enabled_profiles"
-    - role: apps/konsave
-      tags: konsave
-      when: "'konsave' in enabled_profiles"
     - role: apps/vscode
       tags: vscode
       when: "'dev' in enabled_profiles"

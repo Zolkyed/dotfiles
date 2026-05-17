@@ -279,13 +279,12 @@ profiles:
       - obs-studio
       - qbittorrent
       - discord
+      - python-guessit
+      - python-requests
     aur:
       - hayase-desktop-bin
     flatpak:
       - com.spotify.Client
-    pip:
-      - guessit
-      - requests
 
   gaming:
     pacman:
@@ -314,6 +313,10 @@ profiles:
   rclone:
     pacman:
       - rclone
+
+  konsave:
+    pipx:
+      - konsave
 
   # -----------------------------------------------------------------------
   # Graphics Drivers

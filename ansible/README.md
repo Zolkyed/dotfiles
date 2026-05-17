@@ -40,6 +40,8 @@ Hosts: `desktop`, `laptop`, `server`.
 | `system/pacman` | pacman | always | pacman.conf |
 | `system/aur` | aur | always | paru install + config |
 | `system/packages` | packages | always | bulk package install |
+| `system/pipx` | pipx | always | Python CLI tools |
+| `system/npm` | npm | always | global npm tools through Volta |
 | `system/journald` | journald | always | journal retention |
 | `system/networking` | networking | always | NetworkManager + resolved |
 | `system/sshd` | sshd | always | host keys, hardening |
@@ -61,10 +63,8 @@ Hosts: `desktop`, `laptop`, `server`.
 | `desktop/plasma` | plasma | profile | SDDM, keybinds |
 | `apps/browser` | browser | profile | Brave + policies |
 | `apps/flatpak` | flatpak | profile | Flathub + apps |
-| `apps/ai` | ai | profile | opencode-ai, codex, claude-code |
 | `apps/mihon` | mihon | profile | manga desktop entry |
 | `apps/rclone` | rclone | profile | Google Drive |
-| `apps/konsave` | konsave | profile | KDE profile manager |
 | `user/account` | user | always | user creation |
 | `user/ssh_keys` | ssh_keys | always | deploy SSH keys |
 | `user/bin` | bin | always | custom scripts |
@@ -76,7 +76,7 @@ Hosts: `desktop`, `laptop`, `server`.
 Profiles can enable a role or just add packages:
 
 - Roles with `profile` in "When" only run if their profile is in `enabled_profiles`.
-- Package-only profiles (core, shell, dev, media, gaming, office, vpn) have no role — `system/packages` installs their packages from `archlinux.yml`.
+- Package-only profiles (core, shell, dev, media, gaming, office, vpn, ai, konsave) have no app role — system package roles install their packages from `archlinux.yml`.
 
 ```yaml
 # all.yml
