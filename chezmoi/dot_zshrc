@@ -1,6 +1,8 @@
 # Oh-My-Zsh
 export ZSH="/usr/share/oh-my-zsh"
-ZSH_THEME="spaceship"
+
+# Standalone spaceship prompt (no oh-my-zsh theme system)
+source /usr/lib/spaceship-prompt/spaceship.zsh-theme
 
 # Custom environment, plugins, functions, aliases
 [[ -f $HOME/.config/zsh/aliases.zsh ]] && source $HOME/.config/zsh/aliases.zsh
