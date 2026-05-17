@@ -141,9 +141,6 @@ profiles:
     pacman:
       - fwupd
 
-  nvidia:
-    pacman: []
-
   bootloader:
     pacman:
       - grub
@@ -333,6 +330,9 @@ profiles:
   # -----------------------------------------------------------------------
   # Graphics Drivers
   # -----------------------------------------------------------------------
+  nvidia_gpu:
+    pacman: []
+
   amd_gpu:
     pacman:
       - vulkan-radeon

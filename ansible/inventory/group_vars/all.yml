@@ -36,7 +36,7 @@ presets:
       - firewall
       - fail2ban
       - firmware
-      - nvidia
+      - nvidia_gpu
       - bootloader
       - snapper
       - docker
