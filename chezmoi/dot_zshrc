@@ -46,11 +46,4 @@ bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
 
 # --- Starship prompt (keep last) ---
-if command -v starship &>/dev/null; then
-  _starship_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/starship-init.zsh"
-  if [[ ! -f "$_starship_cache" || "$(command -v starship)" -nt "$_starship_cache" ]]; then
-    starship init zsh >| "$_starship_cache"
-  fi
-  source "$_starship_cache"
-  unset _starship_cache
-fi
+eval "$(starship init zsh)"
