@@ -1,0 +1,3 @@
+---
+install_retries: 3
+install_retry_delay: 10

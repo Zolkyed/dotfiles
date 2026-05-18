@@ -4,6 +4,10 @@
     name: "{{ install_pacman_packages }}"
     state: present
   when: install_pacman_packages | default([]) | length > 0
+  register: pacman_result
+  until: pacman_result is succeeded
+  retries: "{{ install_retries }}"
+  delay: "{{ install_retry_delay }}"
 
 - name: "Install AUR packages | {{ install_label }}"
   kewlfft.aur.aur:
@@ -13,6 +17,10 @@
   become: true
   become_user: "{{ user_name }}"
   when: install_aur_packages | default([]) | length > 0
+  register: aur_result
+  until: aur_result is succeeded
+  retries: "{{ install_retries }}"
+  delay: "{{ install_retry_delay }}"
 
 - name: "Install flatpak packages | {{ install_label }}"
   community.general.flatpak:
