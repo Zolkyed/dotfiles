@@ -36,7 +36,7 @@ zstyle ':completion:*:default' list-prompt '%S%F{#606079}%M matches%f%s'
 zstyle ':fzf-tab:*' fzf-flags --height=~50% --layout=reverse --border=none --preview-window=right:40%
 zstyle ':fzf-tab:*' switch-group '<' '>'
 zstyle ':fzf-tab:complete:(cd|z|__zoxide_z):*' fzf-preview '[[ -n $realpath ]] && eza --tree --color=always --icons=auto $realpath | head -200'
-zstyle ':fzf-tab:complete:(ls|la|ll|lt):*' fzf-preview '[[ -n $realpath ]] && eza --tree --color=always --icons=auto $realpath | head -200'
+zstyle ':fzf-tab:complete:eza:*' fzf-preview 'eza --tree --color=always --icons=auto ${realpath:-$word} 2>/dev/null | head -200'
 
 # --- Key bindings ---
 bindkey -e
