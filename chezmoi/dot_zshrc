@@ -23,9 +23,9 @@ zstyle ':completion:*:options' description 'yes'
 zstyle ':completion:*:default' list-prompt '%S%F{#606079}%M matches%f%s'
 
 # fzf-tab layout + preview
-zstyle ':fzf-tab:*' fzf-flags --height=~15 --layout=reverse --border=none --preview-window=right:40%
+zstyle ':fzf-tab:*' fzf-flags --height=~50% --layout=reverse --border=none --preview-window=right:40%
 zstyle ':fzf-tab:*' switch-group '<' '>'
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza --tree --color=always --icons $realpath | head -200'
+zstyle ':fzf-tab:complete:(cd|z|__zoxide_z):*' fzf-preview '[[ -n $realpath ]] && eza --tree --color=always --icons $realpath | head -200'
 
 # Basic key bindings
 bindkey -e
