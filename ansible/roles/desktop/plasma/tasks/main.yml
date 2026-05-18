@@ -29,6 +29,16 @@
     mode: "0644"
   when: inventory_hostname == "desktop"
 
+- name: Plasma | Disable volume OSD
+  community.general.ini_file:
+    path: "{{ user_home }}/.config/plasmaparc"
+    section: General
+    option: OsdEnabled
+    value: "false"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0644"
+
 - name: Plasma | Disable KDE Wallet
   community.general.ini_file:
     path: "{{ user_home }}/.config/kwalletrc"
