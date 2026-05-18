@@ -10,7 +10,8 @@
     name: "{{ install_aur_packages }}"
     use: paru
     state: present
-  become: false
+  become: true
+  become_user: "{{ user_name }}"
   when: install_aur_packages | default([]) | length > 0
 
 - name: "Install flatpak packages | {{ install_label }}"

@@ -28,3 +28,18 @@
     group: "{{ user_name }}"
     mode: "0644"
   when: inventory_hostname == "desktop"
+
+- name: Plasma | Disable KDE Wallet
+  community.general.ini_file:
+    path: "{{ user_home }}/.config/kwalletrc"
+    section: Wallet
+    option: "{{ item.key }}"
+    value: "{{ item.value }}"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0644"
+  loop:
+    - key: Enabled
+      value: "false"
+    - key: First Use
+      value: "false"
