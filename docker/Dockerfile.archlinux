@@ -74,11 +74,6 @@ ansible-playbook -i inventory/local.yml playbooks/setup.yml \
   --check --diff \
   --tags always,user,sudo,base,shell,ssh_keys,bin,xdg
 
-# --- Dry-run: system roles ---
-ansible-playbook -i inventory/local.yml playbooks/setup.yml \
-  --check --diff \
-  --tags always,mirrors,pacman,aur,networking,ntp,journald,kernel,audio,bluetooth,vpn,firewall,fail2ban,firmware,fonts
-
 # --- Real runs: pacman-only app roles (no AUR/flatpak/systemd) ---
 ansible-playbook -i inventory/local.yml playbooks/setup.yml \
   -l server --tags always,tools
