@@ -13,6 +13,7 @@
     path: /etc/default/cpupower
     regexp: '^#?\s*governor='
     line: "governor='{{ cpupower_governor }}'"
+    create: true
   notify: CPUpower | Restart service
 
 - name: CPUpower | Enable service

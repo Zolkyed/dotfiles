@@ -7,6 +7,8 @@ DOTFILES_PLAYBOOK    := "playbooks/dotfiles.yml"
 MAINTENANCE_PLAYBOOK := "playbooks/maintenance.yml"
 VAULT_FILE           := "ansible/inventory/group_vars/vault.yml"
 
+PLAYBOOKS := PLAYBOOK + " " + UPDATE_PLAYBOOK + " " + DOTFILES_PLAYBOOK + " " + MAINTENANCE_PLAYBOOK
+
 # ─── Dev environment ────────────────────────────────────────────────────
 
 setup-dev:
@@ -47,16 +49,24 @@ ansibleinstall host="desktop":
 
 # ─── Lint / CI ──────────────────────────────────────────────────────────
 
-lint:
-    cd {{ANSIBLE_DIR}} && export ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote && if [[ -x ../.venv/bin/ansible-lint ]]; then ../.venv/bin/ansible-lint {{PLAYBOOK}} {{UPDATE_PLAYBOOK}} {{DOTFILES_PLAYBOOK}} {{MAINTENANCE_PLAYBOOK}}; else ansible-lint {{PLAYBOOK}} {{UPDATE_PLAYBOOK}} {{DOTFILES_PLAYBOOK}} {{MAINTENANCE_PLAYBOOK}}; fi
-    if [[ -x .venv/bin/yamllint ]]; then .venv/bin/yamllint -c .yamllint {{ANSIBLE_DIR}} .github; else yamllint -c .yamllint {{ANSIBLE_DIR}} .github; fi
-    if [[ -x .venv/bin/shellcheck ]]; then .venv/bin/shellcheck scripts/*.sh; else shellcheck scripts/*.sh; fi
+_ansible-lint:
+    cd {{ANSIBLE_DIR}} && \
+    ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote \
+    $([[ -x ../.venv/bin/ansible-lint ]] && echo ../.venv/bin/ansible-lint || echo ansible-lint) \
+    {{PLAYBOOKS}}
+
+_yamllint:
+    $([[ -x .venv/bin/yamllint ]] && echo .venv/bin/yamllint || echo yamllint) -c .yamllint {{ANSIBLE_DIR}} .github
+
+_shellcheck:
+    $([[ -x .venv/bin/shellcheck ]] && echo .venv/bin/shellcheck || echo shellcheck) scripts/*.sh
+
+lint: _ansible-lint _yamllint _shellcheck
 
 syntax:
-    cd {{ANSIBLE_DIR}} && ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-playbook {{PLAYBOOK}} --syntax-check
-    cd {{ANSIBLE_DIR}} && ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-playbook {{UPDATE_PLAYBOOK}} --syntax-check
-    cd {{ANSIBLE_DIR}} && ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-playbook {{DOTFILES_PLAYBOOK}} --syntax-check
-    cd {{ANSIBLE_DIR}} && ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote ansible-playbook {{MAINTENANCE_PLAYBOOK}} --syntax-check
+    cd {{ANSIBLE_DIR}} && \
+    export ANSIBLE_LOCAL_TEMP=/tmp/ansible-local ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote && \
+    for p in {{PLAYBOOKS}}; do ansible-playbook "$p" --syntax-check; done
 
 integration:
     docker build \
@@ -65,21 +75,15 @@ integration:
       -t dotfiles-test \
       .
 
-ci:
-    just syntax
-    just lint
+ci: syntax lint
 
-# ─── Age key ────────────────────────────────────────────────────────────
+# ─── Vault / Secrets ────────────────────────────────────────────────────
 
 AGE_KEY_ENCRYPTED := "secrets/age_key.age"
 
 encrypt-age-key:
     mkdir -p secrets
     age -p -o {{AGE_KEY_ENCRYPTED}} ~/.config/sops/age/keys.txt
-    @echo "==> Age key encrypted to {{AGE_KEY_ENCRYPTED}}"
-    @echo "    Commit it: git add {{AGE_KEY_ENCRYPTED}} && git commit"
-
-# ─── Vault ──────────────────────────────────────────────────────────────
 
 vault-edit:
     sops {{VAULT_FILE}}

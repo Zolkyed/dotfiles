@@ -19,9 +19,3 @@ future changes: just run server
 
 3. run_ansibleinstall.sh still mutates sudo before Ansible owns sudoers. It works, but bootstrap vs desired-state
   overlap is slightly messy.
-
-4. AI hooks to test code locally
-
-5. Fix docker
-
-6. ...
