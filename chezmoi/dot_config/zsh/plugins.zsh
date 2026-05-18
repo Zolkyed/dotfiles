@@ -59,15 +59,6 @@ if command -v zoxide &>/dev/null; then
   source "$_zoxide_cache"
 fi
 
-# --- Starship prompt ---
-if command -v starship &>/dev/null; then
-  _starship_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/starship-init.zsh"
-  if [[ ! -f "$_starship_cache" || "$(command -v starship)" -nt "$_starship_cache" ]]; then
-    starship init zsh >| "$_starship_cache"
-  fi
-  source "$_starship_cache"
-fi
-
 # --- zsh-syntax-highlighting (must be last) ---
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 [[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] &&

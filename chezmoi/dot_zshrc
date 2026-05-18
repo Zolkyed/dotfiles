@@ -1,8 +1,6 @@
-# Custom environment, plugins, functions, aliases
+# Custom environment and functions
 [[ -f $HOME/.config/zsh/env.zsh ]] && source $HOME/.config/zsh/env.zsh
 [[ -f $HOME/.config/zsh/functions.zsh ]] && source $HOME/.config/zsh/functions.zsh
-[[ -f $HOME/.config/zsh/plugins.zsh ]] && source $HOME/.config/zsh/plugins.zsh
-[[ -f $HOME/.config/zsh/aliases.zsh ]] && source $HOME/.config/zsh/aliases.zsh
 
 # --- Completion init (cached — only regenerates dump once per day) ---
 autoload -Uz compinit
@@ -38,7 +36,21 @@ zstyle ':fzf-tab:*' switch-group '<' '>'
 zstyle ':fzf-tab:complete:(cd|z|__zoxide_z):*' fzf-preview '[[ -n $realpath ]] && eza --tree --color=always --icons=auto $realpath | head -200'
 zstyle ':fzf-tab:complete:eza:*' fzf-preview 'eza --tree --color=always --icons=auto ${realpath:-$word} 2>/dev/null | head -200'
 
+# --- Plugins and aliases ---
+[[ -f $HOME/.config/zsh/plugins.zsh ]] && source $HOME/.config/zsh/plugins.zsh
+[[ -f $HOME/.config/zsh/aliases.zsh ]] && source $HOME/.config/zsh/aliases.zsh
+
 # --- Key bindings ---
 bindkey -e
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
+
+# --- Starship prompt (keep last) ---
+if command -v starship &>/dev/null; then
+  _starship_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/starship-init.zsh"
+  if [[ ! -f "$_starship_cache" || "$(command -v starship)" -nt "$_starship_cache" ]]; then
+    starship init zsh >| "$_starship_cache"
+  fi
+  source "$_starship_cache"
+  unset _starship_cache
+fi
