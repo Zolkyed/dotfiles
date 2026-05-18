@@ -35,8 +35,8 @@
 - name: Plymouth | Add plymouth hook to mkinitcpio (after kms)
   ansible.builtin.replace:
     path: /etc/mkinitcpio.conf
-    regexp: '^(HOOKS=(?!.*plymouth).*\bblock\b)'
-    replace: '\1 plymouth'
+    regexp: '^(HOOKS=(?!.*plymouth).*)\b(block)\b'
+    replace: '\1plymouth \2'
   notify: Plymouth | Update initramfs
 
 - name: Plymouth | Merge GRUB splash options
