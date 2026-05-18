@@ -5,11 +5,11 @@ bootloader_pacman_packages:
 
 bootloader_aur_packages:
   - grub-hook
-  - grub2-theme-archlinux
+  - grub2-theme-vimix
 
 bootloader_grub_timeout: 1
 bootloader_grub_timeout_style: hidden
 bootloader_grub_cmdline_linux_default: "quiet"
 bootloader_grub_gfxmode: "auto"
 bootloader_grub_disable_os_prober: true
-bootloader_grub_theme: "/boot/grub/themes/Archlinux/theme.txt"
+bootloader_grub_theme: "/boot/grub/themes/Vimix/theme.txt"
