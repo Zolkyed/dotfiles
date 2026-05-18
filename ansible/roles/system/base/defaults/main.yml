@@ -17,4 +17,5 @@ base_pacman_packages:
   - lsof
   - pacman-contrib
   - chezmoi
+  - inetutils
   - vulkan-tools
