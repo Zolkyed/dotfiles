@@ -81,10 +81,6 @@ ansible-playbook -i inventory/local.yml playbooks/setup.yml \
 ansible-playbook -i inventory/local.yml playbooks/setup.yml \
   -l server --tags always,fonts
 
-# --- Dry-run: remaining app roles ---
-ansible-playbook -i inventory/local.yml playbooks/setup.yml \
-  --check --diff \
-  --tags always,flatpak,node,ai,media,browser,dev,office,gaming,rclone
 EOS
 
 rm -f "/home/${USER}/.config/sops/age/keys.txt"

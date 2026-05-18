@@ -1,0 +1,17 @@
+---
+- name: Mkinitcpio | Ensure conf.d directory exists
+  ansible.builtin.file:
+    path: /etc/mkinitcpio.conf.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Mkinitcpio | Deploy compression config
+  ansible.builtin.template:
+    src: compression.conf.j2
+    dest: /etc/mkinitcpio.conf.d/00-compression.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Mkinitcpio | Rebuild initramfs

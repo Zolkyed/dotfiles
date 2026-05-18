@@ -1,0 +1,4 @@
+COMPRESSION="{{ mkinitcpio_compression }}"
+{% if mkinitcpio_compression_options %}
+COMPRESSION_OPTIONS=({{ mkinitcpio_compression_options | join(' ') }})
+{% endif %}

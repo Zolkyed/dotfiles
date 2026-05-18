@@ -1,0 +1,3 @@
+---
+mkinitcpio_compression: zstd
+mkinitcpio_compression_options: []

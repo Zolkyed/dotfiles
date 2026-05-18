@@ -68,6 +68,8 @@
       tags: maintenance
     - role: system/kernel
       tags: kernel
+    - role: system/mkinitcpio
+      tags: mkinitcpio
     - role: system/fonts
       tags: fonts
 
