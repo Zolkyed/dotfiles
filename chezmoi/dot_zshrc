@@ -27,7 +27,7 @@ zstyle ':fzf-tab:*' fzf-flags --height=~15 --layout=reverse --border=none --prev
 zstyle ':fzf-tab:*' switch-group '<' '>'
 zstyle ':fzf-tab:complete:*:*' fzf-preview '
   if [[ -d $realpath ]]; then
-    eza --icons --color=always --group-dirs=first $realpath
+    eza --icons --color=always --group-directories-first $realpath
   elif [[ -f $realpath ]]; then
     bat --color=always --style=plain --line-range=:50 $realpath 2>/dev/null || cat $realpath
   fi
