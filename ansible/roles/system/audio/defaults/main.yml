@@ -9,3 +9,4 @@ audio_pacman_packages:
   - rtkit
   - sof-firmware
   - pamixer
+  - bluedevil
