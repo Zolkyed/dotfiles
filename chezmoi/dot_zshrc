@@ -10,6 +10,9 @@ source /usr/lib/spaceship-prompt/spaceship.zsh-theme
 [[ -f $HOME/.config/zsh/plugins.zsh ]] && source $HOME/.config/zsh/plugins.zsh
 [[ -f $HOME/.config/zsh/aliases.zsh ]] && source $HOME/.config/zsh/aliases.zsh
 
+# Use plain file completion for ls (eza's completion function is too restrictive)
+compdef _files ls
+
 # --- Completion ---
 mkdir -p "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/compcache"
 zstyle ':completion:*' use-cache on
