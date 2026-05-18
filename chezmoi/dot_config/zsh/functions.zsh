@@ -1,3 +1,8 @@
+# Auto-ls after cd
+autoload -U add-zsh-hook
+add-zsh-hook chpwd _ls_after_cd
+_ls_after_cd() { ls }
+
 # Use fd for fzf path/dir completion
 _fzf_compgen_path() { fd --hidden --exclude .git . "$1"; }
 _fzf_compgen_dir()  { fd --type=d --hidden --exclude .git . "$1"; }
