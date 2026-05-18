@@ -1,0 +1,64 @@
+format = """
+$time\
+$username\
+$directory\
+$hostname\
+$git_branch\
+$git_status\
+$cmd_duration\
+$jobs\
+$status\
+$character"""
+
+[time]
+disabled = false
+format = "[$time]($style) "
+style = "bold #7fa563"
+time_format = "%H:%M"
+
+[username]
+show_always = true
+format = "[$user]($style) "
+style_user = "bold #d8647e"
+style_root = "bold red"
+
+[directory]
+format = "[$path]($style)[$read_only]($read_only_style) "
+style = "bold #6e94b2"
+read_only = " ro"
+truncation_length = 3
+truncate_to_repo = false
+
+[hostname]
+ssh_only = false
+format = "on [$hostname]($style) "
+style = "bold #606079"
+
+[git_branch]
+format = "on [$symbol$branch]($style) "
+style = "bold #bb9dbd"
+symbol = "git:"
+
+[git_status]
+format = "[$all_status$ahead_behind]($style) "
+style = "bold #e0a363"
+
+[cmd_duration]
+format = "took [$duration]($style) "
+min_time = 1000
+style = "bold #e0a363"
+
+[jobs]
+format = "[$symbol$number]($style) "
+style = "bold #7fa563"
+symbol = "jobs:"
+
+[status]
+disabled = false
+format = "[$status]($style) "
+style = "bold #d8647e"
+
+[character]
+success_symbol = "[❯](bold #7fa563)"
+error_symbol = "[❯](bold #d8647e)"
+vimcmd_symbol = "[❮](bold #6e94b2)"
