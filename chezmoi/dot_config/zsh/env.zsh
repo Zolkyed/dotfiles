@@ -16,7 +16,21 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
 export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt"
 
-setopt hist_verify auto_cd auto_pushd pushd_ignore_dups pushd_silent correct
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=10000
+SAVEHIST=10000
+setopt share_history hist_expire_dups_first hist_ignore_dups hist_verify auto_cd auto_pushd pushd_ignore_dups pushd_silent correct
+
+export BAT_THEME="base16"
+
+export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
+export FZF_DEFAULT_OPTS="--layout=reverse --border=none --height=40%"
+
+_fzf_file_preview="if [ -d {} ]; then eza --tree --color=always --icons {} | head -200; else bat -n --color=always --line-range :500 {}; fi"
+export FZF_CTRL_T_OPTS="--preview '$_fzf_file_preview'"
+export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always --icons {} | head -200'"
 
 # Volta (Node version manager)
 export VOLTA_HOME="$HOME/.volta"

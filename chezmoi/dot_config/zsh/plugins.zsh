@@ -16,6 +16,9 @@ ZSH_AUTOSUGGEST_USE_ASYNC=true
 [[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] &&
   source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
+# fzf key bindings + completion (must come before fzf-tab)
+command -v fzf &>/dev/null && eval "$(fzf --zsh)"
+
 # fzf-tab
 [[ -f /usr/share/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh ]] &&
   source /usr/share/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh

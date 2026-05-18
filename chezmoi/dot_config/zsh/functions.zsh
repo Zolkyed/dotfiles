@@ -1,3 +1,18 @@
+# Use fd for fzf path/dir completion
+_fzf_compgen_path() { fd --hidden --exclude .git . "$1"; }
+_fzf_compgen_dir()  { fd --type=d --hidden --exclude .git . "$1"; }
+
+# Command-specific fzf previews
+_fzf_comprun() {
+  local command=$1; shift
+  case "$command" in
+    cd)           fzf --preview 'eza --tree --color=always --icons {} | head -200' "$@" ;;
+    export|unset) fzf --preview "eval 'echo \${}'" "$@" ;;
+    ssh)          fzf --preview 'dig {}' "$@" ;;
+    *)            fzf --preview "$_fzf_file_preview" "$@" ;;
+  esac
+}
+
 # Find files by name
 ff() {
   command find . -iname "*$1*" 2>/dev/null

@@ -21,23 +21,23 @@ setup-dev:
 run host="desktop":
     cd {{ANSIBLE_DIR}} && ansible-playbook {{PLAYBOOK}} -l {{host}} -v
 
-run-local host="desktop":
-    cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{PLAYBOOK}} -l {{host}} -v
+run-local:
+    cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{PLAYBOOK}} -l $(hostname) -v
 
-check host="desktop":
-    cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{PLAYBOOK}} --check --diff -l {{host}}
+check:
+    cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{PLAYBOOK}} --check --diff -l $(hostname)
 
 update:
-    cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{UPDATE_PLAYBOOK}} -v
+    cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{UPDATE_PLAYBOOK}} -l $(hostname) -v
 
 update-remote host="desktop":
     cd {{ANSIBLE_DIR}} && ansible-playbook {{UPDATE_PLAYBOOK}} -l {{host}} -v
 
 dotfiles:
-    cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{DOTFILES_PLAYBOOK}}
+    cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{DOTFILES_PLAYBOOK}} -l $(hostname)
 
-maintenance host="desktop":
-    cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{MAINTENANCE_PLAYBOOK}} -l {{host}} -v
+maintenance:
+    cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{MAINTENANCE_PLAYBOOK}} -l $(hostname) -v
 
 maintenance-remote host="desktop":
     cd {{ANSIBLE_DIR}} && ansible-playbook {{MAINTENANCE_PLAYBOOK}} -l {{host}} -v

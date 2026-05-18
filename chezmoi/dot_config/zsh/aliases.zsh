@@ -40,6 +40,7 @@ alias mv='mv -i'
 alias mkdir='mkdir -pv'
 
 # Convenience
+alias cd='z'
 alias reload='source ~/.zshrc'
 alias zshrc='$EDITOR ~/.zshrc'
 alias please='sudo !!'
