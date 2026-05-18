@@ -36,7 +36,7 @@
 - name: Snapper | Configure snapper retention
   ansible.builtin.lineinfile:
     path: "/etc/snapper/configs/{{ item[0].config }}"
-    regexp: "^{{ item[1].key }}"
+    regexp: "^{{ item[1].key }}="
     line: "{{ item[1].key }}={{ item[1].value }}"
   loop: "{{ snapper_subvolumes | product(snapper_retention_settings) }}"
   vars:

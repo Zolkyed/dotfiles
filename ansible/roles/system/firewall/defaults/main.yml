@@ -2,12 +2,14 @@
 firewall_pacman_packages:
   - ufw
 
+firewall_kde_connect_ports: "1714:1764"
+
 firewall_allow_ports:
   - "{{ ssh_port }}"
-  - 1714:1764
+  - "{{ firewall_kde_connect_ports }}"
 
 firewall_allow_ports_udp:
-  - 1714:1764
+  - "{{ firewall_kde_connect_ports }}"
 
 firewall_default_incoming: deny
 firewall_default_outgoing: allow
