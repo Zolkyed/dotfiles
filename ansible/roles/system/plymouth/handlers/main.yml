@@ -1,5 +1,5 @@
 ---
-- name: Plymouth | Update initramfs
+- name: Plymouth | Rebuild initramfs
   ansible.builtin.command:
     cmd: mkinitcpio -P
-  changed_when: false
+  changed_when: true

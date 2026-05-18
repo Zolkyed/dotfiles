@@ -1,3 +1,6 @@
 ---
 active_preset: laptop
 cpupower_governor: schedutil
+
+bootloader_grub_timeout: 3
+bootloader_grub_timeout_style: menu

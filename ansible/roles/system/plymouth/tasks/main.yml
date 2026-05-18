@@ -26,18 +26,20 @@
   ansible.builtin.command:
     cmd: "plymouth-set-default-theme {{ plymouth_theme }}"
   changed_when: true
-  notify: Plymouth | Update initramfs
+  notify: Plymouth | Rebuild initramfs
   when:
     - plymouth_themes.rc == 0
     - plymouth_theme in plymouth_themes.stdout_lines
     - plymouth_current_theme.stdout != plymouth_theme
 
-- name: Plymouth | Add plymouth hook to mkinitcpio
-  ansible.builtin.replace:
-    path: /etc/mkinitcpio.conf
-    regexp: '^(HOOKS=.*\budev\b)(?! plymouth)'
-    replace: '\1 plymouth'
-  notify: Plymouth | Update initramfs
+- name: Plymouth | Configure mkinitcpio hooks
+  ansible.builtin.copy:
+    dest: /etc/mkinitcpio.conf.d/10-hooks.conf
+    content: "HOOKS=({{ plymouth_mkinitcpio_hooks | join(' ') }})\n"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Plymouth | Rebuild initramfs
 
 - name: Plymouth | Merge GRUB splash options
   ansible.builtin.set_fact:
