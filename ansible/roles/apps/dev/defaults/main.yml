@@ -15,8 +15,12 @@ dev_pacman_packages:
   - python-playwright
   - gcc
   - gdb
+  - clang
+  - lldb
   - cmake
   - ninja
+  - make
+  - valgrind
 
 dev_flatpak_packages:
   - com.getpostman.Postman
