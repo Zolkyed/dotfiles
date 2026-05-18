@@ -10,7 +10,15 @@ snapper_timeline_limit:
   daily: 7
   weekly: 4
   monthly: 3
-snapper_cleanup_algorithm: "timeline"
+  yearly: 0
+
+snapper_number_cleanup: "yes"
+snapper_number_limit: 20
+snapper_number_limit_important: 10
+
+snapper_timeline_create: "yes"
+snapper_timeline_cleanup: "yes"
+snapper_empty_pre_post_cleanup: "yes"
 snapper_subvolumes:
   - path: "/"
     config: root

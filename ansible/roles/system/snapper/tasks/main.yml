@@ -42,9 +42,19 @@
   vars:
     snapper_retention_settings:
       - key: TIMELINE_CREATE
-        value: "yes"
+        value: "{{ snapper_timeline_create }}"
+      - key: TIMELINE_CLEANUP
+        value: "{{ snapper_timeline_cleanup }}"
       - key: ALLOW_USERS
         value: "{{ user_name }}"
+      - key: NUMBER_CLEANUP
+        value: "{{ snapper_number_cleanup }}"
+      - key: NUMBER_LIMIT
+        value: "{{ snapper_number_limit }}"
+      - key: NUMBER_LIMIT_IMPORTANT
+        value: "{{ snapper_number_limit_important }}"
+      - key: EMPTY_PRE_POST_CLEANUP
+        value: "{{ snapper_empty_pre_post_cleanup }}"
       - key: TIMELINE_LIMIT_HOURLY
         value: "{{ snapper_timeline_limit.hourly }}"
       - key: TIMELINE_LIMIT_DAILY
@@ -53,8 +63,8 @@
         value: "{{ snapper_timeline_limit.weekly }}"
       - key: TIMELINE_LIMIT_MONTHLY
         value: "{{ snapper_timeline_limit.monthly }}"
-      - key: CLEANUP_ALGORITHM
-        value: "{{ snapper_cleanup_algorithm }}"
+      - key: TIMELINE_LIMIT_YEARLY
+        value: "{{ snapper_timeline_limit.yearly }}"
 
 - name: Snapper | Reload systemd daemon
   ansible.builtin.systemd_service:
