@@ -5,3 +5,6 @@ amd_gpu_pacman_packages:
   - libva-mesa-driver
   - lib32-mesa
   - lib32-vulkan-radeon
+
+amd_gpu_mkinitcpio_modules:
+  - amdgpu
