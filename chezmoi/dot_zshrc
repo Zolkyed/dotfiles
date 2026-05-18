@@ -11,8 +11,9 @@ source /usr/lib/spaceship-prompt/spaceship.zsh-theme
 [[ -f $HOME/.config/zsh/aliases.zsh ]] && source $HOME/.config/zsh/aliases.zsh
 
 # --- Completion ---
+mkdir -p "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/compcache"
 zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/compcache"
+zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/compcache"
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' # case-insensitive
 
 # Vague theme colors
