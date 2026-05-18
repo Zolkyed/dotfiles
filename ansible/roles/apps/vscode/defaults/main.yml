@@ -5,7 +5,6 @@ vscode_aur_packages:
 vscode_extensions:
   - redhat.ansible
   - ms-vscode.cpptools
-  - johnpapa.vscode-peacock
   - hediet.vscode-drawio
   - eamodio.gitlens
   - oderwat.indent-rainbow
@@ -13,6 +12,7 @@ vscode_extensions:
   - ms-python.python
   - ms-pyright.pyright
   - charliermarsh.ruff
-  - timonwong.shellcheck
   - simonsiefke.svg-preview
   - tomrijndorp.find-it-faster
+  - darkphoenix.dark-modern-darker
+  - pkief.material-icon-theme
