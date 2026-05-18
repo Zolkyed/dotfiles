@@ -16,14 +16,27 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#606079,underline"
   source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # --- fzf (must come before fzf-tab) ---
-command -v fzf &>/dev/null && eval "$(fzf --zsh)"
+# Cache the init script — regenerate only when fzf binary changes
+if command -v fzf &>/dev/null; then
+  _fzf_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/fzf-init.zsh"
+  if [[ ! -f "$_fzf_cache" || "$(command -v fzf)" -nt "$_fzf_cache" ]]; then
+    fzf --zsh >| "$_fzf_cache"
+  fi
+  source "$_fzf_cache"
+fi
 
 # --- fzf-tab ---
 [[ -f /usr/share/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh ]] &&
   source /usr/share/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
 
 # --- Zoxide ---
-command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
+if command -v zoxide &>/dev/null; then
+  _zoxide_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zoxide-init.zsh"
+  if [[ ! -f "$_zoxide_cache" || "$(command -v zoxide)" -nt "$_zoxide_cache" ]]; then
+    zoxide init zsh >| "$_zoxide_cache"
+  fi
+  source "$_zoxide_cache"
+fi
 
 # --- zsh-syntax-highlighting (must be last) ---
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
