@@ -21,6 +21,6 @@
 
 - name: Bluetooth | Enable and start bluetooth service
   ansible.builtin.systemd_service:
-    name: bluetooth
+    name: bluetooth.service
     enabled: true
     state: started
