@@ -24,24 +24,29 @@ y() {
   rm -f -- "$tmp"
 }
 
-# Find files by name
+# Fuzzy find file and open in editor
 ff() {
-  command find . -iname "*$1*" 2>/dev/null
+  local file
+  file=$(fd --type f --hidden --exclude .git | fzf --preview 'bat -n --color=always {}') && $EDITOR "$file"
 }
 
-# Find text inside files (requires ripgrep)
+# Fuzzy find text in files and open match in editor
 ftext() {
-  rg -l "$1" 2>/dev/null
+  local result file line
+  result=$(rg --color=always --line-number --no-heading "$1" | fzf --ansi --delimiter=: --preview 'bat -n --color=always --highlight-line {2} {1}' --preview-window=right:60%) \
+    && file=$(echo "$result" | cut -d: -f1) \
+    && line=$(echo "$result" | cut -d: -f2) \
+    && $EDITOR +"$line" "$file"
 }
 
 # Copy file content to clipboard
 copyfile() {
-  cat "$1" | wl-copy 2>/dev/null || cat "$1" | xclip -selection clipboard
+  wl-copy < "$1" 2>/dev/null || xclip -selection clipboard < "$1"
 }
 
 # Copy current directory path to clipboard
 copypath() {
-  pwd | wl-copy 2>/dev/null || pwd | xclip -selection clipboard
+  printf '%s' "$PWD" | wl-copy 2>/dev/null || printf '%s' "$PWD" | xclip -selection clipboard
 }
 
 # Kill process by port

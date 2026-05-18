@@ -19,7 +19,7 @@ export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt"
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=10000
 SAVEHIST=10000
-setopt share_history hist_expire_dups_first hist_ignore_dups hist_verify auto_cd auto_pushd pushd_ignore_dups pushd_silent
+setopt share_history hist_expire_dups_first hist_ignore_dups hist_ignore_space hist_verify auto_cd auto_pushd pushd_ignore_dups pushd_silent no_beep
 
 export BAT_THEME="base16"
 
