@@ -60,8 +60,8 @@ if command -v zoxide &>/dev/null; then
 fi
 
 # --- Spaceship prompt ---
-if [[ -f /usr/share/zsh/site-functions/spaceship.zsh ]]; then
-  source /usr/share/zsh/site-functions/spaceship.zsh
+if [[ -f /usr/lib/spaceship-prompt/spaceship.zsh ]]; then
+  source /usr/lib/spaceship-prompt/spaceship.zsh
 fi
 
 # --- zsh-syntax-highlighting (must be last) ---
