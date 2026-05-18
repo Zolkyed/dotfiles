@@ -10,7 +10,12 @@ source /usr/lib/spaceship-prompt/spaceship.zsh-theme
 [[ -f $HOME/.config/zsh/plugins.zsh ]] && source $HOME/.config/zsh/plugins.zsh
 [[ -f $HOME/.config/zsh/aliases.zsh ]] && source $HOME/.config/zsh/aliases.zsh
 
-# Colored tab completions (Vague theme)
+# --- Completion ---
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/compcache"
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' # case-insensitive
+
+# Vague theme colors
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' format '%F{#7fa563}%d%f'
