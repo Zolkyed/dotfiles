@@ -22,6 +22,17 @@ zstyle ':completion:*:warnings' format ' %F{#d8647e}-- no matches found --%f'
 zstyle ':completion:*:options' description 'yes'
 zstyle ':completion:*:default' list-prompt '%S%F{#606079}%M matches%f%s'
 
+# fzf-tab layout + preview
+zstyle ':fzf-tab:*' fzf-flags --height=~15 --layout=reverse --border=none --preview-window=right:40%
+zstyle ':fzf-tab:*' switch-group '<' '>'
+zstyle ':fzf-tab:complete:*:*' fzf-preview '
+  if [[ -d $realpath ]]; then
+    eza --icons --color=always --group-dirs=first $realpath
+  elif [[ -f $realpath ]]; then
+    bat --color=always --style=plain --line-range=:50 $realpath 2>/dev/null || cat $realpath
+  fi
+'
+
 # Basic key bindings
 bindkey -e
 bindkey '^[[A' history-search-backward
