@@ -6,3 +6,6 @@ GRUB_CMDLINE_LINUX_DEFAULT="{{ system_grub_cmdline_linux_default | default(bootl
 GRUB_CMDLINE_LINUX=""
 GRUB_GFXMODE={{ bootloader_grub_gfxmode }}
 GRUB_DISABLE_OS_PROBER={{ bootloader_grub_disable_os_prober | lower }}
+{% if bootloader_grub_theme %}
+GRUB_THEME={{ bootloader_grub_theme }}
+{% endif %}

@@ -6,6 +6,7 @@
   vars:
     install_label: Plymouth
     install_pacman_packages: "{{ plymouth_pacman_packages }}"
+    install_aur_packages: "{{ plymouth_aur_packages | default([]) }}"
 
 - name: Plymouth | Check available Plymouth themes
   ansible.builtin.command:

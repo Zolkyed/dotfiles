@@ -2,7 +2,10 @@
 plymouth_pacman_packages:
   - plymouth
 
-plymouth_theme: spinner
+plymouth_aur_packages:
+  - plymouth-theme-arch-breeze
+
+plymouth_theme: arch-breeze
 plymouth_grub_options:
   - quiet
   - splash
