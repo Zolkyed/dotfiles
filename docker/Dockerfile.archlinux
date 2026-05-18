@@ -12,15 +12,20 @@ ARG GID=1000
 
 ENV ANSIBLE_LOCAL_TEMP=/tmp/ansible-local \
     ANSIBLE_REMOTE_TEMP=/tmp/ansible-remote \
-    ANSIBLE_CONFIG=/home/${USER}/dotfiles/ansible/ansible.cfg
+    ANSIBLE_CONFIG=/home/${USER}/dotfiles/ansible/ansible.cfg \
+    SOPS_AGE_KEY_FILE=/home/${USER}/.config/sops/age/keys.txt
 
 SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 
 RUN pacman -Syu --noconfirm --needed \
       age \
       ansible \
+      base-devel \
+      git \
+      pciutils \
       sops \
-      sudo && \
+      sudo \
+      zsh && \
     rm -rf /var/cache/pacman/pkg/*
 
 RUN groupadd --gid ${GID} ${GROUP} && \
@@ -28,48 +33,64 @@ RUN groupadd --gid ${GID} ${GROUP} && \
     echo "${USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${USER} && \
     chmod 0440 /etc/sudoers.d/${USER}
 
-WORKDIR /home/${USER}/dotfiles
 COPY --chown=${USER}:${GROUP} . /home/${USER}/dotfiles
 
 RUN sudo -u ${USER} ansible-galaxy collection install \
       -r /home/${USER}/dotfiles/ansible/requirements.yml
 
-RUN --mount=type=secret,id=sops_age_key \
-    install -d -m 700 -o ${USER} -g ${GROUP} /home/${USER}/.config/sops/age && \
-    install -m 600 -o ${USER} -g ${GROUP} \
-      /run/secrets/sops_age_key /home/${USER}/.config/sops/age/keys.txt
+RUN --mount=type=secret,id=sops_age_key <<'EOF'
+install -d -m 700 -o "${USER}" -g "${GROUP}" "/home/${USER}/.config/sops/age"
+install -m 600 -o "${USER}" -g "${GROUP}" \
+  /run/secrets/sops_age_key "/home/${USER}/.config/sops/age/keys.txt"
 
-RUN --mount=type=secret,id=sops_age_key \
-    sudo -u ${USER} sh -lc '
-      export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt"
-      export ANSIBLE_CONFIG="$HOME/dotfiles/ansible/ansible.cfg"
-      cd "$HOME/dotfiles/ansible"
+sudo -u "${USER}" bash <<'EOS'
+set -euo pipefail
 
-      # Verify vaults are decryptable
-      sops -d inventory/group_vars/vault.yml >/dev/null
-      sops -d inventory/host_vars/server/vault.yml >/dev/null
+cd "$HOME/dotfiles/ansible"
 
-      # Syntax checks
-      ansible-playbook -i inventory/local.yml playbooks/setup.yml --syntax-check
-      ansible-playbook -i inventory/local.yml playbooks/update.yml --syntax-check
-      ansible-playbook -i inventory/local.yml playbooks/maintenance.yml --syntax-check
-      ansible-playbook -i inventory/local.yml playbooks/dotfiles.yml --syntax-check
+# --- Verify vault decryption ---
+sops -d inventory/group_vars/vault.yml >/dev/null
+sops -d inventory/host_vars/desktop/vault.yml >/dev/null
+sops -d inventory/host_vars/laptop/vault.yml >/dev/null
+sops -d inventory/host_vars/server/vault.yml >/dev/null
 
-      # Server preset — check always-on + user roles
-      ansible-playbook \
-        -i inventory/local.yml \
-        playbooks/setup.yml \
-        -l server \
-        --check \
-        --tags always,user,sudo,ssh_keys,bin
+ansible-inventory -i inventory/local.yml --list >/dev/null
 
-      # Laptop preset — check always-on + container-safe feature roles
-      ansible-playbook \
-        -i inventory/local.yml \
-        playbooks/setup.yml \
-        -l laptop \
-        --check \
-        --tags always,base,shell,audio,bluetooth
-    '
+# --- Syntax check all playbooks ---
+ansible-playbook -i inventory/local.yml playbooks/setup.yml --syntax-check
+ansible-playbook -i inventory/local.yml playbooks/update.yml --syntax-check
+ansible-playbook -i inventory/local.yml playbooks/maintenance.yml --syntax-check
+ansible-playbook -i inventory/local.yml playbooks/dotfiles.yml --syntax-check
 
-RUN rm -f /home/${USER}/.config/sops/age/keys.txt
+# --- Real runs on server (no desktop/GUI deps) ---
+ansible-playbook -i inventory/local.yml playbooks/setup.yml \
+  -l server --tags always,base
+
+ansible-playbook -i inventory/local.yml playbooks/setup.yml \
+  -l server --tags always,user,sudo
+
+# --- Dry-run: user roles ---
+ansible-playbook -i inventory/local.yml playbooks/setup.yml \
+  --check --diff \
+  --tags always,user,sudo,base,shell,ssh_keys,bin,xdg
+
+# --- Dry-run: system roles ---
+ansible-playbook -i inventory/local.yml playbooks/setup.yml \
+  --check --diff \
+  --tags always,mirrors,pacman,aur,networking,ntp,journald,kernel,audio,bluetooth,vpn,firewall,fail2ban,firmware,fonts
+
+# --- Real runs: pacman-only app roles (no AUR/flatpak/systemd) ---
+ansible-playbook -i inventory/local.yml playbooks/setup.yml \
+  -l server --tags always,tools
+
+ansible-playbook -i inventory/local.yml playbooks/setup.yml \
+  -l server --tags always,fonts
+
+# --- Dry-run: remaining app roles ---
+ansible-playbook -i inventory/local.yml playbooks/setup.yml \
+  --check --diff \
+  --tags always,flatpak,node,ai,media,browser,dev,office,gaming,rclone
+EOS
+
+rm -f "/home/${USER}/.config/sops/age/keys.txt"
+EOF

@@ -1,3 +1,6 @@
 ---
 vpn_pacman_packages:
   - wireguard-tools
+
+vpn_aur_packages:
+  - piavpn-bin

@@ -6,3 +6,4 @@
   vars:
     install_label: VPN
     install_pacman_packages: "{{ vpn_pacman_packages }}"
+    install_aur_packages: "{{ vpn_aur_packages }}"

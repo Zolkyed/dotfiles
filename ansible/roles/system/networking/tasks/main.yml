@@ -38,5 +38,3 @@
     dest: /etc/resolv.conf
     state: link
     force: true
-    owner: root
-    group: root
