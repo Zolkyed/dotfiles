@@ -7,6 +7,15 @@
     group: root
     mode: "0755"
 
+- name: Mkinitcpio | Deploy hooks config
+  ansible.builtin.template:
+    src: hooks.conf.j2
+    dest: /etc/mkinitcpio.conf.d/10-hooks.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Mkinitcpio | Rebuild initramfs
+
 - name: Mkinitcpio | Deploy compression config
   ansible.builtin.template:
     src: compression.conf.j2

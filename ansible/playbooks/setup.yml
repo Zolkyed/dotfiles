@@ -68,8 +68,6 @@
       tags: maintenance
     - role: system/kernel
       tags: kernel
-    - role: system/mkinitcpio
-      tags: mkinitcpio
     - role: system/fonts
       tags: fonts
 
@@ -114,6 +112,8 @@
     - role: system/plymouth
       tags: plymouth
       when: "'plymouth' in enabled_features"
+    - role: system/mkinitcpio
+      tags: mkinitcpio
     - role: system/bootloader
       tags: bootloader
       when: "'bootloader' in enabled_features"

@@ -1,18 +1,14 @@
 ---
-- name: Microcode | Select package
-  ansible.builtin.set_fact:
-    microcode_package: >-
-      {{
-        'intel-ucode'
-        if ansible_facts.processor | join(' ') is search('GenuineIntel|Intel')
-        else 'amd-ucode'
-        if ansible_facts.processor | join(' ') is search('AuthenticAMD|AMD')
-        else ''
-      }}
-
-- name: Microcode | Install CPU microcode
+- name: Microcode | Install Intel CPU microcode
   community.general.pacman:
-    name: "{{ microcode_package }}"
+    name: intel-ucode
     state: present
-  when: microcode_package | length > 0
-  notify: Microcode | Update grub
+  when: ansible_facts.processor | join(' ') is search('GenuineIntel|Intel')
+  notify: Bootloader | Update grub
+
+- name: Microcode | Install AMD CPU microcode
+  community.general.pacman:
+    name: amd-ucode
+    state: present
+  when: ansible_facts.processor | join(' ') is search('AuthenticAMD|AMD')
+  notify: Bootloader | Update grub
