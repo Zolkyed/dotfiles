@@ -1,51 +1,51 @@
 ---
-- name: System maintenance
+- name: System cleanup
   hosts: all
   become: true
   gather_facts: false
 
   tasks:
-    - name: Maintenance | Collect installed packages
+    - name: Cleanup | Collect installed packages
       ansible.builtin.package_facts:
         manager: pacman
       tags: always
 
-    - name: Maintenance | Find orphaned packages
+    - name: Cleanup | Find orphaned packages
       ansible.builtin.command:
         cmd: pacman -Qtdq
-      register: maintenance_orphans
+      register: cleanup_orphans
       changed_when: false
-      failed_when: maintenance_orphans.rc not in [0, 1]
+      failed_when: cleanup_orphans.rc not in [0, 1]
       tags: orphans
 
-    - name: Maintenance | Remove orphaned packages
+    - name: Cleanup | Remove orphaned packages
       community.general.pacman:
-        name: "{{ maintenance_orphans.stdout_lines }}"
+        name: "{{ cleanup_orphans.stdout_lines }}"
         state: absent
-      when: maintenance_orphans.stdout_lines | length > 0
+      when: cleanup_orphans.stdout_lines | length > 0
       tags: orphans
 
-    - name: Maintenance | Vacuum journal logs older than 2 weeks
+    - name: Cleanup | Vacuum journal logs older than 2 weeks
       ansible.builtin.command:
         cmd: journalctl --vacuum-time=2weeks
       changed_when: false
       tags: journal
 
-    - name: Maintenance | Prune Docker resources
+    - name: Cleanup | Prune Docker resources
       ansible.builtin.command:
         cmd: docker system prune -f
       when: "'docker' in ansible_facts.packages"
       changed_when: false
       tags: docker
 
-    - name: Maintenance | Run snapper cleanup
+    - name: Cleanup | Run snapper cleanup
       ansible.builtin.command:
         cmd: snapper cleanup number
       when: "'snapper' in ansible_facts.packages"
       changed_when: false
       tags: snapper
 
-    - name: Maintenance | Clean paru build cache
+    - name: Cleanup | Clean paru build cache
       ansible.builtin.command:
         cmd: paru -c --noconfirm
       become: false

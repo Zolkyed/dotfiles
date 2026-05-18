@@ -64,8 +64,8 @@
       tags: ntp
     - role: system/ssh
       tags: ssh
-    - role: system/maintenance
-      tags: maintenance
+    - role: system/timers
+      tags: timers
     - role: system/kernel
       tags: kernel
     - role: system/fonts

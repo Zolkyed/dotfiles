@@ -1,20 +1,20 @@
 ---
-- name: Maintenance | Install
+- name: Timers | Install
   ansible.builtin.include_role:
     name: lib/install
     tasks_from: packages
   vars:
-    install_label: Maintenance
-    install_pacman_packages: "{{ maintenance_pacman_packages }}"
+    install_label: Timers
+    install_pacman_packages: "{{ timers_pacman_packages }}"
 
-- name: Maintenance | Enable fstrim timer
+- name: Timers | Enable fstrim timer
   ansible.builtin.systemd_service:
     name: fstrim.timer
     enabled: true
     state: started
-  when: maintenance_enable_fstrim
+  when: timers_enable_fstrim
 
-- name: Maintenance | Enable btrfs scrub timers
+- name: Timers | Enable btrfs scrub timers
   ansible.builtin.systemd_service:
     name: >-
       btrfs-scrub@{{
@@ -24,18 +24,18 @@
       }}.timer
     enabled: true
     state: started
-  loop: "{{ maintenance_btrfs_scrub_mounts }}"
+  loop: "{{ timers_btrfs_scrub_mounts }}"
   when:
-    - maintenance_enable_btrfs_scrub
+    - timers_enable_btrfs_scrub
     - ansible_facts['mounts']
       | selectattr('mount', 'equalto', item)
       | selectattr('fstype', 'equalto', 'btrfs')
       | list
       | length > 0
 
-- name: Maintenance | Enable pkgfile update timer
+- name: Timers | Enable pkgfile update timer
   ansible.builtin.systemd_service:
     name: pkgfile-update.timer
     enabled: true
     state: started
-  when: maintenance_enable_pkgfile_update
+  when: timers_enable_pkgfile_update

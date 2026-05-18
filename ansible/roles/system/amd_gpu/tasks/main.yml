@@ -6,3 +6,12 @@
   vars:
     install_label: AMD GPU
     install_pacman_packages: "{{ amd_gpu_pacman_packages }}"
+
+- name: AMD GPU | Configure early KMS
+  ansible.builtin.copy:
+    dest: /etc/mkinitcpio.conf.d/amdgpu.conf
+    content: "MODULES+=(amdgpu)\n"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: AMD GPU | Rebuild initramfs

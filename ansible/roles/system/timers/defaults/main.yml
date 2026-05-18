@@ -1,0 +1,12 @@
+---
+timers_pacman_packages:
+  - btrfs-progs
+  - pkgfile
+  - dosfstools
+
+timers_enable_fstrim: true
+timers_enable_btrfs_scrub: true
+timers_btrfs_scrub_mounts:
+  - /
+  - /home
+timers_enable_pkgfile_update: true

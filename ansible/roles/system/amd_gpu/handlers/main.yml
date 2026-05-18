@@ -1,0 +1,5 @@
+---
+- name: AMD GPU | Rebuild initramfs
+  ansible.builtin.command:
+    cmd: mkinitcpio -P
+  changed_when: true

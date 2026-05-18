@@ -4,10 +4,10 @@ ANSIBLE_DIR          := "ansible"
 PLAYBOOK             := "playbooks/setup.yml"
 UPDATE_PLAYBOOK      := "playbooks/update.yml"
 DOTFILES_PLAYBOOK    := "playbooks/dotfiles.yml"
-MAINTENANCE_PLAYBOOK := "playbooks/maintenance.yml"
+CLEANUP_PLAYBOOK     := "playbooks/cleanup.yml"
 VAULT_FILE           := "ansible/inventory/group_vars/vault.yml"
 
-PLAYBOOKS := PLAYBOOK + " " + UPDATE_PLAYBOOK + " " + DOTFILES_PLAYBOOK + " " + MAINTENANCE_PLAYBOOK
+PLAYBOOKS := PLAYBOOK + " " + UPDATE_PLAYBOOK + " " + DOTFILES_PLAYBOOK + " " + CLEANUP_PLAYBOOK
 
 # ─── Dev environment ────────────────────────────────────────────────────
 
@@ -38,11 +38,11 @@ update-remote host="desktop":
 dotfiles:
     cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{DOTFILES_PLAYBOOK}} -l $(hostname)
 
-maintenance:
-    cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{MAINTENANCE_PLAYBOOK}} -l $(hostname) -v
+cleanup:
+    cd {{ANSIBLE_DIR}} && ansible-playbook -i inventory/local.yml {{CLEANUP_PLAYBOOK}} -l $(hostname) -v
 
-maintenance-remote host="desktop":
-    cd {{ANSIBLE_DIR}} && ansible-playbook {{MAINTENANCE_PLAYBOOK}} -l {{host}} -v
+cleanup-remote host="desktop":
+    cd {{ANSIBLE_DIR}} && ansible-playbook {{CLEANUP_PLAYBOOK}} -l {{host}} -v
 
 ansibleinstall host="desktop":
     bash scripts/run_ansibleinstall.sh {{host}}
