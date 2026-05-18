@@ -37,9 +37,10 @@
       tags: always
 
     - name: Update | Upgrade flatpak packages
-      community.general.flatpak:
-        state: latest
+      ansible.builtin.command:
+        cmd: flatpak update -y
       when: "'flatpak' in ansible_facts.packages"
+      changed_when: true
       tags: flatpak
 
     - name: Update | Clean package cache
