@@ -1,7 +1,8 @@
 # Oh-My-Zsh
 export ZSH="/usr/share/oh-my-zsh"
+skip_global_compinit=1  # we call compinit ourselves with caching below
 
-# Standalone spaceship prompt (no oh-my-zsh theme system)
+# Spaceship prompt
 source /usr/lib/spaceship-prompt/spaceship.zsh-theme
 
 # Custom environment, plugins, functions, aliases
@@ -10,11 +11,21 @@ source /usr/lib/spaceship-prompt/spaceship.zsh-theme
 [[ -f $HOME/.config/zsh/plugins.zsh ]] && source $HOME/.config/zsh/plugins.zsh
 [[ -f $HOME/.config/zsh/aliases.zsh ]] && source $HOME/.config/zsh/aliases.zsh
 
-# --- Completion ---
-mkdir -p "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/compcache"
+# --- Completion init (cached — only regenerates dump once per day) ---
+autoload -Uz compinit
+_zcompdump="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/.zcompdump"
+mkdir -p "${_zcompdump:h}"
+if [[ -n "$_zcompdump"(#qN.mh+24) ]]; then
+  compinit -d "$_zcompdump"
+else
+  compinit -C -d "$_zcompdump"
+fi
+unset _zcompdump
+
+# --- Completion settings ---
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/compcache"
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' # case-insensitive
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
 # Vague theme colors
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
@@ -28,12 +39,13 @@ zstyle ':completion:*:warnings' format ' %F{#d8647e}-- no matches found --%f'
 zstyle ':completion:*:options' description 'yes'
 zstyle ':completion:*:default' list-prompt '%S%F{#606079}%M matches%f%s'
 
-# fzf-tab layout + preview
+# --- fzf-tab ---
 zstyle ':fzf-tab:*' fzf-flags --height=~50% --layout=reverse --border=none --preview-window=right:40%
 zstyle ':fzf-tab:*' switch-group '<' '>'
-zstyle ':fzf-tab:complete:(cd|z|__zoxide_z):*' fzf-preview '[[ -n $realpath ]] && eza --tree --color=always --icons $realpath | head -200'
+zstyle ':fzf-tab:complete:(cd|z|__zoxide_z):*' fzf-preview '[[ -n $realpath ]] && eza --tree --color=always --icons=auto $realpath | head -200'
+zstyle ':fzf-tab:complete:(ls|la|ll|lt):*' fzf-preview '[[ -n $realpath ]] && eza --color=always --icons=auto $realpath'
 
-# Basic key bindings
+# --- Key bindings ---
 bindkey -e
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
