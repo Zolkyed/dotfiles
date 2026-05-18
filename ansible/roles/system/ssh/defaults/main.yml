@@ -12,10 +12,3 @@ ssh_x11_forwarding: "no"
 ssh_allow_tcp_forwarding: "no"
 
 ssh_banner_enabled: true
-ssh_banner_text: |
-  -----------------------------------------------------
-    System: {{ ansible_facts.hostname }}
-    Distro: {{ ansible_facts.distribution }} {{ ansible_facts.distribution_version }}
-    Kernel: {{ ansible_facts.kernel }}
-    Uptime: {{ (ansible_facts.uptime_seconds | default(0) | int / 86400) | int }} days
-  -----------------------------------------------------

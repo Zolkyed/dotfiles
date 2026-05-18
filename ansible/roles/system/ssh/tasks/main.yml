@@ -53,12 +53,12 @@
     mode: "0755"
 
 - name: SSH | Deploy banner
-  ansible.builtin.copy:
+  ansible.builtin.template:
+    src: banner.j2
     dest: /etc/ssh/banner
     owner: root
     group: root
     mode: "0644"
-    content: "{{ ssh_banner_text }}\n"
   when: ssh_banner_enabled
   notify: SSH | Restart sshd
 
