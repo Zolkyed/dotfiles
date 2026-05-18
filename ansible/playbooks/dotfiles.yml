@@ -1,11 +1,9 @@
 ---
 - name: Apply dotfiles
   hosts: all
-  become: false
-  gather_facts: false
+  become: true
+  gather_facts: true
 
-  tasks:
-    - name: Dotfiles | Apply via chezmoi
-      ansible.builtin.command:
-        cmd: chezmoi apply --no-tty --force --exclude scripts
-      changed_when: false
+  roles:
+    - role: user/dotfiles
+      tags: dotfiles
