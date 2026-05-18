@@ -26,7 +26,13 @@ export BAT_THEME="base16"
 export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
-export FZF_DEFAULT_OPTS="--layout=reverse --border=none --height=40%"
+export FZF_DEFAULT_OPTS="
+  --layout=reverse --border=none --height=40%
+  --color=fg:#c5c8c6,bg:#1d1f21,hl:#7fa563
+  --color=fg+:#ffffff,bg+:#2a2d2e,hl+:#7fa563
+  --color=info:#606079,prompt:#d8647e,pointer:#d8647e
+  --color=marker:#7fa563,spinner:#606079,header:#606079
+"
 
 _fzf_file_preview="if [ -d {} ]; then eza --tree --color=always --icons {} | head -200; else bat -n --color=always --line-range :500 {}; fi"
 export FZF_CTRL_T_OPTS="--preview '$_fzf_file_preview'"

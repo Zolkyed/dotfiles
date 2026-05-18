@@ -13,6 +13,17 @@ _fzf_comprun() {
   esac
 }
 
+# Yazi - cd to last directory on exit
+y() {
+  local tmp cwd
+  tmp="$(mktemp -t yazi-cwd.XXXXXX)"
+  yazi "$@" --cwd-file="$tmp"
+  if cwd="$(command cat -- "$tmp")" && [[ -n "$cwd" && "$cwd" != "$PWD" ]]; then
+    builtin cd -- "$cwd"
+  fi
+  rm -f -- "$tmp"
+}
+
 # Find files by name
 ff() {
   command find . -iname "*$1*" 2>/dev/null

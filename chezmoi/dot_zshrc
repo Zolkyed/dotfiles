@@ -25,13 +25,7 @@ zstyle ':completion:*:default' list-prompt '%S%F{#606079}%M matches%f%s'
 # fzf-tab layout + preview
 zstyle ':fzf-tab:*' fzf-flags --height=~15 --layout=reverse --border=none --preview-window=right:40%
 zstyle ':fzf-tab:*' switch-group '<' '>'
-zstyle ':fzf-tab:complete:*:*' fzf-preview '
-  if [[ -d $realpath ]]; then
-    eza --icons --color=always --group-directories-first $realpath
-  elif [[ -f $realpath ]]; then
-    bat --color=always --style=plain --line-range=:50 $realpath 2>/dev/null || cat $realpath
-  fi
-'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza --tree --color=always --icons $realpath | head -200'
 
 # Basic key bindings
 bindkey -e
