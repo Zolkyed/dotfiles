@@ -1,6 +1,0 @@
-{% set ns = namespace(hooks=mkinitcpio_hooks | list) %}
-{% if 'plymouth' in (enabled_features | default([])) and 'block' in ns.hooks %}
-{% set idx = ns.hooks.index('block') %}
-{% set ns.hooks = ns.hooks[:idx] + ['plymouth'] + ns.hooks[idx:] %}
-{% endif %}
-HOOKS=({{ ns.hooks | join(' ') }})

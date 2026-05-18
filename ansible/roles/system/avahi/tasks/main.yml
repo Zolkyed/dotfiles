@@ -11,7 +11,7 @@
   ansible.builtin.lineinfile:
     path: /etc/nsswitch.conf
     regexp: '^hosts:'
-    line: 'hosts: files mdns_minimal [NOTFOUND=return] resolve [!UNAVAIL=return] dns'
+    line: 'hosts: files mdns_minimal [NOTFOUND=return] myhostname resolve [!UNAVAIL=return] dns'
     backup: true
 
 - name: Avahi | Enable and start avahi-daemon

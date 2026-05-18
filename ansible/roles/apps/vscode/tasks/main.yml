@@ -7,19 +7,25 @@
     install_label: VSCode
     install_aur_packages: "{{ vscode_aur_packages }}"
 
-- name: VSCode | Install extensions
+- name: VSCode | List installed extensions
+  ansible.builtin.command:
+    cmd: code --list-extensions
+  register: vscode_installed_extensions
+  changed_when: false
+  become: false
+
+- name: VSCode | Install missing extensions
   ansible.builtin.command:
     argv:
       - code
       - --install-extension
       - "{{ item }}"
-  loop: "{{ vscode_extensions }}"
+  loop: "{{ vscode_extensions | difference(vscode_installed_extensions.stdout_lines) }}"
   loop_control:
     label: "{{ item }}"
   register: vscode_extension_result
   retries: 3
   delay: 3
   until: vscode_extension_result.rc == 0
-  changed_when: >
-    'is already installed' not in vscode_extension_result.stdout
+  changed_when: true
   become: false

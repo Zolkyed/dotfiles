@@ -23,6 +23,9 @@ browser_extensions:
   - name: Image Downloader
     id: cnpniohnfphhjihaiiggeabnkjhpaldj
     update_url: https://clients2.google.com/service/update2/crx
+  - name: Midnight Black - Dark theme
+    id: dakddccckaaeodackcoineaheineddcp
+    update_url: https://clients2.google.com/service/update2/crx
 # Policy reference: brave://policy/
 browser_extra_policies:
   # Startup

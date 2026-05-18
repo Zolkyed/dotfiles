@@ -1,24 +1,40 @@
 ---
 plasma_pacman_packages:
+  # Core
   - plasma-desktop
   - sddm
   - sddm-kcm
+
+  # Session and portals
   - xdg-desktop-portal
   - xdg-desktop-portal-kde
+
+  # Plasma components
   - plasma-pa
   - plasma-nm
   - kscreen
   - powerdevil
   - bluedevil
   - plasma-systemmonitor
-  - breeze-gtk
+
+  # Apps
   - discover
   - dolphin
-  - gvfs
-  - gvfs-mtp
-  - gvfs-smb
   - spectacle
   - kcalc
   - ark
   - kdeconnect
   - wl-clipboard
+
+  # Thumbnails and formats
+  - ffmpegthumbs
+  - kdegraphics-thumbnailers
+  - kimageformats
+
+  # Integration
+  - breeze-gtk
+
+  # Filesystem
+  - gvfs
+  - gvfs-mtp
+  - gvfs-smb

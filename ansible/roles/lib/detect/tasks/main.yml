@@ -11,6 +11,6 @@
     auto_detected_features: >-
       {{
         (['nvidia_gpu']  if detect_lspci.stdout is search('NVIDIA.*(VGA|3D|Display)') else [])
-        + (['amd_gpu']   if detect_lspci.stdout is search('AMD|ATI.*(VGA|3D|Display)') else [])
+        + (['amd_gpu']   if detect_lspci.stdout is search('(AMD|ATI).*(VGA|3D|Display)') else [])
         + (['intel_gpu'] if detect_lspci.stdout is search('Intel.*(Graphics|Display|HD Graphics)') else [])
       }}
