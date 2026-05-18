@@ -3,7 +3,7 @@ plymouth_pacman_packages:
   - plymouth
 
 plymouth_aur_packages:
-  - plymouth-theme-arch-breeze
+  - plymouth-theme-arch-breeze-git
 
 plymouth_theme: arch-breeze
 plymouth_grub_options:

@@ -12,4 +12,4 @@ bootloader_grub_timeout_style: hidden
 bootloader_grub_cmdline_linux_default: "quiet"
 bootloader_grub_gfxmode: "auto"
 bootloader_grub_disable_os_prober: true
-bootloader_grub_theme: "/usr/share/grub/themes/Archlinux/theme.txt"
+bootloader_grub_theme: "/boot/grub/themes/Archlinux/theme.txt"

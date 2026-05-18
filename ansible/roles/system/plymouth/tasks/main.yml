@@ -32,10 +32,10 @@
     - plymouth_theme in plymouth_themes.stdout_lines
     - plymouth_current_theme.stdout != plymouth_theme
 
-- name: Plymouth | Add plymouth hook to mkinitcpio
+- name: Plymouth | Add plymouth hook to mkinitcpio (after kms)
   ansible.builtin.replace:
     path: /etc/mkinitcpio.conf
-    regexp: '^(HOOKS=.*\budev\b)(?! plymouth)'
+    regexp: '^(HOOKS=(?!.*plymouth).*\bblock\b)'
     replace: '\1 plymouth'
   notify: Plymouth | Update initramfs
 
