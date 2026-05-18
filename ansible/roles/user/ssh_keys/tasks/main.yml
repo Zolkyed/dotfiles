@@ -9,7 +9,7 @@
 
 - name: SSH Keys | Deploy SSH private keys
   ansible.builtin.copy:
-    content: "{{ item.private_key }}"
+    content: "{{ item.private_key | trim }}\n"
     dest: "{{ user_home }}/.ssh/{{ item.name }}"
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
