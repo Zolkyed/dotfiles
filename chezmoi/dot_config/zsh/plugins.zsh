@@ -1,12 +1,34 @@
-# --- Oh-My-Zsh plugins ---
-plugins=(
-  git             # git aliases and prompt info
-  sudo            # ESC ESC to prepend sudo to previous command
-  extract         # 'x' to extract any archive format
-  colored-man-pages
-)
+# --- sudo widget (ESC ESC to prepend/strip sudo) ---
+_sudo_command_line() {
+  [[ -z $BUFFER ]] && zle up-history
+  if [[ $BUFFER == sudo\ * ]]; then
+    LBUFFER="${LBUFFER#sudo }"
+  else
+    LBUFFER="sudo $LBUFFER"
+  fi
+}
+zle -N _sudo_command_line
+bindkey '\e\e' _sudo_command_line
 
-[[ -f $ZSH/oh-my-zsh.sh ]] && source $ZSH/oh-my-zsh.sh
+# --- extract function (replaces OMZ extract plugin) ---
+x() {
+  if [[ -z "$1" ]]; then echo "Usage: x <archive>"; return 1; fi
+  case "$1" in
+    *.tar.bz2|*.tbz2) tar xjf "$1"          ;;
+    *.tar.gz|*.tgz)   tar xzf "$1"          ;;
+    *.tar.xz)          tar xJf "$1"          ;;
+    *.tar.zst)         tar --zstd -xf "$1"   ;;
+    *.tar)             tar xf "$1"           ;;
+    *.bz2)             bunzip2 "$1"          ;;
+    *.gz)              gunzip "$1"           ;;
+    *.zip)             unzip "$1"            ;;
+    *.Z)               uncompress "$1"       ;;
+    *.7z)              7z x "$1"             ;;
+    *.xz)              unxz "$1"             ;;
+    *.zst)             unzstd "$1"           ;;
+    *)                 echo "Unknown archive format: $1" ;;
+  esac
+}
 
 # --- zsh-autosuggestions ---
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
@@ -16,7 +38,6 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#606079,underline"
   source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # --- fzf (must come before fzf-tab) ---
-# Cache the init script — regenerate only when fzf binary changes
 if command -v fzf &>/dev/null; then
   _fzf_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/fzf-init.zsh"
   if [[ ! -f "$_fzf_cache" || "$(command -v fzf)" -nt "$_fzf_cache" ]]; then
@@ -36,6 +57,15 @@ if command -v zoxide &>/dev/null; then
     zoxide init zsh >| "$_zoxide_cache"
   fi
   source "$_zoxide_cache"
+fi
+
+# --- Starship prompt ---
+if command -v starship &>/dev/null; then
+  _starship_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/starship-init.zsh"
+  if [[ ! -f "$_starship_cache" || "$(command -v starship)" -nt "$_starship_cache" ]]; then
+    starship init zsh >| "$_starship_cache"
+  fi
+  source "$_starship_cache"
 fi
 
 # --- zsh-syntax-highlighting (must be last) ---

@@ -1,10 +1,3 @@
-# Oh-My-Zsh
-export ZSH="/usr/share/oh-my-zsh"
-skip_global_compinit=1  # we call compinit ourselves with caching below
-
-# Spaceship prompt
-source /usr/lib/spaceship-prompt/spaceship.zsh-theme
-
 # Custom environment, plugins, functions, aliases
 [[ -f $HOME/.config/zsh/env.zsh ]] && source $HOME/.config/zsh/env.zsh
 [[ -f $HOME/.config/zsh/functions.zsh ]] && source $HOME/.config/zsh/functions.zsh
@@ -16,7 +9,7 @@ autoload -Uz compinit
 _zcompdump="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/.zcompdump"
 mkdir -p "${_zcompdump:h}"
 if [[ -n "$_zcompdump"(#qN.mh+24) ]]; then
-  compinit -d "$_zcompdump"
+  compinit -u -d "$_zcompdump"
 else
   compinit -C -d "$_zcompdump"
 fi
@@ -43,7 +36,7 @@ zstyle ':completion:*:default' list-prompt '%S%F{#606079}%M matches%f%s'
 zstyle ':fzf-tab:*' fzf-flags --height=~50% --layout=reverse --border=none --preview-window=right:40%
 zstyle ':fzf-tab:*' switch-group '<' '>'
 zstyle ':fzf-tab:complete:(cd|z|__zoxide_z):*' fzf-preview '[[ -n $realpath ]] && eza --tree --color=always --icons=auto $realpath | head -200'
-zstyle ':fzf-tab:complete:(ls|la|ll|lt):*' fzf-preview '[[ -n $realpath ]] && eza --color=always --icons=auto $realpath'
+zstyle ':fzf-tab:complete:(ls|la|ll|lt):*' fzf-preview '[[ -n $realpath ]] && eza --tree --color=always --icons=auto $realpath | head -200'
 
 # --- Key bindings ---
 bindkey -e
