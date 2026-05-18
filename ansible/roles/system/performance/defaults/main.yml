@@ -1,0 +1,25 @@
+---
+performance_pacman_packages:
+  - zram-generator
+  - ananicy-cpp
+
+performance_enable_zram: true
+performance_zram_device: zram0
+performance_zram_size: ram
+performance_zram_compression_algorithm: zstd
+performance_zram_swap_priority: 100
+
+performance_enable_ananicy: true
+performance_ananicy_service: ananicy-cpp
+
+performance_sysctl_file: /etc/sysctl.d/98-performance.conf
+performance_sysctl_settings:
+  vm.vfs_cache_pressure: 50
+  vm.dirty_bytes: 268435456
+  vm.dirty_background_bytes: 67108864
+  vm.dirty_writeback_centisecs: 1500
+  vm.page-cluster: 0
+  kernel.nmi_watchdog: 0
+
+performance_enable_thp_tweaks: true
+performance_thp_tmpfiles_path: /etc/tmpfiles.d/98-thp-performance.conf

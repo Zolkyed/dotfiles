@@ -22,6 +22,7 @@ presets:
       # --- performance ---
       - zen_kernel
       - cpupower
+      - performance
       # --- hardware ---
       - audio
       - bluetooth
@@ -62,6 +63,7 @@ presets:
       # --- performance ---
       - zen_kernel
       - cpupower
+      - performance
       # --- hardware ---
       - audio
       - bluetooth

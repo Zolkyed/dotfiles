@@ -1,0 +1,55 @@
+---
+- name: Performance | Install packages
+  ansible.builtin.include_role:
+    name: lib/install
+    tasks_from: packages
+  vars:
+    install_label: Performance
+    install_pacman_packages: "{{ performance_pacman_packages }}"
+
+- name: Performance | Configure ZRAM generator
+  ansible.builtin.template:
+    src: zram-generator.conf.j2
+    dest: /etc/systemd/zram-generator.conf
+    owner: root
+    group: root
+    mode: "0644"
+  when: performance_enable_zram
+  notify: Performance | Reload systemd
+
+- name: Performance | Start ZRAM swap
+  ansible.builtin.systemd_service:
+    name: "dev-{{ performance_zram_device }}.swap"
+    daemon_reload: true
+    state: started
+  when: performance_enable_zram
+
+- name: Performance | Apply sysctl settings
+  ansible.posix.sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    sysctl_file: "{{ performance_sysctl_file }}"
+    state: present
+    sysctl_set: true
+    reload: true
+  loop: "{{ performance_sysctl_settings | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+  when: performance_sysctl_settings | length > 0
+
+- name: Performance | Configure THP tmpfiles
+  ansible.builtin.template:
+    src: thp-performance.conf.j2
+    dest: "{{ performance_thp_tmpfiles_path }}"
+    owner: root
+    group: root
+    mode: "0644"
+  when: performance_enable_thp_tweaks
+  notify: Performance | Apply tmpfiles
+
+- name: Performance | Enable ananicy-cpp
+  ansible.builtin.systemd_service:
+    name: "{{ performance_ananicy_service }}"
+    enabled: true
+    state: started
+  when: performance_enable_ananicy

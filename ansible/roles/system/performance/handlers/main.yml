@@ -1,0 +1,9 @@
+---
+- name: Performance | Reload systemd
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Performance | Apply tmpfiles
+  ansible.builtin.command:
+    cmd: "systemd-tmpfiles --create {{ performance_thp_tmpfiles_path }}"
+  changed_when: false
