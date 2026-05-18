@@ -1,6 +1,7 @@
 ---
 intel_gpu_pacman_packages:
+  - mesa
   - vulkan-intel
   - intel-media-driver
-  - lib32-vulkan-intel
   - lib32-mesa
+  - lib32-vulkan-intel

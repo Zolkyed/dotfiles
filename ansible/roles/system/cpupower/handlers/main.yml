@@ -1,0 +1,5 @@
+---
+- name: CPUpower | Restart service
+  ansible.builtin.systemd_service:
+    name: cpupower
+    state: restarted

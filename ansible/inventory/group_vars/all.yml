@@ -19,18 +19,30 @@ presets:
   # ---------------------------------------------------------------------------
   desktop:
     features:
+      # --- performance ---
+      - zen_kernel
+      - cpupower
+      # --- hardware ---
       - audio
-      - avahi
       - bluetooth
+      - firmware
+      # --- network ---
+      - avahi
       - vpn
+      # --- security ---
       - firewall
       - fail2ban
-      - firmware
+      # --- system ---
       - bootloader
       - snapper
+      - plymouth
+      # --- containers ---
       - docker
       - virtualization
+      # --- desktop ---
       - plasma
+      - xdg
+      # --- apps ---
       - browser
       - dev
       - flatpak
@@ -40,8 +52,6 @@ presets:
       - ai
       - rclone
       - gaming
-      - xdg
-      - plymouth
       - tools
 
   # ---------------------------------------------------------------------------
@@ -49,18 +59,30 @@ presets:
   # ---------------------------------------------------------------------------
   laptop:
     features:
+      # --- performance ---
+      - zen_kernel
+      - cpupower
+      # --- hardware ---
       - audio
-      - avahi
       - bluetooth
+      - firmware
+      # --- network ---
+      - avahi
       - vpn
+      # --- security ---
       - firewall
       - fail2ban
-      - firmware
+      # --- system ---
       - bootloader
       - snapper
+      - plymouth
+      # --- containers ---
       - docker
       - virtualization
+      # --- desktop ---
       - plasma
+      - xdg
+      # --- apps ---
       - browser
       - dev
       - flatpak
@@ -69,8 +91,6 @@ presets:
       - office
       - ai
       - rclone
-      - xdg
-      - plymouth
       - tools
 
   # ---------------------------------------------------------------------------
@@ -78,10 +98,14 @@ presets:
   # ---------------------------------------------------------------------------
   server:
     features:
+      # --- network ---
       - vpn
+      # --- security ---
       - firewall
       - fail2ban
+      # --- system ---
       - bootloader
       - snapper
+      # --- containers ---
       - docker
       - virtualization

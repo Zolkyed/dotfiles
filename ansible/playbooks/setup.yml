@@ -72,6 +72,9 @@
       tags: fonts
 
     # --- Optional system ---
+    - role: system/cpupower
+      tags: cpupower
+      when: "'cpupower' in enabled_features"
     - role: system/vpn
       tags: vpn
       when: "'vpn' in enabled_features"

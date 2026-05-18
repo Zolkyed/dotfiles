@@ -8,3 +8,13 @@
     install_pacman_packages: "{{ gaming_pacman_packages }}"
     install_aur_packages: "{{ gaming_aur_packages }}"
     install_flatpak_packages: "{{ gaming_flatpak_packages }}"
+
+- name: Gaming | Enable gamemoded user service
+  ansible.builtin.systemd_service:
+    name: gamemoded
+    enabled: true
+    scope: user
+  become: true
+  become_user: "{{ user_name }}"
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ lookup('pipe', 'id -u ' + user_name) }}"

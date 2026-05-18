@@ -4,3 +4,7 @@ kernel_sysctl_settings:
   vm.swappiness: 10
   fs.inotify.max_user_watches: 524288
   fs.inotify.max_user_instances: 512
+
+kernel_pacman_packages:
+  - linux-zen
+  - linux-zen-headers

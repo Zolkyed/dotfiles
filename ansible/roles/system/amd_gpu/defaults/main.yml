@@ -1,6 +1,7 @@
 ---
 amd_gpu_pacman_packages:
+  - mesa
   - vulkan-radeon
   - libva-mesa-driver
-  - lib32-vulkan-radeon
   - lib32-mesa
+  - lib32-vulkan-radeon
